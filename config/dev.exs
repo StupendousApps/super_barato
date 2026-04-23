@@ -59,8 +59,6 @@ config :super_barato, SuperBaratoWeb.Endpoint,
     patterns: [
       # Static assets, except user uploads
       ~r"priv/static/(?!uploads/).*\.(js|css|png|jpeg|jpg|gif|svg)$"E,
-      # Gettext translations
-      ~r"priv/gettext/.*\.po$"E,
       # Router, Controllers, LiveViews and LiveComponents
       ~r"lib/super_barato_web/router\.ex$"E,
       ~r"lib/super_barato_web/(controllers|live|components)/.*\.(ex|heex)$"E
