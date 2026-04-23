@@ -18,7 +18,8 @@ defmodule SuperBarato.Crawler do
 
   @adapters %{
     unimarc: SuperBarato.Crawler.Unimarc,
-    jumbo: SuperBarato.Crawler.Jumbo
+    jumbo: SuperBarato.Crawler.Jumbo,
+    santa_isabel: SuperBarato.Crawler.SantaIsabel
   }
 
   def adapter(chain) when is_atom(chain), do: Map.fetch!(@adapters, chain)

@@ -64,7 +64,8 @@ config :phoenix, :json_library, Jason
 config :super_barato, SuperBarato.Crawler,
   rate_limits: [
     unimarc: [interval_ms: 1_000],
-    jumbo: [interval_ms: 1_000]
+    jumbo: [interval_ms: 1_000],
+    santa_isabel: [interval_ms: 1_000]
   ]
 
 config :super_barato,

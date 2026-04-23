@@ -1,8 +1,8 @@
-defmodule SuperBarato.Crawler.Jumbo do
+defmodule SuperBarato.Crawler.SantaIsabel do
   @moduledoc """
-  Jumbo adapter. Delegates all three stages to `Crawler.Cencosud` with a
-  Jumbo-specific `Config{}` (sales channel 1, its own `categories.json`
-  path under `assets.jumbo.cl`).
+  Santa Isabel adapter. Cencosud-owned like Jumbo; delegates to
+  `Crawler.Cencosud` with SI-specific config (sales channel 6, category
+  tree at `assets.jumbo.cl/json/santaisabel/categories.json`).
   """
 
   @behaviour SuperBarato.Crawler.Chain
@@ -10,10 +10,10 @@ defmodule SuperBarato.Crawler.Jumbo do
   alias SuperBarato.Crawler.Cencosud
 
   @config %Cencosud.Config{
-    chain: :jumbo,
-    site_url: "https://www.jumbo.cl",
-    categories_url: "https://assets.jumbo.cl/json/categories.json",
-    sales_channel: "1"
+    chain: :santa_isabel,
+    site_url: "https://www.santaisabel.cl",
+    categories_url: "https://assets.jumbo.cl/json/santaisabel/categories.json",
+    sales_channel: "6"
   }
 
   @impl true
