@@ -85,8 +85,8 @@ defmodule SuperBarato.Crawler do
   end
 
   defp persist_listings(listings) do
-    Enum.reduce(listings, 0, fn attrs, acc ->
-      case Catalog.upsert_listing(attrs) do
+    Enum.reduce(listings, 0, fn %SuperBarato.Crawler.Listing{} = listing, acc ->
+      case Catalog.upsert_listing(listing) do
         {:ok, _} ->
           acc + 1
 

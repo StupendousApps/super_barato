@@ -1,25 +1,41 @@
 defmodule SuperBarato.Catalog do
   @moduledoc """
   Persistence for discovered listings and price snapshots.
+
+  Accepts plain structs from the crawler layer (`Crawler.Listing`,
+  `Crawler.Price`) and converts them to DB rows.
   """
 
   import Ecto.Query
 
   alias SuperBarato.Catalog.{ChainListing, PriceSnapshot}
+  alias SuperBarato.Crawler.{Listing, Price}
   alias SuperBarato.Repo
 
   @doc """
-  Upserts a discovered listing by (chain, chain_sku). Sets `first_seen_at` on
-  insert and `last_discovered_at` on update.
+  Upserts a discovered listing by (chain, chain_sku). Sets `first_seen_at`
+  on insert and `last_discovered_at` on update.
   """
-  def upsert_listing(attrs) when is_map(attrs) do
+  def upsert_listing(%Listing{} = listing) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
-    attrs =
-      attrs
-      |> Map.put(:first_seen_at, now)
-      |> Map.put(:last_discovered_at, now)
-      |> Map.put_new(:active, true)
+    attrs = %{
+      chain: to_string(listing.chain),
+      chain_sku: listing.chain_sku,
+      chain_product_id: listing.chain_product_id,
+      ean: listing.ean,
+      name: listing.name,
+      brand: listing.brand,
+      image_url: listing.image_url,
+      pdp_url: listing.pdp_url,
+      category_path: listing.category_path,
+      current_regular_price: listing.regular_price,
+      current_promo_price: listing.promo_price,
+      current_promotions: listing.promotions || %{},
+      first_seen_at: now,
+      last_discovered_at: now,
+      active: true
+    }
 
     %ChainListing{}
     |> ChainListing.discovery_changeset(attrs)
@@ -49,22 +65,27 @@ defmodule SuperBarato.Catalog do
   @doc """
   Writes a price snapshot and updates the listing's current price columns.
   """
-  def record_price(%ChainListing{} = listing, attrs) when is_map(attrs) do
+  def record_price(%ChainListing{} = listing, %Price{} = price) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
-    attrs = Map.put_new(attrs, :captured_at, now)
 
     Repo.transaction(fn ->
       {:ok, snapshot} =
         %PriceSnapshot{}
-        |> PriceSnapshot.changeset(Map.put(attrs, :chain_listing_id, listing.id))
+        |> PriceSnapshot.changeset(%{
+          chain_listing_id: listing.id,
+          regular_price: price.regular_price,
+          promo_price: price.promo_price,
+          promotions: price.promotions || %{},
+          captured_at: now
+        })
         |> Repo.insert()
 
       {:ok, updated} =
         listing
         |> ChainListing.price_changeset(%{
-          current_regular_price: attrs[:regular_price],
-          current_promo_price: attrs[:promo_price],
-          current_promotions: attrs[:promotions] || %{},
+          current_regular_price: price.regular_price,
+          current_promo_price: price.promo_price,
+          current_promotions: price.promotions || %{},
           last_priced_at: now
         })
         |> Repo.update()
