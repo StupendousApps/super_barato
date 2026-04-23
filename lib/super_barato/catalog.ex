@@ -1,20 +1,77 @@
 defmodule SuperBarato.Catalog do
   @moduledoc """
-  Persistence for discovered listings and price snapshots.
+  Persistence for the three crawl stages.
 
-  Accepts plain structs from the crawler layer (`Crawler.Listing`,
-  `Crawler.Price`) and converts them to DB rows.
+    * Stage 1 output → `upsert_category/1` writes `%Category{}` structs.
+    * Stage 2 output → `upsert_listing/1` writes `%Listing{}` structs
+      (identity + whatever prices the endpoint includes).
+    * Stage 3 output → `record_product_info/2` updates a `ChainListing`
+      with a refreshed `%Listing{}` and appends a price snapshot.
   """
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{ChainListing, PriceSnapshot}
-  alias SuperBarato.Crawler.{Listing, Price}
+  alias SuperBarato.Catalog.{Category, ChainListing, PriceSnapshot}
+  alias SuperBarato.Crawler.Category, as: CrawlerCategory
+  alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
 
+  # Categories
+
   @doc """
-  Upserts a discovered listing by (chain, chain_sku). Sets `first_seen_at`
-  on insert and `last_discovered_at` on update.
+  Upserts a discovered category by (chain, slug). Sets `first_seen_at` on
+  insert, refreshes `last_seen_at` on both paths, and reactivates the
+  row if it had been soft-deleted.
+  """
+  def upsert_category(%CrawlerCategory{} = cat) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    attrs = %{
+      chain: to_string(cat.chain),
+      external_id: cat.external_id,
+      slug: cat.slug,
+      name: cat.name,
+      parent_slug: cat.parent_slug,
+      level: cat.level,
+      is_leaf: cat.is_leaf,
+      active: true,
+      first_seen_at: now,
+      last_seen_at: now
+    }
+
+    %Category{}
+    |> Category.discovery_changeset(attrs)
+    |> Repo.insert(
+      on_conflict:
+        {:replace,
+         [
+           :external_id,
+           :name,
+           :parent_slug,
+           :level,
+           :is_leaf,
+           :active,
+           :last_seen_at,
+           :updated_at
+         ]},
+      conflict_target: [:chain, :slug],
+      returning: true
+    )
+  end
+
+  @doc "All leaf categories for a chain (used as stage-2 seeds)."
+  def leaf_categories(chain) do
+    Category
+    |> where([c], c.chain == ^to_string(chain) and c.is_leaf == true and c.active == true)
+    |> Repo.all()
+  end
+
+  # Listings
+
+  @doc """
+  Upserts a listing by (chain, chain_sku). Sets `first_seen_at` on
+  insert, refreshes `last_discovered_at`, and updates price/display
+  fields with whatever the adapter returned.
   """
   def upsert_listing(%Listing{} = listing) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
@@ -63,29 +120,32 @@ defmodule SuperBarato.Catalog do
   end
 
   @doc """
-  Writes a price snapshot and updates the listing's current price columns.
+  Stage-3 refresh: updates the listing's current price columns with the
+  fresh `%Listing{}` from `fetch_product_info/1`, and appends a row to
+  `price_snapshots`.
   """
-  def record_price(%ChainListing{} = listing, %Price{} = price) do
+  def record_product_info(%ChainListing{} = existing, %Listing{} = fresh) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
+    regular = fresh.regular_price || existing.current_regular_price
 
     Repo.transaction(fn ->
       {:ok, snapshot} =
         %PriceSnapshot{}
         |> PriceSnapshot.changeset(%{
-          chain_listing_id: listing.id,
-          regular_price: price.regular_price,
-          promo_price: price.promo_price,
-          promotions: price.promotions || %{},
+          chain_listing_id: existing.id,
+          regular_price: regular,
+          promo_price: fresh.promo_price,
+          promotions: fresh.promotions || %{},
           captured_at: now
         })
         |> Repo.insert()
 
       {:ok, updated} =
-        listing
+        existing
         |> ChainListing.price_changeset(%{
-          current_regular_price: price.regular_price,
-          current_promo_price: price.promo_price,
-          current_promotions: price.promotions || %{},
+          current_regular_price: regular,
+          current_promo_price: fresh.promo_price,
+          current_promotions: fresh.promotions || %{},
           last_priced_at: now
         })
         |> Repo.update()
@@ -94,12 +154,17 @@ defmodule SuperBarato.Catalog do
     end)
   end
 
-  @doc """
-  Active chain_skus for a chain, for price refreshes.
-  """
+  @doc "Active listings for a chain — used for stage-3 refresh inputs."
   def active_listings(chain) do
     ChainListing
     |> where([l], l.chain == ^to_string(chain) and l.active == true)
+    |> Repo.all()
+  end
+
+  @doc "Active listings for a chain that have an EAN (the stage-3 lookup key)."
+  def active_listings_with_ean(chain) do
+    ChainListing
+    |> where([l], l.chain == ^to_string(chain) and l.active == true and not is_nil(l.ean))
     |> Repo.all()
   end
 

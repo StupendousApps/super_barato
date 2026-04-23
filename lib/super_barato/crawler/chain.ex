@@ -1,32 +1,45 @@
 defmodule SuperBarato.Crawler.Chain do
   @moduledoc """
-  Behaviour every supermarket adapter implements.
+  Behaviour every supermarket adapter implements. Three stages:
 
-  Adapters route all HTTP through `SuperBarato.Crawler.RateLimiter.request/3`
-  with the chain's id, so discovery and price fetches share the same bucket.
+    * `discover_categories/0` — walks the chain's category tree.
+    * `discover_products/1` — enumerates every SKU in a given leaf
+      category, paginating as needed.
+    * `fetch_product_info/1` — refreshes price + metadata for a batch
+      of EANs already known to the system.
 
-  Adapter output is in plain structs (`Crawler.Listing`, `Crawler.Price`) —
-  no Ecto or DB coupling. Persistence is handled by `SuperBarato.Catalog`.
+  Adapters route all HTTP through `Crawler.Http` (curl-impersonate) and
+  `Crawler.RateLimiter` so the chain's politeness budget is shared
+  across all three stages.
+
+  Stage outputs are plain structs (`Crawler.Category`, `Crawler.Listing`)
+  — no Ecto. Persistence is the `SuperBarato.Catalog` context's job.
   """
 
-  alias SuperBarato.Crawler.{Listing, Price}
+  alias SuperBarato.Crawler.{Category, Listing}
 
   @doc "Atom id of the chain, e.g. `:unimarc`."
   @callback id() :: atom()
 
-  @doc "Categories to walk during discovery. Chain-specific format (ID, slug, etc.)."
-  @callback seed_categories() :: [term()]
+  @doc """
+  Walks the chain's category tree. Returns a flat list of `%Category{}`
+  structs (top-levels + sub-categories + leaves). Parent/child
+  relationships are expressed through `parent_slug`.
+  """
+  @callback discover_categories() :: {:ok, [Category.t()]} | {:error, term()}
 
   @doc """
-  Walks one category (handling pagination internally) and returns discovered
-  listings. Must route all HTTP through the rate limiter.
+  Enumerates products in a leaf category, paginating through the chain's
+  search API until exhausted. Returns `%Listing{}` structs with whatever
+  fields the endpoint happens to include (prices optional).
   """
-  @callback discover_category(category :: term()) ::
+  @callback discover_products(category_slug :: String.t()) ::
               {:ok, [Listing.t()]} | {:error, term()}
 
   @doc """
-  Fetches current prices for the given chain SKUs. Adapters may batch.
+  Refreshes product info (price, promo, image, etc.) for a batch of
+  EANs. The chain is expected to batch internally to fit API limits.
   """
-  @callback fetch_prices(chain_skus :: [String.t()]) ::
-              {:ok, [Price.t()]} | {:error, term()}
+  @callback fetch_product_info(eans :: [String.t()]) ::
+              {:ok, [Listing.t()]} | {:error, term()}
 end

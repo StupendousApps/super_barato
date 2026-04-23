@@ -1,11 +1,15 @@
 defmodule SuperBarato.Crawler do
   @moduledoc """
-  High-level entry points for the two crawler processes:
+  High-level entry points for the three crawler stages:
 
-    * Discovery — walks seed categories, upserts listings.
-    * Price fetch — refreshes prices for active listings.
+    * `run_category_discovery/1` — walks the chain's category tree.
+    * `run_product_discovery/1` — enumerates products in each leaf
+      category persisted from stage 1.
+    * `run_price_refresh/1` — refreshes prices for active listings
+      using their EANs.
 
-  Both paths route HTTP through the chain's shared `RateLimiter`.
+  All three route HTTP through the chain's `RateLimiter`, so they share
+  a single politeness budget regardless of which runs when.
   """
 
   require Logger
@@ -20,68 +24,67 @@ defmodule SuperBarato.Crawler do
 
   def known_chains, do: Map.keys(@adapters)
 
-  @doc """
-  Runs discovery for a chain across all its seed categories.
-  Returns `{:ok, inserted_or_updated_count}`.
-  """
-  def run_discovery(chain) when is_atom(chain) do
-    mod = adapter(chain)
-    categories = mod.seed_categories()
+  # Stage 1
 
-    Logger.info("discovery: #{chain} starting (#{length(categories)} categories)")
+  @doc """
+  Runs stage 1 for a chain. Upserts every discovered category.
+  Returns `{:ok, count}`.
+  """
+  def run_category_discovery(chain) when is_atom(chain) do
+    mod = adapter(chain)
+    Logger.info("categories: #{chain} starting")
+
+    case mod.discover_categories() do
+      {:ok, categories} ->
+        count = persist_categories(categories)
+        Logger.info("categories: #{chain} done (#{count} upserted)")
+        {:ok, count}
+
+      {:error, reason} = err ->
+        Logger.warning("categories: #{chain} failed: #{inspect(reason)}")
+        err
+    end
+  end
+
+  defp persist_categories(categories) do
+    Enum.reduce(categories, 0, fn cat, acc ->
+      case Catalog.upsert_category(cat) do
+        {:ok, _} ->
+          acc + 1
+
+        {:error, changeset} ->
+          Logger.warning("category upsert failed: #{inspect(changeset.errors)}")
+          acc
+      end
+    end)
+  end
+
+  # Stage 2
+
+  @doc """
+  Runs stage 2 for a chain: walks every leaf category stored in the DB
+  and upserts listings. Returns `{:ok, count}`.
+  """
+  def run_product_discovery(chain) when is_atom(chain) do
+    mod = adapter(chain)
+    leaves = Catalog.leaf_categories(chain)
+    Logger.info("products: #{chain} starting (#{length(leaves)} leaf categories)")
 
     count =
-      Enum.reduce(categories, 0, fn category, acc ->
-        case mod.discover_category(category) do
+      Enum.reduce(leaves, 0, fn cat, acc ->
+        case mod.discover_products(cat.slug) do
           {:ok, listings} ->
             acc + persist_listings(listings)
 
           {:error, reason} ->
-            Logger.warning(
-              "discovery: #{chain} category=#{inspect(category)} failed: #{inspect(reason)}"
-            )
+            Logger.warning("products: #{chain} category=#{cat.slug} failed: #{inspect(reason)}")
 
             acc
         end
       end)
 
-    Logger.info("discovery: #{chain} done (#{count} listings)")
+    Logger.info("products: #{chain} done (#{count} listings)")
     {:ok, count}
-  end
-
-  @doc """
-  Refreshes prices for every active listing of `chain`.
-  """
-  def run_price_fetch(chain) when is_atom(chain) do
-    mod = adapter(chain)
-    listings = Catalog.active_listings(chain)
-    by_sku = Map.new(listings, &{&1.chain_sku, &1})
-
-    Logger.info("prices: #{chain} refreshing #{map_size(by_sku)} listings")
-
-    case mod.fetch_prices(Map.keys(by_sku)) do
-      {:ok, price_rows} ->
-        updated =
-          Enum.reduce(price_rows, 0, fn row, acc ->
-            case Map.fetch(by_sku, row.chain_sku) do
-              {:ok, listing} ->
-                case Catalog.record_price(listing, row) do
-                  {:ok, _} -> acc + 1
-                  _ -> acc
-                end
-
-              :error ->
-                acc
-            end
-          end)
-
-        Logger.info("prices: #{chain} done (#{updated} updated)")
-        {:ok, updated}
-
-      {:error, reason} = err ->
-        Logger.warning("prices: #{chain} failed: #{inspect(reason)}")
-        err
-    end
   end
 
   defp persist_listings(listings) do
@@ -95,5 +98,41 @@ defmodule SuperBarato.Crawler do
           acc
       end
     end)
+  end
+
+  # Stage 3
+
+  @doc """
+  Runs stage 3 for a chain: fetches fresh info for active listings with
+  EANs, updates current prices, appends a price snapshot per listing.
+  """
+  def run_price_refresh(chain) when is_atom(chain) do
+    mod = adapter(chain)
+    listings = Catalog.active_listings_with_ean(chain)
+    by_ean = Map.new(listings, &{&1.ean, &1})
+    eans = Map.keys(by_ean)
+
+    Logger.info("prices: #{chain} refreshing #{length(eans)} listings")
+
+    case mod.fetch_product_info(eans) do
+      {:ok, infos} ->
+        updated =
+          Enum.reduce(infos, 0, fn %SuperBarato.Crawler.Listing{} = info, acc ->
+            with ean when is_binary(ean) <- info.ean,
+                 {:ok, listing} <- Map.fetch(by_ean, ean),
+                 {:ok, _} <- Catalog.record_product_info(listing, info) do
+              acc + 1
+            else
+              _ -> acc
+            end
+          end)
+
+        Logger.info("prices: #{chain} done (#{updated} updated)")
+        {:ok, updated}
+
+      {:error, reason} = err ->
+        Logger.warning("prices: #{chain} failed: #{inspect(reason)}")
+        err
+    end
   end
 end

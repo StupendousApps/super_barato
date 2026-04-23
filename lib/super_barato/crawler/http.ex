@@ -5,9 +5,9 @@ defmodule SuperBarato.Crawler.Http do
   fingerprint blocks (e.g. Akamai Bot Manager) that reject Erlang's
   native `:ssl` signature.
 
-  Only covers the subset of HTTP we need for the crawler (`GET`, custom
-  headers, redirect following). Response headers and body are captured
-  separately — headers via `-D <tempfile>`, body to stdout.
+  Supports `GET` and `POST` with a body, custom headers, and redirect
+  following. Response headers and body are captured separately — headers
+  via `-D <tempfile>`, body to stdout.
 
   Binary path comes from `config :super_barato, :curl_impersonate_binary`
   and defaults to `priv/bin/curl_chrome116`.
@@ -18,30 +18,40 @@ defmodule SuperBarato.Crawler.Http do
   @default_timeout_ms 30_000
   @default_binary "priv/bin/curl_chrome116"
 
+  @doc "GET. See `request/3`."
+  def get(url, opts \\ []) when is_binary(url), do: request(:get, url, opts)
+
   @doc """
-  Performs a GET. Returns `{:ok, %Response{}}` on any HTTP response (including
-  4xx/5xx) or `{:error, reason}` if the transport fails.
+  POST with a `:body` option (binary). Other opts mirror `get/2`.
+  """
+  def post(url, opts) when is_binary(url), do: request(:post, url, opts)
+
+  @doc """
+  Performs the request. Returns `{:ok, %Response{}}` on any HTTP response
+  (including 4xx/5xx) or `{:error, reason}` if the transport itself fails.
 
     * `headers`: list of `{name, value}` tuples.
+    * `body`: binary body for POST/PUT.
     * `follow_redirects`: defaults to `true`.
     * `timeout_ms`: per-request wall-clock limit, defaults to 30s.
   """
-  def get(url, opts \\ []) when is_binary(url) do
+  def request(method, url, opts) when method in [:get, :post] and is_binary(url) do
     headers = Keyword.get(opts, :headers, [])
+    body = Keyword.get(opts, :body)
     follow = Keyword.get(opts, :follow_redirects, true)
     timeout = Keyword.get(opts, :timeout_ms, @default_timeout_ms)
 
     headers_file =
       Path.join(System.tmp_dir!(), "sb_curl_#{System.unique_integer([:positive])}.hdr")
 
-    args = build_args(url, headers, follow, timeout, headers_file)
+    args = build_args(method, url, headers, body, follow, timeout, headers_file)
 
     try do
       case System.cmd(binary_path(), args, stderr_to_stdout: false) do
-        {body, 0} ->
+        {resp_body, 0} ->
           header_data = File.read!(headers_file)
-          {status, headers} = parse_headers(header_data)
-          {:ok, %Response{status: status, headers: headers, body: body}}
+          {status, resp_headers} = parse_headers(header_data)
+          {:ok, %Response{status: status, headers: resp_headers, body: resp_body}}
 
         {stderr, code} ->
           {:error, {:curl_exit, code, String.trim(stderr)}}
@@ -59,8 +69,17 @@ defmodule SuperBarato.Crawler.Http do
     end
   end
 
-  defp build_args(url, headers, follow, timeout_ms, headers_file) do
+  defp build_args(method, url, headers, body, follow, timeout_ms, headers_file) do
     header_args = Enum.flat_map(headers, fn {k, v} -> ["-H", "#{k}: #{v}"] end)
+
+    method_args =
+      case method do
+        :get ->
+          []
+
+        :post ->
+          ["-X", "POST"] ++ if(body, do: ["--data-binary", body], else: [])
+      end
 
     base = [
       "-sS",
@@ -73,6 +92,7 @@ defmodule SuperBarato.Crawler.Http do
 
     base
     |> then(&if follow, do: &1 ++ ["-L"], else: &1)
+    |> Kernel.++(method_args)
     |> Kernel.++(header_args)
     |> Kernel.++([url])
   end

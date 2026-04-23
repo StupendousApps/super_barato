@@ -70,17 +70,6 @@ config :super_barato,
   # curl-impersonate binary path. Override via env-specific config if needed.
   curl_impersonate_binary: Path.expand("../priv/bin/curl_chrome116", __DIR__)
 
-config :super_barato, SuperBarato.Crawler.Unimarc,
-  # Category slugs as they appear in unimarc.cl URLs. Use the path after
-  # `/category/` — nested categories use `/` to separate segments.
-  seed_categories: [
-    "congelados",
-    "congelados/hielo-helados-y-postres",
-    "congelados/frutas-y-verduras-congeladas",
-    "congelados/hamburguesas-apanados-y-churrascos",
-    "congelados/pescados-y-mariscos"
-  ]
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
