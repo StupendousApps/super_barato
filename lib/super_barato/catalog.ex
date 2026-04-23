@@ -161,10 +161,15 @@ defmodule SuperBarato.Catalog do
     |> Repo.all()
   end
 
-  @doc "Active listings for a chain that have an EAN (the stage-3 lookup key)."
-  def active_listings_with_ean(chain) do
+  @doc """
+  Active listings for a chain, filtered to rows with a non-null value in
+  the chain's refresh-identifier column (`:ean` or `:chain_sku`). Used as
+  stage-3 input.
+  """
+  def active_listings_for_refresh(chain, field) when field in [:ean, :chain_sku] do
     ChainListing
-    |> where([l], l.chain == ^to_string(chain) and l.active == true and not is_nil(l.ean))
+    |> where([l], l.chain == ^to_string(chain) and l.active == true)
+    |> where([l], not is_nil(field(l, ^field)))
     |> Repo.all()
   end
 

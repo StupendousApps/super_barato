@@ -63,7 +63,8 @@ config :phoenix, :json_library, Jason
 # Crawler: per-chain rate limits (shared by discovery and price fetches).
 config :super_barato, SuperBarato.Crawler,
   rate_limits: [
-    unimarc: [interval_ms: 1_000]
+    unimarc: [interval_ms: 1_000],
+    jumbo: [interval_ms: 1_000]
   ]
 
 config :super_barato,

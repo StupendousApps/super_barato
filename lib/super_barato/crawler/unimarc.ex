@@ -78,6 +78,9 @@ defmodule SuperBarato.Crawler.Unimarc do
   @impl true
   def id, do: @chain
 
+  @impl true
+  def refresh_identifier, do: :ean
+
   # Stage 1: categories
 
   @impl true

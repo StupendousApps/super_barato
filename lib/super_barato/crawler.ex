@@ -17,7 +17,8 @@ defmodule SuperBarato.Crawler do
   alias SuperBarato.Catalog
 
   @adapters %{
-    unimarc: SuperBarato.Crawler.Unimarc
+    unimarc: SuperBarato.Crawler.Unimarc,
+    jumbo: SuperBarato.Crawler.Jumbo
   }
 
   def adapter(chain) when is_atom(chain), do: Map.fetch!(@adapters, chain)
@@ -108,18 +109,19 @@ defmodule SuperBarato.Crawler do
   """
   def run_price_refresh(chain) when is_atom(chain) do
     mod = adapter(chain)
-    listings = Catalog.active_listings_with_ean(chain)
-    by_ean = Map.new(listings, &{&1.ean, &1})
-    eans = Map.keys(by_ean)
+    field = mod.refresh_identifier()
+    listings = Catalog.active_listings_for_refresh(chain, field)
+    by_id = Map.new(listings, &{Map.fetch!(&1, field), &1})
+    ids = Map.keys(by_id)
 
-    Logger.info("prices: #{chain} refreshing #{length(eans)} listings")
+    Logger.info("prices: #{chain} refreshing #{length(ids)} listings by #{field}")
 
-    case mod.fetch_product_info(eans) do
+    case mod.fetch_product_info(ids) do
       {:ok, infos} ->
         updated =
           Enum.reduce(infos, 0, fn %SuperBarato.Crawler.Listing{} = info, acc ->
-            with ean when is_binary(ean) <- info.ean,
-                 {:ok, listing} <- Map.fetch(by_ean, ean),
+            with id when is_binary(id) <- Map.get(info, field),
+                 {:ok, listing} <- Map.fetch(by_id, id),
                  {:ok, _} <- Catalog.record_product_info(listing, info) do
               acc + 1
             else

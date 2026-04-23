@@ -22,6 +22,18 @@ defmodule SuperBarato.Crawler.Chain do
   @callback id() :: atom()
 
   @doc """
+  Which `ChainListing` field the chain's `fetch_product_info/1` keys on.
+
+    * `:ean` — adapter expects a list of EAN-13 strings (Unimarc).
+    * `:chain_sku` — adapter expects a list of the chain's internal SKUs
+      (Jumbo uses VTEX itemIds).
+
+  The Crawler facade reads this to pick the right column when building
+  the batch for stage 3.
+  """
+  @callback refresh_identifier() :: :ean | :chain_sku
+
+  @doc """
   Walks the chain's category tree. Returns a flat list of `%Category{}`
   structs (top-levels + sub-categories + leaves). Parent/child
   relationships are expressed through `parent_slug`.
