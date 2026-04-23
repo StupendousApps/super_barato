@@ -7,16 +7,16 @@ defmodule SuperBarato.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
-      SuperBaratoWeb.Telemetry,
-      SuperBarato.Repo,
-      {DNSCluster, query: Application.get_env(:super_barato, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: SuperBarato.PubSub},
-      # Start a worker by calling: SuperBarato.Worker.start_link(arg)
-      # {SuperBarato.Worker, arg},
-      # Start to serve requests, typically the last entry
-      SuperBaratoWeb.Endpoint
-    ]
+    children =
+      [
+        SuperBaratoWeb.Telemetry,
+        SuperBarato.Repo,
+        {DNSCluster, query: Application.get_env(:super_barato, :dns_cluster_query) || :ignore},
+        {Phoenix.PubSub, name: SuperBarato.PubSub},
+        {Registry, keys: :unique, name: SuperBarato.Crawler.Registry}
+      ] ++
+        rate_limiter_specs() ++
+        [SuperBaratoWeb.Endpoint]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -30,5 +30,17 @@ defmodule SuperBarato.Application do
   def config_change(changed, _new, removed) do
     SuperBaratoWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp rate_limiter_specs do
+    :super_barato
+    |> Application.get_env(SuperBarato.Crawler, [])
+    |> Keyword.get(:rate_limits, [])
+    |> Enum.map(fn {chain, opts} ->
+      Supervisor.child_spec(
+        {SuperBarato.Crawler.RateLimiter, Keyword.put(opts, :chain, chain)},
+        id: {SuperBarato.Crawler.RateLimiter, chain}
+      )
+    end)
   end
 end
