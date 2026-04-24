@@ -1,0 +1,44 @@
+<div class="login-container">
+  <.form for={@form} action={~p"/admin/login"} class="form">
+    <h1 class="form-title">Admin login</h1>
+
+    <div :if={@error} class="form-errors">
+      <p class="form-errors-title">{@error}</p>
+    </div>
+
+    <div class="fieldset">
+      <label class="label">
+        <span class="label-text">Email</span>
+        <input
+          type="email"
+          name={@form[:email].name}
+          value={@form[:email].value}
+          class="input"
+          autocomplete="email"
+          required
+        />
+      </label>
+    </div>
+
+    <div class="fieldset">
+      <label class="label">
+        <span class="label-text">Password</span>
+        <input
+          type="password"
+          name={@form[:password].name}
+          class="input"
+          autocomplete="current-password"
+          required
+        />
+      </label>
+    </div>
+
+    <div class="fieldset">
+      <label>
+        <input type="checkbox" name={@form[:remember_me].name} value="true" /> Remember me
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Log in</button>
+  </.form>
+</div>

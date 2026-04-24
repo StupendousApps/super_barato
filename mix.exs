@@ -82,13 +82,31 @@ defmodule SuperBarato.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["compile", "tailwind super_barato", "esbuild super_barato"],
+      "assets.build": [
+        "compile",
+        "tailwind super_barato",
+        "esbuild super_barato",
+        &copy_admin_css/1
+      ],
       "assets.deploy": [
         "tailwind super_barato --minify",
         "esbuild super_barato --minify",
+        &copy_admin_css/1,
         "phx.digest"
       ],
       precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
     ]
+  end
+
+  # Raw CSS under assets/css/admin/ is not processed by tailwind/esbuild;
+  # it ships as-is, served by Plug.Static from priv/static/assets/.
+  defp copy_admin_css(_args) do
+    src = "assets/css/admin"
+    dst = "priv/static/assets/css/admin"
+    File.mkdir_p!(dst)
+
+    for file <- File.ls!(src), String.ends_with?(file, ".css") do
+      File.cp!(Path.join(src, file), Path.join(dst, file))
+    end
   end
 end

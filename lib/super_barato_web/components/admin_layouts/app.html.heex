@@ -1,0 +1,36 @@
+<div class="container">
+  <nav class="top-navigation">
+    <ul class="top-navigation-links">
+      <li>
+        <.link href={~p"/admin"} class={@top_nav == :dashboard && "active"}>SuperBarato Admin</.link>
+      </li>
+      <li>
+        <.link href="#" class={@top_nav == :chains && "active"}>Chains</.link>
+      </li>
+      <li>
+        <.link href="#" class={@top_nav == :categories && "active"}>Categories</.link>
+      </li>
+      <li>
+        <.link href="#" class={@top_nav == :products && "active"}>Products</.link>
+      </li>
+      <li>
+        <.link href="#" class={@top_nav == :users && "active"}>Users</.link>
+      </li>
+    </ul>
+
+    <ul class="top-navigation-links">
+      <li>{@current_scope.user.email}</li>
+      <li>
+        <.form for={%{}} action={~p"/admin/logout"} method="delete">
+          <button type="submit" class="btn btn-subtle">Log out</button>
+        </.form>
+      </li>
+    </ul>
+  </nav>
+
+  {@inner_content}
+
+  <footer class="admin-footer">
+    SuperBarato Admin
+  </footer>
+</div>

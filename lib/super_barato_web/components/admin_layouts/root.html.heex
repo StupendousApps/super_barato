@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <title>{assigns[:page_title] || "Admin · SuperBarato"}</title>
+    <link rel="stylesheet" href={~p"/assets/css/admin/variables.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/layout.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/typography.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/flash.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/nav.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/form.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/input.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/button.css"} />
+    <link rel="stylesheet" href={~p"/assets/css/admin/table.css"} />
+  </head>
+  <body>
+    <.flash_group flash={@flash} />
+    {@inner_content}
+  </body>
+</html>

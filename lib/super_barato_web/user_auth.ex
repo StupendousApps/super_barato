@@ -219,6 +219,48 @@ defmodule SuperBaratoWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   @doc """
+  Plug for /admin routes. Requires an authenticated user with at
+  least `:moderator` role. Unauthenticated users are redirected to
+  `/admin/login`; authenticated users below the role get `/`.
+  """
+  def require_admin(conn, _opts) do
+    scope = conn.assigns[:current_scope]
+
+    cond do
+      is_nil(scope) or is_nil(scope.user) ->
+        conn
+        |> maybe_store_return_to()
+        |> redirect(to: ~p"/admin/login")
+        |> halt()
+
+      User.role_at_least?(scope.user, :moderator) ->
+        conn
+
+      true ->
+        conn
+        |> put_flash(:error, "You do not have permission to access the admin.")
+        |> redirect(to: ~p"/")
+        |> halt()
+    end
+  end
+
+  @doc """
+  Plug for the admin login page. Redirects already-authenticated
+  admins to `/admin`.
+  """
+  def redirect_if_admin(conn, _opts) do
+    scope = conn.assigns[:current_scope]
+
+    if scope && scope.user && User.role_at_least?(scope.user, :moderator) do
+      conn
+      |> redirect(to: ~p"/admin")
+      |> halt()
+    else
+      conn
+    end
+  end
+
+  @doc """
   Plug enforcing a minimum role. Usage in router:
 
       pipe_through [:browser, :require_authenticated_user]

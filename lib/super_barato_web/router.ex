@@ -70,4 +70,20 @@ defmodule SuperBaratoWeb.Router do
     post "/users/log-in", UserSessionController, :create
     delete "/users/log-out", UserSessionController, :delete
   end
+
+  ## Admin
+
+  scope "/admin", SuperBaratoWeb.Admin, as: :admin do
+    pipe_through [:browser, :redirect_if_admin]
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+  end
+
+  scope "/admin", SuperBaratoWeb.Admin, as: :admin do
+    pipe_through [:browser, :require_admin]
+
+    get "/", PageController, :index
+    delete "/logout", SessionController, :delete
+  end
 end
