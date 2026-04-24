@@ -88,6 +88,7 @@ defmodule SuperBaratoWeb.Router do
     pipe_through [:browser, :require_admin]
 
     get "/", PageController, :index
+    get "/listings", ListingController, :index
     delete "/logout", SessionController, :delete
   end
 end

@@ -181,4 +181,87 @@ defmodule SuperBarato.Catalog do
   def get_listing(chain, chain_sku) do
     Repo.get_by(ChainListing, chain: to_string(chain), chain_sku: chain_sku)
   end
+
+  ## Admin-facing paginated queries
+
+  @default_per_page 25
+
+  @sortable %{
+    "name" => :name,
+    "brand" => :brand,
+    "chain" => :chain,
+    "current_regular_price" => :current_regular_price,
+    "last_priced_at" => :last_priced_at,
+    "last_discovered_at" => :last_discovered_at
+  }
+
+  @doc """
+  Paginated listings for the admin table. Returns
+  `%{items:, page:, per_page:, total_entries:, total_pages:}`.
+
+  ## Options
+
+    * `:chain`    — atom or string chain id; filters by `chain =`.
+    * `:q`        — string; case-insensitive `name LIKE %q%`.
+    * `:sort`     — `"name"` / `"-last_priced_at"` etc. (see `@sortable`).
+    * `:page`     — 1-indexed page (default 1).
+    * `:per_page` — default #{@default_per_page}, capped at 200.
+  """
+  def list_listings_page(opts \\ []) do
+    page = max(1, opts[:page] || 1)
+    per_page = opts[:per_page] |> clamp_per_page()
+
+    query =
+      ChainListing
+      |> apply_chain_filter(opts[:chain])
+      |> apply_q_filter(opts[:q])
+
+    total_entries = Repo.aggregate(query, :count)
+
+    items =
+      query
+      |> apply_sort(opts[:sort] || "-last_priced_at")
+      |> limit(^per_page)
+      |> offset(^((page - 1) * per_page))
+      |> Repo.all()
+
+    %{
+      items: items,
+      page: page,
+      per_page: per_page,
+      total_entries: total_entries,
+      total_pages: max(1, div(total_entries + per_page - 1, per_page))
+    }
+  end
+
+  defp clamp_per_page(nil), do: @default_per_page
+  defp clamp_per_page(n) when is_integer(n) and n > 0, do: min(n, 200)
+  defp clamp_per_page(_), do: @default_per_page
+
+  defp apply_chain_filter(query, nil), do: query
+  defp apply_chain_filter(query, ""), do: query
+
+  defp apply_chain_filter(query, chain) when is_atom(chain),
+    do: where(query, [l], l.chain == ^Atom.to_string(chain))
+
+  defp apply_chain_filter(query, chain) when is_binary(chain),
+    do: where(query, [l], l.chain == ^chain)
+
+  defp apply_q_filter(query, nil), do: query
+  defp apply_q_filter(query, ""), do: query
+
+  defp apply_q_filter(query, q) when is_binary(q) do
+    like = "%" <> String.replace(q, "%", "\\%") <> "%"
+    where(query, [l], like(l.name, ^like) or like(l.brand, ^like))
+  end
+
+  defp apply_sort(query, "-" <> field), do: apply_sort_dir(query, field, :desc)
+  defp apply_sort(query, field), do: apply_sort_dir(query, field, :asc)
+
+  defp apply_sort_dir(query, field, dir) do
+    case Map.fetch(@sortable, field) do
+      {:ok, atom} -> order_by(query, [l], [{^dir, field(l, ^atom)}])
+      :error -> order_by(query, [l], desc: l.last_priced_at)
+    end
+  end
 end

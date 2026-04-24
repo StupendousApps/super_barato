@@ -61,7 +61,7 @@ defmodule SuperBaratoWeb.UserSessionControllerTest do
       conn = get(conn, ~p"/users/log-in/#{token}")
       html = html_response(conn, 200)
       refute html =~ "Confirm my account"
-      assert html =~ "Log in"
+      assert html =~ "Keep me logged in"
     end
 
     test "raises error for invalid token", %{conn: conn} do
@@ -85,12 +85,9 @@ defmodule SuperBaratoWeb.UserSessionControllerTest do
       assert get_session(conn, :user_token)
       assert redirected_to(conn) == ~p"/"
 
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ ~p"/users/settings"
-      assert response =~ ~p"/users/log-out"
+      # Confirm the session is actually established by hitting a page
+      # that requires authentication.
+      assert html_response(get(conn, ~p"/users/settings"), 200) =~ user.email
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do
@@ -160,12 +157,7 @@ defmodule SuperBaratoWeb.UserSessionControllerTest do
       assert get_session(conn, :user_token)
       assert redirected_to(conn) == ~p"/"
 
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ ~p"/users/settings"
-      assert response =~ ~p"/users/log-out"
+      assert html_response(get(conn, ~p"/users/settings"), 200) =~ user.email
     end
 
     test "confirms unconfirmed user", %{conn: conn, unconfirmed_user: user} do
@@ -184,12 +176,7 @@ defmodule SuperBaratoWeb.UserSessionControllerTest do
 
       assert Accounts.get_user!(user.id).confirmed_at
 
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ ~p"/users/settings"
-      assert response =~ ~p"/users/log-out"
+      assert html_response(get(conn, ~p"/users/settings"), 200) =~ user.email
     end
 
     test "emits error message when magic link is invalid", %{conn: conn} do

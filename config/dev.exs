@@ -1,14 +1,11 @@
 import Config
 
-# Configure your database
+# Configure your database — SQLite lives in priv/, gitignored.
 config :super_barato, SuperBarato.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "super_barato_dev",
+  database: Path.expand("../priv/data/super_barato_dev.db", __DIR__),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 5
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

@@ -23,7 +23,7 @@ defmodule SuperBarato.Accounts do
 
   """
   def get_user_by_email(email) when is_binary(email) do
-    Repo.get_by(User, email: email)
+    Repo.get_by(User, email: normalize_email(email))
   end
 
   @doc """
@@ -40,7 +40,7 @@ defmodule SuperBarato.Accounts do
   """
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+    user = Repo.get_by(User, email: normalize_email(email))
     if User.valid_password?(user, password), do: user
   end
 
@@ -294,4 +294,7 @@ defmodule SuperBarato.Accounts do
       end
     end)
   end
+
+  defp normalize_email(email) when is_binary(email),
+    do: email |> String.trim() |> String.downcase()
 end

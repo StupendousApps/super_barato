@@ -51,8 +51,15 @@ defmodule SuperBarato.Accounts.User do
   def email_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
+    |> update_change(:email, &normalize_email/1)
     |> validate_email(opts)
   end
+
+  # Emails are compared case-insensitively. PG had citext; on SQLite we
+  # normalise the column at the changeset boundary so the regular
+  # unique index does the right thing.
+  defp normalize_email(nil), do: nil
+  defp normalize_email(email) when is_binary(email), do: email |> String.trim() |> String.downcase()
 
   defp validate_email(changeset, opts) do
     changeset =

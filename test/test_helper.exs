@@ -1,4 +1,7 @@
-ExUnit.start()
+# SQLite only allows one writer at a time, so running test modules
+# concurrently hits SQLITE_BUSY. max_cases: 1 serialises the suite —
+# runtime is still fine (~8s total), and it avoids per-file async: false.
+ExUnit.start(max_cases: 1)
 Ecto.Adapters.SQL.Sandbox.mode(SuperBarato.Repo, :manual)
 
 # Shared test-only supervision: crawler Registry for per-chain named

@@ -81,6 +81,7 @@ defmodule SuperBaratoWeb do
       import Phoenix.HTML
       # Core UI components
       import SuperBaratoWeb.CoreComponents
+      import SuperBaratoWeb.AdminComponents
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

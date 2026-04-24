@@ -5,13 +5,10 @@
         <.link href={~p"/admin"} class={@top_nav == :dashboard && "active"}>SuperBarato Admin</.link>
       </li>
       <li>
-        <.link href="#" class={@top_nav == :chains && "active"}>Chains</.link>
+        <.link href={~p"/admin/listings"} class={@top_nav == :listings && "active"}>Listings</.link>
       </li>
       <li>
         <.link href="#" class={@top_nav == :categories && "active"}>Categories</.link>
-      </li>
-      <li>
-        <.link href="#" class={@top_nav == :products && "active"}>Products</.link>
       </li>
       <li>
         <.link href="#" class={@top_nav == :users && "active"}>Users</.link>
