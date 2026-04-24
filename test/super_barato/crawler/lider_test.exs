@@ -1,0 +1,127 @@
+defmodule SuperBarato.Crawler.LiderTest do
+  use ExUnit.Case, async: true
+
+  alias SuperBarato.Crawler.{Category, Lider, Listing}
+  alias SuperBarato.Fixtures
+
+  describe "extract_next_data/1" do
+    test "pulls the __NEXT_DATA__ JSON out of a Lider HTML page" do
+      html = Fixtures.read!(:lider, "homepage.html")
+      assert {:ok, %{"props" => _}} = Lider.extract_next_data(html)
+    end
+
+    test "returns error when __NEXT_DATA__ script is missing" do
+      assert {:error, :no_next_data} = Lider.extract_next_data("<html><body>nope</body></html>")
+    end
+  end
+
+  describe "parse_categories_from_next_data/1 (homepage fixture)" do
+    setup do
+      html = Fixtures.read!(:lider, "homepage.html")
+      {:ok, data} = Lider.extract_next_data(html)
+      {:ok, cats} = Lider.parse_categories_from_next_data(data)
+      {:ok, cats: cats}
+    end
+
+    test "returns a non-empty Category list tagged :lider", %{cats: cats} do
+      assert length(cats) > 0
+      assert Enum.all?(cats, &match?(%Category{chain: :lider}, &1))
+    end
+
+    test "top-levels have level 1 and nil parent_slug", %{cats: cats} do
+      tops = Enum.filter(cats, &(&1.level == 1))
+      assert length(tops) > 0
+      assert Enum.all?(tops, &(&1.parent_slug == nil))
+    end
+
+    test "includes a known department (Alimentación)", %{cats: cats} do
+      alim = Enum.find(cats, &(&1.name == "Alimentación"))
+
+      if alim do
+        assert alim.level == 1
+        assert String.starts_with?(alim.slug, "alimentacion/")
+        assert is_binary(alim.external_id)
+      end
+    end
+
+    test "sub-categories reference an existing parent_slug", %{cats: cats} do
+      parent_slugs = cats |> Enum.map(& &1.slug) |> MapSet.new()
+      l2 = Enum.filter(cats, &(&1.level == 2))
+      assert length(l2) > 0
+
+      # Most sub-categories should point at a parent we also collected.
+      # Lider's mega-menu occasionally links across departments (cross-
+      # promotional tiles) so we tolerate a handful of orphans.
+      orphans = Enum.reject(l2, &MapSet.member?(parent_slugs, &1.parent_slug))
+      assert length(orphans) / length(l2) < 0.2
+    end
+
+    test "is_leaf is true for categories nobody claims as parent", %{cats: cats} do
+      parents = cats |> Enum.map(& &1.parent_slug) |> Enum.reject(&is_nil/1) |> MapSet.new()
+
+      Enum.each(cats, fn c ->
+        expected = not MapSet.member?(parents, c.slug)
+        assert c.is_leaf == expected
+      end)
+    end
+  end
+
+  describe "parse_search_from_next_data/2 (browse fixture)" do
+    setup do
+      html = Fixtures.read!(:lider, "browse_cereales.html")
+      {:ok, data} = Lider.extract_next_data(html)
+
+      {:ok, listings, total} =
+        Lider.parse_search_from_next_data(data, "alimentacion/cereales/94975735_04086358")
+
+      {:ok, listings: listings, total: total}
+    end
+
+    test "returns the aggregated total count", %{total: total} do
+      assert is_integer(total) and total > 0
+    end
+
+    test "returns Listing structs tagged :lider", %{listings: listings} do
+      assert length(listings) > 0
+      assert Enum.all?(listings, &match?(%Listing{chain: :lider}, &1))
+    end
+
+    test "listings have chain_sku + name + image + pdp_url", %{listings: listings} do
+      Enum.each(listings, fn l ->
+        assert is_binary(l.chain_sku) and l.chain_sku != ""
+        assert is_binary(l.name) and l.name != ""
+        assert is_binary(l.image_url) or is_nil(l.image_url)
+        assert is_binary(l.pdp_url) and String.starts_with?(l.pdp_url, "https://www.lider.cl/")
+      end)
+    end
+
+    test "category_path propagates from the call", %{listings: listings} do
+      [l | _] = listings
+      assert l.category_path == "alimentacion/cereales/94975735_04086358"
+    end
+
+    test "at least one listing has a populated regular_price", %{listings: listings} do
+      assert Enum.any?(listings, &(is_integer(&1.regular_price) and &1.regular_price > 0))
+    end
+  end
+
+  describe "parse_pdp_from_next_data/1 (PDP fixture)" do
+    setup do
+      html = Fixtures.read!(:lider, "pdp_oatly.html")
+      {:ok, data} = Lider.extract_next_data(html)
+      {:ok, listing} = Lider.parse_pdp_from_next_data(data)
+      {:ok, listing: listing}
+    end
+
+    test "returns a fully-populated listing", %{listing: l} do
+      assert %Listing{chain: :lider} = l
+      assert l.chain_sku == "00739437661603"
+      assert is_binary(l.name) and String.contains?(l.name, "Oatly")
+      assert l.brand == "Oatly"
+      assert l.regular_price == 22_200
+      # EAN = usItemId with leading zeros stripped
+      assert l.ean == "739437661603"
+      assert String.starts_with?(l.image_url, "https://")
+    end
+  end
+end

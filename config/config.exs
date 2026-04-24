@@ -111,6 +111,34 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.ProductProducer, :run,
           [[chain: :santa_isabel, mode: :prices]]}}
       ]
+    ],
+    # Lider's Akamai blocks Chrome 110+; only older Chrome profiles
+    # pass. We lead with chrome107 (confirmed working) and fall back to
+    # 104/100/99 if it ever starts getting challenged.
+    lider: [
+      interval_ms: 2_000,
+      # Only older Chromium-family profiles slip past Akamai's JA3
+      # blocklist on Lider. All Firefox and Safari profiles get
+      # challenged. Verified 2026-04.
+      fallback_profiles: [
+        :chrome107,
+        :chrome104,
+        :chrome101,
+        :chrome100,
+        :chrome99,
+        :chrome99_android,
+        :edge101,
+        :edge99
+      ],
+      schedule: [
+        {{:every, {7, :days}},
+         {SuperBarato.Crawler.Chain.Queue, :push,
+          [:lider, {:discover_categories, %{chain: :lider, parent: nil}}]}},
+        {{:every, {1, :day}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :products]]}},
+        {{:every, {1, :hour}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :prices]]}}
+      ]
     ]
   ]
 
