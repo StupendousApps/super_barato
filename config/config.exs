@@ -68,20 +68,21 @@ config :super_barato, SuperBarato.Crawler,
   # driven background pipeline running.
   chains_enabled: false,
   chains: [
+    # Schedules are staggered so chains don't all pound the network
+    # at the same moment. Times are UTC — Chile is UTC-3 (standard) /
+    # UTC-4 (DST); 05:00 UTC ≈ 02:00 CLT, well into off-hours.
     unimarc: [
       interval_ms: 1_000,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
-        # One-shot discovery push, weekly
-        {{:every, {7, :days}},
+        # Weekly discovery — Monday pre-dawn UTC (Sunday late night CLT).
+        {{:weekly_at, :mon, ~T[04:00:00]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]}},
-        # Product walk: leaf categories from DB → per-category tasks
-        {{:every, {1, :day}},
+        # Daily product walk + price refresh at specific UTC times.
+        {{:daily_at, ~T[05:00:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :products]]}},
-        # Price refresh: active identifiers → 25-EAN batches (daily
-        # cadence for now; can be tightened to hourly later).
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[09:00:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :prices]]}}
       ]
     ],
@@ -89,12 +90,12 @@ config :super_barato, SuperBarato.Crawler,
       interval_ms: 1_000,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
-        {{:every, {7, :days}},
+        {{:weekly_at, :mon, ~T[04:15:00]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[05:30:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :products]]}},
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[09:30:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :prices]]}}
       ]
     ],
@@ -102,13 +103,13 @@ config :super_barato, SuperBarato.Crawler,
       interval_ms: 1_000,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
-        {{:every, {7, :days}},
+        {{:weekly_at, :mon, ~T[04:30:00]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:santa_isabel, {:discover_categories, %{chain: :santa_isabel, parent: nil}}]}},
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[06:00:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run,
           [[chain: :santa_isabel, mode: :products]]}},
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[10:00:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run,
           [[chain: :santa_isabel, mode: :prices]]}}
       ]
@@ -132,12 +133,12 @@ config :super_barato, SuperBarato.Crawler,
         :edge99
       ],
       schedule: [
-        {{:every, {7, :days}},
+        {{:weekly_at, :mon, ~T[04:45:00]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:lider, {:discover_categories, %{chain: :lider, parent: nil}}]}},
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[06:30:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :products]]}},
-        {{:every, {1, :day}},
+        {{:daily_at, ~T[10:30:00]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :prices]]}}
       ]
     ]
