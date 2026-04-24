@@ -62,15 +62,64 @@ config :phoenix, :json_library, Jason
 
 # Crawler: per-chain rate limits (shared by discovery and price fetches).
 config :super_barato, SuperBarato.Crawler,
-  rate_limits: [
-    unimarc: [interval_ms: 1_000],
-    jumbo: [interval_ms: 1_000],
-    santa_isabel: [interval_ms: 1_000]
+  # Whether the pipeline supervisors start with the app. Off by default
+  # — Mix tasks drive the crawler synchronously via handle_task/1.
+  # Flip on in env-specific config (e.g. prod) when you want the Cron-
+  # driven background pipeline running.
+  chains_enabled: false,
+  chains: [
+    unimarc: [
+      interval_ms: 1_000,
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      schedule: [
+        # One-shot discovery push, weekly
+        {{:every, {7, :days}},
+         {SuperBarato.Crawler.Chain.Queue, :push,
+          [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]}},
+        # Product walk: leaf categories from DB → per-category tasks
+        {{:every, {1, :day}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :products]]}},
+        # Price refresh: active identifiers → 25-EAN batches
+        {{:every, {1, :hour}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :prices]]}}
+      ]
+    ],
+    jumbo: [
+      interval_ms: 1_000,
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      schedule: [
+        {{:every, {7, :days}},
+         {SuperBarato.Crawler.Chain.Queue, :push,
+          [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
+        {{:every, {1, :day}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :products]]}},
+        {{:every, {1, :hour}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :prices]]}}
+      ]
+    ],
+    santa_isabel: [
+      interval_ms: 1_000,
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      schedule: [
+        {{:every, {7, :days}},
+         {SuperBarato.Crawler.Chain.Queue, :push,
+          [:santa_isabel, {:discover_categories, %{chain: :santa_isabel, parent: nil}}]}},
+        {{:every, {1, :day}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run,
+          [[chain: :santa_isabel, mode: :products]]}},
+        {{:every, {1, :hour}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run,
+          [[chain: :santa_isabel, mode: :prices]]}}
+      ]
+    ]
   ]
 
 config :super_barato,
-  # curl-impersonate binary path. Override via env-specific config if needed.
-  curl_impersonate_binary: Path.expand("../priv/bin/curl_chrome116", __DIR__)
+  # Directory containing curl-impersonate binaries (`curl_chrome116`,
+  # `curl_chrome107`, `curl_ff117`, etc.).
+  curl_impersonate_dir: Path.expand("../priv/bin", __DIR__),
+  # Default profile for chains that don't specify their own.
+  curl_impersonate_profile: :chrome116
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

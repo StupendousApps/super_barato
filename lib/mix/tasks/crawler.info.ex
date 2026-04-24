@@ -1,20 +1,18 @@
 defmodule Mix.Tasks.Crawler.Info do
-  @shortdoc "Runs stage 3 (product info refresh) for a batch of identifiers. No DB writes."
+  @shortdoc "Runs stage 3 (product info refresh) for a batch of identifiers via handle_task/1. No DB writes."
 
   @moduledoc """
-  Exercises a chain's `fetch_product_info/1` without touching the database.
-  The identifier is whatever the chain keys on: EAN for Unimarc, chain_sku
-  (VTEX itemId) for Jumbo.
+  Exercises a chain's `handle_task/1` with a product-info task.
+  Identifier is whatever the chain keys on: EAN for Unimarc,
+  chain_sku (VTEX itemId) for Jumbo / Santa Isabel.
 
       mix crawler.info unimarc 7809611721655
-      mix crawler.info unimarc 7809611721655 7807975007170
       mix crawler.info jumbo 23 104393
   """
 
   use Mix.Task
 
   alias SuperBarato.Crawler
-  alias SuperBarato.Crawler.Runtime
 
   @switches [id: :keep, ean: :keep]
 
@@ -33,13 +31,13 @@ defmodule Mix.Tasks.Crawler.Info do
       exit({:shutdown, 1})
     end
 
-    Runtime.ensure_started(chain)
     mod = Crawler.adapter(chain)
     field = mod.refresh_identifier()
+    task = {:fetch_product_info, %{chain: chain, identifiers: ids}}
 
     Mix.shell().info("info #{chain}: fetching #{length(ids)} #{field}(s)")
 
-    case mod.fetch_product_info(ids) do
+    case mod.handle_task(task) do
       {:ok, listings} ->
         Enum.each(listings, fn l ->
           IO.inspect(l, label: "product", pretty: true, limit: :infinity)
@@ -50,6 +48,10 @@ defmodule Mix.Tasks.Crawler.Info do
 
         Mix.shell().info("  returned: #{length(listings)} / requested: #{length(ids)}")
         if missing != [], do: Mix.shell().info("  missing: #{inspect(missing)}")
+
+      :blocked ->
+        Mix.shell().error("blocked — rotate/update curl-impersonate profile")
+        exit({:shutdown, 1})
 
       {:error, reason} ->
         Mix.shell().error("failed: #{inspect(reason)}")

@@ -15,11 +15,9 @@ defmodule SuperBarato.Application do
         {Phoenix.PubSub, name: SuperBarato.PubSub},
         {Registry, keys: :unique, name: SuperBarato.Crawler.Registry}
       ] ++
-        rate_limiter_specs() ++
+        chain_pipeline_specs() ++
         [SuperBaratoWeb.Endpoint]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: SuperBarato.Supervisor]
     Supervisor.start_link(children, opts)
   end
@@ -32,15 +30,24 @@ defmodule SuperBarato.Application do
     :ok
   end
 
-  defp rate_limiter_specs do
-    :super_barato
-    |> Application.get_env(SuperBarato.Crawler, [])
-    |> Keyword.get(:rate_limits, [])
-    |> Enum.map(fn {chain, opts} ->
-      Supervisor.child_spec(
-        {SuperBarato.Crawler.RateLimiter, Keyword.put(opts, :chain, chain)},
-        id: {SuperBarato.Crawler.RateLimiter, chain}
-      )
-    end)
+  # Per-chain pipeline supervisors (Queue, Worker, Results, Cron, TaskSup).
+  # Gated by `chains_enabled` so tests and IEx can skip the network workers.
+  defp chain_pipeline_specs do
+    crawler_cfg = Application.get_env(:super_barato, SuperBarato.Crawler, [])
+
+    if Keyword.get(crawler_cfg, :chains_enabled, false) do
+      crawler_cfg
+      |> Keyword.get(:chains, [])
+      |> Enum.map(fn {chain, chain_opts} ->
+        opts = Keyword.put(chain_opts, :chain, chain)
+
+        Supervisor.child_spec(
+          {SuperBarato.Crawler.Chain.Supervisor, opts},
+          id: {SuperBarato.Crawler.Chain.Supervisor, chain}
+        )
+      end)
+    else
+      []
+    end
   end
 end

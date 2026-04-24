@@ -1,8 +1,9 @@
 defmodule Mix.Tasks.Crawler.Products do
-  @shortdoc "Runs stage 2 (product discovery) for a category slug. No DB writes."
+  @shortdoc "Runs stage 2 (product discovery) for a category slug via handle_task/1. No DB writes."
 
   @moduledoc """
-  Exercises a chain's `discover_products/1` without touching the database.
+  Exercises a chain's `handle_task/1` with a product-discovery task.
+  Synchronous — bypasses the pipeline.
 
       mix crawler.products unimarc --category congelados
       mix crawler.products unimarc --category congelados/pescados-y-mariscos --limit 3
@@ -12,7 +13,6 @@ defmodule Mix.Tasks.Crawler.Products do
   use Mix.Task
 
   alias SuperBarato.Crawler
-  alias SuperBarato.Crawler.Runtime
 
   @switches [category: :string, limit: :integer, summary: :boolean]
 
@@ -24,11 +24,11 @@ defmodule Mix.Tasks.Crawler.Products do
     {opts, positional} = OptionParser.parse!(args, strict: @switches)
     chain = parse_chain!(positional)
     slug = require_category!(opts)
-    Runtime.ensure_started(chain)
 
     mod = Crawler.adapter(chain)
+    task = {:discover_products, %{chain: chain, slug: slug}}
 
-    case mod.discover_products(slug) do
+    case mod.handle_task(task) do
       {:ok, listings} ->
         shown =
           cond do
@@ -42,6 +42,10 @@ defmodule Mix.Tasks.Crawler.Products do
         end)
 
         Mix.shell().info("  total: #{length(listings)}")
+
+      :blocked ->
+        Mix.shell().error("blocked — rotate/update curl-impersonate profile")
+        exit({:shutdown, 1})
 
       {:error, reason} ->
         Mix.shell().error("failed: #{inspect(reason)}")

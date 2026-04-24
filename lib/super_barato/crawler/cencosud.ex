@@ -18,7 +18,7 @@ defmodule SuperBarato.Crawler.Cencosud do
   politeness is enforced at the chain level.
   """
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, RateLimiter}
+  alias SuperBarato.Crawler.{Category, Http, Listing, Session}
 
   @catalog_api "https://sm-web-api.ecomm.cencosud.com/catalog/api"
   @api_key "WlVnnB7c1BblmgUPOfg"
@@ -31,13 +31,14 @@ defmodule SuperBarato.Crawler.Cencosud do
     @moduledoc "Per-chain configuration for the shared Cencosud adapter."
 
     @enforce_keys [:chain, :site_url, :categories_url, :sales_channel]
-    defstruct [:chain, :site_url, :categories_url, :sales_channel]
+    defstruct [:chain, :site_url, :categories_url, :sales_channel, profile: nil]
 
     @type t :: %__MODULE__{
             chain: atom(),
             site_url: String.t(),
             categories_url: String.t(),
-            sales_channel: String.t()
+            sales_channel: String.t(),
+            profile: atom() | nil
           }
   end
 
@@ -111,30 +112,36 @@ defmodule SuperBarato.Crawler.Cencosud do
 
     url = @catalog_api <> path
 
-    case get_with_headers(cfg, url, :high) do
-      {:ok, %Http.Response{status: 200, headers: hdrs, body: body}} ->
-        case Jason.decode(body) do
-          {:ok, products} when is_list(products) ->
-            listings = Enum.map(products, &parse_listing(cfg, &1, slug))
-            new_total = total || parse_resources_total(hdrs)
-            new_acc = acc ++ listings
+    case get_with_headers(cfg, url) do
+      {:ok, %Http.Response{} = resp} ->
+        cond do
+          Http.blocked?(resp) ->
+            :blocked
 
-            cond do
-              products == [] -> {:ok, new_acc}
-              length(products) < @page_size -> {:ok, new_acc}
-              is_integer(new_total) and page * @page_size >= new_total -> {:ok, new_acc}
-              true -> list_all_pages(cfg, slug, page + 1, new_acc, new_total)
+          resp.status == 200 ->
+            case Jason.decode(resp.body) do
+              {:ok, products} when is_list(products) ->
+                listings = Enum.map(products, &parse_listing(cfg, &1, slug))
+                new_total = total || parse_resources_total(resp.headers)
+                new_acc = acc ++ listings
+
+                cond do
+                  products == [] -> {:ok, new_acc}
+                  length(products) < @page_size -> {:ok, new_acc}
+                  is_integer(new_total) and page * @page_size >= new_total -> {:ok, new_acc}
+                  true -> list_all_pages(cfg, slug, page + 1, new_acc, new_total)
+                end
+
+              {:ok, _} ->
+                {:ok, acc}
+
+              {:error, _} = err ->
+                err
             end
 
-          {:ok, _} ->
-            {:ok, acc}
-
-          {:error, _} = err ->
-            err
+          true ->
+            {:error, {:http_status, resp.status, String.slice(resp.body, 0, 200)}}
         end
-
-      {:ok, %Http.Response{status: s, body: b}} ->
-        {:error, {:http_status, s, String.slice(b, 0, 200)}}
 
       {:error, _} = err ->
         err
@@ -181,6 +188,9 @@ defmodule SuperBarato.Crawler.Cencosud do
         {:ok, _} ->
           {:cont, {:ok, acc}}
 
+        :blocked ->
+          {:halt, :blocked}
+
         {:error, _} = err ->
           {:halt, err}
       end
@@ -212,23 +222,23 @@ defmodule SuperBarato.Crawler.Cencosud do
 
   # HTTP
 
-  defp get_json(cfg, url, priority) do
-    case get_with_headers(cfg, url, priority) do
-      {:ok, %Http.Response{status: 200, body: body}} ->
-        Jason.decode(body)
-
-      {:ok, %Http.Response{status: s, body: b}} ->
-        {:error, {:http_status, s, String.slice(b, 0, 200)}}
+  defp get_json(cfg, url, _priority) do
+    case get_with_headers(cfg, url) do
+      {:ok, %Http.Response{} = resp} ->
+        cond do
+          Http.blocked?(resp) -> :blocked
+          resp.status == 200 -> Jason.decode(resp.body)
+          true -> {:error, {:http_status, resp.status, String.slice(resp.body, 0, 200)}}
+        end
 
       {:error, _} = err ->
         err
     end
   end
 
-  defp get_with_headers(cfg, url, priority) do
-    RateLimiter.request(cfg.chain, priority, fn ->
-      Http.get(url, headers: headers_for(cfg))
-    end)
+  defp get_with_headers(cfg, url) do
+    profile = Session.get(cfg.chain, :profile) || cfg.profile
+    Http.get(url, headers: headers_for(cfg), profile: profile)
   end
 
   defp headers_for(%Config{site_url: site}) do

@@ -1,0 +1,129 @@
+defmodule SuperBarato.Crawler.Chain.Worker do
+  @moduledoc """
+  The one process that actually makes HTTP requests for a chain.
+
+  Pops tasks from the chain's Queue, enforces the politeness gap by
+  sleeping between iterations, dispatches to the chain's adapter
+  (`handle_task/1`), and routes results:
+
+    * `{:ok, payload}` — casts to Results for persistence
+    * `:blocked` — rotates the chain's curl-impersonate profile and
+      requeues the task at the front of the queue
+    * `{:error, reason}` — logs and moves on (fire and forget)
+
+  No timers. The loop is a tight `handle_info(:work, state)` → pop →
+  sleep → dispatch → `send(self(), :work)` cycle. The blocking `pop`
+  means we park when there's no work; the sleep enforces pacing.
+  """
+
+  use GenServer
+
+  require Logger
+
+  alias SuperBarato.Crawler
+  alias SuperBarato.Crawler.Chain.{Queue, Results}
+  alias SuperBarato.Crawler.Session
+
+  @default_interval_ms 1_000
+
+  def start_link(opts) do
+    chain = Keyword.fetch!(opts, :chain)
+    GenServer.start_link(__MODULE__, opts, name: via(chain))
+  end
+
+  def child_spec(opts) do
+    chain = Keyword.fetch!(opts, :chain)
+
+    %{
+      id: {__MODULE__, chain},
+      start: {__MODULE__, :start_link, [opts]},
+      type: :worker,
+      restart: :permanent
+    }
+  end
+
+  defp via(chain),
+    do: {:via, Registry, {SuperBarato.Crawler.Registry, {__MODULE__, chain}}}
+
+  @impl true
+  def init(opts) do
+    state = %{
+      chain: Keyword.fetch!(opts, :chain),
+      interval_ms: Keyword.get(opts, :interval_ms, @default_interval_ms),
+      last_call_at: 0,
+      consecutive_blocks: 0,
+      fallback_profiles: Keyword.get(opts, :fallback_profiles, [:chrome116])
+    }
+
+    send(self(), :work)
+    {:ok, state}
+  end
+
+  @impl true
+  def handle_info(:work, state) do
+    task = Queue.pop(state.chain)
+    state = apply_gap(state)
+    state = dispatch(task, state)
+    send(self(), :work)
+    {:noreply, state}
+  end
+
+  # Dispatch to adapter, route the result.
+  defp dispatch(task, state) do
+    mod = Crawler.adapter(state.chain)
+
+    case safe_handle_task(mod, task) do
+      {:ok, payload} ->
+        Results.record(state.chain, task, payload)
+        %{state | last_call_at: now(), consecutive_blocks: 0}
+
+      :blocked ->
+        new_profile = Session.rotate_profile(state.chain, state.fallback_profiles)
+        blocks = state.consecutive_blocks + 1
+
+        Logger.warning(
+          "[#{state.chain}] task blocked — rotated profile to #{new_profile} (block ##{blocks})"
+        )
+
+        Queue.requeue(state.chain, task)
+
+        # If every profile in the fallback list has been blocked in a row,
+        # back off before trying again — likely a sustained block rather
+        # than a bad profile.
+        state =
+          if blocks >= length(state.fallback_profiles) do
+            Logger.warning(
+              "[#{state.chain}] all profiles blocked — sleeping 60s before next attempt"
+            )
+
+            Process.sleep(60_000)
+            %{state | consecutive_blocks: 0}
+          else
+            %{state | consecutive_blocks: blocks}
+          end
+
+        %{state | last_call_at: now()}
+
+      {:error, reason} ->
+        Logger.warning("[#{state.chain}] task failed: #{inspect(reason)}")
+        %{state | last_call_at: now(), consecutive_blocks: 0}
+    end
+  end
+
+  defp safe_handle_task(mod, task) do
+    mod.handle_task(task)
+  rescue
+    err ->
+      {:error, {:exception, err}}
+  end
+
+  # Sleep so that we don't exceed the configured interval between calls.
+  defp apply_gap(state) do
+    elapsed = now() - state.last_call_at
+    wait = state.interval_ms - elapsed
+    if wait > 0, do: Process.sleep(wait)
+    state
+  end
+
+  defp now, do: System.monotonic_time(:millisecond)
+end

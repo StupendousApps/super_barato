@@ -23,11 +23,14 @@ defmodule SuperBarato.Crawler.Jumbo do
   def refresh_identifier, do: :chain_sku
 
   @impl true
-  def discover_categories, do: Cencosud.discover_categories(@config)
+  def handle_task({:discover_categories, %{parent: _}}),
+    do: Cencosud.discover_categories(@config)
 
-  @impl true
-  def discover_products(slug), do: Cencosud.discover_products(@config, slug)
+  def handle_task({:discover_products, %{slug: slug}}),
+    do: Cencosud.discover_products(@config, slug)
 
-  @impl true
-  def fetch_product_info(chain_skus), do: Cencosud.fetch_product_info(@config, chain_skus)
+  def handle_task({:fetch_product_info, %{identifiers: ids}}),
+    do: Cencosud.fetch_product_info(@config, ids)
+
+  def handle_task(other), do: {:error, {:unsupported_task, other}}
 end

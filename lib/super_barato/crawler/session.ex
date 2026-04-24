@@ -56,6 +56,28 @@ defmodule SuperBarato.Crawler.Session do
     :ok
   end
 
+  @doc """
+  Rotates the chain's `:profile` to the next entry in `candidates`,
+  cycling back to the first when the current one is at the end (or
+  unknown). Returns the new profile.
+  """
+  def rotate_profile(chain, candidates)
+      when is_atom(chain) and is_list(candidates) and candidates != [] do
+    current = get(chain, :profile)
+    next = next_after(candidates, current)
+    put(chain, :profile, next)
+    next
+  end
+
+  defp next_after(candidates, nil), do: List.first(candidates)
+
+  defp next_after(candidates, current) do
+    case Enum.split_while(candidates, &(&1 != current)) do
+      {_before, [_current, next | _]} -> next
+      _ -> List.first(candidates)
+    end
+  end
+
   @doc "Reads the value under `{chain, key}`, or `nil` if not set."
   def get(chain, key) when is_atom(chain) do
     init()

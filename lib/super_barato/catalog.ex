@@ -61,9 +61,28 @@ defmodule SuperBarato.Catalog do
 
   @doc "All leaf categories for a chain (used as stage-2 seeds)."
   def leaf_categories(chain) do
+    Repo.all(leaf_categories_query(chain))
+  end
+
+  @doc """
+  Ecto query for leaf categories of a chain. Used by the
+  `ProductProducer` with `Repo.stream/2` for bounded-memory traversal.
+  """
+  def leaf_categories_query(chain) do
     Category
     |> where([c], c.chain == ^to_string(chain) and c.is_leaf == true and c.active == true)
-    |> Repo.all()
+  end
+
+  @doc """
+  Ecto query for non-null values of the chain's refresh identifier
+  (`:ean` or `:chain_sku`). Used by the `ProductProducer` for stage-3
+  batching. Selects just the identifier value to stream.
+  """
+  def active_identifiers_query(chain, field) when field in [:ean, :chain_sku] do
+    ChainListing
+    |> where([l], l.chain == ^to_string(chain) and l.active == true)
+    |> where([l], not is_nil(field(l, ^field)))
+    |> select([l], field(l, ^field))
   end
 
   # Listings

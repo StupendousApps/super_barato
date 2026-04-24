@@ -17,7 +17,7 @@ defmodule SuperBarato.Crawler.Unimarc do
 
   @behaviour SuperBarato.Crawler.Chain
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, RateLimiter}
+  alias SuperBarato.Crawler.{Category, Http, Listing, Session}
 
   require Logger
 
@@ -81,29 +81,48 @@ defmodule SuperBarato.Crawler.Unimarc do
   @impl true
   def refresh_identifier, do: :ean
 
+  @impl true
+  def handle_task({:discover_categories, %{parent: nil}}), do: discover_categories()
+
+  def handle_task({:discover_products, %{slug: slug}}), do: discover_products(slug)
+
+  def handle_task({:fetch_product_info, %{identifiers: ids}}),
+    do: fetch_product_info(ids)
+
+  def handle_task(other), do: {:error, {:unsupported_task, other}}
+
   # Stage 1: categories
 
-  @impl true
-  def discover_categories do
-    top_levels = top_level_categories()
+  defp discover_categories do
+    case top_level_categories() do
+      :blocked ->
+        :blocked
 
-    # For each top-level, one facets call returns its entire subtree
-    # (category2 + category3 under that filter).
-    children =
-      top_levels
-      |> Enum.flat_map(fn top ->
-        case fetch_subtree(top.slug) do
-          {:ok, subs} ->
-            subs
+      top_levels when is_list(top_levels) ->
+        result =
+          Enum.reduce_while(top_levels, {:ok, []}, fn top, {:ok, acc} ->
+            case fetch_subtree(top.slug) do
+              {:ok, subs} ->
+                {:cont, {:ok, acc ++ subs}}
 
-          {:error, reason} ->
-            Logger.warning("unimarc subtree for #{top.slug} failed: #{inspect(reason)}")
-            []
+              :blocked ->
+                {:halt, :blocked}
+
+              {:error, reason} ->
+                Logger.warning("unimarc subtree for #{top.slug} failed: #{inspect(reason)}")
+                {:cont, {:ok, acc}}
+            end
+          end)
+
+        case result do
+          :blocked ->
+            :blocked
+
+          {:ok, children} ->
+            all = Enum.uniq_by(top_levels ++ children, & &1.slug)
+            {:ok, mark_leaves(all)}
         end
-      end)
-
-    all = Enum.uniq_by(top_levels ++ children, & &1.slug)
-    {:ok, mark_leaves(all)}
+    end
   end
 
   # Always union fanout + fallback. Fanout is the authoritative source
@@ -111,43 +130,53 @@ defmodule SuperBarato.Crawler.Unimarc do
   # of fanout never loses a department. If fanout is unusually small,
   # warn — it means fanout broke and we're running on stale data.
   defp top_level_categories do
-    found = term_fanout()
+    case term_fanout() do
+      :blocked ->
+        :blocked
 
-    if map_size(found) < @min_top_levels do
-      Logger.warning(
-        "unimarc term-fanout returned only #{map_size(found)} top-levels (< #{@min_top_levels}); fallback will carry the load"
-      )
+      found when is_map(found) ->
+        if map_size(found) < @min_top_levels do
+          Logger.warning(
+            "unimarc term-fanout returned only #{map_size(found)} top-levels (< #{@min_top_levels}); fallback will carry the load"
+          )
+        end
+
+        fallback =
+          Enum.reduce(@fallback_top_level_categories, %{}, fn fb, acc ->
+            Map.put(acc, fb.slug, %Category{
+              chain: @chain,
+              slug: fb.slug,
+              name: fb.name,
+              parent_slug: nil,
+              external_id: fb.external_id,
+              level: 1
+            })
+          end)
+
+        fallback
+        |> Map.merge(found)
+        |> Map.values()
     end
-
-    fallback =
-      Enum.reduce(@fallback_top_level_categories, %{}, fn fb, acc ->
-        Map.put(acc, fb.slug, %Category{
-          chain: @chain,
-          slug: fb.slug,
-          name: fb.name,
-          parent_slug: nil,
-          external_id: fb.external_id,
-          level: 1
-        })
-      end)
-
-    fallback
-    |> Map.merge(found)
-    |> Map.values()
   end
 
   defp term_fanout do
-    Enum.reduce(@discovery_terms, %{}, fn term, acc ->
+    Enum.reduce_while(@discovery_terms, %{}, fn term, acc ->
       body = %{"categories" => "", "categoryLevel" => "1", "searching" => term}
 
       case post_facets(body) do
         {:ok, %{"category1" => c1} = _data} when is_list(c1) ->
-          Enum.reduce(c1, acc, fn raw, a ->
-            Map.put_new(a, raw["value"], to_category(raw, level: 1, parent: nil))
-          end)
+          acc =
+            Enum.reduce(c1, acc, fn raw, a ->
+              Map.put_new(a, raw["value"], to_category(raw, level: 1, parent: nil))
+            end)
+
+          {:cont, acc}
+
+        :blocked ->
+          {:halt, :blocked}
 
         _ ->
-          acc
+          {:cont, acc}
       end
     end)
   end
@@ -166,6 +195,9 @@ defmodule SuperBarato.Crawler.Unimarc do
           |> Enum.map(&to_category(&1, level: 3, parent: nil))
 
         {:ok, c2 ++ c3}
+
+      :blocked ->
+        :blocked
 
       err ->
         err
@@ -220,8 +252,7 @@ defmodule SuperBarato.Crawler.Unimarc do
 
   # Stage 2: products by category
 
-  @impl true
-  def discover_products(slug) when is_binary(slug) do
+  defp discover_products(slug) when is_binary(slug) do
     list_all_pages(slug, 0, [], nil)
   end
 
@@ -244,6 +275,9 @@ defmodule SuperBarato.Crawler.Unimarc do
       {:ok, _other} ->
         {:ok, acc}
 
+      :blocked ->
+        :blocked
+
       {:error, _} = err ->
         err
     end
@@ -263,8 +297,7 @@ defmodule SuperBarato.Crawler.Unimarc do
 
   # Stage 3: product info by EAN
 
-  @impl true
-  def fetch_product_info(eans) when is_list(eans) do
+  defp fetch_product_info(eans) when is_list(eans) do
     eans
     |> Enum.chunk_every(25)
     |> Enum.reduce_while({:ok, []}, fn batch, {:ok, acc} ->
@@ -274,6 +307,9 @@ defmodule SuperBarato.Crawler.Unimarc do
         {:ok, %{"availableProducts" => products}} ->
           listings = Enum.map(products, &parse_listing(&1, nil))
           {:cont, {:ok, acc ++ listings}}
+
+        :blocked ->
+          {:halt, :blocked}
 
         {:error, _} = err ->
           {:halt, err}
@@ -315,25 +351,19 @@ defmodule SuperBarato.Crawler.Unimarc do
 
   defp post_json(url, body) when is_map(body) do
     json = Jason.encode!(body)
+    profile = Session.get(@chain, :profile)
 
-    RateLimiter.request(@chain, priority_for(url), fn ->
-      case Http.post(url, headers: @bff_headers, body: json) do
-        {:ok, %Http.Response{status: status, body: resp}} when status in 200..299 ->
-          Jason.decode(resp)
+    case Http.post(url, headers: @bff_headers, body: json, profile: profile) do
+      {:ok, %Http.Response{} = resp} ->
+        cond do
+          Http.blocked?(resp) -> :blocked
+          resp.status in 200..299 -> Jason.decode(resp.body)
+          true -> {:error, {:http_status, resp.status, String.slice(resp.body, 0, 300)}}
+        end
 
-        {:ok, %Http.Response{status: status, body: resp}} ->
-          {:error, {:http_status, status, String.slice(resp, 0, 300)}}
-
-        {:error, _} = err ->
-          err
-      end
-    end)
-  end
-
-  # Category discovery is rare and blocking — give it priority over
-  # bulk product/info refreshes so it jumps the queue.
-  defp priority_for(url) do
-    if String.ends_with?(url, "/facets"), do: :high, else: :normal
+      {:error, _} = err ->
+        err
+    end
   end
 
   # Shared parsing helpers
