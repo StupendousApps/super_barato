@@ -44,19 +44,28 @@ defmodule SuperBarato.Crawler.Cencosud do
 
   # Stage 1: categories
 
-  @spec discover_categories(Config.t()) :: {:ok, [Category.t()]} | {:error, term()}
+  @spec discover_categories(Config.t()) :: {:ok, [Category.t()]} | :blocked | {:error, term()}
   def discover_categories(%Config{} = cfg) do
     case get_json(cfg, cfg.categories_url, :high) do
       {:ok, tree} when is_list(tree) ->
-        cats = flatten_tree(cfg.chain, tree)
-        {:ok, mark_leaves(cats)}
+        {:ok, parse_categories(cfg.chain, tree)}
 
       {:ok, _other} ->
         {:error, :malformed_category_tree}
 
+      :blocked ->
+        :blocked
+
       {:error, _} = err ->
         err
     end
+  end
+
+  @doc false
+  def parse_categories(chain, tree) when is_list(tree) do
+    chain
+    |> flatten_tree(tree)
+    |> mark_leaves()
   end
 
   defp flatten_tree(chain, nodes, parent_slug \\ nil, level \\ 1) do
@@ -154,7 +163,8 @@ defmodule SuperBarato.Crawler.Cencosud do
     |> Enum.map_join("/", &URI.encode_www_form/1)
   end
 
-  defp parse_resources_total(headers) do
+  @doc false
+  def parse_resources_total(headers) do
     case Enum.find_value(headers, fn {k, v} -> if k == "resources", do: v end) do
       nil ->
         nil
@@ -195,6 +205,14 @@ defmodule SuperBarato.Crawler.Cencosud do
           {:halt, err}
       end
     end)
+  end
+
+  @doc """
+  Parses a decoded VTEX-classic products list (stage 2 or stage 3
+  response) into `%Listing{}` structs. Exposed for unit testing.
+  """
+  def parse_products(%Config{} = cfg, products, category_slug \\ nil) when is_list(products) do
+    Enum.map(products, &parse_listing(cfg, &1, category_slug))
   end
 
   # Shared parser — stage 2 and stage 3 both return VTEX classic shape:

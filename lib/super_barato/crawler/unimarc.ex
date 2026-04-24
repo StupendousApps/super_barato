@@ -317,6 +317,28 @@ defmodule SuperBarato.Crawler.Unimarc do
     end)
   end
 
+  @doc """
+  Parses a decoded `availableProducts` list (stage 2 or stage 3
+  response) into `%Listing{}` structs. Exposed for unit testing.
+  """
+  def parse_products(products, category_slug \\ nil) when is_list(products) do
+    products
+    |> Enum.map(&parse_listing(&1, category_slug))
+    |> Enum.reject(&is_nil/1)
+  end
+
+  @doc """
+  Parses a decoded `postFacets` response into the subtree's category
+  list: the category1 filter itself plus its category2 and category3
+  children. Exposed for unit testing.
+  """
+  def parse_subtree(data) when is_map(data) do
+    c1 = (data["category1"] || []) |> Enum.map(&to_category(&1, level: 1, parent: nil))
+    c2 = (data["category2"] || []) |> Enum.map(&to_category(&1, level: 2, parent: nil))
+    c3 = (data["category3"] || []) |> Enum.map(&to_category(&1, level: 3, parent: nil))
+    mark_leaves(c1 ++ c2 ++ c3)
+  end
+
   # Shared parser — postProductsSearch and by-identifier both return the
   # same nested `{item, price, promotion, priceDetail, coupon}` shape.
   defp parse_listing(%{"item" => item} = outer, category_slug) when is_map(item) do

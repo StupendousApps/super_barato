@@ -4,10 +4,6 @@ defmodule SuperBarato.Catalog.ChainListing do
 
   alias SuperBarato.Catalog.{PriceSnapshot, Product}
 
-  @chains ~w(jumbo lider unimarc)
-
-  def chains, do: @chains
-
   schema "chain_listings" do
     field :chain, :string
     field :chain_sku, :string
@@ -46,7 +42,6 @@ defmodule SuperBarato.Catalog.ChainListing do
     listing
     |> cast(attrs, @discovery_fields)
     |> validate_required([:chain, :chain_sku, :name, :first_seen_at])
-    |> validate_inclusion(:chain, @chains)
     |> unique_constraint([:chain, :chain_sku])
   end
 

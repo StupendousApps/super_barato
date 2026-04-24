@@ -46,13 +46,20 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
     queue_capacity = Keyword.get(opts, :queue_capacity, 200)
     interval_ms = Keyword.get(opts, :interval_ms, 1_000)
     fallback_profiles = Keyword.get(opts, :fallback_profiles, [:chrome116])
+    block_backoff_ms = Keyword.get(opts, :block_backoff_ms, 60_000)
+    adapter = Keyword.get(opts, :adapter)
 
     task_sup_name = task_sup_name(chain)
 
     children = [
-      {Results, chain: chain},
+      {Results, chain: chain, adapter: adapter},
       {Queue, chain: chain, capacity: queue_capacity},
-      {Worker, chain: chain, interval_ms: interval_ms, fallback_profiles: fallback_profiles},
+      {Worker,
+       chain: chain,
+       adapter: adapter,
+       interval_ms: interval_ms,
+       fallback_profiles: fallback_profiles,
+       block_backoff_ms: block_backoff_ms},
       {Task.Supervisor, name: task_sup_name},
       {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name}
     ]

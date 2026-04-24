@@ -46,13 +46,15 @@ defmodule SuperBarato.Crawler.Chain.Results do
 
   @impl true
   def init(opts) do
-    {:ok, %{chain: Keyword.fetch!(opts, :chain)}}
+    chain = Keyword.fetch!(opts, :chain)
+    adapter = Keyword.get(opts, :adapter) || SuperBarato.Crawler.adapter(chain)
+    {:ok, %{chain: chain, adapter: adapter}}
   end
 
   @impl true
   def handle_cast({:record, task, payload}, state) do
     try do
-      persist(state.chain, task, payload)
+      persist(state, task, payload)
     rescue
       err ->
         Logger.warning("results: #{state.chain} persist failed: #{inspect(err)}")
@@ -62,7 +64,7 @@ defmodule SuperBarato.Crawler.Chain.Results do
   end
 
   # Category discovery: upsert all categories from payload.
-  defp persist(_chain, {:discover_categories, _meta}, categories) when is_list(categories) do
+  defp persist(_state, {:discover_categories, _meta}, categories) when is_list(categories) do
     Enum.each(categories, fn cat ->
       case Catalog.upsert_category(cat) do
         {:ok, _} -> :ok
@@ -72,7 +74,8 @@ defmodule SuperBarato.Crawler.Chain.Results do
   end
 
   # Product discovery: upsert all listings returned for this category.
-  defp persist(chain, {:discover_products, %{slug: slug}}, listings) when is_list(listings) do
+  defp persist(state, {:discover_products, %{slug: slug}}, listings)
+       when is_list(listings) do
     Enum.each(listings, fn listing ->
       case Catalog.upsert_listing(listing) do
         {:ok, _} -> :ok
@@ -80,17 +83,17 @@ defmodule SuperBarato.Crawler.Chain.Results do
       end
     end)
 
-    Logger.info("[#{chain}] upserted #{length(listings)} listings for category=#{slug}")
+    Logger.info("[#{state.chain}] upserted #{length(listings)} listings for category=#{slug}")
   end
 
   # Price refresh: look up existing listing by identifier, record snapshot.
-  defp persist(chain, {:fetch_product_info, %{identifiers: _ids}}, listings)
+  defp persist(state, {:fetch_product_info, %{identifiers: _ids}}, listings)
        when is_list(listings) do
-    field = SuperBarato.Crawler.adapter(chain).refresh_identifier()
+    field = state.adapter.refresh_identifier()
 
     Enum.each(listings, fn info ->
       with id when is_binary(id) <- Map.get(info, field),
-           listing when not is_nil(listing) <- lookup_by(chain, field, id) do
+           listing when not is_nil(listing) <- lookup_by(state.chain, field, id) do
         Catalog.record_product_info(listing, info)
       else
         _ -> :skip
@@ -98,9 +101,9 @@ defmodule SuperBarato.Crawler.Chain.Results do
     end)
   end
 
-  defp persist(chain, task, payload) do
+  defp persist(state, task, payload) do
     Logger.warning(
-      "[#{chain}] unknown task shape: task=#{inspect(task)} payload=#{inspect(payload, limit: 3)}"
+      "[#{state.chain}] unknown task shape: task=#{inspect(task)} payload=#{inspect(payload, limit: 3)}"
     )
   end
 

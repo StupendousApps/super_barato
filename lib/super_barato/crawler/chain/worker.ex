@@ -47,12 +47,20 @@ defmodule SuperBarato.Crawler.Chain.Worker do
 
   @impl true
   def init(opts) do
+    chain = Keyword.fetch!(opts, :chain)
+    interval_ms = Keyword.get(opts, :interval_ms, @default_interval_ms)
+
     state = %{
-      chain: Keyword.fetch!(opts, :chain),
-      interval_ms: Keyword.get(opts, :interval_ms, @default_interval_ms),
-      last_call_at: 0,
+      chain: chain,
+      adapter: Keyword.get(opts, :adapter) || Crawler.adapter(chain),
+      interval_ms: interval_ms,
+      # Seed to `now() - interval_ms` so the very first iteration doesn't sleep.
+      # Erlang monotonic time can be negative, so 0 is not a safe sentinel.
+      last_call_at: now() - interval_ms,
       consecutive_blocks: 0,
-      fallback_profiles: Keyword.get(opts, :fallback_profiles, [:chrome116])
+      fallback_profiles: Keyword.get(opts, :fallback_profiles, [:chrome116]),
+      # Used only in tests to shorten the all-profiles-blocked backoff.
+      block_backoff_ms: Keyword.get(opts, :block_backoff_ms, 60_000)
     }
 
     send(self(), :work)
@@ -70,9 +78,7 @@ defmodule SuperBarato.Crawler.Chain.Worker do
 
   # Dispatch to adapter, route the result.
   defp dispatch(task, state) do
-    mod = Crawler.adapter(state.chain)
-
-    case safe_handle_task(mod, task) do
+    case safe_handle_task(state.adapter, task) do
       {:ok, payload} ->
         Results.record(state.chain, task, payload)
         %{state | last_call_at: now(), consecutive_blocks: 0}
@@ -93,10 +99,10 @@ defmodule SuperBarato.Crawler.Chain.Worker do
         state =
           if blocks >= length(state.fallback_profiles) do
             Logger.warning(
-              "[#{state.chain}] all profiles blocked — sleeping 60s before next attempt"
+              "[#{state.chain}] all profiles blocked — sleeping #{state.block_backoff_ms}ms"
             )
 
-            Process.sleep(60_000)
+            Process.sleep(state.block_backoff_ms)
             %{state | consecutive_blocks: 0}
           else
             %{state | consecutive_blocks: blocks}

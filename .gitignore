@@ -38,3 +38,6 @@ npm-debug.log
 # curl-impersonate binaries are fetched via scripts/install_curl_impersonate.sh,
 # not committed (~30MB, platform-specific).
 /priv/bin/
+
+# Local tool config
+/.claude/
