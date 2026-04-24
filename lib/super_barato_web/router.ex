@@ -89,6 +89,7 @@ defmodule SuperBaratoWeb.Router do
 
     get "/", PageController, :index
     get "/listings", ListingController, :index
+    get "/categories", CategoryController, :index
     delete "/logout", SessionController, :delete
   end
 end

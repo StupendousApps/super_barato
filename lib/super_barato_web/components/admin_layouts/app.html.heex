@@ -8,7 +8,9 @@
         <.link href={~p"/admin/listings"} class={@top_nav == :listings && "active"}>Listings</.link>
       </li>
       <li>
-        <.link href="#" class={@top_nav == :categories && "active"}>Categories</.link>
+        <.link href={~p"/admin/categories"} class={@top_nav == :categories && "active"}>
+          Categories
+        </.link>
       </li>
       <li>
         <.link href="#" class={@top_nav == :users && "active"}>Users</.link>

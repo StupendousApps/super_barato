@@ -264,4 +264,77 @@ defmodule SuperBarato.Catalog do
       :error -> order_by(query, [l], desc: l.last_priced_at)
     end
   end
+
+  @category_sortable %{
+    "name" => :name,
+    "chain" => :chain,
+    "slug" => :slug,
+    "level" => :level,
+    "last_seen_at" => :last_seen_at
+  }
+
+  @doc """
+  Paginated categories for the admin table. Same result shape as
+  `list_listings_page/1`.
+
+  Options: `:chain`, `:q` (LIKE on name / slug), `:leaves_only` (boolean),
+  `:sort`, `:page`, `:per_page`.
+  """
+  def list_categories_page(opts \\ []) do
+    page = max(1, opts[:page] || 1)
+    per_page = opts[:per_page] |> clamp_per_page()
+
+    query =
+      Category
+      |> apply_cat_chain_filter(opts[:chain])
+      |> apply_cat_q_filter(opts[:q])
+      |> apply_cat_leaves_filter(opts[:leaves_only])
+
+    total_entries = Repo.aggregate(query, :count)
+
+    items =
+      query
+      |> apply_cat_sort(opts[:sort] || "-last_seen_at")
+      |> limit(^per_page)
+      |> offset(^((page - 1) * per_page))
+      |> Repo.all()
+
+    %{
+      items: items,
+      page: page,
+      per_page: per_page,
+      total_entries: total_entries,
+      total_pages: max(1, div(total_entries + per_page - 1, per_page))
+    }
+  end
+
+  defp apply_cat_chain_filter(query, nil), do: query
+  defp apply_cat_chain_filter(query, ""), do: query
+
+  defp apply_cat_chain_filter(query, chain) when is_atom(chain),
+    do: where(query, [c], c.chain == ^Atom.to_string(chain))
+
+  defp apply_cat_chain_filter(query, chain) when is_binary(chain),
+    do: where(query, [c], c.chain == ^chain)
+
+  defp apply_cat_q_filter(query, nil), do: query
+  defp apply_cat_q_filter(query, ""), do: query
+
+  defp apply_cat_q_filter(query, q) when is_binary(q) do
+    like = "%" <> String.replace(q, "%", "\\%") <> "%"
+    where(query, [c], like(c.name, ^like) or like(c.slug, ^like))
+  end
+
+  defp apply_cat_leaves_filter(query, true), do: where(query, [c], c.is_leaf == true)
+  defp apply_cat_leaves_filter(query, _), do: query
+
+  defp apply_cat_sort(query, "-" <> field), do: apply_cat_sort_dir(query, field, :desc)
+  defp apply_cat_sort(query, field), do: apply_cat_sort_dir(query, field, :asc)
+
+  defp apply_cat_sort_dir(query, field, dir) do
+    case Map.fetch(@category_sortable, field) do
+      {:ok, atom} -> order_by(query, [c], [{^dir, field(c, ^atom)}])
+      :error -> order_by(query, [c], desc: c.last_seen_at)
+    end
+  end
 end
