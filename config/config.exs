@@ -79,8 +79,9 @@ config :super_barato, SuperBarato.Crawler,
         # Product walk: leaf categories from DB → per-category tasks
         {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :products]]}},
-        # Price refresh: active identifiers → 25-EAN batches
-        {{:every, {1, :hour}},
+        # Price refresh: active identifiers → 25-EAN batches (daily
+        # cadence for now; can be tightened to hourly later).
+        {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :prices]]}}
       ]
     ],
@@ -93,7 +94,7 @@ config :super_barato, SuperBarato.Crawler,
           [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
         {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :products]]}},
-        {{:every, {1, :hour}},
+        {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :prices]]}}
       ]
     ],
@@ -107,7 +108,7 @@ config :super_barato, SuperBarato.Crawler,
         {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run,
           [[chain: :santa_isabel, mode: :products]]}},
-        {{:every, {1, :hour}},
+        {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run,
           [[chain: :santa_isabel, mode: :prices]]}}
       ]
@@ -136,7 +137,7 @@ config :super_barato, SuperBarato.Crawler,
           [:lider, {:discover_categories, %{chain: :lider, parent: nil}}]}},
         {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :products]]}},
-        {{:every, {1, :hour}},
+        {{:every, {1, :day}},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :prices]]}}
       ]
     ]
