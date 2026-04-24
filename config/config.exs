@@ -54,17 +54,6 @@ config :esbuild,
     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ]
 
-# Configure tailwind (the version is required)
-config :tailwind,
-  version: "4.1.12",
-  super_barato: [
-    args: ~w(
-      --input=assets/css/app.css
-      --output=priv/static/assets/css/app.css
-    ),
-    cd: Path.expand("..", __DIR__)
-  ]
-
 # Configure Elixir's Logger. Metadata includes :chain and :role so
 # pipeline log lines show which supermarket and which GenServer
 # produced them — the Worker/Results/Cron/Producer modules all call

@@ -51,14 +51,6 @@ defmodule SuperBarato.MixProject do
       {:lazy_html, ">= 0.1.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
-      {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.2.0",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
       {:swoosh, "~> 1.16"},
       {:req, "~> 0.5"},
       {:telemetry_metrics, "~> 1.0"},
@@ -81,32 +73,25 @@ defmodule SuperBarato.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": [
-        "compile",
-        "tailwind super_barato",
-        "esbuild super_barato",
-        &copy_admin_css/1
-      ],
-      "assets.deploy": [
-        "tailwind super_barato --minify",
-        "esbuild super_barato --minify",
-        &copy_admin_css/1,
-        "phx.digest"
-      ],
+      "assets.setup": ["esbuild.install --if-missing"],
+      "assets.build": ["compile", "esbuild super_barato", &copy_css/1],
+      "assets.deploy": ["esbuild super_barato --minify", &copy_css/1, "phx.digest"],
       precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
     ]
   end
 
-  # Raw CSS under assets/css/admin/ is not processed by tailwind/esbuild;
-  # it ships as-is, served by Plug.Static from priv/static/assets/.
-  defp copy_admin_css(_args) do
-    src = "assets/css/admin"
-    dst = "priv/static/assets/css/admin"
-    File.mkdir_p!(dst)
+  # Raw CSS under assets/css/ ships as-is, served by Plug.Static from
+  # priv/static/assets/. No tailwind/daisy — just hand-written styles.
+  defp copy_css(_args) do
+    File.mkdir_p!("priv/static/assets/css")
+    File.mkdir_p!("priv/static/assets/css/admin")
 
-    for file <- File.ls!(src), String.ends_with?(file, ".css") do
-      File.cp!(Path.join(src, file), Path.join(dst, file))
+    for file <- File.ls!("assets/css"), String.ends_with?(file, ".css") do
+      File.cp!("assets/css/#{file}", "priv/static/assets/css/#{file}")
+    end
+
+    for file <- File.ls!("assets/css/admin"), String.ends_with?(file, ".css") do
+      File.cp!("assets/css/admin/#{file}", "priv/static/assets/css/admin/#{file}")
     end
   end
 end

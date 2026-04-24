@@ -25,8 +25,7 @@ config :super_barato, SuperBaratoWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "MulZqePeeEb+/hdxPUJoss9nu0mvC4rOhLzz9ruQ0QYSulZ38ezZiyqg2PZv8smi",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:super_barato, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:super_barato, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:super_barato, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
