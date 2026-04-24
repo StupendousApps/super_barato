@@ -34,3 +34,9 @@ user =
   end
 
 IO.puts("Seeded superadmin: #{user.email} (role=#{user.role})")
+
+# Crawler schedules — one row per (chain, kind) described in
+# config/config.exs. Only inserts missing rows, so edits from the
+# admin UI aren't clobbered on re-seed.
+n = SuperBarato.Crawler.Schedules.seed_from_config()
+IO.puts("Seeded crawler schedules (#{n} config entries processed)")
