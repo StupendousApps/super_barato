@@ -118,6 +118,17 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
+    tottus: [
+      interval_ms: 1_000,
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      schedule: [
+        {{:weekly, [:mon], [~T[04:30:00]]},
+         {SuperBarato.Crawler.Chain.Queue, :push,
+          [:tottus, {:discover_categories, %{chain: :tottus, parent: nil}}]}},
+        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[07:00:00]]},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :tottus]]}}
+      ]
+    ],
     # Lider's Akamai blocks Chrome 110+; only older Chrome profiles
     # pass. We lead with chrome107 (confirmed working) and fall back to
     # 104/100/99 if it ever starts getting challenged.
