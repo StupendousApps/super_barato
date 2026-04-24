@@ -49,6 +49,7 @@ defmodule SuperBarato.Crawler.Chain.Worker do
   def init(opts) do
     chain = Keyword.fetch!(opts, :chain)
     interval_ms = Keyword.get(opts, :interval_ms, @default_interval_ms)
+    Logger.metadata(chain: chain, role: :worker)
 
     state = %{
       chain: chain,

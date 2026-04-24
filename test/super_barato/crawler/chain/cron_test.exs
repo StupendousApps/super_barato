@@ -219,6 +219,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
         date = Date.add(base_monday, i)
         now = DateTime.new!(date, ~T[12:00:00], "Etc/UTC")
         cadence = {:weekly, [day_atom], [~T[15:00:00]]}
+
         assert Cron.delay_ms(cadence, now) == 3 * 3_600_000,
                "failed for #{day_atom}"
       end
@@ -233,6 +234,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
         now = DateTime.new!(date, ~T[12:00:00], "Etc/UTC")
         cadence = {:weekly, [day_atom], [~T[09:00:00]]}
         expected = 7 * 86_400_000 - 3 * 3_600_000
+
         assert Cron.delay_ms(cadence, now) == expected,
                "failed for #{day_atom}"
       end

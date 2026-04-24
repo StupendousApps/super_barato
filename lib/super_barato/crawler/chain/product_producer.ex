@@ -20,9 +20,10 @@ defmodule SuperBarato.Crawler.Chain.ProductProducer do
   @doc "Runs to completion. Spawn via Task.Supervisor."
   def run(opts) do
     chain = Keyword.fetch!(opts, :chain)
-    Logger.info("[#{chain}] product producer starting")
+    Logger.metadata(chain: chain, role: :producer)
+    Logger.info("product producer starting")
     count = do_run(chain)
-    Logger.info("[#{chain}] product producer done: pushed=#{count}")
+    Logger.info("product producer done: pushed=#{count}")
   end
 
   defp do_run(chain) do

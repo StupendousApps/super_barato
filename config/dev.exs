@@ -68,8 +68,14 @@ config :super_barato, SuperBaratoWeb.Endpoint,
 # Enable dev routes for dashboard and mailbox
 config :super_barato, dev_routes: true
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :default_formatter, format: "[$level] $message\n"
+# Dev logging: show timestamp + pipeline metadata so crawler runs are
+# legible (otherwise all messages from all chains merge together).
+# Example: 15:02:47 [info] chain=jumbo role=worker upserted 40 listings
+config :logger, :default_formatter,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:chain, :role]
+
+config :logger, level: :info
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

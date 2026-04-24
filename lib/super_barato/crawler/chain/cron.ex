@@ -38,6 +38,7 @@ defmodule SuperBarato.Crawler.Chain.Cron do
     chain = Keyword.fetch!(opts, :chain)
     schedule = Keyword.fetch!(opts, :schedule)
     task_sup = Keyword.fetch!(opts, :task_sup)
+    Logger.metadata(chain: chain, role: :cron)
 
     Enum.each(schedule, &schedule_next/1)
 

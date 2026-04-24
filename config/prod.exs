@@ -26,8 +26,15 @@ config :swoosh, api_client: Swoosh.ApiClient.Req
 # Disable Swoosh Local Memory Storage
 config :swoosh, local: false
 
-# Do not print debug messages in production
+# Prod logging: keep it at :info. Format includes chain + role so log
+# aggregators can filter and group pipeline lines per supermarket.
+# Format matches config.exs default (timestamp + metadata + message)
+# unless the deploy target replaces it (e.g. with JSON structured logs).
 config :logger, level: :info
+
+config :logger, :default_formatter,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id, :chain, :role]
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

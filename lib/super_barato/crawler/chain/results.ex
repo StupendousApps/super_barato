@@ -48,6 +48,7 @@ defmodule SuperBarato.Crawler.Chain.Results do
   def init(opts) do
     chain = Keyword.fetch!(opts, :chain)
     adapter = Keyword.get(opts, :adapter) || SuperBarato.Crawler.adapter(chain)
+    Logger.metadata(chain: chain, role: :results)
     {:ok, %{chain: chain, adapter: adapter}}
   end
 
@@ -61,6 +62,16 @@ defmodule SuperBarato.Crawler.Chain.Results do
     end
 
     {:noreply, state}
+  end
+
+  @doc """
+  Synchronous version of `record/3`. Applies the same persistence path
+  (upsert + PriceLog append) without going through the GenServer. Used
+  by Mix tasks (`crawler.trigger`) that want a blocking, standalone
+  run without a full pipeline.
+  """
+  def persist_sync(chain, adapter, task, payload) do
+    persist(%{chain: chain, adapter: adapter}, task, payload)
   end
 
   # Category discovery: upsert all categories from payload.

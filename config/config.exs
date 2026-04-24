@@ -52,10 +52,13 @@ config :tailwind,
     cd: Path.expand("..", __DIR__)
   ]
 
-# Configure Elixir's Logger
+# Configure Elixir's Logger. Metadata includes :chain and :role so
+# pipeline log lines show which supermarket and which GenServer
+# produced them — the Worker/Results/Cron/Producer modules all call
+# Logger.metadata(chain: ..., role: ...) in their init.
 config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  metadata: [:request_id, :chain, :role]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason

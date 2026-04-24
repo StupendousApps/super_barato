@@ -10,7 +10,13 @@ defmodule SuperBarato.PriceLogTest do
     dir =
       Path.join(System.tmp_dir!(), "sb_pricelog_#{System.unique_integer([:positive])}")
 
-    :ok = File.mkdir_p!(dir) |> case do :ok -> :ok; other -> other end
+    :ok =
+      File.mkdir_p!(dir)
+      |> case do
+        :ok -> :ok
+        other -> other
+      end
+
     original = Application.get_env(:super_barato, :price_log_dir)
     Application.put_env(:super_barato, :price_log_dir, dir)
 

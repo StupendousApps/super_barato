@@ -15,7 +15,9 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
     {:ok, _pid} = start_supervised({Results, chain: chain, adapter: StubAdapter})
 
     # Point PriceLog at a temp dir for this test.
-    log_dir = Path.join(System.tmp_dir!(), "sb_results_test_#{System.unique_integer([:positive])}")
+    log_dir =
+      Path.join(System.tmp_dir!(), "sb_results_test_#{System.unique_integer([:positive])}")
+
     File.mkdir_p!(log_dir)
     original = Application.get_env(:super_barato, :price_log_dir)
     Application.put_env(:super_barato, :price_log_dir, log_dir)
