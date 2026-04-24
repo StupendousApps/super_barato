@@ -45,82 +45,79 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
     end
   end
 
-  describe ":weekly_at cadence" do
-    test "schedules for the right weekday at the right UTC time" do
-      chain = :"cron_weekly_at_#{System.unique_integer([:positive])}"
+  describe ":weekly cadence" do
+    test "fires when all 7 days + imminent time (effectively daily_at)" do
+      chain = :"cron_weekly_all_#{System.unique_integer([:positive])}"
       task_sup_name = {:via, Registry, {SuperBarato.Crawler.Registry, {Task.Supervisor, chain}}}
-      {:ok, _} = start_supervised({Task.Supervisor, name: task_sup_name}, id: {:wat_sup, chain})
+      {:ok, _} = start_supervised({Task.Supervisor, name: task_sup_name}, id: {:wa_sup, chain})
 
-      # Pick tomorrow's weekday at an arbitrary time. We don't wait
-      # for it to fire (too slow); we just verify Cron init doesn't
-      # crash and the process is alive.
-      tomorrow = DateTime.utc_now() |> DateTime.add(1, :day) |> DateTime.to_date()
-      tomorrow_dow = Date.day_of_week(tomorrow)
+      target =
+        DateTime.utc_now()
+        |> DateTime.add(1_200, :millisecond)
+        |> DateTime.to_time()
+        |> Time.truncate(:second)
 
-      day_atom =
-        Enum.at([:mon, :tue, :wed, :thu, :fri, :sat, :sun], tomorrow_dow - 1)
+      # Truncation rounds down; bump by 1s so the slot is actually ahead.
+      target = Time.add(target, 1, :second)
 
-      schedule = [{{:weekly_at, day_atom, ~T[12:00:00]}, {TestTarget, :fire, [self(), :weekly]}}]
+      schedule = [
+        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [target]},
+         {TestTarget, :fire, [self(), :daily]}}
+      ]
 
-      {:ok, cron} =
+      {:ok, _} =
         start_supervised(
           {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name},
-          id: {:wat_cron, chain}
+          id: {:wa_cron, chain}
         )
 
-      assert Process.alive?(cron)
+      assert_receive {:fired, :daily}, 2_500
     end
 
-    test "fires when the scheduled slot is moments away" do
-      chain = :"cron_weekly_at_now_#{System.unique_integer([:positive])}"
+    test "fires when single day + imminent time (effectively weekly_at)" do
+      chain = :"cron_weekly_single_#{System.unique_integer([:positive])}"
       task_sup_name = {:via, Registry, {SuperBarato.Crawler.Registry, {Task.Supervisor, chain}}}
-      {:ok, _} = start_supervised({Task.Supervisor, name: task_sup_name}, id: {:wn_sup, chain})
+      {:ok, _} = start_supervised({Task.Supervisor, name: task_sup_name}, id: {:ws_sup, chain})
 
       target_dt = DateTime.utc_now() |> DateTime.add(2, :second)
       dow = Date.day_of_week(DateTime.to_date(target_dt))
       day_atom = Enum.at([:mon, :tue, :wed, :thu, :fri, :sat, :sun], dow - 1)
       time = target_dt |> DateTime.to_time() |> Time.truncate(:second)
 
-      schedule = [{{:weekly_at, day_atom, time}, {TestTarget, :fire, [self(), :weekly_now]}}]
+      schedule = [{{:weekly, [day_atom], [time]}, {TestTarget, :fire, [self(), :weekly]}}]
 
       {:ok, _} =
         start_supervised(
           {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name},
-          id: {:wn_cron, chain}
+          id: {:ws_cron, chain}
         )
 
-      assert_receive {:fired, :weekly_now}, 3_500
+      assert_receive {:fired, :weekly}, 3_500
     end
-  end
 
-  describe ":daily_at cadence" do
-    @tag task_sup_name: {:via, Registry, {SuperBarato.Crawler.Registry, {Task.Supervisor, :dat}}}
-    test "fires an entry scheduled for a moment from now" do
-      chain = :"cron_daily_at_#{System.unique_integer([:positive])}"
+    test "picks the earliest (day × time) slot from the cross product" do
+      chain = :"cron_weekly_cross_#{System.unique_integer([:positive])}"
       task_sup_name = {:via, Registry, {SuperBarato.Crawler.Registry, {Task.Supervisor, chain}}}
-      {:ok, _} = start_supervised({Task.Supervisor, name: task_sup_name}, id: {:dat_sup, chain})
+      {:ok, _} = start_supervised({Task.Supervisor, name: task_sup_name}, id: {:wc_sup, chain})
 
-      # ~200ms from now, UTC
-      target =
-        DateTime.utc_now()
-        |> DateTime.add(200, :millisecond)
-        |> DateTime.to_time()
-        |> Time.truncate(:second)
+      # Near time + a time 6 hours later, every day.
+      now = DateTime.utc_now()
+      near = now |> DateTime.add(2, :second) |> DateTime.to_time() |> Time.truncate(:second)
+      far = Time.add(near, 6 * 3600)
 
-      # Truncating to :second rounds down — add one more second so the
-      # target isn't actually in the past.
-      target = Time.add(target, 1, :second)
-
-      schedule = [{{:daily_at, target}, {TestTarget, :fire, [self(), :at_time]}}]
+      schedule = [
+        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [far, near]},
+         {TestTarget, :fire, [self(), :cross]}}
+      ]
 
       {:ok, _} =
         start_supervised(
           {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name},
-          id: {:dat_cron, chain}
+          id: {:wc_cron, chain}
         )
 
-      # Up to 1500ms slack (second-level rounding + send_after + task spawn).
-      assert_receive {:fired, :at_time}, 1500
+      # Should fire at the near slot, not the far one — within 3.5s.
+      assert_receive {:fired, :cross}, 3_500
     end
   end
 end
