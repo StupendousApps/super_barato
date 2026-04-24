@@ -75,15 +75,21 @@ defmodule SuperBarato.Crawler.Chain.Cron do
 
   defp normalize({cadence, mfa}), do: {:cadence, cadence, mfa}
 
-  defp delay_ms({:every, {n, :second}}), do: n * 1_000
-  defp delay_ms({:every, {n, :minute}}), do: n * 60 * 1_000
-  defp delay_ms({:every, {n, :hour}}), do: n * 60 * 60 * 1_000
-  defp delay_ms({:every, {n, :day}}), do: n * 24 * 60 * 60 * 1_000
-  defp delay_ms({:every, {n, :days}}), do: n * 24 * 60 * 60 * 1_000
+  @doc """
+  Milliseconds from `now` until the next firing of `cadence`. Exposed
+  so unit tests can freeze `now` for deterministic computation. Uses
+  `DateTime.utc_now/0` when `now` isn't provided.
+  """
+  def delay_ms(cadence, now \\ DateTime.utc_now())
 
-  defp delay_ms({:weekly, days, times})
-       when is_list(days) and is_list(times) and days != [] and times != [] do
-    now = DateTime.utc_now()
+  def delay_ms({:every, {n, :second}}, _now), do: n * 1_000
+  def delay_ms({:every, {n, :minute}}, _now), do: n * 60 * 1_000
+  def delay_ms({:every, {n, :hour}}, _now), do: n * 60 * 60 * 1_000
+  def delay_ms({:every, {n, :day}}, _now), do: n * 24 * 60 * 60 * 1_000
+  def delay_ms({:every, {n, :days}}, _now), do: n * 24 * 60 * 60 * 1_000
+
+  def delay_ms({:weekly, days, times}, now)
+      when is_list(days) and is_list(times) and days != [] and times != [] do
     today = DateTime.to_date(now)
     today_dow = Date.day_of_week(today)
 
