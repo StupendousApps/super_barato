@@ -1,0 +1,112 @@
+.form {
+    border: 1px solid var(--border-color-2);
+    background-color: var(--background-color-1);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.form + .form {
+    margin-top: var(--spacing-md);
+}
+
+.form-title {
+    margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--text-color-2);
+}
+
+.form-reveal {
+    margin-top: var(--spacing-md);
+}
+
+.form-reveal-trigger {
+    display: inline-block;
+    padding: var(--spacing-xs) 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-color-3);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.form-reveal-trigger::-webkit-details-marker {
+    display: none;
+}
+
+.form-reveal-trigger:hover {
+    color: var(--text-color-1);
+}
+
+.form-reveal[open] .form-reveal-trigger {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color-1);
+}
+
+.form-inline {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+
+    .fieldset {
+        flex: 1;
+    }
+}
+
+.fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+
+    .label {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .label-text {
+        color: var(--text-color-2);
+        font-weight: medium;
+        font-size: var(--font-size-sm);
+        letter-spacing: 2px;
+    }
+}
+
+.form-errors {
+    background-color: var(--error-background);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+
+    ul {
+        margin: var(--spacing-xs) 0 0;
+        padding-left: var(--spacing-md);
+    }
+
+    li + li {
+        margin-top: var(--spacing-xs);
+    }
+}
+
+.form-errors-title {
+    margin: 0;
+    font-weight: 600;
+}
+
+.input-error {
+    color: var(--error-text);
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+.input[aria-invalid="true"],
+.fieldset .input-error ~ * .input,
+.fieldset .input-error-mark {
+    border-color: var(--error-border);
+}

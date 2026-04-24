@@ -1,0 +1,90 @@
+.flash-group {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 320px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.flash-group > * {
+    pointer-events: auto;
+}
+
+.flash.flash-hidden {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.flash {
+    padding: var(--spacing-md) var(--spacing-md);
+    border: 1px solid;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    font-size: var(--font-size-md);
+    font-weight: regular;
+
+    p {
+        margin: 0;
+    }
+}
+
+.flash-title {
+    font-size: var(--font-size-md);
+    font-weight: semibold;
+}
+
+.flash-btn-close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    border-radius: 50%;
+    border: none;
+    height: 24px;
+    width: 24px;
+    background-color: transparent;
+}
+
+.flash-info {
+    background-color: var(--info-background);
+    color: var(--info-text);
+    border-color: var(--info-border);
+
+    .flash-btn-close {
+        color: var(--info-text);
+
+        &:hover {
+            background-color: var(--info-border);
+        }
+    }
+}
+
+.flash-success {
+    background-color: var(--success-background);
+    color: var(--success-text);
+    border-color: var(--success-border);
+
+    .flash-btn-close {
+        color: var(--success-text);
+
+        &:hover {
+            background-color: var(--success-border);
+        }
+    }
+}
+
+.flash-error {
+    background-color: var(--error-background);
+    color: var(--error-text);
+    border-color: var(--error-border);
+
+    .flash-btn-close {
+        color: var(--error-text);
+
+        &:hover {
+            background-color: var(--error-border);
+        }
+    }
+}
