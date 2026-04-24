@@ -82,16 +82,20 @@ defmodule SuperBarato.MixProject do
 
   # Raw CSS under assets/css/ ships as-is, served by Plug.Static from
   # priv/static/assets/. No tailwind/daisy — just hand-written styles.
+  # Mirrors the full tree (reset.css at the root, app/ and admin/
+  # subdirs) into priv/static.
   defp copy_css(_args) do
-    File.mkdir_p!("priv/static/assets/css")
-    File.mkdir_p!("priv/static/assets/css/admin")
+    src_root = "assets/css"
+    dst_root = "priv/static/assets/css"
 
-    for file <- File.ls!("assets/css"), String.ends_with?(file, ".css") do
-      File.cp!("assets/css/#{file}", "priv/static/assets/css/#{file}")
-    end
-
-    for file <- File.ls!("assets/css/admin"), String.ends_with?(file, ".css") do
-      File.cp!("assets/css/admin/#{file}", "priv/static/assets/css/admin/#{file}")
-    end
+    src_root
+    |> Path.join("**/*.css")
+    |> Path.wildcard()
+    |> Enum.each(fn src ->
+      rel = Path.relative_to(src, src_root)
+      dst = Path.join(dst_root, rel)
+      File.mkdir_p!(Path.dirname(dst))
+      File.cp!(src, dst)
+    end)
   end
 end

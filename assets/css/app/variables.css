@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap');
+
+:root {
+  --bg: oklch(0.985 0.004 85);
+  --surface: #ffffff;
+  --panel: oklch(0.945 0.008 85);
+  --hair: oklch(0.93 0.006 85);
+  --soft: oklch(0.96 0.006 85);
+  --ink: oklch(0.22 0.02 80);
+  --ink-2: oklch(0.45 0.015 80);
+  --ink-3: oklch(0.62 0.012 80);
+  --ink-4: oklch(0.78 0.008 80);
+  --accent: oklch(0.22 0.02 80);
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+}

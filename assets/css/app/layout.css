@@ -1,0 +1,30 @@
+html.home, html.home body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  height: 100%;
+  overflow: hidden;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.stage { padding: 0; flex: 1; min-height: 0; }
+
+.frame {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.right { position: relative; min-height: 0; min-width: 0; overflow: hidden; }
+
+.main { padding: 96px 22px 26px; overflow: auto; min-height: 0; height: 100%; }

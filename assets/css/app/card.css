@@ -1,0 +1,62 @@
+.card {
+  position: relative; cursor: pointer;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 12px 12px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: transform .14s ease, box-shadow .14s ease;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
+  border: 0;
+  text-align: left;
+  width: 100%;
+}
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .02), 0 10px 30px rgba(0, 0, 0, .08);
+}
+.card:active { transform: translateY(0); }
+.card .img {
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 50% 45%, oklch(0.96 0.005 85) 0, oklch(0.93 0.006 85) 72%);
+  border-radius: var(--r-sm);
+  position: relative; overflow: hidden;
+}
+.card .img::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(0, 0, 0, .015) 6px 7px);
+}
+.card .img .hover-cta {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; background: var(--ink);
+  font-size: 14px; font-weight: 600; letter-spacing: .005em;
+  opacity: 0; pointer-events: none; transition: opacity .14s ease;
+  border-radius: inherit;
+}
+.card .img .hover-cta .plus {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; background: rgba(255, 255, 255, .16);
+  margin-right: 10px; font-weight: 400; font-size: 17px;
+}
+.card:hover .img .hover-cta { opacity: 1; }
+.card .name {
+  font-size: 13px; line-height: 1.35; color: var(--ink);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  min-height: 2.7em;
+}
+.card .unit { font-size: 11.5px; color: var(--ink-3); margin-top: -4px; }
+.card .range {
+  display: flex; align-items: baseline; gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.card .range .lo { font-size: 15px; font-weight: 600; letter-spacing: -.005em; }
+.card .range .dash { color: var(--ink-4); }
+.card .range .hi { font-size: 12.5px; color: var(--ink-3); }
+.card .stores {
+  font-size: 11px; color: var(--ink-3);
+  display: flex; align-items: center; gap: 6px;
+}
+.card .stores .dots { display: inline-flex; gap: 2px; }
+.card .stores .d {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--ink-3); opacity: .55;
+}

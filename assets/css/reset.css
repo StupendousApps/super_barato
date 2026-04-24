@@ -1,0 +1,22 @@
+/* Minimal shared reset — loaded first by both admin and app layouts. */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* LiveView wraps some fragments in <div data-phx-session>; collapse them
+   so they don't affect layout. */
+[data-phx-session],
+[data-phx-teleported-src] {
+  display: contents;
+}
