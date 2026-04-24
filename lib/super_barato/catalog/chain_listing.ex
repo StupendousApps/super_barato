@@ -2,7 +2,7 @@ defmodule SuperBarato.Catalog.ChainListing do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias SuperBarato.Catalog.{PriceSnapshot, Product}
+  alias SuperBarato.Catalog.Product
 
   schema "chain_listings" do
     field :chain, :string
@@ -27,7 +27,6 @@ defmodule SuperBarato.Catalog.ChainListing do
 
     belongs_to :product, Product, define_field: false
     field :product_id, :id
-    has_many :price_snapshots, PriceSnapshot
 
     timestamps(type: :utc_datetime)
   end

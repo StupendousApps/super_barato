@@ -87,7 +87,7 @@ lib/super_barato/
 │   ├── jumbo.ex / santa_isabel.ex / cencosud.ex
 │   └── lider.ex
 ├── catalog.ex                     # Ecto upsert + query helpers
-├── catalog/{category,chain_listing,price_snapshot}.ex  # schemas (price_snapshot unused)
+├── catalog/{category,chain_listing,product}.ex        # schemas
 └── price_log.ex                   # append/read for <dir>/<chain>/<sku>.log
 
 lib/mix/tasks/
