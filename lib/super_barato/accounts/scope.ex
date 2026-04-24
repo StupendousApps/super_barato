@@ -30,4 +30,20 @@ defmodule SuperBarato.Accounts.Scope do
   end
 
   def for_user(nil), do: nil
+
+  @doc """
+  True when the scope's user role is at least `required`.
+
+  Hierarchy: visitor < moderator < curator < superadmin.
+  A nil scope or nil user is never authorized.
+  """
+  def role_at_least?(%__MODULE__{user: %User{} = user}, required),
+    do: User.role_at_least?(user, required)
+
+  def role_at_least?(_, _), do: false
+
+  @doc "Convenience role checks."
+  def superadmin?(scope), do: role_at_least?(scope, :superadmin)
+  def curator?(scope), do: role_at_least?(scope, :curator)
+  def moderator?(scope), do: role_at_least?(scope, :moderator)
 end

@@ -2,14 +2,39 @@ defmodule SuperBarato.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @roles [:superadmin, :curator, :moderator, :visitor]
+  @role_rank %{superadmin: 3, curator: 2, moderator: 1, visitor: 0}
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
+    field :role, Ecto.Enum, values: @roles, default: :visitor
 
     timestamps(type: :utc_datetime)
+  end
+
+  @doc "All roles, ordered from lowest to highest privilege."
+  def roles, do: [:visitor, :moderator, :curator, :superadmin]
+
+  @doc """
+  Returns true when `user`'s role has at least as much privilege as
+  `required`. Hierarchy: visitor < moderator < curator < superadmin.
+  """
+  def role_at_least?(%__MODULE__{role: role}, required) when required in @roles do
+    Map.fetch!(@role_rank, role) >= Map.fetch!(@role_rank, required)
+  end
+
+  def role_at_least?(nil, _required), do: false
+
+  @doc "Changeset for assigning a role. Only superadmins should call this."
+  def role_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:role])
+    |> validate_required([:role])
+    |> validate_inclusion(:role, @roles)
   end
 
   @doc """

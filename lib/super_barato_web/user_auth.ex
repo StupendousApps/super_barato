@@ -6,6 +6,7 @@ defmodule SuperBaratoWeb.UserAuth do
 
   alias SuperBarato.Accounts
   alias SuperBarato.Accounts.Scope
+  alias SuperBarato.Accounts.User
 
   # Make the remember me cookie valid for 14 days. This should match
   # the session validity setting in UserToken.
@@ -216,4 +217,37 @@ defmodule SuperBaratoWeb.UserAuth do
   end
 
   defp maybe_store_return_to(conn), do: conn
+
+  @doc """
+  Plug enforcing a minimum role. Usage in router:
+
+      pipe_through [:browser, :require_authenticated_user]
+      pipe_through {SuperBaratoWeb.UserAuth, :require_role, :curator}
+
+  Or inline in a scope via `plug :require_role, :superadmin` after
+  importing this module. Unauthenticated users are redirected to login;
+  authenticated users below the required role get a 403.
+  """
+  def require_role(conn, required) when is_atom(required) do
+    scope = conn.assigns[:current_scope]
+
+    cond do
+      is_nil(scope) or is_nil(scope.user) ->
+        conn
+        |> put_flash(:error, "You must log in to access this page.")
+        |> maybe_store_return_to()
+        |> redirect(to: ~p"/users/log-in")
+        |> halt()
+
+      User.role_at_least?(scope.user, required) ->
+        conn
+
+      true ->
+        conn
+        |> put_flash(:error, "You do not have permission to access this page.")
+        |> put_status(:forbidden)
+        |> redirect(to: ~p"/")
+        |> halt()
+    end
+  end
 end
