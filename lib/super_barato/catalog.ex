@@ -1,17 +1,18 @@
 defmodule SuperBarato.Catalog do
   @moduledoc """
-  Persistence for the three crawl stages.
+  Persistence for the crawler.
 
-    * Stage 1 output → `upsert_category/1` writes `%Category{}` structs.
-    * Stage 2 output → `upsert_listing/1` writes `%Listing{}` structs
-      (identity + whatever prices the endpoint includes).
-    * Stage 3 output → `record_product_info/2` updates a `ChainListing`
-      with a refreshed `%Listing{}` and appends a price snapshot.
+    * Categories → `upsert_category/1` writes `%Category{}` structs.
+    * Products   → `upsert_listing/1` writes `%Listing{}` structs
+      (identity + current prices + image + metadata).
+    * Refresh    → `record_product_info/2` updates a `ChainListing`
+      with the fresh `current_*` price columns. Price history is
+      append-only in file logs (`SuperBarato.PriceLog`), not the DB.
   """
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{Category, ChainListing, PriceSnapshot}
+  alias SuperBarato.Catalog.{Category, ChainListing}
   alias SuperBarato.Crawler.Category, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
@@ -139,38 +140,23 @@ defmodule SuperBarato.Catalog do
   end
 
   @doc """
-  Stage-3 refresh: updates the listing's current price columns with the
-  fresh `%Listing{}` from `fetch_product_info/1`, and appends a row to
-  `price_snapshots`.
+  Refreshes a listing's current price columns. Price history is
+  appended to the file-backed log by `Chain.Results` separately
+  (`SuperBarato.PriceLog`), so this function only updates the DB
+  "current" snapshot.
   """
   def record_product_info(%ChainListing{} = existing, %Listing{} = fresh) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
     regular = fresh.regular_price || existing.current_regular_price
 
-    Repo.transaction(fn ->
-      {:ok, snapshot} =
-        %PriceSnapshot{}
-        |> PriceSnapshot.changeset(%{
-          chain_listing_id: existing.id,
-          regular_price: regular,
-          promo_price: fresh.promo_price,
-          promotions: fresh.promotions || %{},
-          captured_at: now
-        })
-        |> Repo.insert()
-
-      {:ok, updated} =
-        existing
-        |> ChainListing.price_changeset(%{
-          current_regular_price: regular,
-          current_promo_price: fresh.promo_price,
-          current_promotions: fresh.promotions || %{},
-          last_priced_at: now
-        })
-        |> Repo.update()
-
-      {updated, snapshot}
-    end)
+    existing
+    |> ChainListing.price_changeset(%{
+      current_regular_price: regular,
+      current_promo_price: fresh.promo_price,
+      current_promotions: fresh.promotions || %{},
+      last_priced_at: now
+    })
+    |> Repo.update()
   end
 
   @doc "Active listings for a chain — used for stage-3 refresh inputs."

@@ -15,7 +15,7 @@ defmodule SuperBarato.Crawler.Chain.Results do
 
   require Logger
 
-  alias SuperBarato.Catalog
+  alias SuperBarato.{Catalog, PriceLog}
 
   def start_link(opts) do
     chain = Keyword.fetch!(opts, :chain)
@@ -73,12 +73,13 @@ defmodule SuperBarato.Crawler.Chain.Results do
     end)
   end
 
-  # Product discovery: upsert all listings returned for this category.
+  # Product discovery: upsert every listing and append a price
+  # observation to the per-product file log.
   defp persist(state, {:discover_products, %{slug: slug}}, listings)
        when is_list(listings) do
     Enum.each(listings, fn listing ->
       case Catalog.upsert_listing(listing) do
-        {:ok, _} -> :ok
+        {:ok, _} -> log_price(listing)
         {:error, cs} -> Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
       end
     end)
@@ -86,15 +87,17 @@ defmodule SuperBarato.Crawler.Chain.Results do
     Logger.info("[#{state.chain}] upserted #{length(listings)} listings for category=#{slug}")
   end
 
-  # Price refresh: look up existing listing by identifier, record snapshot.
+  # Ad-hoc single-SKU refresh: look up existing listing by identifier,
+  # update current_* and append to the log.
   defp persist(state, {:fetch_product_info, %{identifiers: _ids}}, listings)
        when is_list(listings) do
     field = state.adapter.refresh_identifier()
 
     Enum.each(listings, fn info ->
       with id when is_binary(id) <- Map.get(info, field),
-           listing when not is_nil(listing) <- lookup_by(state.chain, field, id) do
-        Catalog.record_product_info(listing, info)
+           listing when not is_nil(listing) <- lookup_by(state.chain, field, id),
+           {:ok, _} <- Catalog.record_product_info(listing, info) do
+        log_price(info)
       else
         _ -> :skip
       end
@@ -106,6 +109,27 @@ defmodule SuperBarato.Crawler.Chain.Results do
       "[#{state.chain}] unknown task shape: task=#{inspect(task)} payload=#{inspect(payload, limit: 3)}"
     )
   end
+
+  # Appends a `<unix> <regular> [<promo>]` line to the product's log
+  # when the listing carries a usable price. No-op for rows without
+  # chain_sku or regular_price (partial payloads shouldn't pollute
+  # history).
+  defp log_price(%{chain: chain, chain_sku: sku, regular_price: regular} = listing)
+       when is_binary(sku) and is_integer(regular) do
+    promo =
+      case listing do
+        %_{promo_price: p} -> p
+        %{promo_price: p} -> p
+        _ -> nil
+      end
+
+    case PriceLog.append(chain, sku, regular, promo) do
+      :ok -> :ok
+      {:error, reason} -> Logger.warning("price log append failed: #{inspect(reason)}")
+    end
+  end
+
+  defp log_price(_), do: :skip
 
   defp lookup_by(chain, :chain_sku, id), do: Catalog.get_listing(chain, id)
 

@@ -74,20 +74,21 @@ config :super_barato, SuperBarato.Crawler,
     # Weekly "daily" = all 7 days; weekly one-shot = a single day.
     # Times are UTC — staggered across chains to avoid concurrent
     # bursts. CLT off-hours (02:00–06:00) = 05:00–09:00 UTC.
+    #
+    # `products` does both discovery and price refresh: the search
+    # endpoints return current prices alongside product data, and
+    # Chain.Results appends every observation to PriceLog.
     unimarc: [
       interval_ms: 1_000,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
-        # Weekly discovery — Monday 04:00 UTC.
+        # Weekly category discovery — Monday 04:00 UTC.
         {{:weekly, [:mon], [~T[04:00:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]}},
-        # Daily product walk.
+        # Daily product walk (captures prices as a side effect).
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[05:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :products]]}},
-        # Daily price refresh.
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[09:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc, mode: :prices]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}}
       ]
     ],
     jumbo: [
@@ -98,9 +99,7 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[05:30:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :products]]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[09:30:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo, mode: :prices]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo]]}}
       ]
     ],
     santa_isabel: [
@@ -111,11 +110,7 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:santa_isabel, {:discover_categories, %{chain: :santa_isabel, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[06:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run,
-          [[chain: :santa_isabel, mode: :products]]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[10:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run,
-          [[chain: :santa_isabel, mode: :prices]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
     # Lider's Akamai blocks Chrome 110+; only older Chrome profiles
@@ -141,9 +136,7 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:lider, {:discover_categories, %{chain: :lider, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[06:30:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :products]]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[10:30:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider, mode: :prices]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider]]}}
       ]
     ]
   ]
@@ -153,7 +146,10 @@ config :super_barato,
   # `curl_chrome107`, `curl_ff117`, etc.).
   curl_impersonate_dir: Path.expand("../priv/bin", __DIR__),
   # Default profile for chains that don't specify their own.
-  curl_impersonate_profile: :chrome116
+  curl_impersonate_profile: :chrome116,
+  # Append-only price history lives here. Prod should override to
+  # something outside the release dir (e.g. `/data/prices`).
+  price_log_dir: Path.expand("../priv/data/prices", __DIR__)
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

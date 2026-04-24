@@ -39,5 +39,8 @@ npm-debug.log
 # not committed (~30MB, platform-specific).
 /priv/bin/
 
+# Append-only price log files (SuperBarato.PriceLog).
+/priv/data/
+
 # Local tool config
 /.claude/

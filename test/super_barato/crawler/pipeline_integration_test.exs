@@ -146,7 +146,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
 
       # 3. Schedule entry that spawns the producer.
       schedule = [
-        {{:every, {1, :day}}, {ProductProducer, :run, [[chain: @chain, mode: :products]]}}
+        {{:every, {1, :day}}, {ProductProducer, :run, [[chain: @chain]]}}
       ]
 
       _sup = start_pipeline(schedule)
