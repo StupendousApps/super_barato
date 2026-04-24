@@ -295,3 +295,48 @@ html.home, html.home body {
 .cta:hover { background: oklch(0.32 0.02 80); }
 .cta:active { transform: translateY(1px); }
 .cta[disabled] { opacity: .35; cursor: not-allowed; }
+
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  width: 100%; max-width: 380px;
+  padding: 22px 24px 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+  display: flex; flex-direction: column; gap: 16px;
+}
+.modal-hd {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-hd h2 {
+  font: 600 18px/1 'Instrument Sans', sans-serif;
+  margin: 0; letter-spacing: -.01em;
+}
+.modal-close {
+  appearance: none; border: 0; background: transparent;
+  font-size: 22px; line-height: 1; color: var(--ink-3);
+  cursor: pointer; padding: 4px 8px; border-radius: 999px;
+}
+.modal-close:hover { background: var(--soft); color: var(--ink); }
+.modal-form {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.modal-form label {
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 12px; color: var(--ink-2);
+}
+.modal-form input {
+  border: 1px solid var(--hair);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  font-size: 14px; background: var(--surface);
+  outline: none;
+}
+.modal-form input:focus {
+  border-color: var(--ink-3);
+}

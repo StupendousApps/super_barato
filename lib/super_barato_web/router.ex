@@ -18,9 +18,13 @@ defmodule SuperBaratoWeb.Router do
   end
 
   scope "/", SuperBaratoWeb do
-    pipe_through :browser
+    pipe_through [:browser, :put_home_layout]
 
     live "/", HomeLive, :index
+  end
+
+  defp put_home_layout(conn, _opts) do
+    Phoenix.Controller.put_root_layout(conn, html: {SuperBaratoWeb.Layouts, :home_root})
   end
 
   # Other scopes may use custom stacks.
