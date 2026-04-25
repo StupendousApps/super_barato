@@ -61,8 +61,12 @@ env:
     # Master switch: turn the crawler pipeline on for the deployed app.
     CHAINS_ENABLED: "true"
     # Tee logs to a file alongside stdout so they survive container
-    # restarts. Rotates at 10 MB × 5 files (~50 MB retained on disk).
+    # restarts. Rotates at LOG_MAX_BYTES × LOG_MAX_FILES (defaults
+    # 10 MB × 5 files = ~50 MB on disk). Uncomment below to tighten
+    # or loosen retention without a rebuild.
     LOG_DIR: /data/log
+    # LOG_MAX_FILES: "5"
+    # LOG_MAX_BYTES: "10485760"
 
 # Each concern gets its own bind mount so they're independently
 # inspectable / backupable on the host:

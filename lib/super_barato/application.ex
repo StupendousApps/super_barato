@@ -45,14 +45,20 @@ defmodule SuperBarato.Application do
         File.mkdir_p!(dir)
         file = dir |> Path.join("super_barato.log") |> String.to_charlist()
 
+        # Retention is bounded by file count × file size. Tune via
+        # LOG_MAX_FILES + LOG_MAX_BYTES env vars (deploy.yml). Defaults
+        # cap on-disk usage at ~50 MB, plenty for the volume of crawler
+        # traffic we generate.
+        max_files = env_int("LOG_MAX_FILES", 5)
+        max_bytes = env_int("LOG_MAX_BYTES", 10_485_760)
+
         :ok =
           :logger.add_handler(:file_log, :logger_disk_log_h, %{
             config: %{
               file: file,
-              # Wrap at 10 MB × 5 files (~50 MB max retained on disk).
               type: :wrap,
-              max_no_files: 5,
-              max_no_bytes: 10_485_760
+              max_no_files: max_files,
+              max_no_bytes: max_bytes
             },
             formatter:
               Logger.Formatter.new(
@@ -60,6 +66,22 @@ defmodule SuperBarato.Application do
                 metadata: [:request_id, :chain, :role]
               )
           })
+    end
+  end
+
+  defp env_int(name, default) do
+    case System.get_env(name) do
+      nil ->
+        default
+
+      "" ->
+        default
+
+      v ->
+        case Integer.parse(v) do
+          {n, _} when n > 0 -> n
+          _ -> default
+        end
     end
   end
 

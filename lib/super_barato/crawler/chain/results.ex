@@ -95,7 +95,10 @@ defmodule SuperBarato.Crawler.Chain.Results do
       end
     end)
 
-    Logger.info("[#{state.chain}] upserted #{length(listings)} listings for category=#{slug}")
+    # Per-category log lives at :debug because a full daily product
+    # walk fires this once per leaf category (1000s of times). The
+    # interesting info is the producer-level start/done summary.
+    Logger.debug("[#{state.chain}] upserted #{length(listings)} listings for category=#{slug}")
   end
 
   # Ad-hoc single-SKU refresh: look up existing listing by identifier,

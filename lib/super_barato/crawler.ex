@@ -37,14 +37,24 @@ defmodule SuperBarato.Crawler do
   hasn't been started (i.e. `chains_enabled: false` or the chain crashed
   hard) so the caller can surface a useful error.
   """
+  require Logger
+
   @kinds ~w(discover_categories discover_products)
 
   def trigger(chain, kind) when is_atom(chain) do
     cond do
-      chain not in known_chains() -> {:error, :unknown_chain}
-      kind not in @kinds -> {:error, {:unknown_kind, kind}}
-      not pipeline_running?(chain) -> {:error, :pipeline_not_running}
-      true -> do_trigger(chain, kind)
+      chain not in known_chains() ->
+        {:error, :unknown_chain}
+
+      kind not in @kinds ->
+        {:error, {:unknown_kind, kind}}
+
+      not pipeline_running?(chain) ->
+        {:error, :pipeline_not_running}
+
+      true ->
+        Logger.info("[#{chain}] manual trigger: #{kind}")
+        do_trigger(chain, kind)
     end
   end
 
