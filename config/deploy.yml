@@ -24,15 +24,16 @@ servers:
       memory: 1g
       memory-reservation: 256m
 
-# Public hostnames terminating TLS at the Kamal proxy. Adjust the
-# `app_port` to match `PORT` in env.clear below.
+# Public hostnames terminating TLS at the Kamal proxy. Phoenix binds
+# to its default 4000 inside the container; the proxy multiplexes
+# 80/443 by Host onto that port.
 proxy:
   ssl: true
   hosts:
     - superbarato.cl
     - www.superbarato.cl
     - admin.superbarato.cl
-  app_port: 4003
+  app_port: 4000
   # `GET /up` returns 200 via SuperBaratoWeb.Plugs.Health, mounted
   # early in the endpoint so it bypasses the router (any host, no
   # session, no CSRF).
@@ -51,7 +52,6 @@ env:
     - SECRET_KEY_BASE
   clear:
     PHX_HOST: superbarato.cl
-    PORT: "4003"
     # SQLite file lives on its own host volume (see `volumes:` below)
     # so it can be snapshotted/backed up independently of logs/prices.
     DATABASE_PATH: /data/db/super_barato.db
