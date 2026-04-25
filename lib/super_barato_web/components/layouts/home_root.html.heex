@@ -17,6 +17,13 @@
     <link rel="stylesheet" href={~p"/assets/css/app/modal.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
     </script>
+    <script
+      :if={Application.get_env(:super_barato, :analytics_enabled, false)}
+      defer
+      src="https://stats.superbarato.cl/script.js"
+      data-website-id="2ad746e8-af46-415e-925f-9feaa9f5069e"
+    >
+    </script>
   </head>
   <body>
     {@inner_content}
