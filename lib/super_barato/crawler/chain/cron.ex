@@ -33,6 +33,21 @@ defmodule SuperBarato.Crawler.Chain.Cron do
   defp via(chain),
     do: {:via, Registry, {SuperBarato.Crawler.Registry, {__MODULE__, chain}}}
 
+  @doc """
+  Cast at the Cron for `chain` after editing DB schedules. Re-reads
+  `Schedules.cron_entries/1` and re-arms timers. Old timers still
+  fire but are dropped via an epoch check, so there's no race.
+
+  No-op when the Cron process isn't running (e.g. `chains_enabled:
+  false` in dev) — the DB is the source of truth at next boot anyway.
+  """
+  def reload(chain) do
+    case GenServer.whereis(via(chain)) do
+      nil -> :ok
+      _pid -> GenServer.cast(via(chain), :reload)
+    end
+  end
+
   @impl true
   def init(opts) do
     chain = Keyword.fetch!(opts, :chain)
@@ -40,13 +55,38 @@ defmodule SuperBarato.Crawler.Chain.Cron do
     task_sup = Keyword.fetch!(opts, :task_sup)
     Logger.metadata(chain: chain, role: :cron)
 
-    Enum.each(schedule, &schedule_next/1)
+    epoch = 0
+    Enum.each(schedule, &schedule_next(&1, epoch))
 
-    {:ok, %{chain: chain, schedule: schedule, task_sup: task_sup}}
+    {:ok, %{chain: chain, schedule: schedule, task_sup: task_sup, epoch: epoch}}
   end
 
   @impl true
-  def handle_info({:fire, entry}, state) do
+  def handle_cast(:reload, state) do
+    new_epoch = state.epoch + 1
+    new_schedule = SuperBarato.Crawler.Schedules.cron_entries(state.chain)
+
+    Logger.info(
+      "[#{state.chain}] cron reload: #{length(new_schedule)} active entries (epoch #{new_epoch})"
+    )
+
+    Enum.each(new_schedule, &schedule_next(&1, new_epoch))
+    {:noreply, %{state | schedule: new_schedule, epoch: new_epoch}}
+  end
+
+  @impl true
+  # Tests send `{:fire, entry}` directly; treat that as "fire under the
+  # current epoch" for back-compat.
+  def handle_info({:fire, entry}, state),
+    do: handle_info({:fire, entry, state.epoch}, state)
+
+  def handle_info({:fire, entry, epoch}, %{epoch: current} = state) when epoch != current do
+    # Stale timer from before a reload — drop it silently.
+    _ = entry
+    {:noreply, state}
+  end
+
+  def handle_info({:fire, entry, epoch}, state) do
     {:cadence, _, {m, f, a}} = normalize(entry)
 
     Logger.info("[#{state.chain}] cron firing #{inspect({m, f})}")
@@ -55,7 +95,7 @@ defmodule SuperBarato.Crawler.Chain.Cron do
       apply(m, f, a)
     end)
 
-    schedule_next(entry)
+    schedule_next(entry, epoch)
     {:noreply, state}
   end
 
@@ -69,9 +109,9 @@ defmodule SuperBarato.Crawler.Chain.Cron do
   # `:mon`..`:sun`; times are `%Time{}` structs. If the earliest
   # upcoming slot is today and its time has already passed, it rolls
   # forward to the next matching (day, time) pair.
-  defp schedule_next({cadence, mfa}) do
+  defp schedule_next({cadence, mfa}, epoch) do
     delay = delay_ms(cadence)
-    Process.send_after(self(), {:fire, {cadence, mfa}}, delay)
+    Process.send_after(self(), {:fire, {cadence, mfa}, epoch}, delay)
   end
 
   defp normalize({cadence, mfa}), do: {:cadence, cadence, mfa}

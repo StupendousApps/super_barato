@@ -13,6 +13,14 @@
         </.link>
       </li>
       <li>
+        <.link
+          href={~p"/admin/crawlers/schedules"}
+          class={@top_nav == :crawlers && "active"}
+        >
+          Crawlers
+        </.link>
+      </li>
+      <li>
         <.link href="#" class={@top_nav == :users && "active"}>Users</.link>
       </li>
     </ul>

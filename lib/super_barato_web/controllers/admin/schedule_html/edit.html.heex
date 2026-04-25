@@ -1,0 +1,5 @@
+<.page_header title={"Edit: #{chain_label(@schedule.chain)} · #{kind_label(@schedule.kind)}"}>
+  <:back href={~p"/admin/crawlers/schedules"}>Cron Jobs</:back>
+</.page_header>
+
+<.schedule_form changeset={@changeset} action={@action} />

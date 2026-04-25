@@ -90,6 +90,10 @@ defmodule SuperBaratoWeb.Router do
     get "/", PageController, :index
     get "/listings", ListingController, :index
     get "/categories", CategoryController, :index
+
+    get "/crawlers", ScheduleController, :index, as: :crawlers_root
+    resources "/crawlers/schedules", ScheduleController, except: [:show]
+
     delete "/logout", SessionController, :delete
   end
 end

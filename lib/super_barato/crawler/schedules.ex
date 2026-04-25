@@ -13,12 +13,28 @@ defmodule SuperBarato.Crawler.Schedules do
   alias SuperBarato.{Crawler, Repo}
   alias SuperBarato.Crawler.Schedule
 
-  @doc "All schedules, ordered by chain then kind for stable admin display."
-  def list do
+  @doc """
+  Schedules ordered by chain then kind. Optional filters:
+
+    * `:chain` — atom or string chain id, or nil/"" for all.
+    * `:kind`  — "discover_categories" | "discover_products", or nil/"" for all.
+  """
+  def list(opts \\ []) do
     Schedule
+    |> filter_chain(opts[:chain])
+    |> filter_kind(opts[:kind])
     |> order_by([s], asc: s.chain, asc: s.kind)
     |> Repo.all()
   end
+
+  defp filter_chain(q, nil), do: q
+  defp filter_chain(q, ""), do: q
+  defp filter_chain(q, chain) when is_atom(chain), do: where(q, [s], s.chain == ^Atom.to_string(chain))
+  defp filter_chain(q, chain) when is_binary(chain), do: where(q, [s], s.chain == ^chain)
+
+  defp filter_kind(q, nil), do: q
+  defp filter_kind(q, ""), do: q
+  defp filter_kind(q, kind) when is_binary(kind), do: where(q, [s], s.kind == ^kind)
 
   @doc "Schedules for a single chain (active + inactive)."
   def list_for(chain) when is_atom(chain), do: list_for(Atom.to_string(chain))
@@ -35,8 +51,43 @@ defmodule SuperBarato.Crawler.Schedules do
   def change_schedule(%Schedule{} = s, attrs \\ %{}),
     do: Schedule.changeset(s, attrs)
 
+  def create(attrs) do
+    %Schedule{}
+    |> Schedule.changeset(attrs)
+    |> Repo.insert()
+    |> reload_after_mutation()
+  end
+
   def update(%Schedule{} = s, attrs) do
-    s |> Schedule.changeset(attrs) |> Repo.update()
+    s
+    |> Schedule.changeset(attrs)
+    |> Repo.update()
+    |> reload_after_mutation()
+  end
+
+  def delete(%Schedule{} = s) do
+    with {:ok, deleted} <- Repo.delete(s) do
+      reload_chain(deleted.chain)
+      {:ok, deleted}
+    end
+  end
+
+  # After insert/update: ask the running Cron (if any) to re-arm its
+  # timers. Wrapped in a helper so all three mutations converge on a
+  # single reload call site.
+  defp reload_after_mutation({:ok, %Schedule{chain: chain}} = ok) do
+    reload_chain(chain)
+    ok
+  end
+
+  defp reload_after_mutation(other), do: other
+
+  defp reload_chain(chain_str) when is_binary(chain_str) do
+    chain_str
+    |> String.to_existing_atom()
+    |> SuperBarato.Crawler.Chain.Cron.reload()
+  rescue
+    ArgumentError -> :ok
   end
 
   @doc """

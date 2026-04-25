@@ -12,7 +12,11 @@ defmodule SuperBaratoWeb.AdminComponents do
   ## page_header
 
   attr :title, :string, required: true
-  slot :back, doc: "back link; slot takes the label"
+
+  slot :back, doc: "back link; slot takes the label" do
+    attr :href, :string, required: true
+  end
+
   slot :actions, doc: "buttons on the top-right"
   slot :filters, doc: "form row under the title"
   slot :tabs, doc: "tab strip (<.sub_nav>) under the title"
