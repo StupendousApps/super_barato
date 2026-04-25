@@ -8,9 +8,9 @@
   <.stupendous_form for={form} action={~p"/admin/users/#{@user.id}"} method="put" width={:regular}>
     <.form_errors form={form} />
 
-    <p>
+    <.well color={:yellow}>
       Saving this form replaces the user's password and signs them out of every active session.
-    </p>
+    </.well>
 
     <.input
       field={form[:password]}

@@ -7,6 +7,8 @@ defmodule SuperBarato.Application do
 
   @impl true
   def start(_type, _args) do
+    configure_file_logging()
+
     children =
       [
         SuperBaratoWeb.Telemetry,
@@ -28,6 +30,37 @@ defmodule SuperBarato.Application do
   def config_change(changed, _new, removed) do
     SuperBaratoWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  # When `LOG_DIR` is set (only in prod, via deploy.yml's host volume),
+  # add a rotating file handler alongside the default stdout one so
+  # logs survive container restarts. Dev/test leave this off and use
+  # stdout-only.
+  defp configure_file_logging do
+    case System.get_env("LOG_DIR") do
+      nil ->
+        :ok
+
+      dir ->
+        File.mkdir_p!(dir)
+        file = dir |> Path.join("super_barato.log") |> String.to_charlist()
+
+        :ok =
+          :logger.add_handler(:file_log, :logger_disk_log_h, %{
+            config: %{
+              file: file,
+              # Wrap at 10 MB × 5 files (~50 MB max retained on disk).
+              type: :wrap,
+              max_no_files: 5,
+              max_no_bytes: 10_485_760
+            },
+            formatter:
+              Logger.Formatter.new(
+                format: "$time $metadata[$level] $message\n",
+                metadata: [:request_id, :chain, :role]
+              )
+          })
+    end
   end
 
   # Per-chain pipeline supervisors (Queue, Worker, Results, Cron, TaskSup).

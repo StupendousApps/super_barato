@@ -5,10 +5,8 @@
 </.sub_navigation>
 
 <.admin_container title="Categories">
-  <form method="get" action={~p"/admin/categories"}>
-    <%= if @filters.chain != "" do %>
-      <input type="hidden" name="chain" value={@filters.chain} />
-    <% end %>
+  <.form for={%{}} method="get" action={~p"/admin/categories"}>
+    <.input :if={@filters.chain != ""} type="hidden" name="chain" value={@filters.chain} />
     <.filters>
       <.input name="q" value={@filters.q} label="Search" placeholder="Name or slug" />
       <.input
@@ -30,7 +28,7 @@
         <.button href={chain_tab_href(@active_chain)} variant={:subtle}>Reset</.button>
       </:actions>
     </.filters>
-  </form>
+  </.form>
 
   <.table rows={@result.items} empty="No categories yet.">
     <:col

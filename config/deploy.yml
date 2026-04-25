@@ -48,8 +48,9 @@ env:
   clear:
     PHX_HOST: superbarato.cl
     PORT: "4003"
-    # SQLite file lives on a host volume (see `volumes:` below).
-    DATABASE_PATH: /data/super_barato.db
+    # SQLite file lives on its own host volume (see `volumes:` below)
+    # so it can be snapshotted/backed up independently of logs/prices.
+    DATABASE_PATH: /data/db/super_barato.db
     # Append-only price logs persist across deploys via a host volume.
     PRICE_LOG_DIR: /data/prices
     # The release ships curl-impersonate binaries inside the image at
@@ -59,10 +60,20 @@ env:
     CURL_IMPERSONATE_DIR: /app/lib/super_barato-0.1.0/priv/bin
     # Master switch: turn the crawler pipeline on for the deployed app.
     CHAINS_ENABLED: "true"
+    # Tee logs to a file alongside stdout so they survive container
+    # restarts. Rotates at 10 MB × 5 files (~50 MB retained on disk).
+    LOG_DIR: /data/log
 
-# Persist /data across container restarts and image upgrades.
+# Each concern gets its own bind mount so they're independently
+# inspectable / backupable on the host:
+#
+#   * /data/db      — SQLite file + WAL/shm sidecars
+#   * /data/log     — rotating app log files
+#   * /data/prices  — append-only price-history logs
 volumes:
-  - "/data/super_barato:/data"
+  - "/data/super_barato/db:/data/db"
+  - "/data/super_barato/log:/data/log"
+  - "/data/super_barato/prices:/data/prices"
 
 aliases:
   console: app exec --interactive --reuse "bin/super_barato remote"

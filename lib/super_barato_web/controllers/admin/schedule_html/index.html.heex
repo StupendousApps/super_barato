@@ -8,7 +8,7 @@
     <.button href={~p"/admin/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
   </:actions>
 
-  <form method="get" action={~p"/admin/crawlers/schedules"}>
+  <.form for={%{}} method="get" action={~p"/admin/crawlers/schedules"}>
     <.filters>
       <.input
         name="chain"
@@ -29,7 +29,7 @@
         <.button href={~p"/admin/crawlers/schedules"} variant={:subtle}>Reset</.button>
       </:actions>
     </.filters>
-  </form>
+  </.form>
 
   <.table rows={@schedules} empty="No cron jobs yet.">
     <:col :let={s} label="Chain">{chain_label(s.chain)}</:col>
