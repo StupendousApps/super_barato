@@ -20,9 +20,6 @@ if System.get_env("PHX_SERVER") do
   config :super_barato, SuperBaratoWeb.Endpoint, server: true
 end
 
-config :super_barato, SuperBaratoWeb.Endpoint,
-  http: [port: String.to_integer(System.get_env("PORT", "4000"))]
-
 if port = System.get_env("PORT") do
   config :super_barato, GalleryWeb.Endpoint, http: [port: String.to_integer(port)]
 end

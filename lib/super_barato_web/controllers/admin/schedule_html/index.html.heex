@@ -1,69 +1,50 @@
-<.page_header title="Cron Jobs">
+<.admin_container title="Cron Jobs">
   <:actions>
-    <.link href={~p"/admin/crawlers/schedules/new"} class="btn btn-primary">New cron job</.link>
+    <.button href={~p"/admin/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
   </:actions>
-  <:filters>
-    <form method="get" action={~p"/admin/crawlers/schedules"} class="form-inline">
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Chain</span>
-          <select name="chain" class="input">
-            <option value="" selected={@filters.chain == ""}>Any</option>
-            <option
-              :for={{label, value} <- chain_options()}
-              value={value}
-              selected={@filters.chain == value}
-            >
-              {label}
-            </option>
-          </select>
-        </label>
-      </div>
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Kind</span>
-          <select name="kind" class="input">
-            <option value="" selected={@filters.kind == ""}>Any</option>
-            <option
-              :for={{label, value} <- kind_options()}
-              value={value}
-              selected={@filters.kind == value}
-            >
-              {label}
-            </option>
-          </select>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Filter</button>
-      <a
-        href={~p"/admin/crawlers/schedules"}
-        class={[
-          "btn btn-subtle",
-          @filters.chain == "" and @filters.kind == "" && "btn-disabled"
-        ]}
-      >
-        Reset
-      </a>
-    </form>
-  </:filters>
-</.page_header>
 
-<.table rows={@schedules} empty="No cron jobs yet.">
-  <:col :let={s} label="Chain">{chain_label(s.chain)}</:col>
-  <:col :let={s} label="Kind">{kind_label(s.kind)}</:col>
-  <:col :let={s} label="Days">{s.days}</:col>
-  <:col :let={s} label="Times">{s.times}</:col>
-  <:col :let={s} label="Active">{s.active && "✓"}</:col>
-  <:col :let={s} label="Note">{s.note}</:col>
-  <:action :let={s}>
-    <.link href={~p"/admin/crawlers/schedules/#{s.id}/edit"} class="btn-link">Edit</.link>
-    <.link
-      href={~p"/admin/crawlers/schedules/#{s.id}"}
-      method="delete"
-      data-confirm="Delete this cron job?"
-      class="btn-link"
-    >
-      Delete
-    </.link>
-  </:action>
-</.table>
+  <form method="get" action={~p"/admin/crawlers/schedules"}>
+    <.filters>
+      <.input
+        name="chain"
+        type="select"
+        value={@filters.chain}
+        label="Chain"
+        options={chain_options()}
+      />
+      <.input
+        name="kind"
+        type="select"
+        value={@filters.kind}
+        label="Kind"
+        options={kind_filter_options()}
+      />
+      <:actions>
+        <.button type="submit" variant={:primary}>Filter</.button>
+        <.button href={~p"/admin/crawlers/schedules"} variant={:subtle}>Reset</.button>
+      </:actions>
+    </.filters>
+  </form>
+
+  <.table rows={@schedules} empty="No cron jobs yet.">
+    <:col :let={s} label="Chain">{chain_label(s.chain)}</:col>
+    <:col :let={s} label="Kind">{kind_label(s.kind)}</:col>
+    <:col :let={s} label="Days">{s.days}</:col>
+    <:col :let={s} label="Times">{s.times}</:col>
+    <:col :let={s} label="Active" align={:center}>{s.active && "✓"}</:col>
+    <:col :let={s} label="Note">{s.note}</:col>
+    <:action :let={s}>
+      <.row_actions>
+        <.button href={~p"/admin/crawlers/schedules/#{s.id}/edit"} variant={:link}>Edit</.button>
+        <.link
+          href={~p"/admin/crawlers/schedules/#{s.id}"}
+          method="delete"
+          data-confirm="Delete this cron job?"
+          class="btn btn--link"
+        >
+          Delete
+        </.link>
+      </.row_actions>
+    </:action>
+  </.table>
+</.admin_container>

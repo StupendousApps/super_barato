@@ -4,6 +4,7 @@ defmodule SuperBaratoWeb.Layouts do
   used by your application.
   """
   use SuperBaratoWeb, :html
+  import SuperBaratoWeb.CoreComponents
 
   # Embed all files in layouts/* within this module.
   # The default root.html.heex file contains the HTML

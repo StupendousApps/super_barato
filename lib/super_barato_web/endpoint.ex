@@ -27,6 +27,9 @@ defmodule SuperBaratoWeb.Endpoint do
     only: SuperBaratoWeb.static_paths(),
     raise_on_missing_only: code_reloading?
 
+  # Mount stupendous_admin's CSS / JS / icons under /stupendous-admin/.
+  plug Plug.Static, StupendousAdmin.Plug.static_opts()
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

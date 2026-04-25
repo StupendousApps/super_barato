@@ -1,44 +1,25 @@
-<div class="login-container">
-  <.form for={@form} action={~p"/admin/login"} class="form">
-    <h1 class="form-title">Admin login</h1>
+<.admin_container title="Admin login">
+  <.stupendous_form for={@form} action={~p"/admin/login"} width={:compact}>
+    <p :if={@error}>{@error}</p>
 
-    <div :if={@error} class="form-errors">
-      <p class="form-errors-title">{@error}</p>
-    </div>
+    <.input
+      field={@form[:email]}
+      type="email"
+      label="Email"
+      autocomplete="email"
+      required
+    />
+    <.input
+      field={@form[:password]}
+      type="password"
+      label="Password"
+      autocomplete="current-password"
+      required
+    />
+    <.input field={@form[:remember_me]} type="checkbox" label="Remember me" />
 
-    <div class="fieldset">
-      <label class="label">
-        <span class="label-text">Email</span>
-        <input
-          type="email"
-          name={@form[:email].name}
-          value={@form[:email].value}
-          class="input"
-          autocomplete="email"
-          required
-        />
-      </label>
-    </div>
-
-    <div class="fieldset">
-      <label class="label">
-        <span class="label-text">Password</span>
-        <input
-          type="password"
-          name={@form[:password].name}
-          class="input"
-          autocomplete="current-password"
-          required
-        />
-      </label>
-    </div>
-
-    <div class="fieldset">
-      <label>
-        <input type="checkbox" name={@form[:remember_me].name} value="true" /> Remember me
-      </label>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Log in</button>
-  </.form>
-</div>
+    <:footer>
+      <.button type="submit" variant={:primary}>Log in</.button>
+    </:footer>
+  </.stupendous_form>
+</.admin_container>

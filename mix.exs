@@ -57,7 +57,8 @@ defmodule SuperBarato.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:stupendous_admin, path: "../stupendous_admin"}
     ]
   end
 
@@ -80,10 +81,9 @@ defmodule SuperBarato.MixProject do
     ]
   end
 
-  # Raw CSS under assets/css/ ships as-is, served by Plug.Static from
-  # priv/static/assets/. No tailwind/daisy — just hand-written styles.
-  # Mirrors the full tree (reset.css at the root, app/ and admin/
-  # subdirs) into priv/static.
+  # Raw CSS under assets/css/ — public site only (HomeLive + the
+  # phx.gen.auth pages). Admin CSS comes from the :stupendous_admin
+  # dep, mounted by Plug.Static in the endpoint.
   defp copy_css(_args) do
     src_root = "assets/css"
     dst_root = "priv/static/assets/css"

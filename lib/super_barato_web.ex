@@ -79,9 +79,10 @@ defmodule SuperBaratoWeb do
     quote do
       # HTML escaping functionality
       import Phoenix.HTML
-      # Core UI components
-      import SuperBaratoWeb.CoreComponents
-      import SuperBaratoWeb.AdminComponents
+      # CoreComponents (button/input/header/table/...) collide with
+      # StupendousAdmin's component set, so they're imported only by the
+      # public-side HTML modules that still need them (phx.gen.auth
+      # pages). Admin HTML modules `use StupendousAdmin` instead.
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

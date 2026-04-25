@@ -1,73 +1,83 @@
-<.page_header title="Listings">
-  <:filters>
-    <form method="get" action={~p"/admin/listings"} class="form-inline">
-      <%= if @filters.chain != "" do %>
-        <input type="hidden" name="chain" value={@filters.chain} />
-      <% end %>
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Search</span>
-          <input type="text" name="q" value={@filters.q} class="input" placeholder="Name or brand" />
-        </label>
-      </div>
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Per page</span>
-          <select name="per_page" class="input">
-            <option value="" selected={@filters.per_page in ["", "25"]}>25</option>
-            <option value="50" selected={@filters.per_page == "50"}>50</option>
-            <option value="100" selected={@filters.per_page == "100"}>100</option>
-            <option value="200" selected={@filters.per_page == "200"}>200</option>
-          </select>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Search</button>
-      <a
-        href={chain_tab_href(@active_chain)}
-        class={[
-          "btn btn-subtle",
-          @filters.q == "" and @filters.per_page == "" and @sort == "-last_priced_at" &&
-            "btn-disabled"
-        ]}
-      >
-        Reset
-      </a>
-    </form>
-  </:filters>
-  <:tabs>
-    <.sub_nav active={@active_chain}>
-      <:item :for={chain <- chain_tabs()} href={chain_tab_href(chain)} value={chain}>
-        {chain_label(chain)}
-      </:item>
-    </.sub_nav>
-  </:tabs>
-</.page_header>
+<.sub_navigation active={@active_chain || :all}>
+  <:item :for={chain <- chain_tabs()} key={chain || :all} href={chain_tab_href(chain)}>
+    {if is_nil(chain), do: "All", else: chain_label(chain)}
+  </:item>
+</.sub_navigation>
 
-<.table
-  rows={@result.items}
-  empty="No listings yet. Run the crawler to populate."
-  sort={@sort}
-  sort_path={~p"/admin/listings"}
-  params={@filters}
->
-  <:col :let={l} label="Chain" sort_by="chain">{chain_label(l.chain)}</:col>
-  <:col :let={l} label="Name" sort_by="name">{l.name}</:col>
-  <:col :let={l} label="Brand" sort_by="brand">{l.brand}</:col>
-  <:col :let={l} label="SKU" nowrap>{l.chain_sku}</:col>
-  <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
-  <:col :let={l} label="Regular" sort_by="current_regular_price" nowrap>
-    {format_clp(l.current_regular_price)}
-  </:col>
-  <:col :let={l} label="Promo" nowrap>
-    {format_clp(l.current_promo_price)}
-  </:col>
-  <:col :let={l} label="Last priced" sort_by="last_priced_at" nowrap>
-    {format_datetime(l.last_priced_at)}
-  </:col>
-</.table>
+<.admin_container title="Listings">
+  <form method="get" action={~p"/admin/listings"}>
+    <%= if @filters.chain != "" do %>
+      <input type="hidden" name="chain" value={@filters.chain} />
+    <% end %>
+    <.filters>
+      <.input name="q" value={@filters.q} label="Search" placeholder="Name or brand" />
+      <.input
+        name="per_page"
+        type="select"
+        value={@filters.per_page}
+        label="Per page"
+        options={[{"25", ""}, {"50", "50"}, {"100", "100"}, {"200", "200"}]}
+      />
+      <:actions>
+        <.button type="submit" variant={:primary}>Search</.button>
+        <.button href={chain_tab_href(@active_chain)} variant={:subtle}>Reset</.button>
+      </:actions>
+    </.filters>
+  </form>
 
-<.pagination
-  result={@result}
-  base_url={~p"/admin/listings"}
-  params={Map.put(@filters, "sort", @sort)}
-/>
+  <.table rows={@result.items} empty="No listings yet. Run the crawler to populate.">
+    <:col
+      :let={l}
+      label="Chain"
+      sort={sort_dir("chain", @sort)}
+      sort_href={sort_href(~p"/admin/listings", @filters, "chain", @sort)}
+    >
+      {chain_label(l.chain)}
+    </:col>
+    <:col
+      :let={l}
+      label="Name"
+      sort={sort_dir("name", @sort)}
+      sort_href={sort_href(~p"/admin/listings", @filters, "name", @sort)}
+    >
+      {l.name}
+    </:col>
+    <:col
+      :let={l}
+      label="Brand"
+      sort={sort_dir("brand", @sort)}
+      sort_href={sort_href(~p"/admin/listings", @filters, "brand", @sort)}
+    >
+      {l.brand}
+    </:col>
+    <:col :let={l} label="SKU" nowrap>{l.chain_sku}</:col>
+    <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
+    <:col
+      :let={l}
+      label="Regular"
+      nowrap
+      align={:right}
+      sort={sort_dir("current_regular_price", @sort)}
+      sort_href={sort_href(~p"/admin/listings", @filters, "current_regular_price", @sort)}
+    >
+      {format_clp(l.current_regular_price)}
+    </:col>
+    <:col :let={l} label="Promo" nowrap align={:right}>{format_clp(l.current_promo_price)}</:col>
+    <:col
+      :let={l}
+      label="Last priced"
+      nowrap
+      sort={sort_dir("last_priced_at", @sort)}
+      sort_href={sort_href(~p"/admin/listings", @filters, "last_priced_at", @sort)}
+    >
+      {format_datetime(l.last_priced_at)}
+    </:col>
+  </.table>
+
+  <.pagination
+    page={@result.page}
+    total_pages={@result.total_pages}
+    base_url={~p"/admin/listings"}
+    params={Map.put(@filters, "sort", @sort)}
+  />
+</.admin_container>

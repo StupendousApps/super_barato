@@ -1,11 +1,13 @@
-<.page_header title="Users" />
-
-<.table rows={@users} empty="No users yet.">
-  <:col :let={u} label="Email">{u.email}</:col>
-  <:col :let={u} label="Role">{role_label(u.role)}</:col>
-  <:col :let={u} label="Confirmed">{confirmed_label(u)}</:col>
-  <:col :let={u} label="Joined" nowrap>{format_datetime(u.inserted_at)}</:col>
-  <:action :let={u}>
-    <.link href={~p"/admin/users/#{u.id}/edit"} class="btn-link">Edit</.link>
-  </:action>
-</.table>
+<.admin_container title="Users">
+  <.table rows={@users} empty="No users yet.">
+    <:col :let={u} label="Email">{u.email}</:col>
+    <:col :let={u} label="Role">{role_label(u.role)}</:col>
+    <:col :let={u} label="Confirmed" align={:center}>{confirmed_label(u)}</:col>
+    <:col :let={u} label="Joined" nowrap>{format_datetime(u.inserted_at)}</:col>
+    <:action :let={u}>
+      <.row_actions>
+        <.button href={~p"/admin/users/#{u.id}/edit"} variant={:link}>Edit</.button>
+      </.row_actions>
+    </:action>
+  </.table>
+</.admin_container>

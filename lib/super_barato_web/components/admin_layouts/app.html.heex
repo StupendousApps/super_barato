@@ -1,43 +1,15 @@
-<div class="container">
-  <nav class="top-navigation">
-    <ul class="top-navigation-links">
-      <li>
-        <.link href={~p"/admin"} class={@top_nav == :dashboard && "active"}>SuperBarato Admin</.link>
-      </li>
-      <li>
-        <.link href={~p"/admin/listings"} class={@top_nav == :listings && "active"}>Listings</.link>
-      </li>
-      <li>
-        <.link href={~p"/admin/categories"} class={@top_nav == :categories && "active"}>
-          Categories
-        </.link>
-      </li>
-      <li>
-        <.link
-          href={~p"/admin/crawlers/schedules"}
-          class={@top_nav == :crawlers && "active"}
-        >
-          Crawlers
-        </.link>
-      </li>
-      <li>
-        <.link href={~p"/admin/users"} class={@top_nav == :users && "active"}>Users</.link>
-      </li>
-    </ul>
-
-    <ul class="top-navigation-links">
-      <li>{@current_scope.user.email}</li>
-      <li>
-        <.form for={%{}} action={~p"/admin/logout"} method="delete">
-          <button type="submit" class="btn btn-subtle">Log out</button>
-        </.form>
-      </li>
-    </ul>
-  </nav>
+<.container>
+  <.top_navigation active={@top_nav}>
+    <:logo href={~p"/admin"} />
+    <:item key={:listings} href={~p"/admin/listings"}>Listings</:item>
+    <:item key={:categories} href={~p"/admin/categories"}>Categories</:item>
+    <:item key={:crawlers} href={~p"/admin/crawlers/schedules"}>Crawlers</:item>
+    <:item key={:users} href={~p"/admin/users"}>Users</:item>
+    <:trailing>{@current_scope.user.email}</:trailing>
+    <:logout href={~p"/admin/logout"}>
+      <.sfsymbol name="signout" />
+    </:logout>
+  </.top_navigation>
 
   {@inner_content}
-
-  <footer class="admin-footer">
-    SuperBarato Admin
-  </footer>
-</div>
+</.container>

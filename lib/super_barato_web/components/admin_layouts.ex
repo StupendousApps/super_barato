@@ -1,25 +1,12 @@
 defmodule SuperBaratoWeb.AdminLayouts do
   @moduledoc """
-  Layouts for the /admin section. Distinct from `SuperBaratoWeb.Layouts`
-  (which serves the public site) — this module's markup is paired with
-  the hand-written CSS under `priv/static/assets/css/admin/`.
+  Root + app layouts for the /admin section. All chrome (page header,
+  table, forms, navigation, flash) comes from the `:stupendous_admin`
+  library — this module just wires `<.admin_body>` and the navigation
+  shape, then delegates everything else to library components.
   """
   use SuperBaratoWeb, :html
+  use StupendousAdmin
 
   embed_templates "admin_layouts/*"
-
-  attr :flash, :map, required: true
-
-  def flash_group(assigns) do
-    ~H"""
-    <div class="flash-group">
-      <div :if={msg = Phoenix.Flash.get(@flash, :info)} class="flash flash-info">
-        <p>{msg}</p>
-      </div>
-      <div :if={msg = Phoenix.Flash.get(@flash, :error)} class="flash flash-error">
-        <p>{msg}</p>
-      </div>
-    </div>
-    """
-  end
 end

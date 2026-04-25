@@ -1,49 +1,36 @@
 <% form = to_form(@changeset, as: :user) %>
 
-<.page_header title={"Reset password · #{@user.email}"}>
-  <:back href={~p"/admin/users"}>Users</:back>
-</.page_header>
+<.admin_container title={"Reset password · #{@user.email}"}>
+  <:actions>
+    <.button href={~p"/admin/users"} variant={:subtle}>← Users</.button>
+  </:actions>
 
-<.form for={form} action={~p"/admin/users/#{@user.id}"} method="put" class="form">
-  <p>
-    Saving this form replaces the user's password and signs them out of every active session.
-  </p>
+  <.stupendous_form for={form} action={~p"/admin/users/#{@user.id}"} method="put" width={:regular}>
+    <.form_errors form={form} />
 
-  <div :if={!form.source.valid? && form.source.action} class="form-errors">
-    <p class="form-errors-title">Fix the errors below.</p>
-  </div>
+    <p>
+      Saving this form replaces the user's password and signs them out of every active session.
+    </p>
 
-  <div class="fieldset">
-    <label class="label">
-      <span class="label-text">New password</span>
-      <input
-        type="password"
-        name={form[:password].name}
-        class="input"
-        autocomplete="new-password"
-        required
-      />
-      <p class="input-hint">12–72 characters.</p>
-    </label>
-    <p :for={msg <- error_messages(form[:password])} class="input-error">{msg}</p>
-  </div>
+    <.input
+      field={form[:password]}
+      type="password"
+      label="New password"
+      autocomplete="new-password"
+      required
+      hint="12–72 characters."
+    />
+    <.input
+      field={form[:password_confirmation]}
+      type="password"
+      label="Confirm new password"
+      autocomplete="new-password"
+      required
+    />
 
-  <div class="fieldset">
-    <label class="label">
-      <span class="label-text">Confirm new password</span>
-      <input
-        type="password"
-        name={form[:password_confirmation].name}
-        class="input"
-        autocomplete="new-password"
-        required
-      />
-    </label>
-    <p :for={msg <- error_messages(form[:password_confirmation])} class="input-error">{msg}</p>
-  </div>
-
-  <div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <.link href={~p"/admin/users"} class="btn btn-subtle">Cancel</.link>
-  </div>
-</.form>
+    <:footer>
+      <.button type="submit" variant={:primary}>Save</.button>
+      <.button href={~p"/admin/users"} variant={:subtle}>Cancel</.button>
+    </:footer>
+  </.stupendous_form>
+</.admin_container>

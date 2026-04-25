@@ -1,5 +1,7 @@
-<.page_header title={"Edit: #{chain_label(@schedule.chain)} · #{kind_label(@schedule.kind)}"}>
-  <:back href={~p"/admin/crawlers/schedules"}>Cron Jobs</:back>
-</.page_header>
+<.admin_container title={"Edit · #{chain_label(@schedule.chain)} · #{kind_label(@schedule.kind)}"}>
+  <:actions>
+    <.button href={~p"/admin/crawlers/schedules"} variant={:subtle}>← Cron Jobs</.button>
+  </:actions>
 
-<.schedule_form changeset={@changeset} action={@action} />
+  <.schedule_form changeset={@changeset} action={@action} />
+</.admin_container>

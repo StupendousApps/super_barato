@@ -1,83 +1,81 @@
-<.page_header title="Categories">
-  <:filters>
-    <form method="get" action={~p"/admin/categories"} class="form-inline">
-      <%= if @filters.chain != "" do %>
-        <input type="hidden" name="chain" value={@filters.chain} />
-      <% end %>
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Search</span>
-          <input
-            type="text"
-            name="q"
-            value={@filters.q}
-            class="input"
-            placeholder="Name or slug"
-          />
-        </label>
-      </div>
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Leaves only</span>
-          <select name="leaves_only" class="input">
-            <option value="" selected={@filters.leaves_only == ""}>Any</option>
-            <option value="yes" selected={@filters.leaves_only == "yes"}>Yes</option>
-          </select>
-        </label>
-      </div>
-      <div class="fieldset">
-        <label class="label">
-          <span class="label-text">Per page</span>
-          <select name="per_page" class="input">
-            <option value="" selected={@filters.per_page in ["", "25"]}>25</option>
-            <option value="50" selected={@filters.per_page == "50"}>50</option>
-            <option value="100" selected={@filters.per_page == "100"}>100</option>
-            <option value="200" selected={@filters.per_page == "200"}>200</option>
-          </select>
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Search</button>
-      <a
-        href={chain_tab_href(@active_chain)}
-        class={[
-          "btn btn-subtle",
-          @filters.q == "" and @filters.leaves_only == "" and @filters.per_page == "" and
-            @sort == "-last_seen_at" && "btn-disabled"
-        ]}
-      >
-        Reset
-      </a>
-    </form>
-  </:filters>
-  <:tabs>
-    <.sub_nav active={@active_chain}>
-      <:item :for={chain <- chain_tabs()} href={chain_tab_href(chain)} value={chain}>
-        {chain_label(chain)}
-      </:item>
-    </.sub_nav>
-  </:tabs>
-</.page_header>
+<.sub_navigation active={@active_chain || :all}>
+  <:item :for={chain <- chain_tabs()} key={chain || :all} href={chain_tab_href(chain)}>
+    {if is_nil(chain), do: "All", else: chain_label(chain)}
+  </:item>
+</.sub_navigation>
 
-<.table
-  rows={@result.items}
-  empty="No categories yet. Run the crawler category walk to populate."
-  sort={@sort}
-  sort_path={~p"/admin/categories"}
-  params={@filters}
->
-  <:col :let={c} label="Chain" sort_by="chain">{chain_label(c.chain)}</:col>
-  <:col :let={c} label="Name" sort_by="name">{c.name}</:col>
-  <:col :let={c} label="Slug" sort_by="slug" nowrap>{c.slug}</:col>
-  <:col :let={c} label="Parent" nowrap>{c.parent_slug || "—"}</:col>
-  <:col :let={c} label="Level" sort_by="level">{c.level}</:col>
-  <:col :let={c} label="Leaf" nowrap>{c.is_leaf && "✓"}</:col>
-  <:col :let={c} label="Last seen" sort_by="last_seen_at" nowrap>
-    {format_datetime(c.last_seen_at)}
-  </:col>
-</.table>
+<.admin_container title="Categories">
+  <form method="get" action={~p"/admin/categories"}>
+    <%= if @filters.chain != "" do %>
+      <input type="hidden" name="chain" value={@filters.chain} />
+    <% end %>
+    <.filters>
+      <.input name="q" value={@filters.q} label="Search" placeholder="Name or slug" />
+      <.input
+        name="leaves_only"
+        type="select"
+        value={@filters.leaves_only}
+        label="Leaves only"
+        options={[{"Any", ""}, {"Yes", "yes"}]}
+      />
+      <.input
+        name="per_page"
+        type="select"
+        value={@filters.per_page}
+        label="Per page"
+        options={[{"25", ""}, {"50", "50"}, {"100", "100"}, {"200", "200"}]}
+      />
+      <:actions>
+        <.button type="submit" variant={:primary}>Search</.button>
+        <.button href={chain_tab_href(@active_chain)} variant={:subtle}>Reset</.button>
+      </:actions>
+    </.filters>
+  </form>
 
-<.pagination
-  result={@result}
-  base_url={~p"/admin/categories"}
-  params={Map.put(@filters, "sort", @sort)}
-/>
+  <.table rows={@result.items} empty="No categories yet.">
+    <:col
+      :let={c}
+      label="Chain"
+      sort={sort_dir("chain", @sort)}
+      sort_href={sort_href(~p"/admin/categories", @filters, "chain", @sort)}
+    >
+      {chain_label(c.chain)}
+    </:col>
+    <:col
+      :let={c}
+      label="Name"
+      sort={sort_dir("name", @sort)}
+      sort_href={sort_href(~p"/admin/categories", @filters, "name", @sort)}
+    >
+      {c.name}
+    </:col>
+    <:col :let={c} label="Slug" nowrap>{c.slug}</:col>
+    <:col :let={c} label="Parent" nowrap>{c.parent_slug || "—"}</:col>
+    <:col
+      :let={c}
+      label="Level"
+      align={:right}
+      sort={sort_dir("level", @sort)}
+      sort_href={sort_href(~p"/admin/categories", @filters, "level", @sort)}
+    >
+      {c.level}
+    </:col>
+    <:col :let={c} label="Leaf" align={:center}>{c.is_leaf && "✓"}</:col>
+    <:col
+      :let={c}
+      label="Last seen"
+      nowrap
+      sort={sort_dir("last_seen_at", @sort)}
+      sort_href={sort_href(~p"/admin/categories", @filters, "last_seen_at", @sort)}
+    >
+      {format_datetime(c.last_seen_at)}
+    </:col>
+  </.table>
+
+  <.pagination
+    page={@result.page}
+    total_pages={@result.total_pages}
+    base_url={~p"/admin/categories"}
+    params={Map.put(@filters, "sort", @sort)}
+  />
+</.admin_container>
