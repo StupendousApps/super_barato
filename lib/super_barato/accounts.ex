@@ -60,6 +60,13 @@ defmodule SuperBarato.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc "All users, ordered by email — for the admin index."
+  def list_users do
+    import Ecto.Query
+
+    User |> order_by([u], asc: u.email) |> Repo.all()
+  end
+
   ## User registration
 
   @doc """
