@@ -93,9 +93,13 @@ defmodule SuperBaratoWeb.Router do
 
     get "/crawlers", ScheduleController, :index, as: :crawlers_root
     resources "/crawlers/schedules", ScheduleController, except: [:show]
+    get "/crawlers/live", RuntimeController, :index
 
-    resources "/users", UserController, only: [:index, :edit, :update]
+    resources "/users", UserController, only: [:index, :edit, :update, :delete]
 
+    # The library's <.top_navigation> logout slot submits POST, so we
+    # accept both POST and DELETE here.
+    post "/logout", SessionController, :delete
     delete "/logout", SessionController, :delete
   end
 end

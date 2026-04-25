@@ -57,11 +57,10 @@ defmodule SuperBaratoWeb.Admin.ScheduleHTML do
         placeholder="mon,tue,wed,thu,fri,sat,sun"
         hint="Comma-separated, any subset of mon tue wed thu fri sat sun."
       />
-      <.input
+      <.time_picker
         field={@form[:times]}
-        label="Times (UTC)"
-        placeholder="04:00:00,14:30:00"
-        hint="Comma-separated HH:MM:SS, UTC."
+        label="Time (UTC)"
+        hint="One time per schedule. Add another schedule for additional firings."
       />
       <.input field={@form[:active]} type="checkbox" label="Active (paused when off)" />
       <.input

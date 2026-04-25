@@ -1,14 +1,9 @@
-<.admin_container title="Admin login">
+<.login_container>
   <.stupendous_form for={@form} action={~p"/admin/login"} width={:compact}>
-    <p :if={@error}>{@error}</p>
-
-    <.input
-      field={@form[:email]}
-      type="email"
-      label="Email"
-      autocomplete="email"
-      required
-    />
+    <.well :if={@error} color={:red} role="alert">
+      <:title>{@error}</:title>
+    </.well>
+    <.input field={@form[:email]} type="email" label="Email" autocomplete="email" required />
     <.input
       field={@form[:password]}
       type="password"
@@ -16,10 +11,9 @@
       autocomplete="current-password"
       required
     />
-    <.input field={@form[:remember_me]} type="checkbox" label="Remember me" />
-
+    <.input field={@form[:remember_me]} type="checkbox" label="Remember me?" />
     <:footer>
-      <.button type="submit" variant={:primary}>Log in</.button>
+      <.button>Log in</.button>
     </:footer>
   </.stupendous_form>
-</.admin_container>
+</.login_container>

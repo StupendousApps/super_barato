@@ -1,3 +1,8 @@
+<.sub_navigation active={:schedules}>
+  <:item key={:schedules} href={~p"/admin/crawlers/schedules"}>Cron Jobs</:item>
+  <:item key={:runtime} href={~p"/admin/crawlers/live"}>Live</:item>
+</.sub_navigation>
+
 <.admin_container title="Cron Jobs">
   <:actions>
     <.button href={~p"/admin/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
@@ -35,15 +40,25 @@
     <:col :let={s} label="Note">{s.note}</:col>
     <:action :let={s}>
       <.row_actions>
-        <.button href={~p"/admin/crawlers/schedules/#{s.id}/edit"} variant={:link}>Edit</.button>
-        <.link
-          href={~p"/admin/crawlers/schedules/#{s.id}"}
-          method="delete"
-          data-confirm="Delete this cron job?"
-          class="btn btn--link"
+        <.button
+          variant={:subtle}
+          size={:sm}
+          href={~p"/admin/crawlers/schedules/#{s.id}/edit"}
+          aria-label="Edit"
         >
-          Delete
-        </.link>
+          <.sfsymbol name="pencil" />
+        </.button>
+        <.form for={%{}} action={~p"/admin/crawlers/schedules/#{s.id}"} method="delete">
+          <.button
+            variant={:subtle}
+            size={:sm}
+            type="submit"
+            data-confirm="Delete this cron job?"
+            aria-label="Delete"
+          >
+            <.sfsymbol name="trash" />
+          </.button>
+        </.form>
       </.row_actions>
     </:action>
   </.table>

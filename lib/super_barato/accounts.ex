@@ -67,6 +67,9 @@ defmodule SuperBarato.Accounts do
     User |> order_by([u], asc: u.email) |> Repo.all()
   end
 
+  @doc "Hard-delete a user. Cascades to user_tokens via the FK."
+  def delete_user(%User{} = user), do: Repo.delete(user)
+
   ## User registration
 
   @doc """

@@ -1,0 +1,23 @@
+<.sub_navigation active={@sub_nav}>
+  <:item key={:schedules} href={~p"/admin/crawlers/schedules"}>Cron Jobs</:item>
+  <:item key={:runtime} href={~p"/admin/crawlers/live"}>Live</:item>
+</.sub_navigation>
+
+<.admin_container title="Crawlers · Live">
+  <.table rows={@snapshots} empty="No chains registered.">
+    <:col :let={s} label="Chain">{chain_label(s.chain)}</:col>
+    <:col :let={s} label="Pipeline" align={:center}>
+      <.pill color={(s.running && :green) || :regular}>
+        {(s.running && "running") || "idle"}
+      </.pill>
+    </:col>
+    <:col :let={s} label="Profile">{s.profile || "—"}</:col>
+    <:col :let={s} label="Queue" align={:right}>{s.queue_depth || 0}</:col>
+    <:col :let={s} label="Cron epoch" align={:right}>{s.cron_epoch || "—"}</:col>
+    <:col :let={s} label="Schedules" align={:right}>{s.schedule_count}</:col>
+    <:col :let={s} label="Listings" align={:right}>{s.listings_count}</:col>
+    <:col :let={s} label="Last priced" nowrap>{format_datetime(s.last_priced_at)}</:col>
+    <:col :let={s} label="Categories" align={:right}>{s.categories_count}</:col>
+    <:col :let={s} label="Last seen" nowrap>{format_datetime(s.last_seen_at)}</:col>
+  </.table>
+</.admin_container>

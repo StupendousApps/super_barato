@@ -1,3 +1,8 @@
+<.sub_navigation active={:schedules}>
+  <:item key={:schedules} href={~p"/admin/crawlers/schedules"}>Cron Jobs</:item>
+  <:item key={:runtime} href={~p"/admin/crawlers/live"}>Live</:item>
+</.sub_navigation>
+
 <.admin_container title={"Edit · #{chain_label(@schedule.chain)} · #{kind_label(@schedule.kind)}"}>
   <:actions>
     <.button href={~p"/admin/crawlers/schedules"} variant={:subtle}>← Cron Jobs</.button>

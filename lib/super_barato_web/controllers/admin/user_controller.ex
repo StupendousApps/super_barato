@@ -27,6 +27,25 @@ defmodule SuperBaratoWeb.Admin.UserController do
     |> render(:edit)
   end
 
+  def delete(conn, %{"id" => id}) do
+    user = Accounts.get_user!(id)
+    current = conn.assigns.current_scope.user
+
+    cond do
+      user.id == current.id ->
+        conn
+        |> put_flash(:error, "You can't delete the account you're signed in with.")
+        |> redirect(to: ~p"/admin/users")
+
+      true ->
+        {:ok, _} = Accounts.delete_user(user)
+
+        conn
+        |> put_flash(:info, "User #{user.email} deleted.")
+        |> redirect(to: ~p"/admin/users")
+    end
+  end
+
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
 

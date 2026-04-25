@@ -123,9 +123,9 @@ defmodule SuperBarato.Crawler.Schedule do
 
     {ok, bad} =
       Enum.reduce(tokens, {[], []}, fn t, {good, bad} ->
-        case Time.from_iso8601(t) do
+        case parse_time_token(t) do
           {:ok, time} -> {[time | good], bad}
-          {:error, _} -> {good, [t | bad]}
+          :error -> {good, [t | bad]}
         end
       end)
 
@@ -133,6 +133,17 @@ defmodule SuperBarato.Crawler.Schedule do
       {[], _} -> {:error, ["(empty)"]}
       {_, []} -> {:ok, Enum.reverse(ok)}
       {_, bad} -> {:error, Enum.reverse(bad)}
+    end
+  end
+
+  # Accept HH:MM (what the library's <.time_picker> submits) and the
+  # canonical HH:MM:SS. Auto-append seconds when missing.
+  defp parse_time_token(t) do
+    normalized = if String.length(t) == 5, do: t <> ":00", else: t
+
+    case Time.from_iso8601(normalized) do
+      {:ok, time} -> {:ok, time}
+      {:error, _} -> :error
     end
   end
 
