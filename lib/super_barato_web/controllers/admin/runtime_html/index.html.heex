@@ -1,6 +1,6 @@
 <.sub_navigation active={@sub_nav}>
-  <:item key={:schedules} href={~p"/admin/crawlers/schedules"}>Cron Jobs</:item>
-  <:item key={:runtime} href={~p"/admin/crawlers/live"}>Live</:item>
+  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
+  <:item key={:runtime} href={~p"/crawlers/live"}>Live</:item>
 </.sub_navigation>
 
 <.admin_container title="Crawlers · Live">
@@ -23,7 +23,7 @@
       <.row_actions>
         <.form
           for={%{}}
-          action={~p"/admin/crawlers/live/#{s.chain}/discover_categories"}
+          action={~p"/crawlers/live/#{s.chain}/discover_categories"}
           method="post"
         >
           <.button
@@ -39,7 +39,7 @@
         </.form>
         <.form
           for={%{}}
-          action={~p"/admin/crawlers/live/#{s.chain}/discover_products"}
+          action={~p"/crawlers/live/#{s.chain}/discover_products"}
           method="post"
         >
           <.button

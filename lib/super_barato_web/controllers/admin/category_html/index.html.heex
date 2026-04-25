@@ -5,7 +5,7 @@
 </.sub_navigation>
 
 <.admin_container title="Categories">
-  <.form for={%{}} method="get" action={~p"/admin/categories"}>
+  <.form for={%{}} method="get" action={~p"/categories"}>
     <.input :if={@filters.chain != ""} type="hidden" name="chain" value={@filters.chain} />
     <.filters>
       <.input name="q" value={@filters.q} label="Search" placeholder="Name or slug" />
@@ -35,7 +35,7 @@
       :let={c}
       label="Chain"
       sort={sort_dir("chain", @sort)}
-      sort_href={sort_href(~p"/admin/categories", @filters, "chain", @sort)}
+      sort_href={sort_href(~p"/categories", @filters, "chain", @sort)}
     >
       {chain_label(c.chain)}
     </:col>
@@ -43,7 +43,7 @@
       :let={c}
       label="Name"
       sort={sort_dir("name", @sort)}
-      sort_href={sort_href(~p"/admin/categories", @filters, "name", @sort)}
+      sort_href={sort_href(~p"/categories", @filters, "name", @sort)}
     >
       {c.name}
     </:col>
@@ -54,7 +54,7 @@
       label="Level"
       align={:right}
       sort={sort_dir("level", @sort)}
-      sort_href={sort_href(~p"/admin/categories", @filters, "level", @sort)}
+      sort_href={sort_href(~p"/categories", @filters, "level", @sort)}
     >
       {c.level}
     </:col>
@@ -64,7 +64,7 @@
       label="Last seen"
       nowrap
       sort={sort_dir("last_seen_at", @sort)}
-      sort_href={sort_href(~p"/admin/categories", @filters, "last_seen_at", @sort)}
+      sort_href={sort_href(~p"/categories", @filters, "last_seen_at", @sort)}
     >
       {format_datetime(c.last_seen_at)}
     </:col>
@@ -73,7 +73,7 @@
   <.pagination
     page={@result.page}
     total_pages={@result.total_pages}
-    base_url={~p"/admin/categories"}
+    base_url={~p"/categories"}
     params={Map.put(@filters, "sort", @sort)}
   />
 </.admin_container>

@@ -44,7 +44,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
     |> nav_assigns()
     |> assign(:page_title, "New Cron Job")
     |> assign(:changeset, changeset)
-    |> assign(:action, ~p"/admin/crawlers/schedules")
+    |> assign(:action, ~p"/crawlers/schedules")
     |> render(:new)
   end
 
@@ -53,14 +53,14 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Cron job created. Cron reloaded.")
-        |> redirect(to: ~p"/admin/crawlers/schedules")
+        |> redirect(to: ~p"/crawlers/schedules")
 
       {:error, changeset} ->
         conn
         |> nav_assigns()
         |> assign(:page_title, "New Cron Job")
         |> assign(:changeset, changeset)
-        |> assign(:action, ~p"/admin/crawlers/schedules")
+        |> assign(:action, ~p"/crawlers/schedules")
         |> render(:new)
     end
   end
@@ -74,7 +74,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
     |> assign(:page_title, "Edit Cron Job")
     |> assign(:schedule, schedule)
     |> assign(:changeset, changeset)
-    |> assign(:action, ~p"/admin/crawlers/schedules/#{schedule.id}")
+    |> assign(:action, ~p"/crawlers/schedules/#{schedule.id}")
     |> render(:edit)
   end
 
@@ -85,7 +85,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Cron job updated. Cron reloaded.")
-        |> redirect(to: ~p"/admin/crawlers/schedules")
+        |> redirect(to: ~p"/crawlers/schedules")
 
       {:error, changeset} ->
         conn
@@ -93,7 +93,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
         |> assign(:page_title, "Edit Cron Job")
         |> assign(:schedule, schedule)
         |> assign(:changeset, changeset)
-        |> assign(:action, ~p"/admin/crawlers/schedules/#{schedule.id}")
+        |> assign(:action, ~p"/crawlers/schedules/#{schedule.id}")
         |> render(:edit)
     end
   end
@@ -103,7 +103,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
 
     conn
     |> put_flash(:info, "Cron job deleted. Cron reloaded.")
-    |> redirect(to: ~p"/admin/crawlers/schedules")
+    |> redirect(to: ~p"/crawlers/schedules")
   end
 
   defp nav_assigns(conn) do

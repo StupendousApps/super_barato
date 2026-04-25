@@ -5,7 +5,7 @@
 </.sub_navigation>
 
 <.admin_container title="Listings">
-  <.form for={%{}} method="get" action={~p"/admin/listings"}>
+  <.form for={%{}} method="get" action={~p"/listings"}>
     <.input :if={@filters.chain != ""} type="hidden" name="chain" value={@filters.chain} />
     <.filters>
       <.input name="q" value={@filters.q} label="Search" placeholder="Name or brand" />
@@ -28,7 +28,7 @@
       :let={l}
       label="Chain"
       sort={sort_dir("chain", @sort)}
-      sort_href={sort_href(~p"/admin/listings", @filters, "chain", @sort)}
+      sort_href={sort_href(~p"/listings", @filters, "chain", @sort)}
     >
       {chain_label(l.chain)}
     </:col>
@@ -36,7 +36,7 @@
       :let={l}
       label="Name"
       sort={sort_dir("name", @sort)}
-      sort_href={sort_href(~p"/admin/listings", @filters, "name", @sort)}
+      sort_href={sort_href(~p"/listings", @filters, "name", @sort)}
     >
       {l.name}
     </:col>
@@ -44,7 +44,7 @@
       :let={l}
       label="Brand"
       sort={sort_dir("brand", @sort)}
-      sort_href={sort_href(~p"/admin/listings", @filters, "brand", @sort)}
+      sort_href={sort_href(~p"/listings", @filters, "brand", @sort)}
     >
       {l.brand}
     </:col>
@@ -56,7 +56,7 @@
       nowrap
       align={:right}
       sort={sort_dir("current_regular_price", @sort)}
-      sort_href={sort_href(~p"/admin/listings", @filters, "current_regular_price", @sort)}
+      sort_href={sort_href(~p"/listings", @filters, "current_regular_price", @sort)}
     >
       {format_clp(l.current_regular_price)}
     </:col>
@@ -66,7 +66,7 @@
       label="Last priced"
       nowrap
       sort={sort_dir("last_priced_at", @sort)}
-      sort_href={sort_href(~p"/admin/listings", @filters, "last_priced_at", @sort)}
+      sort_href={sort_href(~p"/listings", @filters, "last_priced_at", @sort)}
     >
       {format_datetime(l.last_priced_at)}
     </:col>
@@ -75,7 +75,7 @@
   <.pagination
     page={@result.page}
     total_pages={@result.total_pages}
-    base_url={~p"/admin/listings"}
+    base_url={~p"/listings"}
     params={Map.put(@filters, "sort", @sort)}
   />
 </.admin_container>

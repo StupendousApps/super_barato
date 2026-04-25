@@ -219,9 +219,10 @@ defmodule SuperBaratoWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   @doc """
-  Plug for /admin routes. Requires an authenticated user with at
+  Plug for admin-host routes. Requires an authenticated user with at
   least `:moderator` role. Unauthenticated users are redirected to
-  `/admin/login`; authenticated users below the role get `/`.
+  `/login`; authenticated users below the role get bounced to
+  `/login` with a flash so they don't loop on the dashboard.
   """
   def require_admin(conn, _opts) do
     scope = conn.assigns[:current_scope]
@@ -230,30 +231,34 @@ defmodule SuperBaratoWeb.UserAuth do
       is_nil(scope) or is_nil(scope.user) ->
         conn
         |> maybe_store_return_to()
-        |> redirect(to: ~p"/admin/login")
+        |> redirect(to: ~p"/login")
         |> halt()
 
       User.role_at_least?(scope.user, :moderator) ->
         conn
 
       true ->
+        # Redirecting to `/` would land on the dashboard — also
+        # under `require_admin` — and infinitely loop. Send them to
+        # `/login` instead; `redirect_if_admin` won't bounce them
+        # since they fail the role check.
         conn
         |> put_flash(:error, "You do not have permission to access the admin.")
-        |> redirect(to: ~p"/")
+        |> redirect(to: ~p"/login")
         |> halt()
     end
   end
 
   @doc """
   Plug for the admin login page. Redirects already-authenticated
-  admins to `/admin`.
+  admins to the dashboard.
   """
   def redirect_if_admin(conn, _opts) do
     scope = conn.assigns[:current_scope]
 
     if scope && scope.user && User.role_at_least?(scope.user, :moderator) do
       conn
-      |> redirect(to: ~p"/admin")
+      |> redirect(to: ~p"/")
       |> halt()
     else
       conn

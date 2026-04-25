@@ -18,7 +18,7 @@ defmodule SuperBaratoWeb.Admin.SessionController do
       %User{} = user ->
         if User.role_at_least?(user, :moderator) do
           conn
-          |> put_session(:user_return_to, ~p"/admin")
+          |> put_session(:user_return_to, ~p"/")
           |> UserAuth.log_in_user(user, params)
         else
           render_error(conn, email, "Your account does not have admin access.")

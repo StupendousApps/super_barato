@@ -1,14 +1,14 @@
 <.sub_navigation active={:schedules}>
-  <:item key={:schedules} href={~p"/admin/crawlers/schedules"}>Cron Jobs</:item>
-  <:item key={:runtime} href={~p"/admin/crawlers/live"}>Live</:item>
+  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
+  <:item key={:runtime} href={~p"/crawlers/live"}>Live</:item>
 </.sub_navigation>
 
 <.admin_container title="Cron Jobs">
   <:actions>
-    <.button href={~p"/admin/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
+    <.button href={~p"/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
   </:actions>
 
-  <.form for={%{}} method="get" action={~p"/admin/crawlers/schedules"}>
+  <.form for={%{}} method="get" action={~p"/crawlers/schedules"}>
     <.filters>
       <.input
         name="chain"
@@ -26,7 +26,7 @@
       />
       <:actions>
         <.button type="submit" variant={:primary}>Filter</.button>
-        <.button href={~p"/admin/crawlers/schedules"} variant={:subtle}>Reset</.button>
+        <.button href={~p"/crawlers/schedules"} variant={:subtle}>Reset</.button>
       </:actions>
     </.filters>
   </.form>
@@ -43,12 +43,12 @@
         <.button
           variant={:subtle}
           size={:sm}
-          href={~p"/admin/crawlers/schedules/#{s.id}/edit"}
+          href={~p"/crawlers/schedules/#{s.id}/edit"}
           aria-label="Edit"
         >
           <.sfsymbol name="pencil" />
         </.button>
-        <.form for={%{}} action={~p"/admin/crawlers/schedules/#{s.id}"} method="delete">
+        <.form for={%{}} action={~p"/crawlers/schedules/#{s.id}"} method="delete">
           <.button
             variant={:subtle}
             size={:sm}

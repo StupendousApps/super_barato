@@ -71,7 +71,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleHTML do
 
       <:footer>
         <.button type="submit" variant={:primary}>Save</.button>
-        <.button href={~p"/admin/crawlers/schedules"} variant={:subtle}>Cancel</.button>
+        <.button href={~p"/crawlers/schedules"} variant={:subtle}>Cancel</.button>
       </:footer>
     </.stupendous_form>
     """

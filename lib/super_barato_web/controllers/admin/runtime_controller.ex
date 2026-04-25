@@ -25,29 +25,29 @@ defmodule SuperBaratoWeb.Admin.RuntimeController do
       is_nil(chain_atom) ->
         conn
         |> put_flash(:error, "Unknown chain: #{chain}")
-        |> redirect(to: ~p"/admin/crawlers/live")
+        |> redirect(to: ~p"/crawlers/live")
 
       kind not in @kinds ->
         conn
         |> put_flash(:error, "Unknown kind: #{kind}")
-        |> redirect(to: ~p"/admin/crawlers/live")
+        |> redirect(to: ~p"/crawlers/live")
 
       true ->
         case Crawler.trigger(chain_atom, kind) do
           :ok ->
             conn
             |> put_flash(:info, "Triggered #{kind} for #{chain}.")
-            |> redirect(to: ~p"/admin/crawlers/live")
+            |> redirect(to: ~p"/crawlers/live")
 
           {:error, :pipeline_not_running} ->
             conn
             |> put_flash(:error, "Pipeline for #{chain} is not running.")
-            |> redirect(to: ~p"/admin/crawlers/live")
+            |> redirect(to: ~p"/crawlers/live")
 
           {:error, reason} ->
             conn
             |> put_flash(:error, "Trigger failed: #{inspect(reason)}")
-            |> redirect(to: ~p"/admin/crawlers/live")
+            |> redirect(to: ~p"/crawlers/live")
         end
     end
   end

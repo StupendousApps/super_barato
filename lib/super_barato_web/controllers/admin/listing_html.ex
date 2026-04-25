@@ -25,8 +25,8 @@ defmodule SuperBaratoWeb.Admin.ListingHTML do
     end
   end
 
-  def chain_tab_href(nil), do: ~p"/admin/listings"
-  def chain_tab_href(chain), do: ~p"/admin/listings?#{[chain: chain]}"
+  def chain_tab_href(nil), do: ~p"/listings"
+  def chain_tab_href(chain), do: ~p"/listings?#{[chain: chain]}"
 
   def chain_tabs, do: ListingController.chains()
 

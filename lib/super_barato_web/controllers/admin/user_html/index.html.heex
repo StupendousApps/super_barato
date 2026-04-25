@@ -9,12 +9,12 @@
         <.button
           variant={:subtle}
           size={:sm}
-          href={~p"/admin/users/#{u.id}/edit"}
+          href={~p"/users/#{u.id}/edit"}
           aria-label="Edit"
         >
           <.sfsymbol name="pencil" />
         </.button>
-        <.form for={%{}} action={~p"/admin/users/#{u.id}"} method="delete">
+        <.form for={%{}} action={~p"/users/#{u.id}"} method="delete">
           <.button
             variant={:subtle}
             size={:sm}

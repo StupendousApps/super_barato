@@ -49,42 +49,18 @@ defmodule SuperBaratoWeb.Router do
     end
   end
 
-  ## Authentication routes
+  ## Admin — served from the `admin.` subdomain. Phoenix's `host:`
+  ## with a trailing dot matches any subdomain starting with that
+  ## prefix (admin.superbarato.cl, admin.localhost, etc.).
 
-  scope "/", SuperBaratoWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
-
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
-  end
-
-  scope "/", SuperBaratoWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
-  end
-
-  scope "/", SuperBaratoWeb do
-    pipe_through [:browser]
-
-    get "/users/log-in", UserSessionController, :new
-    get "/users/log-in/:token", UserSessionController, :confirm
-    post "/users/log-in", UserSessionController, :create
-    delete "/users/log-out", UserSessionController, :delete
-  end
-
-  ## Admin
-
-  scope "/admin", SuperBaratoWeb.Admin, as: :admin do
+  scope "/", SuperBaratoWeb.Admin, host: "admin.", as: :admin do
     pipe_through [:browser, :redirect_if_admin]
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create
   end
 
-  scope "/admin", SuperBaratoWeb.Admin, as: :admin do
+  scope "/", SuperBaratoWeb.Admin, host: "admin.", as: :admin do
     pipe_through [:browser, :require_admin]
 
     get "/", PageController, :index

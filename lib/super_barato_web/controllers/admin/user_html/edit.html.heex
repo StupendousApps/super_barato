@@ -2,10 +2,10 @@
 
 <.admin_container title={"Reset password · #{@user.email}"}>
   <:actions>
-    <.button href={~p"/admin/users"} variant={:subtle}>← Users</.button>
+    <.button href={~p"/users"} variant={:subtle}>← Users</.button>
   </:actions>
 
-  <.stupendous_form for={form} action={~p"/admin/users/#{@user.id}"} method="put" width={:regular}>
+  <.stupendous_form for={form} action={~p"/users/#{@user.id}"} method="put" width={:regular}>
     <.form_errors form={form} />
 
     <.well color={:yellow}>
@@ -30,7 +30,7 @@
 
     <:footer>
       <.button type="submit" variant={:primary}>Save</.button>
-      <.button href={~p"/admin/users"} variant={:subtle}>Cancel</.button>
+      <.button href={~p"/users"} variant={:subtle}>Cancel</.button>
     </:footer>
   </.stupendous_form>
 </.admin_container>

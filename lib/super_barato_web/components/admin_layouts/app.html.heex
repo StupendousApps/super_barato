@@ -1,12 +1,12 @@
 <.container>
   <.top_navigation active={@top_nav}>
-    <:logo href={~p"/admin"} />
-    <:item key={:listings} href={~p"/admin/listings"}>Listings</:item>
-    <:item key={:categories} href={~p"/admin/categories"}>Categories</:item>
-    <:item key={:crawlers} href={~p"/admin/crawlers/schedules"}>Crawlers</:item>
-    <:item key={:users} href={~p"/admin/users"}>Users</:item>
+    <:logo href={~p"/"} />
+    <:item key={:listings} href={~p"/listings"}>Listings</:item>
+    <:item key={:categories} href={~p"/categories"}>Categories</:item>
+    <:item key={:crawlers} href={~p"/crawlers/schedules"}>Crawlers</:item>
+    <:item key={:users} href={~p"/users"}>Users</:item>
     <:trailing>{@current_scope.user.email}</:trailing>
-    <:logout href={~p"/admin/logout"}>
+    <:logout href={~p"/logout"}>
       <.sfsymbol name="signout" />
     </:logout>
   </.top_navigation>

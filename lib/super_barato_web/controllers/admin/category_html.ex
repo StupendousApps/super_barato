@@ -14,6 +14,6 @@ defmodule SuperBaratoWeb.Admin.CategoryHTML do
 
   def chain_tabs, do: CategoryController.chains()
 
-  def chain_tab_href(nil), do: ~p"/admin/categories"
-  def chain_tab_href(chain), do: ~p"/admin/categories?#{[chain: chain]}"
+  def chain_tab_href(nil), do: ~p"/categories"
+  def chain_tab_href(chain), do: ~p"/categories?#{[chain: chain]}"
 end

@@ -37,7 +37,6 @@ defmodule SuperBaratoWeb.HomeLive do
      socket
      |> assign(:query, "")
      |> assign(:cart, %{})
-     |> assign(:show_login, false)
      |> assign(:page_title, "SuperBarato.cl"), layout: false}
   end
 
@@ -56,14 +55,6 @@ defmodule SuperBaratoWeb.HomeLive do
     id = String.to_integer(id)
     cart = Map.update(socket.assigns.cart, id, 1, &(&1 + 1))
     {:noreply, assign(socket, :cart, cart)}
-  end
-
-  def handle_event("open_login", _params, socket) do
-    {:noreply, assign(socket, :show_login, true)}
-  end
-
-  def handle_event("close_login", _params, socket) do
-    {:noreply, assign(socket, :show_login, false)}
   end
 
   def handle_event("dec", %{"id" => id}, socket) do
@@ -163,7 +154,6 @@ defmodule SuperBaratoWeb.HomeLive do
               <a class="logo" href="/" aria-label="SuperBarato.cl">
                 <span class="super">SUPER</span><span class="barato">barato</span><span class="tld">.cl</span>
               </a>
-              <button type="button" class="login" phx-click="open_login">Ingresar</button>
             </div>
 
             <%= if @cart_items == [] do %>
@@ -218,31 +208,6 @@ defmodule SuperBaratoWeb.HomeLive do
         </div>
       </div>
 
-      <%= if @show_login do %>
-        <div class="modal-backdrop" phx-click="close_login">
-          <div class="modal" phx-click-away="close_login" onclick="event.stopPropagation()">
-            <div class="modal-hd">
-              <h2>Ingresar</h2>
-              <button type="button" class="modal-close" phx-click="close_login" aria-label="Cerrar">×</button>
-            </div>
-            <form method="post" action={~p"/users/log-in"} class="modal-form">
-              <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
-
-              <label>
-                <span>Email</span>
-                <input type="email" name="user[email]" required autocomplete="email" autofocus />
-              </label>
-
-              <label>
-                <span>Contraseña</span>
-                <input type="password" name="user[password]" required autocomplete="current-password" />
-              </label>
-
-              <button type="submit" class="cta">Ingresar</button>
-            </form>
-          </div>
-        </div>
-      <% end %>
     </div>
     """
   end

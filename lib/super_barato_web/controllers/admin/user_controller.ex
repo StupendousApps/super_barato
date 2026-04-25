@@ -35,14 +35,14 @@ defmodule SuperBaratoWeb.Admin.UserController do
       user.id == current.id ->
         conn
         |> put_flash(:error, "You can't delete the account you're signed in with.")
-        |> redirect(to: ~p"/admin/users")
+        |> redirect(to: ~p"/users")
 
       true ->
         {:ok, _} = Accounts.delete_user(user)
 
         conn
         |> put_flash(:info, "User #{user.email} deleted.")
-        |> redirect(to: ~p"/admin/users")
+        |> redirect(to: ~p"/users")
     end
   end
 
@@ -53,7 +53,7 @@ defmodule SuperBaratoWeb.Admin.UserController do
       {:ok, {_user, _expired_tokens}} ->
         conn
         |> put_flash(:info, "Password updated. The user's existing sessions were terminated.")
-        |> redirect(to: ~p"/admin/users")
+        |> redirect(to: ~p"/users")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
