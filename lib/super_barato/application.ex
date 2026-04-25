@@ -40,13 +40,12 @@ defmodule SuperBarato.Application do
       |> Keyword.get(:chains, [])
       |> Enum.map(fn {chain, chain_opts} ->
         # Pacing + fallback profiles still come from config; the
-        # schedule comes from the DB so admins can edit it without
-        # a redeploy.
+        # schedule is loaded from the DB inside Chain.Supervisor.init/1
+        # (deferred so Repo is started by the time we hit it).
         opts =
           chain_opts
           |> Keyword.delete(:schedule)
           |> Keyword.put(:chain, chain)
-          |> Keyword.put(:schedule, SuperBarato.Crawler.Schedules.cron_entries(chain))
 
         Supervisor.child_spec(
           {SuperBarato.Crawler.Chain.Supervisor, opts},

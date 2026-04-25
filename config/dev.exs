@@ -90,3 +90,7 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# Run the crawler pipeline in dev so the UI's "Live" page actions
+# (Discover categories / Discover products) actually fire.
+config :super_barato, SuperBarato.Crawler, chains_enabled: true

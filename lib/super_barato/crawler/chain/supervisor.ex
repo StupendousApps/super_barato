@@ -42,7 +42,15 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
   @impl true
   def init(opts) do
     chain = Keyword.fetch!(opts, :chain)
-    schedule = Keyword.fetch!(opts, :schedule)
+
+    # Tests pass an explicit `:schedule` (StubAdapter integration);
+    # production boot omits it and we read from the DB here, after
+    # Repo has started.
+    schedule =
+      Keyword.get_lazy(opts, :schedule, fn ->
+        SuperBarato.Crawler.Schedules.cron_entries(chain)
+      end)
+
     queue_capacity = Keyword.get(opts, :queue_capacity, 200)
     interval_ms = Keyword.get(opts, :interval_ms, 1_000)
     fallback_profiles = Keyword.get(opts, :fallback_profiles, [:chrome116])

@@ -20,4 +20,62 @@ defmodule SuperBarato.Crawler do
   def adapter(chain) when is_atom(chain), do: Map.fetch!(@adapters, chain)
 
   def known_chains, do: Map.keys(@adapters)
+
+  @doc """
+  Manually fire a discovery run for `chain` from outside the schedule
+  (admin UI button, IEx, etc.). Returns `:ok` once the work is queued
+  / spawned — the actual run happens asynchronously under the chain's
+  Task.Supervisor + Queue + Worker.
+
+  Kinds match the schedule rows:
+
+    * `"discover_categories"` — pushes one task on the chain's Queue.
+    * `"discover_products"` — spawns `ProductProducer.run/1`, which
+      streams a task per leaf category onto the Queue.
+
+  Returns `{:error, :pipeline_not_running}` when the chain's Supervisor
+  hasn't been started (i.e. `chains_enabled: false` or the chain crashed
+  hard) so the caller can surface a useful error.
+  """
+  @kinds ~w(discover_categories discover_products)
+
+  def trigger(chain, kind) when is_atom(chain) do
+    cond do
+      chain not in known_chains() -> {:error, :unknown_chain}
+      kind not in @kinds -> {:error, {:unknown_kind, kind}}
+      not pipeline_running?(chain) -> {:error, :pipeline_not_running}
+      true -> do_trigger(chain, kind)
+    end
+  end
+
+  defp do_trigger(chain, "discover_categories") do
+    SuperBarato.Crawler.Chain.Queue.push(
+      chain,
+      {:discover_categories, %{chain: chain, parent: nil}}
+    )
+
+    :ok
+  end
+
+  defp do_trigger(chain, "discover_products") do
+    {:ok, _pid} =
+      Task.Supervisor.start_child(
+        SuperBarato.Crawler.Chain.Supervisor.task_sup_name(chain),
+        SuperBarato.Crawler.Chain.ProductProducer,
+        :run,
+        [[chain: chain]]
+      )
+
+    :ok
+  end
+
+  defp pipeline_running?(chain) do
+    case GenServer.whereis(
+           {:via, Registry,
+            {SuperBarato.Crawler.Registry, {SuperBarato.Crawler.Chain.Supervisor, chain}}}
+         ) do
+      nil -> false
+      _pid -> true
+    end
+  end
 end
