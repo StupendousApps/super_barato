@@ -1,0 +1,38 @@
+# Ignore git, but keep git HEAD and refs available
+.git
+!.git/HEAD
+!.git/refs
+
+# Common development/test artifacts
+/cover/
+/doc/
+/test/
+/tmp/
+.elixir_ls/
+*.ez
+
+# Mix artifacts
+/_build/
+/deps/
+
+# Generated on crash by the VM
+erl_crash.dump
+
+# Static artifacts — built inside the image via mix assets.deploy.
+priv/static/assets/
+
+# Local SQLite + price-log files. Prod points DATABASE_PATH and
+# PRICE_LOG_DIR at a host volume, so nothing here ships in the image.
+priv/data/
+
+# curl-impersonate binaries are downloaded inside the builder by
+# scripts/install_curl_impersonate.sh (Linux-amd64). Don't ship the
+# host's macOS binaries.
+priv/bin/
+
+# Kamal artifacts
+.kamal/secrets*
+
+# Dockerfile + this file shouldn't be inside the image either.
+.dockerignore
+Dockerfile

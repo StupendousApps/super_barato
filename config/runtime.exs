@@ -20,10 +20,6 @@ if System.get_env("PHX_SERVER") do
   config :super_barato, SuperBaratoWeb.Endpoint, server: true
 end
 
-if port = System.get_env("PORT") do
-  config :super_barato, GalleryWeb.Endpoint, http: [port: String.to_integer(port)]
-end
-
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||
@@ -34,7 +30,26 @@ if config_env() == :prod do
 
   config :super_barato, SuperBarato.Repo,
     database: database_path,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5")
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5"),
+    journal_mode: :wal,
+    busy_timeout: 5_000
+
+  # Crawler runtime paths. Both must be on a host volume in prod so
+  # the price-log history and the curl-impersonate binary cache
+  # survive container restarts and image upgrades.
+  if dir = System.get_env("PRICE_LOG_DIR") do
+    config :super_barato, price_log_dir: dir
+  end
+
+  if dir = System.get_env("CURL_IMPERSONATE_DIR") do
+    config :super_barato, curl_impersonate_dir: dir
+  end
+
+  # Master switch for the crawler pipeline. Off-by-default in
+  # config/config.exs; flip on per-deploy via env var.
+  if System.get_env("CHAINS_ENABLED") in ~w(true 1) do
+    config :super_barato, SuperBarato.Crawler, chains_enabled: true
+  end
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

@@ -1,0 +1,74 @@
+# Kamal deploy config. Mirrors dotty_web's setup — same Kimsufi box,
+# same GHCR registry, same SSH user. The differences worth noting:
+#
+#   * super_barato uses SQLite, not Postgres. The Repo writes to a file
+#     under DATABASE_PATH, which Kamal mounts as a host volume below.
+#   * Two more directories survive deploys via volumes: PRICE_LOG_DIR
+#     (append-only price-history files) and per-chain curl-impersonate
+#     binaries.
+
+service: super_barato
+
+ssh:
+  user: ubuntu
+
+image: stupendousapps/super_barato
+
+# Same Kimsufi box that hosts dotty_web, macatlas, etc. The built-in
+# Kamal proxy multiplexes services by hostname.
+servers:
+  web:
+    hosts:
+      - 51.161.116.221
+    options:
+      memory: 1g
+      memory-reservation: 256m
+
+# Public hostnames terminating TLS at the Kamal proxy. Adjust the
+# `app_port` to match `PORT` in env.clear below.
+proxy:
+  ssl: true
+  hosts:
+    - superbarato.cl
+    - www.superbarato.cl
+  app_port: 4003
+  # No /up healthcheck route on the Phoenix side yet — fall back to
+  # Kamal's TCP probe on app_port.
+  healthcheck: false
+
+registry:
+  server: ghcr.io
+  username: fceruti
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  secret:
+    - SECRET_KEY_BASE
+  clear:
+    PHX_HOST: superbarato.cl
+    PORT: "4003"
+    # SQLite file lives on a host volume (see `volumes:` below).
+    DATABASE_PATH: /data/super_barato.db
+    # Append-only price logs persist across deploys via a host volume.
+    PRICE_LOG_DIR: /data/prices
+    # The release ships curl-impersonate binaries inside the image at
+    # /app/lib/super_barato-*/priv/bin/, but reading them from there is
+    # version-pinned to each release — overriding to a stable host path
+    # makes deploys cheaper and lets us swap binaries without a rebuild.
+    CURL_IMPERSONATE_DIR: /app/lib/super_barato-0.1.0/priv/bin
+    # Master switch: turn the crawler pipeline on for the deployed app.
+    CHAINS_ENABLED: "true"
+
+# Persist /data across container restarts and image upgrades.
+volumes:
+  - "/data/super_barato:/data"
+
+aliases:
+  console: app exec --interactive --reuse "bin/super_barato remote"
+  shell:   app exec --interactive --reuse "bash"
+  logs:    app logs -f
+  migrate: app exec --reuse "bin/migrate"
+
+builder:
+  arch: amd64
