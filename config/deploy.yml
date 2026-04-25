@@ -33,9 +33,12 @@ proxy:
     - www.superbarato.cl
     - admin.superbarato.cl
   app_port: 4003
-  # No /up healthcheck route on the Phoenix side yet — fall back to
-  # Kamal's TCP probe on app_port.
-  healthcheck: false
+  # `GET /up` returns 200 via SuperBaratoWeb.Plugs.Health, mounted
+  # early in the endpoint so it bypasses the router (any host, no
+  # session, no CSRF).
+  healthcheck:
+    path: /up
+    interval: 5
 
 registry:
   server: ghcr.io

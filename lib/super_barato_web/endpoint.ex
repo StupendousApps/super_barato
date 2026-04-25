@@ -15,6 +15,10 @@ defmodule SuperBaratoWeb.Endpoint do
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
 
+  # Liveness probe (Kamal proxy hits this every 5s). Mounted before
+  # everything so it's cheap and host-agnostic.
+  plug SuperBaratoWeb.Plugs.Health
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # When code reloading is disabled (e.g., in production),
