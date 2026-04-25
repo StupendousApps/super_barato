@@ -129,10 +129,10 @@ defmodule SuperBarato.Crawler.Schedule do
         end
       end)
 
-    case {ok, bad} do
-      {[], _} -> {:error, ["(empty)"]}
-      {_, []} -> {:ok, Enum.reverse(ok)}
-      {_, bad} -> {:error, Enum.reverse(bad)}
+    cond do
+      tokens == [] -> {:error, ["(empty)"]}
+      bad == [] -> {:ok, Enum.reverse(ok)}
+      true -> {:error, Enum.reverse(bad)}
     end
   end
 
