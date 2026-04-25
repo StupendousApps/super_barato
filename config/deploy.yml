@@ -91,3 +91,9 @@ aliases:
 
 builder:
   arch: amd64
+  # Build context = parent dir so the `path: "../stupendous_admin"`
+  # dep resolves inside Docker. The Dockerfile is structured around
+  # this — paths inside it are `super_barato/...` and
+  # `stupendous_admin/...`.
+  context: ../
+  dockerfile: Dockerfile

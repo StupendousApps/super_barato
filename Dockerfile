@@ -1,5 +1,5 @@
 # Two-stage build that produces an OTP release. Same shape as the
-# Dockerfile `mix phx.gen.release --docker` emits, with two extras:
+# Dockerfile `mix phx.gen.release --docker` emits, with three extras:
 #
 #   * SQLite — Ecto.Adapters.SQLite3 ships a self-contained NIF, so no
 #     system sqlite package is needed. We do install `ca-certificates`
@@ -8,6 +8,14 @@
 #     under `priv/bin/curl_<profile>` to slip past Akamai's TLS
 #     fingerprinting. The builder downloads the Linux-amd64 tarball and
 #     unpacks it into the release; the runner copies them in.
+#   * Build context is the *parent* of super_barato (the repo root that
+#     also holds stupendous_admin) so the `path: "../stupendous_admin"`
+#     dep resolves inside the build. Both `bin/kamal` (via deploy.yml's
+#     builder.context) and the local smoke build use that wider context.
+#
+# Local smoke (run from inside super_barato/):
+#
+#     docker build -f Dockerfile -t super_barato:test --platform linux/amd64 ..
 
 ARG ELIXIR_VERSION=1.19.5
 ARG OTP_VERSION=28.4.2
@@ -21,7 +29,12 @@ FROM ${BUILDER_IMAGE} AS builder
 RUN apt-get update -y && apt-get install -y build-essential git curl ca-certificates \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-WORKDIR /app
+# Vendor the path-dep first so subsequent COPY /super_barato can resolve
+# `../stupendous_admin` relative to mix.exs.
+WORKDIR /build
+COPY stupendous_admin /build/stupendous_admin/
+
+WORKDIR /build/super_barato
 
 RUN mix local.hex --force && mix local.rebar --force
 
@@ -29,28 +42,31 @@ ENV MIX_ENV=prod
 
 # Pull deps (with the lockfile only — no source yet) so this layer
 # caches well between code-only changes.
-COPY mix.exs mix.lock ./
+COPY super_barato/mix.exs super_barato/mix.lock ./
 RUN mix deps.get --only $MIX_ENV
 RUN mkdir config
 
-COPY config/config.exs config/${MIX_ENV}.exs config/
+COPY super_barato/config/config.exs super_barato/config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
-COPY priv priv
-COPY lib lib
-COPY assets assets
+COPY super_barato/priv priv
+COPY super_barato/lib lib
+COPY super_barato/assets assets
 
 # Fetch curl-impersonate Linux-amd64 binaries into priv/bin/. The
 # install script picks the right tarball for the build platform; this
 # image is amd64 (see deploy.yml's builder.arch).
-COPY scripts/install_curl_impersonate.sh scripts/
+COPY super_barato/scripts/install_curl_impersonate.sh scripts/
 RUN bash scripts/install_curl_impersonate.sh
 
-# Compile assets + the release.
-RUN mix assets.deploy
-COPY config/runtime.exs config/
-COPY rel rel
+# Compile first so Phoenix generates the colocated-hooks module that
+# `assets/js/app.js` imports as `phoenix-colocated/super_barato`.
 RUN mix compile
+
+# Bundle assets + the release.
+RUN mix assets.deploy
+COPY super_barato/config/runtime.exs config/
+COPY super_barato/rel rel
 RUN mix release
 
 FROM ${RUNNER_IMAGE}
@@ -70,7 +86,7 @@ RUN chown nobody /app
 
 ENV MIX_ENV=prod
 
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/super_barato ./
+COPY --from=builder --chown=nobody:root /build/super_barato/_build/${MIX_ENV}/rel/super_barato ./
 
 USER nobody
 
