@@ -81,13 +81,17 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
+# Run as UID 1000 — same as the deploy box's `ubuntu` user — so files
+# written to the bind-mounted /data volumes are readable from the
+# host shell without sudo.
+RUN groupadd -g 1000 app && useradd -u 1000 -g 1000 -m -d /app app
+
 WORKDIR /app
-RUN chown nobody /app
 
 ENV MIX_ENV=prod
 
-COPY --from=builder --chown=nobody:root /build/super_barato/_build/${MIX_ENV}/rel/super_barato ./
+COPY --from=builder --chown=app:app /build/super_barato/_build/${MIX_ENV}/rel/super_barato ./
 
-USER nobody
+USER app
 
 CMD ["/app/bin/server"]
