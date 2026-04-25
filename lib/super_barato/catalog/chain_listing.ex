@@ -2,8 +2,6 @@ defmodule SuperBarato.Catalog.ChainListing do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias SuperBarato.Catalog.Product
-
   schema "chain_listings" do
     field :chain, :string
     field :chain_sku, :string
@@ -25,16 +23,13 @@ defmodule SuperBarato.Catalog.ChainListing do
     field :last_priced_at, :utc_datetime
     field :active, :boolean, default: true
 
-    belongs_to :product, Product, define_field: false
-    field :product_id, :id
-
     timestamps(type: :utc_datetime)
   end
 
   @discovery_fields ~w(
     chain chain_sku chain_product_id ean name brand image_url
     category_path pdp_url current_regular_price current_promo_price
-    current_promotions last_discovered_at first_seen_at active product_id
+    current_promotions last_discovered_at first_seen_at active
   )a
 
   def discovery_changeset(listing, attrs) do
