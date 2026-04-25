@@ -2,4 +2,11 @@
 set -eu
 
 cd -P -- "$(dirname -- "$0")"
+
+# Migrate before starting the app. Idempotent — Ecto.Migrator skips
+# anything already applied. Boots only the Repo (no chain supervisor),
+# so it's safe even on a fresh DB where crawler_schedules doesn't
+# exist yet.
+./super_barato eval SuperBarato.Release.migrate
+
 PHX_SERVER=true exec ./super_barato start
