@@ -23,6 +23,10 @@ end
 config :super_barato, SuperBaratoWeb.Endpoint,
   http: [port: String.to_integer(System.get_env("PORT", "4000"))]
 
+if port = System.get_env("PORT") do
+  config :super_barato, GalleryWeb.Endpoint, http: [port: String.to_integer(port)]
+end
+
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||

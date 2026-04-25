@@ -25,7 +25,7 @@ config :super_barato, SuperBarato.Repo,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :super_barato, SuperBaratoWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
+  http: [ip: {127, 0, 0, 1}, port: 4103],
   secret_key_base: "tUeg5nsolwXz9pUD2F0aGphrEQSb55G9+igpE31O7/bhV8tGCz3NpoeJSx/T5XCM",
   server: false
 
