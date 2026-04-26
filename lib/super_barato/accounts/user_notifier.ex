@@ -4,12 +4,20 @@ defmodule SuperBarato.Accounts.UserNotifier do
   alias SuperBarato.Mailer
   alias SuperBarato.Accounts.User
 
+  defp from_address do
+    Application.get_env(
+      :super_barato,
+      :mail_from,
+      {"SuperBarato", "contact@example.com"}
+    )
+  end
+
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     email =
       new()
       |> to(recipient)
-      |> from({"SuperBarato", "contact@example.com"})
+      |> from(from_address())
       |> subject(subject)
       |> text_body(body)
 

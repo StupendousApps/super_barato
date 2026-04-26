@@ -45,6 +45,13 @@ if config_env() == :prod do
     config :super_barato, curl_impersonate_dir: dir
   end
 
+  # curl-impersonate-ff (NSS) needs an explicit CA path in slim
+  # containers. Use Debian's hashed-symlink dir (populated by the
+  # `ca-certificates` package); NSS rejects the concatenated PEM file.
+  config :super_barato,
+         :curl_ca_path,
+         System.get_env("CURL_CA_PATH") || "/etc/ssl/certs"
+
   # Master switch for the crawler pipeline. Off-by-default in
   # config/config.exs; flip on per-deploy via env var.
   if System.get_env("CHAINS_ENABLED") in ~w(true 1) do
@@ -108,21 +115,29 @@ if config_env() == :prod do
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
-  # ## Configuring the mailer
-  #
-  # In production you need to configure the mailer to use a different adapter.
-  # Here is an example configuration for Mailgun:
-  #
-  #     config :super_barato, SuperBarato.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
-  #
-  # Most non-SMTP adapters require an API client. Swoosh supports Req, Hackney,
-  # and Finch out-of-the-box. This configuration is typically done at
-  # compile-time in your config/prod.exs:
-  #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Req
-  #
-  # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+  # SendGrid — required for the signup confirmation flow. Without an
+  # API key the mailer falls back to the local in-memory adapter so dev
+  # and integration tests still work, but live signups would silently
+  # drop confirmation emails. Fail fast in prod instead.
+  sendgrid_api_key =
+    System.get_env("SENDGRID_API_KEY") ||
+      raise """
+      environment variable SENDGRID_API_KEY is missing.
+      Generate one at https://app.sendgrid.com/settings/api_keys with
+      "Mail Send" permission.
+      """
+
+  config :super_barato, SuperBarato.Mailer,
+    adapter: Swoosh.Adapters.Sendgrid,
+    api_key: sendgrid_api_key
+
+  # Verified sender — must match a SendGrid Single Sender or an address
+  # on a domain whose DNS has been authenticated in SendGrid. SendGrid
+  # rejects sends whose `from` doesn't pass one of those checks.
+  config :super_barato,
+         :mail_from,
+         {
+           System.get_env("MAIL_FROM_NAME") || "SuperBarato",
+           System.get_env("MAIL_FROM_ADDRESS") || "no-reply@superbarato.cl"
+         }
 end

@@ -44,3 +44,4 @@ npm-debug.log
 
 # Local tool config
 /.claude/
+secret

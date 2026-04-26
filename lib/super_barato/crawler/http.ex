@@ -75,7 +75,7 @@ defmodule SuperBarato.Crawler.Http do
     headers_file =
       Path.join(System.tmp_dir!(), "sb_curl_#{System.unique_integer([:positive])}.hdr")
 
-    args = build_args(method, url, headers, body, follow, timeout, headers_file)
+    args = build_args(method, url, headers, body, follow, timeout, headers_file, profile)
 
     try do
       case System.cmd(binary, args, stderr_to_stdout: false) do
@@ -132,7 +132,7 @@ defmodule SuperBarato.Crawler.Http do
     Application.get_env(:super_barato, :curl_impersonate_profile, @default_profile)
   end
 
-  defp build_args(method, url, headers, body, follow, timeout_ms, headers_file) do
+  defp build_args(method, url, headers, body, follow, timeout_ms, headers_file, profile) do
     header_args = Enum.flat_map(headers, fn {k, v} -> ["-H", "#{k}: #{v}"] end)
 
     method_args =
@@ -155,9 +155,30 @@ defmodule SuperBarato.Crawler.Http do
 
     base
     |> then(&if follow, do: &1 ++ ["-L"], else: &1)
+    |> Kernel.++(cacert_args(profile))
     |> Kernel.++(method_args)
     |> Kernel.++(header_args)
     |> Kernel.++([url])
+  end
+
+  # `curl-impersonate-ff` is built against NSS, which doesn't auto-
+  # discover OpenSSL's CA bundle and can't parse the concatenated PEM
+  # at /etc/ssl/certs/ca-certificates.crt directly (curl exits 77 —
+  # "Problem with the SSL CA cert"). Point it at the hashed-symlink
+  # directory via `--capath` instead — NSS reads that fine, and the
+  # `ca-certificates` package populates it on every Debian-family image.
+  # Configurable via `:curl_ca_path`. Chrome/edge/safari profiles use
+  # the BoringSSL build with a bundled trust store and don't need this.
+  defp cacert_args(profile) do
+    profile_str = if is_atom(profile), do: Atom.to_string(profile), else: ""
+
+    with true <- String.starts_with?(profile_str, "ff"),
+         path when is_binary(path) <- Application.get_env(:super_barato, :curl_ca_path),
+         true <- File.dir?(path) do
+      ["--capath", path]
+    else
+      _ -> []
+    end
   end
 
   # `-D` writes every response block when following redirects. Keep only the
