@@ -98,14 +98,18 @@ config :super_barato, SuperBarato.Crawler,
     ],
     jumbo: [
       interval_ms: 1_000,
+      # No ff* profiles: curl-impersonate-ff is built against NSS, which
+      # in our slim Debian runner can't validate certs against either
+      # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
+      # hashed-symlink dir (--capath: exit 60). NSS wants its own
+      # cert9.db DB, which we'd have to build with certutil from
+      # libnss3-tools. Not worth the complexity for a few extra
+      # fingerprints — chrome/edge/safari give us 7 already.
       fallback_profiles: [
         :chrome116,
         :chrome107,
         :chrome100,
         :chrome99,
-        :ff117,
-        :ff109,
-        :ff102,
         :edge101,
         :edge99,
         :safari15_5
@@ -120,14 +124,18 @@ config :super_barato, SuperBarato.Crawler,
     ],
     santa_isabel: [
       interval_ms: 1_000,
+      # No ff* profiles: curl-impersonate-ff is built against NSS, which
+      # in our slim Debian runner can't validate certs against either
+      # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
+      # hashed-symlink dir (--capath: exit 60). NSS wants its own
+      # cert9.db DB, which we'd have to build with certutil from
+      # libnss3-tools. Not worth the complexity for a few extra
+      # fingerprints — chrome/edge/safari give us 7 already.
       fallback_profiles: [
         :chrome116,
         :chrome107,
         :chrome100,
         :chrome99,
-        :ff117,
-        :ff109,
-        :ff102,
         :edge101,
         :edge99,
         :safari15_5
@@ -142,14 +150,18 @@ config :super_barato, SuperBarato.Crawler,
     ],
     tottus: [
       interval_ms: 1_000,
+      # No ff* profiles: curl-impersonate-ff is built against NSS, which
+      # in our slim Debian runner can't validate certs against either
+      # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
+      # hashed-symlink dir (--capath: exit 60). NSS wants its own
+      # cert9.db DB, which we'd have to build with certutil from
+      # libnss3-tools. Not worth the complexity for a few extra
+      # fingerprints — chrome/edge/safari give us 7 already.
       fallback_profiles: [
         :chrome116,
         :chrome107,
         :chrome100,
         :chrome99,
-        :ff117,
-        :ff109,
-        :ff102,
         :edge101,
         :edge99,
         :safari15_5

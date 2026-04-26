@@ -45,13 +45,6 @@ if config_env() == :prod do
     config :super_barato, curl_impersonate_dir: dir
   end
 
-  # curl-impersonate-ff (NSS) needs an explicit CA path in slim
-  # containers. Use Debian's hashed-symlink dir (populated by the
-  # `ca-certificates` package); NSS rejects the concatenated PEM file.
-  config :super_barato,
-         :curl_ca_path,
-         System.get_env("CURL_CA_PATH") || "/etc/ssl/certs"
-
   # Master switch for the crawler pipeline. Off-by-default in
   # config/config.exs; flip on per-deploy via env var.
   if System.get_env("CHAINS_ENABLED") in ~w(true 1) do
