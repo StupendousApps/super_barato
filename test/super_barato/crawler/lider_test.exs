@@ -67,13 +67,12 @@ defmodule SuperBarato.Crawler.LiderTest do
   end
 
   describe "parse_search_from_next_data/2 (browse fixture)" do
+    @browse_slug "alimentacion/pastas-y-salsas/pastas/94975735_38642885_95801483"
+
     setup do
-      html = Fixtures.read!(:lider, "browse_cereales.html")
+      html = Fixtures.read!(:lider, "browse_pastas.html")
       {:ok, data} = Lider.extract_next_data(html)
-
-      {:ok, listings, total} =
-        Lider.parse_search_from_next_data(data, "alimentacion/cereales/94975735_04086358")
-
+      {:ok, listings, total} = Lider.parse_search_from_next_data(data, @browse_slug)
       {:ok, listings: listings, total: total}
     end
 
@@ -97,7 +96,7 @@ defmodule SuperBarato.Crawler.LiderTest do
 
     test "category_path propagates from the call", %{listings: listings} do
       [l | _] = listings
-      assert l.category_path == "alimentacion/cereales/94975735_04086358"
+      assert l.category_path == @browse_slug
     end
 
     test "at least one listing has a populated regular_price", %{listings: listings} do
@@ -107,7 +106,7 @@ defmodule SuperBarato.Crawler.LiderTest do
 
   describe "parse_pdp_from_next_data/1 (PDP fixture)" do
     setup do
-      html = Fixtures.read!(:lider, "pdp_oatly.html")
+      html = Fixtures.read!(:lider, "pdp_pasta.html")
       {:ok, data} = Lider.extract_next_data(html)
       {:ok, listing} = Lider.parse_pdp_from_next_data(data)
       {:ok, listing: listing}
@@ -115,12 +114,12 @@ defmodule SuperBarato.Crawler.LiderTest do
 
     test "returns a fully-populated listing", %{listing: l} do
       assert %Listing{chain: :lider} = l
-      assert l.chain_sku == "00739437661603"
-      assert is_binary(l.name) and String.contains?(l.name, "Oatly")
-      assert l.brand == "Oatly"
-      assert l.regular_price == 22_200
+      assert l.chain_sku == "00693796210706"
+      assert is_binary(l.name) and String.contains?(l.name, "Kang Shi Fu")
+      assert l.brand == "Kang Shi Fu"
+      assert l.regular_price == 23_990
       # EAN = usItemId with leading zeros stripped
-      assert l.ean == "739437661603"
+      assert l.ean == "693796210706"
       assert String.starts_with?(l.image_url, "https://")
     end
   end
