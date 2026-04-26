@@ -6,6 +6,7 @@
     <meta name="csrf-token" content={get_csrf_token()} />
     <title>{assigns[:page_title] || "Admin · SuperBarato"}</title>
     <StupendousAdmin.Stylesheets.render />
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/admin/admin.css"} />
     <StupendousAdmin.Scripts.render />
   </head>
   <.admin_body flash={@flash}>

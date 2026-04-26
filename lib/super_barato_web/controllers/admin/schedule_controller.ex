@@ -4,7 +4,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
   alias SuperBarato.{Crawler, Crawler.Schedule, Crawler.Schedules}
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
-  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :app}
+  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
 
   @kinds ["discover_categories", "discover_products"]
 

@@ -1,10 +1,10 @@
 defmodule SuperBaratoWeb.Admin.ListingController do
   use SuperBaratoWeb, :controller
 
-  alias SuperBarato.{Catalog, Crawler}
+  alias SuperBarato.{Catalog, Crawler, Linker}
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
-  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :app}
+  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
 
   # "All" plus one per known chain. Rendered as a sub-nav tab strip.
   def chains, do: [nil | Crawler.known_chains()]
@@ -12,6 +12,7 @@ defmodule SuperBaratoWeb.Admin.ListingController do
   def index(conn, params) do
     chain = parse_chain(params["chain"])
     q = params["q"] || ""
+    ean = params["ean"] || ""
     sort = params["sort"] || "-last_priced_at"
     page = parse_int(params["page"], 1)
     per_page = parse_int(params["per_page"], 25)
@@ -20,17 +21,29 @@ defmodule SuperBaratoWeb.Admin.ListingController do
       Catalog.list_listings_page(
         chain: chain,
         q: q,
+        ean: ean,
         sort: sort,
         page: page,
         per_page: per_page
       )
 
-    filters = %{chain: params["chain"] || "", q: q, per_page: params["per_page"] || ""}
+    products_by_id =
+      result.items
+      |> Enum.map(& &1.id)
+      |> Linker.products_by_listing_ids()
+
+    filters = %{
+      chain: params["chain"] || "",
+      q: q,
+      ean: ean,
+      per_page: params["per_page"] || ""
+    }
 
     conn
     |> assign(:top_nav, :listings)
     |> assign(:active_chain, chain)
     |> assign(:result, result)
+    |> assign(:products_by_id, products_by_id)
     |> assign(:filters, filters)
     |> assign(:sort, sort)
     |> assign(:page_title, "Listings")

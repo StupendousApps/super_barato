@@ -16,7 +16,7 @@ defmodule SuperBaratoWeb.Admin.ManualController do
   alias SuperBarato.Crawler.Probe
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
-  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :app}
+  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
   plug :assign_nav
 
   defp assign_nav(conn, _opts) do

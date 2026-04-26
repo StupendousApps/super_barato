@@ -4,7 +4,7 @@ defmodule SuperBaratoWeb.Admin.CategoryController do
   alias SuperBarato.{Catalog, Crawler}
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
-  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :app}
+  plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
 
   def chains, do: [nil | Crawler.known_chains()]
 
