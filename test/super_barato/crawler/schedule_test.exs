@@ -124,7 +124,7 @@ defmodule SuperBarato.Crawler.ScheduleTest do
                Schedule.to_cron_entry(s)
     end
 
-    test "discover_products renders a ProductProducer.run MFA" do
+    test "discover_products for jumbo renders a Cencosud SitemapProducer MFA" do
       s = %Schedule{
         chain: "jumbo",
         kind: "discover_products",
@@ -134,10 +134,24 @@ defmodule SuperBarato.Crawler.ScheduleTest do
       }
 
       assert {:ok, {{:weekly, days, [~T[05:00:00]]},
-              {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo]]}}} =
+              {SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [[chain: :jumbo]]}}} =
                Schedule.to_cron_entry(s)
 
       assert days == [:mon, :tue, :wed, :thu, :fri, :sat, :sun]
+    end
+
+    test "discover_products for non-Cencosud chains keeps the original ProductProducer" do
+      s = %Schedule{
+        chain: "unimarc",
+        kind: "discover_products",
+        days: "mon",
+        times: "05:00:00",
+        active: true
+      }
+
+      assert {:ok, {_,
+              {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}}} =
+               Schedule.to_cron_entry(s)
     end
   end
 

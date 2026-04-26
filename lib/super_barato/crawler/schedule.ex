@@ -98,10 +98,18 @@ defmodule SuperBarato.Crawler.Schedule do
      [chain, {:discover_categories, %{chain: chain, parent: nil}}]}
   end
 
+  # Per-chain dispatch: Cencosud-owned chains (Jumbo, Santa Isabel)
+  # discover products from the sitemap rather than iterating leaf
+  # categories, so they need a different producer. Lider/Unimarc keep
+  # the original DB-leaf-categories iteration.
   defp mfa(%__MODULE__{chain: chain_str, kind: "discover_products"}) do
     chain = String.to_existing_atom(chain_str)
-    {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: chain]]}
+    {producer_for(chain), :run, [[chain: chain]]}
   end
+
+  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.SitemapProducer
+  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.SitemapProducer
+  defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
 
   ## Parsing helpers — also used by the context for validation.
 
