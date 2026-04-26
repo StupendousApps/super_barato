@@ -210,10 +210,22 @@ defmodule SuperBarato.Crawler.Cencosud do
         # `<sitemapindex>` (sub-sitemaps) and `<urlset>` (PDP URLs)
         # are mutually exclusive at the spec level, but our extractor
         # is forgiving — accept whichever the index actually was.
-        cond do
-          sub_sitemaps != [] -> walk_sub_sitemaps(cfg, sub_sitemaps)
-          product_urls != [] -> {:ok, product_urls}
-          true -> {:error, :empty_sitemap}
+        result =
+          cond do
+            sub_sitemaps != [] -> walk_sub_sitemaps(cfg, sub_sitemaps)
+            product_urls != [] -> {:ok, product_urls}
+            true -> {:error, :empty_sitemap}
+          end
+
+        # Cencosud sitemaps mix in `/<brand>` and `/<category>`
+        # landing pages alongside `/<slug>/p` product pages. The
+        # landing pages don't carry Product JSON-LD (they're SPA
+        # listings rendered client-side), so let them through and the
+        # worker would log noise per page. Drop everything that isn't
+        # a canonical PDP at the source.
+        case result do
+          {:ok, urls} -> {:ok, Enum.filter(urls, &String.ends_with?(&1, "/p"))}
+          err -> err
         end
 
       {:error, _} = err ->
