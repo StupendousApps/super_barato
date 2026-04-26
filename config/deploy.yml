@@ -72,6 +72,9 @@ env:
     # 10 MB × 5 files = ~50 MB on disk). Uncomment below to tighten
     # or loosen retention without a rebuild.
     LOG_DIR: /data/log
+    # FlareSolverr sidecar (see `accessories:` below). Reachable at
+    # `super_barato-flaresolverr:8191` over Kamal's docker network.
+    FLARESOLVERR_URL: http://super_barato-flaresolverr:8191
     # LOG_MAX_FILES: "5"
     # LOG_MAX_BYTES: "10485760"
 
@@ -91,6 +94,29 @@ aliases:
   shell:   app exec --interactive --reuse "bash"
   logs:    app logs -f
   migrate: app exec --reuse "bin/migrate"
+
+# FlareSolverr — headless Chromium sidecar that solves Cloudflare's
+# Bot Manager / managed challenges on demand. The crawler hits it only
+# when a cf_protected chain gets blocked, harvests cf_clearance +
+# __cf_bm cookies from the response, and replays them via curl-
+# impersonate until they expire (~25 min). Boot once with:
+#
+#   bin/kamal accessory boot flaresolverr
+#
+# Restart with: bin/kamal accessory restart flaresolverr
+accessories:
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    host: 51.161.116.221
+    port: "127.0.0.1:8191:8191"
+    env:
+      clear:
+        LOG_LEVEL: info
+        CAPTCHA_SOLVER: none
+        TZ: America/Santiago
+    options:
+      memory: 1g
+      memory-reservation: 512m
 
 builder:
   arch: amd64

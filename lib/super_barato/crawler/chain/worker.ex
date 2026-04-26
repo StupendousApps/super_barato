@@ -22,7 +22,7 @@ defmodule SuperBarato.Crawler.Chain.Worker do
 
   alias SuperBarato.Crawler
   alias SuperBarato.Crawler.Chain.{Queue, Results}
-  alias SuperBarato.Crawler.Session
+  alias SuperBarato.Crawler.{Flaresolverr, Session}
 
   @default_interval_ms 1_000
 
@@ -61,7 +61,10 @@ defmodule SuperBarato.Crawler.Chain.Worker do
       consecutive_blocks: 0,
       fallback_profiles: Keyword.get(opts, :fallback_profiles, [:chrome116]),
       # Used only in tests to shorten the all-profiles-blocked backoff.
-      block_backoff_ms: Keyword.get(opts, :block_backoff_ms, 60_000)
+      block_backoff_ms: Keyword.get(opts, :block_backoff_ms, 60_000),
+      # FlareSolverr-backed Cloudflare bypass — see handle_blocked/3.
+      cf_protected: Keyword.get(opts, :cf_protected, false),
+      cf_homepage: Keyword.get(opts, :cf_homepage)
     }
 
     send(self(), :work)
@@ -85,35 +88,88 @@ defmodule SuperBarato.Crawler.Chain.Worker do
         %{state | last_call_at: now(), consecutive_blocks: 0}
 
       :blocked ->
-        new_profile = Session.rotate_profile(state.chain, state.fallback_profiles)
-        blocks = state.consecutive_blocks + 1
-
-        Logger.warning(
-          "[#{state.chain}] task blocked — rotated profile to #{new_profile} (block ##{blocks})"
-        )
-
         Queue.requeue(state.chain, task)
-
-        # If every profile in the fallback list has been blocked in a row,
-        # back off before trying again — likely a sustained block rather
-        # than a bad profile.
-        state =
-          if blocks >= length(state.fallback_profiles) do
-            Logger.warning(
-              "[#{state.chain}] all profiles blocked — sleeping #{state.block_backoff_ms}ms"
-            )
-
-            Process.sleep(state.block_backoff_ms)
-            %{state | consecutive_blocks: 0}
-          else
-            %{state | consecutive_blocks: blocks}
-          end
-
+        state = handle_blocked(state)
         %{state | last_call_at: now()}
 
       {:error, reason} ->
         Logger.warning("[#{state.chain}] task failed: #{inspect(reason)}")
         %{state | last_call_at: now(), consecutive_blocks: 0}
+    end
+  end
+
+  # On `:blocked`, the requeued task is about to be retried. Decide what
+  # to change between the failed attempt and the next one:
+  #
+  #   * For Cloudflare-protected chains, try FlareSolverr first. A
+  #     successful solve mints fresh `cf_clearance` + `__cf_bm` cookies
+  #     and pins the matching curl-impersonate profile — the next
+  #     attempt should sail through, and we don't burn a profile slot.
+  #     Re-solves are only attempted when the cached session is
+  #     missing/expired or when CF re-challenged us anyway.
+  #
+  #   * Otherwise, rotate to the next curl-impersonate profile. After
+  #     the whole list has cycled without success, back off so we don't
+  #     hammer a target that's actively rejecting us.
+  defp handle_blocked(state) do
+    cond do
+      state.cf_protected and Flaresolverr.enabled?() and state.cf_homepage != nil ->
+        case solve_cf_session(state) do
+          :ok -> %{state | consecutive_blocks: 0}
+          :error -> rotate_and_maybe_backoff(state)
+        end
+
+      true ->
+        rotate_and_maybe_backoff(state)
+    end
+  end
+
+  defp solve_cf_session(state) do
+    # If we already have a non-expired CF session, the cookies are
+    # presumably still good; fall back to profile rotation rather than
+    # burning a Chromium solve. CF only re-challenges when it has a
+    # reason to, so a re-solve is the right move next time around once
+    # `clear_cf_session/1` runs (we drop the session when the rotated
+    # request fails too — see below).
+    if Session.cf_session_valid?(state.chain) do
+      Logger.warning("[#{state.chain}] CF cookies still valid but blocked — clearing for re-solve")
+      Session.clear_cf_session(state.chain)
+    end
+
+    case Flaresolverr.solve(state.cf_homepage) do
+      {:ok, %{cookies: cookies, user_agent: ua, status: status}} ->
+        profile = Flaresolverr.profile_for_user_agent(ua)
+        Session.put_cf_session(state.chain, cookies, profile, ua)
+
+        Logger.info(
+          "[#{state.chain}] CF challenge solved — status=#{status}, profile=#{profile}, cookies=#{length(cookies)}"
+        )
+
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("[#{state.chain}] CF solve failed: #{inspect(reason)}")
+        :error
+    end
+  end
+
+  defp rotate_and_maybe_backoff(state) do
+    new_profile = Session.rotate_profile(state.chain, state.fallback_profiles)
+    blocks = state.consecutive_blocks + 1
+
+    Logger.warning(
+      "[#{state.chain}] task blocked — rotated profile to #{new_profile} (block ##{blocks})"
+    )
+
+    if blocks >= length(state.fallback_profiles) do
+      Logger.warning(
+        "[#{state.chain}] all profiles blocked — sleeping #{state.block_backoff_ms}ms"
+      )
+
+      Process.sleep(state.block_backoff_ms)
+      %{state | consecutive_blocks: 0}
+    else
+      %{state | consecutive_blocks: blocks}
     end
   end
 

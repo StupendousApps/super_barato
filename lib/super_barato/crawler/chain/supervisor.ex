@@ -55,6 +55,8 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
     interval_ms = Keyword.get(opts, :interval_ms, 1_000)
     fallback_profiles = Keyword.get(opts, :fallback_profiles, [:chrome116])
     block_backoff_ms = Keyword.get(opts, :block_backoff_ms, 60_000)
+    cf_protected = Keyword.get(opts, :cf_protected, false)
+    cf_homepage = Keyword.get(opts, :cf_homepage)
     adapter = Keyword.get(opts, :adapter)
 
     task_sup_name = task_sup_name(chain)
@@ -67,7 +69,9 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
        adapter: adapter,
        interval_ms: interval_ms,
        fallback_profiles: fallback_profiles,
-       block_backoff_ms: block_backoff_ms},
+       block_backoff_ms: block_backoff_ms,
+       cf_protected: cf_protected,
+       cf_homepage: cf_homepage},
       {Task.Supervisor, name: task_sup_name},
       {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name}
     ]

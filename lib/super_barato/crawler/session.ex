@@ -103,6 +103,61 @@ defmodule SuperBarato.Crawler.Session do
   end
 
   @doc """
+  Stores a Cloudflare-bypass session minted by FlareSolverr. The
+  `cookies` are merged into the regular cookie jar so existing
+  `cookie_header/1` callers pick them up automatically; the matching
+  curl-impersonate `profile` (chosen from FlareSolverr's User-Agent) is
+  pinned for the chain so subsequent rotations don't break the JA3
+  binding; and the `user_agent` string is stored for the worker to
+  echo back as a header. `ttl_seconds` defaults to 25 minutes (CF's
+  `__cf_bm` lives 30; we err on the short side).
+  """
+  def put_cf_session(chain, cookies, profile, user_agent, ttl_seconds \\ 25 * 60)
+      when is_atom(chain) and is_list(cookies) and is_atom(profile) and
+             is_binary(user_agent) and is_integer(ttl_seconds) do
+    init()
+
+    cookie_map = for c <- cookies, into: %{}, do: {c.name, c.value}
+
+    existing =
+      case :ets.lookup(@table, {chain, :cookies}) do
+        [{_, map}] -> map
+        _ -> %{}
+      end
+
+    expires_at = System.system_time(:second) + ttl_seconds
+
+    :ets.insert(@table, {{chain, :cookies}, Map.merge(existing, cookie_map)})
+    :ets.insert(@table, {{chain, :profile}, profile})
+    :ets.insert(@table, {{chain, :cf_user_agent}, user_agent})
+    :ets.insert(@table, {{chain, :cf_expires_at}, expires_at})
+    :ok
+  end
+
+  @doc """
+  Returns `true` if the chain has a non-expired CF session (cookies
+  minted by FlareSolverr that haven't aged out yet). When `false` the
+  worker should solve again before retrying.
+  """
+  def cf_session_valid?(chain) when is_atom(chain) do
+    init()
+
+    case :ets.lookup(@table, {chain, :cf_expires_at}) do
+      [{_, exp}] when is_integer(exp) -> System.system_time(:second) < exp
+      _ -> false
+    end
+  end
+
+  @doc "Drops the chain's CF cookies + metadata (e.g. when a re-solve is needed)."
+  def clear_cf_session(chain) when is_atom(chain) do
+    init()
+    :ets.delete(@table, {chain, :cookies})
+    :ets.delete(@table, {chain, :cf_user_agent})
+    :ets.delete(@table, {chain, :cf_expires_at})
+    :ok
+  end
+
+  @doc """
   Merges `Set-Cookie` values from a response into the jar. Accepts any struct
   exposing a `headers` field as a list of `{String.t(), String.t()}` tuples
   (lowercased keys).

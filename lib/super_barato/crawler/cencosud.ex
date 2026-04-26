@@ -256,7 +256,7 @@ defmodule SuperBarato.Crawler.Cencosud do
 
   defp get_with_headers(cfg, url) do
     profile = Session.get(cfg.chain, :profile) || cfg.profile
-    Http.get(url, headers: headers_for(cfg), profile: profile)
+    Http.get(url, chain: cfg.chain, headers: headers_for(cfg), profile: profile)
   end
 
   defp headers_for(%Config{site_url: site}) do

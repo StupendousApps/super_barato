@@ -362,7 +362,7 @@ defmodule SuperBarato.Crawler.Tottus do
   defp fetch_html(url) do
     profile = Session.get(@chain, :profile) || @default_profile
 
-    case Http.get(url, headers: @browser_headers, profile: profile) do
+    case Http.get(url, chain: @chain, headers: @browser_headers, profile: profile) do
       {:ok, %Http.Response{} = resp} ->
         cond do
           Http.blocked?(resp) -> :blocked

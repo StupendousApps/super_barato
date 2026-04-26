@@ -45,6 +45,13 @@ if config_env() == :prod do
     config :super_barato, curl_impersonate_dir: dir
   end
 
+  # FlareSolverr — used by the Worker to solve Cloudflare challenges
+  # for cf_protected chains. Off when the env var is unset (worker
+  # falls back to plain profile rotation).
+  if url = System.get_env("FLARESOLVERR_URL") do
+    config :super_barato, :flaresolverr, url: url
+  end
+
   # Master switch for the crawler pipeline. Off-by-default in
   # config/config.exs; flip on per-deploy via env var.
   if System.get_env("CHAINS_ENABLED") in ~w(true 1) do

@@ -65,11 +65,11 @@ defmodule SuperBarato.Crawler.Http do
     * `:timeout_ms` — per-request wall-clock limit, defaults to 30 s.
   """
   def request(method, url, opts) when method in [:get, :post] and is_binary(url) do
-    headers = Keyword.get(opts, :headers, [])
+    chain = Keyword.get(opts, :chain)
+    {headers, profile} = enrich_from_session(chain, opts)
     body = Keyword.get(opts, :body)
     follow = Keyword.get(opts, :follow_redirects, true)
     timeout = Keyword.get(opts, :timeout_ms, @default_timeout_ms)
-    profile = Keyword.get(opts, :profile) || default_profile()
     binary = binary_for_profile(profile)
 
     headers_file =
@@ -120,6 +120,46 @@ defmodule SuperBarato.Crawler.Http do
   end
 
   def blocked?(_), do: false
+
+  # If a `:chain` is given, layer the chain's stashed Cookie header and
+  # FlareSolverr-minted User-Agent on top of any caller-supplied headers
+  # (caller wins on collision), and use the chain's pinned profile when
+  # the caller didn't pass one explicitly. Without `:chain`, behaves
+  # exactly like before.
+  defp enrich_from_session(nil, opts) do
+    headers = Keyword.get(opts, :headers, [])
+    profile = Keyword.get(opts, :profile) || default_profile()
+    {headers, profile}
+  end
+
+  defp enrich_from_session(chain, opts) when is_atom(chain) do
+    caller_headers = Keyword.get(opts, :headers, [])
+    cookie = SuperBarato.Crawler.Session.cookie_header(chain)
+    cf_ua = SuperBarato.Crawler.Session.get(chain, :cf_user_agent)
+
+    headers =
+      caller_headers
+      |> override_header("user-agent", if(is_binary(cf_ua) and cf_ua != "", do: cf_ua))
+      |> override_header("cookie", cookie)
+
+    profile =
+      Keyword.get(opts, :profile) ||
+        SuperBarato.Crawler.Session.get(chain, :profile) ||
+        default_profile()
+
+    {headers, profile}
+  end
+
+  # Replace any existing `name` header (case-insensitive) with `value`,
+  # or append it if absent. Skips when `value` is nil/empty.
+  defp override_header(headers, _name, nil), do: headers
+  defp override_header(headers, _name, ""), do: headers
+
+  defp override_header(headers, name, value) do
+    lower = String.downcase(name)
+    stripped = Enum.reject(headers, fn {k, _} -> String.downcase(k) == lower end)
+    [{name, value} | stripped]
+  end
 
   defp binary_dir do
     case Application.get_env(:super_barato, :curl_impersonate_dir) do

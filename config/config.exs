@@ -98,6 +98,8 @@ config :super_barato, SuperBarato.Crawler,
     ],
     jumbo: [
       interval_ms: 1_000,
+      cf_protected: true,
+      cf_homepage: "https://www.jumbo.cl/",
       # No ff* profiles: curl-impersonate-ff is built against NSS, which
       # in our slim Debian runner can't validate certs against either
       # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
@@ -128,6 +130,8 @@ config :super_barato, SuperBarato.Crawler,
     ],
     santa_isabel: [
       interval_ms: 1_000,
+      cf_protected: true,
+      cf_homepage: "https://www.santaisabel.cl/",
       # No ff* profiles: curl-impersonate-ff is built against NSS, which
       # in our slim Debian runner can't validate certs against either
       # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
@@ -158,6 +162,8 @@ config :super_barato, SuperBarato.Crawler,
     ],
     tottus: [
       interval_ms: 1_000,
+      cf_protected: true,
+      cf_homepage: "https://www.tottus.cl/",
       # No ff* profiles: curl-impersonate-ff is built against NSS, which
       # in our slim Debian runner can't validate certs against either
       # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
