@@ -130,7 +130,7 @@ if config_env() == :prod do
   config :super_barato,
          :mail_from,
          {
-           System.get_env("MAIL_FROM_NAME") || "SuperBarato",
-           System.get_env("MAIL_FROM_ADDRESS") || "no-reply@superbarato.cl"
+           System.get_env("MAIL_FROM_NAME") || "Super Barato (cl)",
+           System.get_env("MAIL_FROM_ADDRESS") || "hola@superbarato.cl"
          }
 end

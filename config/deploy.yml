@@ -53,8 +53,8 @@ env:
     - SENDGRID_API_KEY
   clear:
     PHX_HOST: superbarato.cl
-    MAIL_FROM_NAME: SuperBarato
-    MAIL_FROM_ADDRESS: no-reply@superbarato.cl
+    MAIL_FROM_NAME: "Super Barato (cl)"
+    MAIL_FROM_ADDRESS: hola@superbarato.cl
     # SQLite file lives on its own host volume (see `volumes:` below)
     # so it can be snapshotted/backed up independently of logs/prices.
     DATABASE_PATH: /data/db/super_barato.db
