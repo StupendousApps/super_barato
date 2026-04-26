@@ -79,4 +79,26 @@ defmodule SuperBarato.Linker do
     from(pl in ProductListing, where: pl.product_id == ^product_id)
     |> Repo.all()
   end
+
+  @doc """
+  Bulk lookup: given a list of `chain_listing_id`s, returns
+  `%{listing_id => %Product{}}` for those that have at least one
+  product link. Used by the admin listings table to display the
+  current product attached to each row in a single query.
+
+  When a listing has multiple links (rare; future-fuzzy-match world),
+  one product is picked at random — admin pages flag this case.
+  """
+  def products_by_listing_ids(listing_ids) when is_list(listing_ids) do
+    from(pl in ProductListing,
+      join: p in Product,
+      on: p.id == pl.product_id,
+      where: pl.chain_listing_id in ^listing_ids,
+      select: {pl.chain_listing_id, p}
+    )
+    |> Repo.all()
+    |> Enum.reduce(%{}, fn {listing_id, product}, acc ->
+      Map.put_new(acc, listing_id, product)
+    end)
+  end
 end

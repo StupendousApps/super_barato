@@ -10,6 +10,12 @@
     <.filters>
       <.input name="q" value={@filters.q} label="Search" placeholder="Name or brand" />
       <.input
+        name="ean"
+        value={@filters.ean}
+        label="EAN"
+        placeholder="Prefix, e.g. 78025"
+      />
+      <.input
         name="per_page"
         type="select"
         value={@filters.per_page}
@@ -30,37 +36,70 @@
       sort={sort_dir("chain", @sort)}
       sort_href={sort_href(~p"/listings", @filters, "chain", @sort)}
     >
-      {chain_label(l.chain)}
+      <%= case chain_favicon(l.chain) do %>
+        <% nil -> %>
+          {chain_label(l.chain)}
+        <% src -> %>
+          <img
+            src={src}
+            alt={chain_label(l.chain)}
+            title={chain_label(l.chain)}
+            loading="lazy"
+            class="chain-favicon"
+          />
+      <% end %>
     </:col>
+
+    <:col :let={l} label="Image" nowrap>
+      <img :if={l.image_url} src={l.image_url} alt="" loading="lazy" class="data-table__thumb" />
+    </:col>
+
+    <%!-- Combined Name + Brand: name on top, brand dim below. Sort key
+         stays "name" so the column header still works as expected. --%>
     <:col
       :let={l}
-      label="Name"
+      label="Product"
       sort={sort_dir("name", @sort)}
       sort_href={sort_href(~p"/listings", @filters, "name", @sort)}
     >
-      {l.name}
+      <div>{l.name}</div>
+      <div :if={l.brand} class="listings-table__brand">{l.brand}</div>
     </:col>
-    <:col
-      :let={l}
-      label="Brand"
-      sort={sort_dir("brand", @sort)}
-      sort_href={sort_href(~p"/listings", @filters, "brand", @sort)}
-    >
-      {l.brand}
-    </:col>
+
     <:col :let={l} label="SKU" nowrap>{l.chain_sku}</:col>
     <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
+
+    <%!-- Combined regular + promo: when a promo is active and lower
+         than regular, regular shows striked above and promo is the
+         prominent value below. --%>
     <:col
       :let={l}
-      label="Regular"
+      label="Price"
       nowrap
       align={:right}
       sort={sort_dir("current_regular_price", @sort)}
       sort_href={sort_href(~p"/listings", @filters, "current_regular_price", @sort)}
     >
-      {format_clp(l.current_regular_price)}
+      <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
+        <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
+        <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
+      <% else %>
+        <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
+      <% end %>
     </:col>
-    <:col :let={l} label="Promo" nowrap align={:right}>{format_clp(l.current_promo_price)}</:col>
+
+    <%!-- Linked product, looked up via product_listings. "—" when no
+         link exists (linker hasn't run, or no EAN to match on). --%>
+    <:col :let={l} label="Product link">
+      <%= case Map.get(@products_by_id, l.id) do %>
+        <% nil -> %>
+          <span class="opacity-50">—</span>
+        <% p -> %>
+          <div>{p.canonical_name}</div>
+          <div :if={p.ean} class="text-xs opacity-60 font-mono">{p.ean}</div>
+      <% end %>
+    </:col>
+
     <:col
       :let={l}
       label="Last priced"

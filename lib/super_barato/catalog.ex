@@ -215,6 +215,7 @@ defmodule SuperBarato.Catalog do
       ChainListing
       |> apply_chain_filter(opts[:chain])
       |> apply_q_filter(opts[:q])
+      |> apply_ean_filter(opts[:ean])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -253,6 +254,16 @@ defmodule SuperBarato.Catalog do
   defp apply_q_filter(query, q) when is_binary(q) do
     like = "%" <> String.replace(q, "%", "\\%") <> "%"
     where(query, [l], like(l.name, ^like) or like(l.brand, ^like))
+  end
+
+  # EAN filter — prefix-match so users can paste a partial EAN. SQLite
+  # LIKE is case-insensitive for ASCII, fine here since EANs are digits.
+  defp apply_ean_filter(query, nil), do: query
+  defp apply_ean_filter(query, ""), do: query
+
+  defp apply_ean_filter(query, ean) when is_binary(ean) do
+    like = String.replace(ean, "%", "\\%") <> "%"
+    where(query, [l], like(l.ean, ^like))
   end
 
   defp apply_sort(query, "-" <> field), do: apply_sort_dir(query, field, :desc)

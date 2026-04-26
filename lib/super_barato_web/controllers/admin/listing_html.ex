@@ -28,6 +28,28 @@ defmodule SuperBaratoWeb.Admin.ListingHTML do
   def chain_tab_href(nil), do: ~p"/listings"
   def chain_tab_href(chain), do: ~p"/listings?#{[chain: chain]}"
 
+  # File extensions differ — Jumbo/SI/Tottus serve PNGs, Lider/Unimarc
+  # only ICO. Both render fine in browsers; mapping is fixed at build
+  # time, so the right extension is baked in. Returns nil for unknown
+  # chains so callers can render a fallback.
+  @chain_favicons %{
+    jumbo: "/images/chains/jumbo.png",
+    santa_isabel: "/images/chains/santa_isabel.png",
+    tottus: "/images/chains/tottus.png",
+    lider: "/images/chains/lider.ico",
+    unimarc: "/images/chains/unimarc.ico"
+  }
+
+  def chain_favicon(chain) when is_atom(chain), do: Map.get(@chain_favicons, chain)
+
+  def chain_favicon(chain) when is_binary(chain) do
+    try do
+      chain |> String.to_existing_atom() |> chain_favicon()
+    rescue
+      ArgumentError -> nil
+    end
+  end
+
   def chain_tabs, do: ListingController.chains()
 
   def format_clp(nil), do: "—"
