@@ -93,10 +93,23 @@ defmodule SuperBarato.Crawler.Chain.Worker do
         %{state | last_call_at: now()}
 
       {:error, reason} ->
-        Logger.warning("[#{state.chain}] task failed: #{inspect(reason)}")
+        Logger.warning(
+          "[#{state.chain}] task failed: #{inspect(reason)} #{format_task_for_log(task)}"
+        )
+
         %{state | last_call_at: now(), consecutive_blocks: 0}
     end
   end
+
+  # Compact "url=…" / "slug=…" suffix so a log grep gives us the failing
+  # input without having to hunt the request_id across other lines.
+  defp format_task_for_log({:fetch_product_pdp, %{url: url}}), do: "url=#{url}"
+  defp format_task_for_log({:discover_products, %{slug: slug}}), do: "slug=#{slug}"
+  defp format_task_for_log({:fetch_product_info, %{identifiers: ids}}),
+    do: "identifiers=#{length(ids)}"
+  defp format_task_for_log({:discover_categories, %{parent: nil}}), do: ""
+  defp format_task_for_log({:discover_categories, %{parent: p}}), do: "parent=#{p}"
+  defp format_task_for_log(_), do: ""
 
   # On `:blocked`, the requeued task is about to be retried. Decide what
   # to change between the failed attempt and the next one:

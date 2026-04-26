@@ -304,8 +304,18 @@ defmodule SuperBarato.Crawler.Cencosud do
 
           resp.status == 200 ->
             case parse_pdp(cfg, resp.body, url) do
-              {:ok, %Listing{} = listing} -> {:ok, [listing]}
-              {:error, _} = err -> err
+              {:ok, %Listing{} = listing} ->
+                {:ok, [listing]}
+
+              {:error, :no_product_jsonld} ->
+                # Wrap with body shape so the worker's log line names
+                # the URL + size + content-encoding without needing a
+                # separate diagnostic. Normal sitemap drift (Product
+                # not rendered, lazy SPA, etc.) is the usual cause.
+                {:error, {:no_product_jsonld, response_diag(resp)}}
+
+              {:error, _} = err ->
+                err
             end
 
           true ->
@@ -319,6 +329,20 @@ defmodule SuperBarato.Crawler.Cencosud do
 
   defp profile_for(cfg) do
     Session.get(cfg.chain, :profile) || cfg.profile
+  end
+
+  defp response_diag(%Http.Response{body: body, headers: headers}) do
+    %{
+      size: byte_size(body),
+      ctype: header(headers, "content-type"),
+      cenc: header(headers, "content-encoding")
+    }
+  end
+
+  defp header(headers, key) do
+    Enum.find_value(headers, fn {k, v} ->
+      if String.downcase(k) == key, do: v
+    end)
   end
 
   @doc false

@@ -140,6 +140,7 @@ defmodule SuperBaratoWeb.Admin.ManualHTML do
   defp outcome_label({:ok, _}), do: "OK"
   defp outcome_label({:error, :stale_pdp}), do: "stale PDP (skipped)"
   defp outcome_label({:error, :no_product_jsonld}), do: "no Product JSON-LD"
+  defp outcome_label({:error, {:no_product_jsonld, _diag}}), do: "no Product JSON-LD"
   defp outcome_label({:error, reason}), do: "error: #{inspect(reason)}"
   defp outcome_label(:blocked), do: "blocked"
   defp outcome_label(:no_parser), do: "fetched (no parser for this chain)"
