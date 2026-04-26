@@ -1,8 +1,10 @@
 defmodule SuperBarato.Crawler.SantaIsabel do
   @moduledoc """
-  Santa Isabel adapter. Cencosud-owned like Jumbo; delegates to
-  `Crawler.Cencosud` with SI-specific config (sales channel 6, category
-  tree at `assets.jumbo.cl/json/santaisabel/categories.json`).
+  Santa Isabel adapter. Cencosud-owned like Jumbo. Products are
+  discovered through a Supabase-hosted sitemap (`santaisabel-custom.xml`,
+  ~15k URLs) referenced from the official `www.santaisabel.cl/sitemap.xml`;
+  PDPs are fetched directly from Cencosud's nginx (no Cloudflare,
+  reachable from prod).
   """
 
   @behaviour SuperBarato.Crawler.Chain
@@ -13,8 +15,12 @@ defmodule SuperBarato.Crawler.SantaIsabel do
     chain: :santa_isabel,
     site_url: "https://www.santaisabel.cl",
     categories_url: "https://assets.jumbo.cl/json/santaisabel/categories.json",
-    sales_channel: "6"
+    sales_channel: "6",
+    sitemap_index: "https://www.santaisabel.cl/sitemap.xml"
   }
+
+  @doc "Exposed so `Cencosud.SitemapProducer` can fetch the sitemap layout."
+  def cencosud_config, do: @config
 
   @impl true
   def id, do: @config.chain
@@ -26,11 +32,8 @@ defmodule SuperBarato.Crawler.SantaIsabel do
   def handle_task({:discover_categories, %{parent: _}}),
     do: Cencosud.discover_categories(@config)
 
-  def handle_task({:discover_products, %{slug: slug}}),
-    do: Cencosud.discover_products(@config, slug)
-
-  def handle_task({:fetch_product_info, %{identifiers: ids}}),
-    do: Cencosud.fetch_product_info(@config, ids)
+  def handle_task({:fetch_product_pdp, %{url: url}}),
+    do: Cencosud.fetch_product_pdp(@config, url)
 
   def handle_task(other), do: {:error, {:unsupported_task, other}}
 end

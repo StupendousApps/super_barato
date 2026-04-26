@@ -16,6 +16,9 @@ defmodule SuperBarato.Crawler.Chain do
     * `{:discover_categories, %{chain: atom, parent: slug | nil}}`
     * `{:discover_products, %{chain: atom, slug: String.t()}}`
     * `{:fetch_product_info, %{chain: atom, identifiers: [String.t()]}}`
+    * `{:fetch_product_pdp, %{chain: atom, url: String.t()}}` — used
+      by sitemap-driven adapters: fetch one product detail page and
+      parse its embedded JSON-LD into a `%Listing{}`.
 
   Adapters also declare `id/0` and `refresh_identifier/0`; the latter
   tells the pipeline which column (`:ean` or `:chain_sku`) to batch on
@@ -28,6 +31,7 @@ defmodule SuperBarato.Crawler.Chain do
           {:discover_categories, %{chain: atom(), parent: String.t() | nil}}
           | {:discover_products, %{chain: atom(), slug: String.t()}}
           | {:fetch_product_info, %{chain: atom(), identifiers: [String.t()]}}
+          | {:fetch_product_pdp, %{chain: atom(), url: String.t()}}
 
   @type payload :: [Category.t()] | [Listing.t()]
 

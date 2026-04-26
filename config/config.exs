@@ -96,68 +96,32 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}}
       ]
     ],
+    # Jumbo + Santa Isabel use sitemap-driven discovery: PDPs on
+    # `www.<chain>.cl` are served from Cencosud's nginx (no Cloudflare,
+    # reachable from prod) and the sitemaps live on CloudFront/S3
+    # (also unprotected). Daily product walks use SitemapProducer
+    # which streams every PDP URL into the chain Queue. At 1 req/s a
+    # full Jumbo pass takes ~14 hours; Santa Isabel ~4 hours.
     jumbo: [
       interval_ms: 1_000,
-      cf_protected: true,
-      cf_homepage: "https://www.jumbo.cl/",
-      # No ff* profiles: curl-impersonate-ff is built against NSS, which
-      # in our slim Debian runner can't validate certs against either
-      # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
-      # hashed-symlink dir (--capath: exit 60). NSS wants its own
-      # cert9.db DB which we'd have to build with certutil. Skipped.
-      # Every other chrome-binary profile we ship is in the rotation.
-      fallback_profiles: [
-        :chrome116,
-        :chrome110,
-        :chrome107,
-        :chrome104,
-        :chrome101,
-        :chrome100,
-        :chrome99,
-        :chrome99_android,
-        :edge101,
-        :edge99,
-        :safari15_5,
-        :safari15_3
-      ],
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:15:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[05:30:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo]]}}
+         {SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [[chain: :jumbo]]}}
       ]
     ],
     santa_isabel: [
       interval_ms: 1_000,
-      cf_protected: true,
-      cf_homepage: "https://www.santaisabel.cl/",
-      # No ff* profiles: curl-impersonate-ff is built against NSS, which
-      # in our slim Debian runner can't validate certs against either
-      # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
-      # hashed-symlink dir (--capath: exit 60). NSS wants its own
-      # cert9.db DB which we'd have to build with certutil. Skipped.
-      # Every other chrome-binary profile we ship is in the rotation.
-      fallback_profiles: [
-        :chrome116,
-        :chrome110,
-        :chrome107,
-        :chrome104,
-        :chrome101,
-        :chrome100,
-        :chrome99,
-        :chrome99_android,
-        :edge101,
-        :edge99,
-        :safari15_5,
-        :safari15_3
-      ],
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:santa_isabel, {:discover_categories, %{chain: :santa_isabel, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[06:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :santa_isabel]]}}
+         {SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
     tottus: [

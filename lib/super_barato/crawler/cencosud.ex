@@ -28,16 +28,34 @@ defmodule SuperBarato.Crawler.Cencosud do
   @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
 
   defmodule Config do
-    @moduledoc "Per-chain configuration for the shared Cencosud adapter."
+    @moduledoc """
+    Per-chain configuration for the shared Cencosud adapter.
 
-    @enforce_keys [:chain, :site_url, :categories_url, :sales_channel]
-    defstruct [:chain, :site_url, :categories_url, :sales_channel, profile: nil]
+    `:sitemap_index` is the entry point for sitemap-driven product
+    discovery — usually a `<sitemapindex>` listing one or more
+    `<sitemap><loc>...</loc></sitemap>` children, each pointing at a
+    `<urlset>` of product PDP URLs. We support both the multi-file
+    layout (Jumbo: `assets.jumbo.cl/sitemap.xml` → 50 sub-sitemaps)
+    and the single-file layout (Santa Isabel: a Supabase-hosted
+    `<urlset>` directly).
+    """
+
+    @enforce_keys [:chain, :site_url, :categories_url, :sales_channel, :sitemap_index]
+    defstruct [
+      :chain,
+      :site_url,
+      :categories_url,
+      :sales_channel,
+      :sitemap_index,
+      profile: nil
+    ]
 
     @type t :: %__MODULE__{
             chain: atom(),
             site_url: String.t(),
             categories_url: String.t(),
             sales_channel: String.t(),
+            sitemap_index: String.t(),
             profile: atom() | nil
           }
   end
@@ -176,6 +194,223 @@ defmodule SuperBarato.Crawler.Cencosud do
         end
     end
   end
+
+  # Sitemap discovery — list every product PDP URL the chain
+  # advertises, by walking the chain's sitemap index. Returns a flat
+  # list of canonical URLs (e.g. `https://www.jumbo.cl/<slug>/p`).
+  # Used by `Cencosud.SitemapProducer` to enqueue per-PDP fetch tasks
+  # against the Worker's regular politeness gap.
+  @spec list_sitemap_urls(Config.t()) :: {:ok, [String.t()]} | {:error, term()}
+  def list_sitemap_urls(%Config{} = cfg) do
+    case fetch_xml(cfg, cfg.sitemap_index) do
+      {:ok, body} ->
+        sub_sitemaps = extract_locs(body, "sitemap")
+        product_urls = extract_locs(body, "url")
+
+        # `<sitemapindex>` (sub-sitemaps) and `<urlset>` (PDP URLs)
+        # are mutually exclusive at the spec level, but our extractor
+        # is forgiving — accept whichever the index actually was.
+        cond do
+          sub_sitemaps != [] -> walk_sub_sitemaps(cfg, sub_sitemaps)
+          product_urls != [] -> {:ok, product_urls}
+          true -> {:error, :empty_sitemap}
+        end
+
+      {:error, _} = err ->
+        err
+    end
+  end
+
+  defp walk_sub_sitemaps(cfg, sub_sitemaps) do
+    Enum.reduce_while(sub_sitemaps, {:ok, []}, fn url, {:ok, acc} ->
+      case fetch_xml(cfg, url) do
+        {:ok, body} ->
+          {:cont, {:ok, acc ++ extract_locs(body, "url")}}
+
+        {:error, _} = err ->
+          {:halt, err}
+      end
+    end)
+  end
+
+  # Lightweight `<loc>` extractor scoped to a wrapper tag (`<sitemap>`
+  # for indexes, `<url>` for url sets). We use regex rather than a
+  # streaming parser because the sitemap dialect is tiny, deterministic,
+  # and the largest file we deal with is ~3 MB — Regex.scan handles it
+  # in one pass.
+  defp extract_locs(xml, wrapper) when is_binary(xml) and is_binary(wrapper) do
+    pattern = ~r{<#{wrapper}>\s*<loc>([^<]+)</loc>}
+
+    Regex.scan(pattern, xml, capture: :all_but_first)
+    |> Enum.map(fn [u] -> String.trim(u) end)
+  end
+
+  defp fetch_xml(cfg, url) do
+    case Http.get(url, chain: cfg.chain, headers: xml_headers(cfg)) do
+      {:ok, %Http.Response{status: 200, body: body}} -> {:ok, body}
+      {:ok, %Http.Response{status: status}} -> {:error, {:http_status, status}}
+      {:error, _} = err -> err
+    end
+  end
+
+  defp xml_headers(%Config{site_url: site}) do
+    [
+      {"user-agent", @user_agent},
+      {"accept", "application/xml,text/xml,*/*;q=0.8"},
+      {"accept-language", "es-CL,es;q=0.9,en;q=0.8"},
+      {"accept-encoding", "gzip, deflate, br"},
+      {"referer", site <> "/"}
+    ]
+  end
+
+  # PDP-driven price fetch. Replaces the old VTEX
+  # `/v2/products/search/:slug` enumeration: we GET the product page,
+  # extract its `<script type="application/ld+json">` Product+Offer
+  # blob, and translate it into a `%Listing{}`. No `?sc=N` query —
+  # robots.txt allows PDP URLs and disallows `*sc=*`.
+  @spec fetch_product_pdp(Config.t(), String.t()) ::
+          {:ok, [Listing.t()]} | :blocked | {:error, term()}
+  def fetch_product_pdp(%Config{} = cfg, url) when is_binary(url) do
+    case Http.get(url, chain: cfg.chain, headers: pdp_headers(cfg), profile: profile_for(cfg)) do
+      {:ok, %Http.Response{} = resp} ->
+        cond do
+          Http.blocked?(resp) ->
+            :blocked
+
+          resp.status == 200 ->
+            case parse_pdp(cfg, resp.body, url) do
+              {:ok, %Listing{} = listing} -> {:ok, [listing]}
+              {:error, _} = err -> err
+            end
+
+          true ->
+            {:error, {:http_status, resp.status, String.slice(resp.body, 0, 200)}}
+        end
+
+      {:error, _} = err ->
+        err
+    end
+  end
+
+  defp profile_for(cfg) do
+    Session.get(cfg.chain, :profile) || cfg.profile
+  end
+
+  defp pdp_headers(%Config{site_url: site}) do
+    [
+      {"user-agent", @user_agent},
+      {"accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
+      {"accept-language", "es-CL,es;q=0.9,en;q=0.8"},
+      {"accept-encoding", "gzip, deflate, br, zstd"},
+      {"referer", site <> "/"},
+      {"sec-fetch-dest", "document"},
+      {"sec-fetch-mode", "navigate"},
+      {"sec-fetch-site", "same-origin"}
+    ]
+  end
+
+  # Parses a Cencosud PDP's JSON-LD payload. The page typically embeds
+  # 2–3 `application/ld+json` blocks; the one we want has either a
+  # top-level `@type: "Product"` or a `@graph` containing it. The
+  # Product node carries `name`, `sku`, `gtin`/`gtin8` (EAN), `brand`,
+  # `image`, and an `offers` Offer with `price` (CLP int as string)
+  # and `availability`. The breadcrumb (separate `BreadcrumbList`
+  # node) gives us the category path for the listing.
+  @doc false
+  def parse_pdp(%Config{} = cfg, html, url) when is_binary(html) and is_binary(url) do
+    blocks = extract_ld_json(html)
+
+    {product, breadcrumb} =
+      Enum.reduce(blocks, {nil, nil}, fn block, {p, b} ->
+        case Jason.decode(block) do
+          {:ok, decoded} ->
+            nodes = ld_nodes(decoded)
+
+            new_p = p || Enum.find(nodes, &(Map.get(&1, "@type") == "Product"))
+            new_b = b || Enum.find(nodes, &(Map.get(&1, "@type") == "BreadcrumbList"))
+            {new_p, new_b}
+
+          {:error, _} ->
+            {p, b}
+        end
+      end)
+
+    case product do
+      nil ->
+        {:error, :no_product_jsonld}
+
+      %{} = node ->
+        {:ok, listing_from_jsonld(cfg, node, breadcrumb, url)}
+    end
+  end
+
+  defp extract_ld_json(html) do
+    Regex.scan(
+      ~r{<script[^>]*type=["']application/ld\+json["'][^>]*>(.*?)</script>}s,
+      html,
+      capture: :all_but_first
+    )
+    |> Enum.map(fn [b] -> b end)
+  end
+
+  defp ld_nodes(%{"@graph" => graph}) when is_list(graph), do: graph
+  defp ld_nodes(%{} = node), do: [node]
+  defp ld_nodes(_), do: []
+
+  defp listing_from_jsonld(%Config{} = cfg, %{} = product, breadcrumb, url) do
+    offer = first_offer(product["offers"])
+    price = price_int(offer["price"])
+
+    %Listing{
+      chain: cfg.chain,
+      chain_sku: to_string_if_present(product["sku"]),
+      chain_product_id: to_string_if_present(product["sku"]),
+      ean: pick_ean(product),
+      name: product["name"],
+      brand: brand_name(product["brand"]),
+      image_url: first_image(product["image"]),
+      pdp_url: url,
+      category_path: breadcrumb_path(breadcrumb),
+      regular_price: price,
+      promo_price: nil,
+      promotions: %{}
+    }
+  end
+
+  defp first_offer(%{"@type" => "Offer"} = offer), do: offer
+  defp first_offer([%{} = offer | _]), do: offer
+  defp first_offer(_), do: %{}
+
+  defp pick_ean(%{"gtin13" => v}) when is_binary(v) and v != "", do: v
+  defp pick_ean(%{"gtin" => v}) when is_binary(v) and v != "", do: v
+  defp pick_ean(%{"gtin8" => v}) when is_binary(v) and v != "", do: v
+  defp pick_ean(%{"gtin12" => v}) when is_binary(v) and v != "", do: v
+  defp pick_ean(_), do: nil
+
+  defp brand_name(%{"name" => name}) when is_binary(name), do: name
+  defp brand_name(name) when is_binary(name), do: name
+  defp brand_name(_), do: nil
+
+  defp first_image([url | _]) when is_binary(url), do: url
+  defp first_image(url) when is_binary(url), do: url
+  defp first_image(_), do: nil
+
+  defp breadcrumb_path(%{"itemListElement" => items}) when is_list(items) do
+    items
+    |> Enum.sort_by(&Map.get(&1, "position", 0))
+    # Drop position 1 (the homepage) and the last entry (the product
+    # itself). What's left is the category trail leading to this PDP.
+    |> Enum.drop(1)
+    |> Enum.drop(-1)
+    |> Enum.map(&Map.get(&1, "name"))
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      names -> Enum.join(names, " > ")
+    end
+  end
+
+  defp breadcrumb_path(_), do: nil
 
   # Stage 3: product info by chain_sku (VTEX itemId)
 
@@ -316,6 +551,15 @@ defmodule SuperBarato.Crawler.Cencosud do
   defp price_int(n) when is_integer(n) and n > 0, do: n
   defp price_int(n) when is_integer(n), do: nil
   defp price_int(n) when is_float(n), do: trunc(n)
+
+  defp price_int(s) when is_binary(s) do
+    case Integer.parse(s) do
+      {n, ""} when n > 0 -> n
+      {n, "."} when n > 0 -> n
+      _ -> nil
+    end
+  end
+
   defp price_int(_), do: nil
 
   defp blank_to_nil(nil), do: nil

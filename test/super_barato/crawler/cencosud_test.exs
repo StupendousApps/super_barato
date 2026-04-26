@@ -8,14 +8,16 @@ defmodule SuperBarato.Crawler.CencosudTest do
     chain: :jumbo,
     site_url: "https://www.jumbo.cl",
     categories_url: "https://assets.jumbo.cl/json/categories.json",
-    sales_channel: "1"
+    sales_channel: "1",
+    sitemap_index: "https://assets.jumbo.cl/sitemap.xml"
   }
 
   @santa_isabel %Cencosud.Config{
     chain: :santa_isabel,
     site_url: "https://www.santaisabel.cl",
     categories_url: "https://assets.jumbo.cl/json/santaisabel/categories.json",
-    sales_channel: "6"
+    sales_channel: "6",
+    sitemap_index: "https://www.santaisabel.cl/sitemap.xml"
   }
 
   describe "parse_categories/2 (Jumbo fixture)" do

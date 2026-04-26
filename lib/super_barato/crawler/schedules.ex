@@ -146,6 +146,9 @@ defmodule SuperBarato.Crawler.Schedules do
   defp infer_kind({SuperBarato.Crawler.Chain.ProductProducer, :run, [_]}),
     do: "discover_products"
 
+  defp infer_kind({SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [_]}),
+    do: "discover_products"
+
   defp infer_kind(other),
     do: raise("Schedules.seed_from_config/0 can't map MFA: #{inspect(other)}")
 
