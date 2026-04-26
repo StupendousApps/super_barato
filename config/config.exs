@@ -124,30 +124,15 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
+    # Tottus is on Cloudflare and the prod IP is banned at the edge.
+    # No fingerprint rotation, FlareSolverr solve, or header tweak
+    # gets past it — the only realistic fix is a CL residential
+    # egress (laptop/RPi/proxy). Worker stays scheduled so manual
+    # triggers can still run from a future CL-resident host; in prod
+    # today every request will fail with :blocked / 403.
     tottus: [
       interval_ms: 1_000,
-      cf_protected: true,
-      cf_homepage: "https://www.tottus.cl/",
-      # No ff* profiles: curl-impersonate-ff is built against NSS, which
-      # in our slim Debian runner can't validate certs against either
-      # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
-      # hashed-symlink dir (--capath: exit 60). NSS wants its own
-      # cert9.db DB which we'd have to build with certutil. Skipped.
-      # Every other chrome-binary profile we ship is in the rotation.
-      fallback_profiles: [
-        :chrome116,
-        :chrome110,
-        :chrome107,
-        :chrome104,
-        :chrome101,
-        :chrome100,
-        :chrome99,
-        :chrome99_android,
-        :edge101,
-        :edge99,
-        :safari15_5,
-        :safari15_3
-      ],
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
