@@ -1,22 +1,24 @@
 defmodule SuperBarato.Crawler.Lider do
   @moduledoc """
-  Lider adapter — Walmart Chile's supermarket, Next.js SSR + Akamai.
+  Lider adapter — Walmart Chile's supermarket. Crawls
+  `https://super.lider.cl`, the food/grocery-scoped frontend (the
+  parent `www.lider.cl` carries the full retail catalog including
+  electronics, fashion, and home, which we don't want).
 
-  All three stages work by fetching HTML pages and pulling
-  `<script id="__NEXT_DATA__">` out of them, then navigating the JSON
-  tree. Lider's Akamai blocks Chrome 110+ and all Firefox/Safari, but
-  lets older Chrome profiles (99–107) through — so this chain pins
-  `profile: :chrome107` in its config.
+  Same Next.js SSR + Akamai stack as the parent. All three stages
+  work by fetching HTML pages, pulling `<script id="__NEXT_DATA__">`
+  out, and navigating the JSON tree. Akamai blocks Chrome 110+ and
+  all Firefox/Safari but lets older Chrome (99–107) through, so this
+  chain pins `profile: :chrome107` in its config.
 
     * Stage 1: homepage — `pageProps.bootstrapData.header.data
-      .contentLayout.modules[GlobalHeaderMenu].configs.departments`
-      exposes the full mega-menu (25 top-levels, ~1200 subs).
+      .contentLayout.modules[0]` (a `GlobalHeaderMenu`) exposes 28
+      food-scoped top-level departments.
     * Stage 2: `/browse/<slug>/<id-chain>?page=N` — products at
       `pageProps.initialData.searchResult.itemStacks[0].items`, total
       at `searchResult.aggregatedCount`.
-    * Stage 3: `/ip/_/_/<usItemId>` — Lider redirects to the canonical
-      PDP URL regardless of the other path segments, so the
-      placeholders work. Full product at
+    * Stage 3: `/ip/<anything>/<usItemId>` — placeholders work; the
+      server redirects to the canonical URL. Full product at
       `pageProps.initialData.data.product`.
 
   Lider's `usItemId` is a 14-digit GTIN (leading zeros on a 13-digit
@@ -30,7 +32,11 @@ defmodule SuperBarato.Crawler.Lider do
   require Logger
 
   @chain :lider
-  @site_url "https://www.lider.cl"
+  # super.lider.cl is Walmart's supermarket-only frontend; same Next.js
+  # SSR + Akamai stack as the parent www.lider.cl, same data shapes
+  # for stages 1–3, but its mega-menu is scoped to food/grocery/
+  # household instead of the parent site's full retail catalog.
+  @site_url "https://super.lider.cl"
   @default_profile :chrome107
   @page_size 46
 
@@ -372,9 +378,11 @@ defmodule SuperBarato.Crawler.Lider do
   end
 
   @doc false
+  # super.lider.cl ships the script tag with unquoted attributes
+  # (`id=__NEXT_DATA__`); www.lider.cl quoted them. Accept either.
   def extract_next_data(html) when is_binary(html) do
     case Regex.run(
-           ~r/<script[^>]*id="__NEXT_DATA__"[^>]*>(.*?)<\/script>/s,
+           ~r/<script[^>]*id=["']?__NEXT_DATA__["']?[^>]*>(.*?)<\/script>/s,
            html
          ) do
       [_, json] -> Jason.decode(json)

@@ -34,14 +34,13 @@ defmodule SuperBarato.Crawler.LiderTest do
       assert Enum.all?(tops, &(&1.parent_slug == nil))
     end
 
-    test "includes a known department (Alimentación)", %{cats: cats} do
-      alim = Enum.find(cats, &(&1.name == "Alimentación"))
+    test "includes a known food department (Despensa)", %{cats: cats} do
+      desp = Enum.find(cats, &(&1.name == "Despensa"))
 
-      if alim do
-        assert alim.level == 1
-        assert String.starts_with?(alim.slug, "alimentacion/")
-        assert is_binary(alim.external_id)
-      end
+      assert desp, "expected a Despensa top-level (super.lider.cl)"
+      assert desp.level == 1
+      assert String.starts_with?(desp.slug, "despensa/")
+      assert is_binary(desp.external_id)
     end
 
     test "sub-categories reference an existing parent_slug", %{cats: cats} do
@@ -67,7 +66,7 @@ defmodule SuperBarato.Crawler.LiderTest do
   end
 
   describe "parse_search_from_next_data/2 (browse fixture)" do
-    @browse_slug "alimentacion/pastas-y-salsas/pastas/94975735_38642885_95801483"
+    @browse_slug "despensa/pastas-y-salsas/pastas-cortas/46589040_59615139_15312906"
 
     setup do
       html = Fixtures.read!(:lider, "browse_pastas.html")
@@ -90,7 +89,7 @@ defmodule SuperBarato.Crawler.LiderTest do
         assert is_binary(l.chain_sku) and l.chain_sku != ""
         assert is_binary(l.name) and l.name != ""
         assert is_binary(l.image_url) or is_nil(l.image_url)
-        assert is_binary(l.pdp_url) and String.starts_with?(l.pdp_url, "https://www.lider.cl/")
+        assert is_binary(l.pdp_url) and String.starts_with?(l.pdp_url, "https://super.lider.cl/")
       end)
     end
 
@@ -114,12 +113,12 @@ defmodule SuperBarato.Crawler.LiderTest do
 
     test "returns a fully-populated listing", %{listing: l} do
       assert %Listing{chain: :lider} = l
-      assert l.chain_sku == "00693796210706"
-      assert is_binary(l.name) and String.contains?(l.name, "Kang Shi Fu")
-      assert l.brand == "Kang Shi Fu"
-      assert l.regular_price == 23_990
+      assert l.chain_sku == "00780250000052"
+      assert is_binary(l.name) and String.contains?(l.name, "Pantrucas")
+      assert l.brand == "Lucchetti"
+      assert l.regular_price == 990
       # EAN = usItemId with leading zeros stripped
-      assert l.ean == "693796210706"
+      assert l.ean == "780250000052"
       assert String.starts_with?(l.image_url, "https://")
     end
   end
