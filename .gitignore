@@ -49,3 +49,6 @@ secret
 # Stray SQLite files left by dev/test runs (real DB lives in priv/data/)
 /super_barato_dev.db
 /priv/super_barato_dev.db
+
+# macOS Finder metadata
+.DS_Store
