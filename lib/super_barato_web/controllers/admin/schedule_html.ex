@@ -31,10 +31,15 @@ defmodule SuperBaratoWeb.Admin.ScheduleHTML do
   attr :action, :string, required: true
 
   def schedule_form(assigns) do
-    assigns = assign(assigns, :form, to_form(assigns.changeset, as: :schedule))
+    method = if assigns.changeset.data.id, do: "put", else: "post"
+
+    assigns =
+      assigns
+      |> assign(:form, to_form(assigns.changeset, as: :schedule))
+      |> assign(:method, method)
 
     ~H"""
-    <.stupendous_form for={@form} action={@action} width={:regular}>
+    <.stupendous_form for={@form} action={@action} method={@method} width={:regular}>
       <.form_errors form={@form} />
 
       <.input
@@ -57,10 +62,16 @@ defmodule SuperBaratoWeb.Admin.ScheduleHTML do
         placeholder="mon,tue,wed,thu,fri,sat,sun"
         hint="Comma-separated, any subset of mon tue wed thu fri sat sun."
       />
-      <.time_picker
+      <%!-- Plain text input rather than <.time_picker> — the picker
+           enforces an HH:MM pattern, but the DB persists HH:MM:SS.
+           parse_time_token/1 in the schema accepts either, so a
+           text field round-trips cleanly. Comma-separated lists for
+           multi-time schedules are rare but not blocked. --%>
+      <.input
         field={@form[:times]}
         label="Time (UTC)"
-        hint="One time per schedule. Add another schedule for additional firings."
+        placeholder="04:30:00"
+        hint="HH:MM or HH:MM:SS in UTC. Comma-separated for multiple firings on the same day."
       />
       <.input field={@form[:active]} type="checkbox" label="Active (paused when off)" />
       <.input
