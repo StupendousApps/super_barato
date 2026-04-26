@@ -102,17 +102,21 @@ config :super_barato, SuperBarato.Crawler,
       # in our slim Debian runner can't validate certs against either
       # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
       # hashed-symlink dir (--capath: exit 60). NSS wants its own
-      # cert9.db DB, which we'd have to build with certutil from
-      # libnss3-tools. Not worth the complexity for a few extra
-      # fingerprints — chrome/edge/safari give us 7 already.
+      # cert9.db DB which we'd have to build with certutil. Skipped.
+      # Every other chrome-binary profile we ship is in the rotation.
       fallback_profiles: [
         :chrome116,
+        :chrome110,
         :chrome107,
+        :chrome104,
+        :chrome101,
         :chrome100,
         :chrome99,
+        :chrome99_android,
         :edge101,
         :edge99,
-        :safari15_5
+        :safari15_5,
+        :safari15_3
       ],
       schedule: [
         {{:weekly, [:mon], [~T[04:15:00]]},
@@ -128,17 +132,21 @@ config :super_barato, SuperBarato.Crawler,
       # in our slim Debian runner can't validate certs against either
       # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
       # hashed-symlink dir (--capath: exit 60). NSS wants its own
-      # cert9.db DB, which we'd have to build with certutil from
-      # libnss3-tools. Not worth the complexity for a few extra
-      # fingerprints — chrome/edge/safari give us 7 already.
+      # cert9.db DB which we'd have to build with certutil. Skipped.
+      # Every other chrome-binary profile we ship is in the rotation.
       fallback_profiles: [
         :chrome116,
+        :chrome110,
         :chrome107,
+        :chrome104,
+        :chrome101,
         :chrome100,
         :chrome99,
+        :chrome99_android,
         :edge101,
         :edge99,
-        :safari15_5
+        :safari15_5,
+        :safari15_3
       ],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
@@ -154,17 +162,21 @@ config :super_barato, SuperBarato.Crawler,
       # in our slim Debian runner can't validate certs against either
       # /etc/ssl/certs/ca-certificates.crt (--cacert: exit 77) or the
       # hashed-symlink dir (--capath: exit 60). NSS wants its own
-      # cert9.db DB, which we'd have to build with certutil from
-      # libnss3-tools. Not worth the complexity for a few extra
-      # fingerprints — chrome/edge/safari give us 7 already.
+      # cert9.db DB which we'd have to build with certutil. Skipped.
+      # Every other chrome-binary profile we ship is in the rotation.
       fallback_profiles: [
         :chrome116,
+        :chrome110,
         :chrome107,
+        :chrome104,
+        :chrome101,
         :chrome100,
         :chrome99,
+        :chrome99_android,
         :edge101,
         :edge99,
-        :safari15_5
+        :safari15_5,
+        :safari15_3
       ],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
