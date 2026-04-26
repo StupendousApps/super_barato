@@ -245,11 +245,29 @@ defmodule SuperBarato.Crawler.Cencosud do
     |> Enum.map(fn [u] -> String.trim(u) end)
   end
 
-  defp fetch_xml(cfg, url) do
+  # CloudFront occasionally resets the TLS handshake mid-fetch (curl
+  # exit 35, "Recv failure: Connection reset by peer"). The producer
+  # is a one-shot and the index file is small, so retry a few times
+  # with a brief backoff before giving up — much cheaper than failing
+  # the whole nightly run.
+  defp fetch_xml(cfg, url, attempts_left \\ 3) do
     case Http.get(url, chain: cfg.chain, headers: xml_headers(cfg)) do
-      {:ok, %Http.Response{status: 200, body: body}} -> {:ok, body}
-      {:ok, %Http.Response{status: status}} -> {:error, {:http_status, status}}
-      {:error, _} = err -> err
+      {:ok, %Http.Response{status: 200, body: body}} ->
+        {:ok, body}
+
+      {:ok, %Http.Response{status: status}} when status in 500..599 and attempts_left > 1 ->
+        Process.sleep(2_000)
+        fetch_xml(cfg, url, attempts_left - 1)
+
+      {:ok, %Http.Response{status: status}} ->
+        {:error, {:http_status, status}}
+
+      {:error, _} when attempts_left > 1 ->
+        Process.sleep(2_000)
+        fetch_xml(cfg, url, attempts_left - 1)
+
+      {:error, _} = err ->
+        err
     end
   end
 
