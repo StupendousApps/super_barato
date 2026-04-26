@@ -71,13 +71,19 @@ defmodule SuperBarato.Crawler do
     {:ok, _pid} =
       Task.Supervisor.start_child(
         SuperBarato.Crawler.Chain.Supervisor.task_sup_name(chain),
-        SuperBarato.Crawler.Chain.ProductProducer,
+        producer_for(chain),
         :run,
         [[chain: chain]]
       )
 
     :ok
   end
+
+  # Per-chain dispatch: Cencosud chains discover via sitemap;
+  # Lider/Unimarc keep iterating leaf categories from the DB.
+  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.SitemapProducer
+  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.SitemapProducer
+  defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
 
   defp pipeline_running?(chain) do
     case GenServer.whereis(
