@@ -101,6 +101,19 @@ defmodule SuperBarato.Crawler.Chain.Results do
     Logger.debug("[#{state.chain}] upserted #{length(listings)} listings for category=#{slug}")
   end
 
+  # Sitemap-driven single-PDP fetch (Cencosud chains). The adapter
+  # returns a one-element listing list; upsert it the same way the
+  # category-batch path does. PriceLog.append captures the price
+  # observation per call.
+  defp persist(_state, {:fetch_product_pdp, _meta}, listings) when is_list(listings) do
+    Enum.each(listings, fn listing ->
+      case Catalog.upsert_listing(listing) do
+        {:ok, _} -> log_price(listing)
+        {:error, cs} -> Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
+      end
+    end)
+  end
+
   # Ad-hoc single-SKU refresh: look up existing listing by identifier,
   # update current_* and append to the log.
   defp persist(state, {:fetch_product_info, %{identifiers: _ids}}, listings)
