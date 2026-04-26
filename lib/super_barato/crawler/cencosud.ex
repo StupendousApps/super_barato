@@ -233,13 +233,20 @@ defmodule SuperBarato.Crawler.Cencosud do
     end)
   end
 
-  # Lightweight `<loc>` extractor scoped to a wrapper tag (`<sitemap>`
-  # for indexes, `<url>` for url sets). We use regex rather than a
-  # streaming parser because the sitemap dialect is tiny, deterministic,
-  # and the largest file we deal with is ~3 MB — Regex.scan handles it
-  # in one pass.
-  defp extract_locs(xml, wrapper) when is_binary(xml) and is_binary(wrapper) do
-    pattern = ~r{<#{wrapper}>\s*<loc>([^<]+)</loc>}
+  @doc """
+  Lightweight `<loc>` extractor scoped to a wrapper tag (`<sitemap>`
+  for indexes, `<url>` for url sets). Public for unit testing against
+  real-world sitemap fixtures.
+
+  We use regex rather than a streaming parser because the sitemap
+  dialect is tiny, deterministic, and the largest file we deal with
+  is ~3 MB — `Regex.scan/2` handles it in one pass.
+  """
+  def extract_locs(xml, wrapper) when is_binary(xml) and is_binary(wrapper) do
+    # Some sitemaps inline the wrapper tag attributes (e.g. multi-line
+    # entries); allow optional whitespace + attributes between `<wrap>`
+    # and the inner `<loc>`.
+    pattern = ~r{<#{wrapper}(?:\s[^>]*)?>\s*<loc>([^<]+)</loc>}
 
     Regex.scan(pattern, xml, capture: :all_but_first)
     |> Enum.map(fn [u] -> String.trim(u) end)
@@ -358,7 +365,18 @@ defmodule SuperBarato.Crawler.Cencosud do
         {:error, :no_product_jsonld}
 
       %{} = node ->
-        {:ok, listing_from_jsonld(cfg, node, breadcrumb, url)}
+        listing = listing_from_jsonld(cfg, node, breadcrumb, url)
+
+        # Some sitemap URLs point at PDPs whose Product node has no
+        # name/sku and an "undefined" price — products that were
+        # delisted but stayed in the sitemap. Skip them rather than
+        # persist nil-everywhere rows; sitemap drift is normal and
+        # not worth a louder warning per URL.
+        if listing.name in [nil, ""] do
+          {:error, :stale_pdp}
+        else
+          {:ok, listing}
+        end
     end
   end
 
@@ -371,8 +389,18 @@ defmodule SuperBarato.Crawler.Cencosud do
     |> Enum.map(fn [b] -> b end)
   end
 
-  defp ld_nodes(%{"@graph" => graph}) when is_list(graph), do: graph
+  # Some Cencosud PDPs emit nested or empty lists inside `@graph`
+  # (reviews/breadcrumb placeholders that didn't render), so we flatten
+  # and drop anything that isn't a map. Also handle top-level JSON-LD
+  # arrays (multiple decorations in a single block).
+  defp ld_nodes(%{"@graph" => graph}) when is_list(graph),
+    do: graph |> List.flatten() |> Enum.filter(&is_map/1)
+
   defp ld_nodes(%{} = node), do: [node]
+
+  defp ld_nodes(list) when is_list(list),
+    do: list |> List.flatten() |> Enum.filter(&is_map/1)
+
   defp ld_nodes(_), do: []
 
   defp listing_from_jsonld(%Config{} = cfg, %{} = product, breadcrumb, url) do
