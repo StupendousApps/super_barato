@@ -13,128 +13,122 @@ defmodule SuperBaratoWeb.Admin.ManualHTML do
   def report_view(assigns) do
     ~H"""
     <div class="space-y-4">
-      <%!-- Headline summary --%>
-      <section class="border rounded p-3">
-        <div class="flex items-baseline justify-between gap-4 flex-wrap">
-          <div>
-            <span class={"px-2 py-0.5 rounded text-xs font-medium " <> outcome_classes(@report.outcome)}>
-              {outcome_label(@report.outcome)}
-            </span>
-            <span class="ml-2 text-xs opacity-60">{@report.elapsed_ms} ms</span>
-          </div>
-          <div class="text-xs opacity-60 font-mono break-all">{@report.url}</div>
-        </div>
-      </section>
-
-      <%!-- Steps --%>
-      <section class="border rounded p-3">
-        <h3 class="text-sm font-semibold mb-2">Pipeline</h3>
-        <ol class="text-sm space-y-1">
-          <%= for step <- @report.steps do %>
-            <li class="flex items-baseline gap-2">
-              <span class={step_dot(step.status)}>●</span>
-              <span class="font-medium">{step.name}</span>
-              <span class="opacity-70">— {step.detail}</span>
-            </li>
+      <%!-- Outcome --%>
+      <.key_value>
+        <:row label="Outcome" color={outcome_color(@report.outcome)}>
+          {outcome_label(@report.outcome)}
+        </:row>
+        <:row label="Elapsed">{@report.elapsed_ms} ms</:row>
+        <:row label="URL">
+          <%= if @report.url do %>
+            <code class="break-all">{@report.url}</code>
+          <% else %>
+            <span class="opacity-60">(unresolved)</span>
           <% end %>
-        </ol>
-      </section>
+        </:row>
+      </.key_value>
 
-      <%!-- Request --%>
-      <section class="border rounded p-3">
-        <h3 class="text-sm font-semibold mb-2">Request</h3>
-        <div class="text-xs opacity-70 mb-1">profile: <code>{inspect(@report.request_profile)}</code></div>
-        <table class="text-xs font-mono w-full">
-          <tbody>
-            <%= for {k, v} <- @report.request_headers do %>
-              <tr class="align-top">
-                <td class="py-0.5 pr-3 whitespace-nowrap opacity-60">{k}</td>
-                <td class="py-0.5 break-all">{v}</td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </section>
+      <%!-- Pipeline steps --%>
+      <h3 class="text-sm font-semibold mt-4">Pipeline</h3>
+      <.key_value>
+        <:row :for={s <- @report.steps} label={s.name} color={step_color(s.status)}>
+          {s.detail}
+        </:row>
+      </.key_value>
 
-      <%!-- Response --%>
-      <section class="border rounded p-3">
-        <h3 class="text-sm font-semibold mb-2">Response</h3>
-        <div class="text-xs grid grid-cols-2 gap-2 mb-3">
-          <div><span class="opacity-60">status:</span> <code>{inspect(@report.response_status)}</code></div>
-          <div><span class="opacity-60">size:</span> <code>{format_bytes(@report.response_size)}</code></div>
-          <div><span class="opacity-60">content-type:</span> <code>{@report.response_content_type || "—"}</code></div>
-          <div>
-            <span class="opacity-60">content-encoding:</span>
+      <%!-- Request / response only render when a fetch actually happened. --%>
+      <%= if @report.response_status do %>
+        <h3 class="text-sm font-semibold mt-4">Request</h3>
+        <.key_value>
+          <:row label="profile">{inspect(@report.request_profile)}</:row>
+          <:row :for={{k, v} <- @report.request_headers} label={k}>
+            <code class="break-all">{v}</code>
+          </:row>
+        </.key_value>
+
+        <h3 class="text-sm font-semibold mt-4">Response</h3>
+        <.key_value>
+          <:row label="status">
+            <code>{inspect(@report.response_status)}</code>
+          </:row>
+          <:row label="size">{format_bytes(@report.response_size)}</:row>
+          <:row label="content-type">
+            <code>{@report.response_content_type || "—"}</code>
+          </:row>
+          <:row label="content-encoding">
             <code>{@report.response_content_encoding || "(none — already decoded)"}</code>
-          </div>
-          <div class="col-span-2">
-            <span class="opacity-60">body looks binary:</span>
-            <span class={if(@report.body_looks_binary?, do: "text-red-700 font-medium", else: "text-green-700 font-medium")}>
-              {if(@report.body_looks_binary?, do: "yes — likely encoding mismatch", else: "no — readable text")}
-            </span>
-          </div>
-        </div>
+          </:row>
+          <:row label="body looks binary?" color={if @report.body_looks_binary?, do: :red, else: :green}>
+            {if @report.body_looks_binary?, do: "yes — likely encoding mismatch", else: "no — readable text"}
+          </:row>
+        </.key_value>
 
-        <details class="text-xs">
-          <summary class="cursor-pointer opacity-70">Response headers</summary>
-          <table class="text-xs font-mono w-full mt-2">
-            <tbody>
-              <%= for {k, v} <- @report.response_headers do %>
-                <tr class="align-top">
-                  <td class="py-0.5 pr-3 whitespace-nowrap opacity-60">{k}</td>
-                  <td class="py-0.5 break-all">{v}</td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+        <details class="mt-2">
+          <summary class="text-xs cursor-pointer opacity-70">Response headers ({length(@report.response_headers)})</summary>
+          <.key_value>
+            <:row :for={{k, v} <- @report.response_headers} label={k}>
+              <code class="break-all">{v}</code>
+            </:row>
+          </.key_value>
         </details>
 
-        <details class="text-xs mt-2" open>
-          <summary class="cursor-pointer opacity-70">Body preview (first 800 bytes, escaped)</summary>
-          <pre class="bg-gray-50 p-2 rounded text-xs whitespace-pre-wrap break-all mt-2">{@report.body_preview || "(empty)"}</pre>
+        <details class="mt-2" open>
+          <summary class="text-xs cursor-pointer opacity-70">Body preview (first 800 bytes, non-printables escaped)</summary>
+          <pre class="bg-gray-50 dark:bg-gray-900 p-2 rounded text-xs whitespace-pre-wrap break-all mt-2">{@report.body_preview || "(empty)"}</pre>
         </details>
-      </section>
+      <% end %>
 
       <%!-- JSON-LD blocks --%>
       <%= if @report.ld_block_count != nil do %>
-        <section class="border rounded p-3">
-          <h3 class="text-sm font-semibold mb-2">JSON-LD blocks: {@report.ld_block_count}</h3>
+        <h3 class="text-sm font-semibold mt-4">JSON-LD blocks ({@report.ld_block_count})</h3>
 
-          <%= if @report.ld_blocks == [] do %>
-            <p class="text-sm opacity-70">No <code>&lt;script type="application/ld+json"&gt;</code> blocks found in the body.</p>
-          <% end %>
+        <%= if @report.ld_blocks == [] do %>
+          <p class="text-sm opacity-70">
+            No <code>&lt;script type="application/ld+json"&gt;</code> blocks found in the body.
+          </p>
+        <% end %>
 
-          <%= for {block, idx} <- Enum.with_index(@report.ld_blocks) do %>
-            <details class="text-xs mb-2">
-              <summary class="cursor-pointer">
-                <span class={step_dot(block.status)}>●</span>
-                <span class="font-medium">block {idx}</span>
-                <span class="opacity-70 ml-1">— {block.summary}</span>
-                <%= if block.types != [] do %>
-                  <span class="opacity-60 ml-1">[{Enum.join(block.types, ", ")}]</span>
-                <% end %>
-              </summary>
-              <pre class="bg-gray-50 p-2 rounded text-xs whitespace-pre-wrap break-all mt-2">{block.raw_preview}</pre>
-            </details>
-          <% end %>
-        </section>
+        <%= for {block, idx} <- Enum.with_index(@report.ld_blocks) do %>
+          <details class="mb-2" open={block.status == :ok and idx < 2}>
+            <summary class="cursor-pointer text-sm">
+              <span class={step_dot(block.status)}>●</span>
+              <span class="font-medium">block {idx}</span>
+              <span class="opacity-70 ml-1">— {block.summary}</span>
+              <%= if block.types != [] do %>
+                <span class="opacity-60 ml-1">[{Enum.join(block.types, ", ")}]</span>
+              <% end %>
+            </summary>
+            <pre class="bg-gray-50 dark:bg-gray-900 p-2 rounded text-xs whitespace-pre-wrap break-all mt-2">{block.pretty}</pre>
+          </details>
+        <% end %>
       <% end %>
 
       <%!-- Final listing --%>
       <%= if @report.listing do %>
-        <section class="border border-green-300 bg-green-50 rounded p-3">
-          <h3 class="text-sm font-semibold mb-2">Parsed Listing</h3>
-          <table class="text-sm">
-            <tbody>
-              <%= for {k, v} <- listing_pairs(@report.listing) do %>
-                <tr class="align-top">
-                  <td class="pr-3 py-0.5 opacity-60">{k}</td>
-                  <td class="py-0.5 font-mono">{v}</td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </section>
+        <h3 class="text-sm font-semibold mt-4">Parsed Listing</h3>
+        <.key_value>
+          <:row :for={{k, v} <- listing_pairs(@report.listing)} label={k}>
+            <code class="break-all">{v}</code>
+          </:row>
+        </.key_value>
+      <% end %>
+
+      <%!-- Categories list (when kind=:categories) --%>
+      <%= if @report.categories do %>
+        <h3 class="text-sm font-semibold mt-4">
+          Categories parsed ({length(@report.categories)})
+        </h3>
+        <.table rows={@report.categories} empty="No categories.">
+          <:col :let={c} label="Name">{c.name}</:col>
+          <:col :let={c} label="Slug">
+            <code class="break-all">{c.slug}</code>
+          </:col>
+          <:col :let={c} label="Parent">
+            <code class="break-all opacity-70">{c.parent_slug || "—"}</code>
+          </:col>
+          <:col :let={c} label="Level" align={:right}>{c.level}</:col>
+          <:col :let={c} label="Leaf?" align={:center}>{c.is_leaf && "✓"}</:col>
+        </.table>
       <% end %>
     </div>
     """
@@ -142,6 +136,7 @@ defmodule SuperBaratoWeb.Admin.ManualHTML do
 
   ## Helpers
 
+  defp outcome_label({:ok, {:categories, n}}), do: "OK — #{n} categories"
   defp outcome_label({:ok, _}), do: "OK"
   defp outcome_label({:error, :stale_pdp}), do: "stale PDP (skipped)"
   defp outcome_label({:error, :no_product_jsonld}), do: "no Product JSON-LD"
@@ -150,11 +145,16 @@ defmodule SuperBaratoWeb.Admin.ManualHTML do
   defp outcome_label(:no_parser), do: "fetched (no parser for this chain)"
   defp outcome_label(other), do: inspect(other)
 
-  defp outcome_classes({:ok, _}), do: "bg-green-100 text-green-800"
-  defp outcome_classes({:error, :stale_pdp}), do: "bg-yellow-100 text-yellow-800"
-  defp outcome_classes(:blocked), do: "bg-red-100 text-red-800"
-  defp outcome_classes({:error, _}), do: "bg-red-100 text-red-800"
-  defp outcome_classes(_), do: "bg-gray-100 text-gray-800"
+  defp outcome_color({:ok, _}), do: :green
+  defp outcome_color({:error, :stale_pdp}), do: :yellow
+  defp outcome_color(:blocked), do: :red
+  defp outcome_color({:error, _}), do: :red
+  defp outcome_color(_), do: :regular
+
+  defp step_color(:ok), do: :green
+  defp step_color(:warn), do: :yellow
+  defp step_color(:error), do: :red
+  defp step_color(_), do: :regular
 
   defp step_dot(:ok), do: "text-green-600"
   defp step_dot(:warn), do: "text-yellow-600"

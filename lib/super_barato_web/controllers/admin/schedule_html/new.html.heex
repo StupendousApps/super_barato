@@ -1,12 +1,13 @@
 <.sub_navigation active={:schedules}>
   <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
   <:item key={:runtime} href={~p"/crawlers/live"}>Live</:item>
+  <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
 <.admin_container title="New Cron Job">
-  <:actions>
-    <.button href={~p"/crawlers/schedules"} variant={:subtle}>← Cron Jobs</.button>
-  </:actions>
+  <.page_header title="">
+    <:back href={~p"/crawlers/schedules"}>Cron Jobs</:back>
+  </.page_header>
 
   <.schedule_form changeset={@changeset} action={@action} />
 </.admin_container>

@@ -6,68 +6,67 @@
 
 <.admin_container title="Manual probe">
   <p class="text-sm opacity-70 mb-4">
-    Synchronous one-shot fetch + parse, using the same Http stack the worker uses.
-    No GenServers, no DB writes — pick chain, kind, and (for product PDPs) a
-    category; the system resolves the URL and shows you every step.
+    Synchronous one-shot fetch + parse, using the same Http stack the worker
+    uses. No GenServers, no DB writes — pick chain, kind, and (for product
+    PDPs) a category; the system resolves the URL and shows you every step.
   </p>
 
-  <.form for={%{}} method="get" action={~p"/crawlers/manual"} class="grid grid-cols-1 sm:grid-cols-[160px_180px_1fr_120px] gap-2 items-end mb-4">
-    <label class="block">
-      <span class="text-xs opacity-70">Chain</span>
-      <select
+  <.form for={%{}} method="get" action={~p"/crawlers/manual"}>
+    <.filters>
+      <.input
         name="chain"
+        type="select"
+        value={@chain}
+        label="Chain"
+        options={Enum.map(@chains, fn ch -> {SuperBaratoWeb.Admin.ListingHTML.chain_label(ch), Atom.to_string(ch)} end)}
         onchange="this.form.submit()"
-        class="block w-full rounded border border-gray-300 px-2 py-1 text-sm"
+      />
+      <.input
+        name="kind"
+        type="select"
+        value={@kind}
+        label="Kind"
+        options={Enum.map(@kinds, fn k -> {SuperBarato.Crawler.Probe.kind_label(k), Atom.to_string(k)} end)}
+      />
+      <%!-- Always rendered so the form keeps it on submit; visibility is
+           toggled client-side by the kind <select>'s change handler.
+           Server-side hidden style mirrors the initial @kind so the field
+           doesn't flash before the script runs. --%>
+      <div
+        data-show-when-kind="product_pdp"
+        style={if @kind == :product_pdp, do: nil, else: "display: none"}
       >
-        <%= for ch <- @chains do %>
-          <option value={ch} selected={@chain == ch}>{SuperBaratoWeb.Admin.ListingHTML.chain_label(ch)}</option>
-        <% end %>
-      </select>
-    </label>
-
-    <label class="block">
-      <span class="text-xs opacity-70">Kind</span>
-      <select name="kind" class="block w-full rounded border border-gray-300 px-2 py-1 text-sm">
-        <%= for k <- @kinds do %>
-          <option value={k} selected={@kind == k}>{SuperBarato.Crawler.Probe.kind_label(k)}</option>
-        <% end %>
-      </select>
-    </label>
-
-    <label class="block">
-      <span class="text-xs opacity-70">
-        Category
-        <%= if @kind != :product_pdp do %>
-          <span class="opacity-50">(used only for product PDP)</span>
-        <% end %>
-      </span>
-      <select
-        name="category_slug"
-        class="block w-full rounded border border-gray-300 px-2 py-1 text-sm"
-        disabled={@kind != :product_pdp}
-      >
-        <option value="">— pick the first available —</option>
-        <%= for {label, slug} <- @category_options do %>
-          <option value={slug} selected={@category_slug == slug}>{label}</option>
-        <% end %>
-      </select>
-    </label>
-
-    <input type="hidden" name="run" value="1" />
-    <.button type="submit" variant={:primary} size={:md}>
-      Run probe
-    </.button>
+        <.input
+          name="category_slug"
+          type="select"
+          value={@category_slug || ""}
+          label="Category"
+          options={[{"— first available —", ""} | @category_options]}
+        />
+      </div>
+      <:actions>
+        <%!-- `name="run" value="1"` lives on the submit button, not as
+             a hidden input, so the Chain <select>'s auto-submit can
+             refresh the form (loading new category options) without
+             triggering an actual probe run. Browsers only emit a
+             button's name=value when it's the element that submitted. --%>
+        <.button type="submit" name="run" value="1" variant={:primary}>
+          Run probe
+        </.button>
+        <.button href={~p"/crawlers/manual"} variant={:subtle}>Reset</.button>
+      </:actions>
+    </.filters>
   </.form>
 
-  <%!-- Resolved URL preview, even before running --%>
+  <%!-- Resolved URL preview before running --%>
   <%= if @resolved_url do %>
-    <div class="text-xs mb-4 break-all">
+    <p class="text-xs my-3 break-all">
       <span class="opacity-60">URL:</span>
       <code class="ml-1">{@resolved_url}</code>
-    </div>
+    </p>
   <% else %>
     <%= if @kind == :product_pdp and @category_options == [] do %>
-      <p class="text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 rounded p-2 mb-4">
+      <p class="text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 rounded p-2 my-3">
         No categories indexed for this chain yet — run a categories probe (or
         the Discover categories cron) first.
       </p>
@@ -87,3 +86,25 @@
     <% end %>
   <% end %>
 </.admin_container>
+
+<script>
+  // Show/hide the Category field based on the Kind <select>'s value.
+  // Pure client-side — the field is always in the DOM so its value
+  // survives kind changes; only its `display` flips.
+  (() => {
+    const kindSelect = document.querySelector('form select[name="kind"]');
+    if (!kindSelect) return;
+
+    const update = () => {
+      const v = kindSelect.value;
+      kindSelect.form
+        .querySelectorAll('[data-show-when-kind]')
+        .forEach((el) => {
+          el.style.display = el.dataset.showWhenKind === v ? '' : 'none';
+        });
+    };
+
+    kindSelect.addEventListener('change', update);
+    update();
+  })();
+</script>

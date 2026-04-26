@@ -20,8 +20,8 @@ defmodule SuperBarato.Crawler.Probe do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.ChainListing
-  alias SuperBarato.Crawler.{Category, Cencosud, Http, Listing}
+  alias SuperBarato.Catalog.{Category, ChainListing}
+  alias SuperBarato.Crawler.{Cencosud, Http, Listing}
   alias SuperBarato.Repo
 
   defmodule Step do
@@ -341,10 +341,10 @@ defmodule SuperBarato.Crawler.Probe do
 
   defp format_blocks_for_view(decoded) do
     Enum.map(decoded, fn
-      {:ok, raw, decoded} ->
+      {:ok, _raw, decoded} ->
         %{
           status: :ok,
-          raw_preview: String.slice(raw, 0, 600),
+          pretty: Jason.encode!(decoded, pretty: true),
           summary: ld_block_summary(decoded),
           types: ld_block_types(decoded)
         }
@@ -352,7 +352,7 @@ defmodule SuperBarato.Crawler.Probe do
       {:error, raw, msg} ->
         %{
           status: :error,
-          raw_preview: String.slice(raw, 0, 600),
+          pretty: String.slice(raw, 0, 800),
           summary: msg,
           types: []
         }
@@ -446,13 +446,15 @@ defmodule SuperBarato.Crawler.Probe do
         sample_pdp_url_for_chain(chain)
 
       n ->
-        like = "%" <> n <> "%"
+        # SQLite doesn't support ilike; LIKE is case-insensitive for
+        # ASCII out of the box, which is fine for this fuzzy match.
+        pattern = "%" <> n <> "%"
 
         ChainListing
         |> where(
           [l],
           l.chain == ^chain_str and l.active == true and not is_nil(l.pdp_url) and
-            ilike(l.category_path, ^like)
+            like(l.category_path, ^pattern)
         )
         |> order_by([l], asc: l.id)
         |> limit(1)
