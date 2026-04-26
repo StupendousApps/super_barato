@@ -98,7 +98,18 @@ config :super_barato, SuperBarato.Crawler,
     ],
     jumbo: [
       interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      fallback_profiles: [
+        :chrome116,
+        :chrome107,
+        :chrome100,
+        :chrome99,
+        :ff117,
+        :ff109,
+        :ff102,
+        :edge101,
+        :edge99,
+        :safari15_5
+      ],
       schedule: [
         {{:weekly, [:mon], [~T[04:15:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
@@ -109,7 +120,18 @@ config :super_barato, SuperBarato.Crawler,
     ],
     santa_isabel: [
       interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      fallback_profiles: [
+        :chrome116,
+        :chrome107,
+        :chrome100,
+        :chrome99,
+        :ff117,
+        :ff109,
+        :ff102,
+        :edge101,
+        :edge99,
+        :safari15_5
+      ],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
@@ -120,7 +142,18 @@ config :super_barato, SuperBarato.Crawler,
     ],
     tottus: [
       interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      fallback_profiles: [
+        :chrome116,
+        :chrome107,
+        :chrome100,
+        :chrome99,
+        :ff117,
+        :ff109,
+        :ff102,
+        :edge101,
+        :edge99,
+        :safari15_5
+      ],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.Queue, :push,
