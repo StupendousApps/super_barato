@@ -93,13 +93,31 @@ defmodule SuperBarato.Crawler.Chain.Worker do
         %{state | last_call_at: now()}
 
       {:error, reason} ->
-        Logger.warning(
-          "[#{state.chain}] task failed: #{inspect(reason)} #{format_task_for_log(task)}"
-        )
-
+        log_task_error(state, task, reason)
         %{state | last_call_at: now(), consecutive_blocks: 0}
     end
   end
+
+  # `:stale_pdp` (Product JSON-LD has nil name) and HTTP 410 (Cencosud
+  # explicitly says the URL is gone) are normal sitemap drift — a few
+  # percent of every full pass. They're noise at :warning level. Real
+  # surprises (transport errors, unexpected statuses, parser bugs)
+  # stay at :warning so they're still findable in `bin/kamal logs`.
+  defp log_task_error(state, task, reason) do
+    suffix = format_task_for_log(task)
+    line = "[#{state.chain}] task failed: #{inspect(reason)} #{suffix}"
+
+    if expected_drift?(reason) do
+      Logger.debug(line)
+    else
+      Logger.warning(line)
+    end
+  end
+
+  defp expected_drift?(:stale_pdp), do: true
+  defp expected_drift?({:http_status, 410, _}), do: true
+  defp expected_drift?({:http_status, 404, _}), do: true
+  defp expected_drift?(_), do: false
 
   # Compact "url=…" / "slug=…" suffix so a log grep gives us the failing
   # input without having to hunt the request_id across other lines.
