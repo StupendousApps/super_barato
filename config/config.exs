@@ -98,14 +98,16 @@ config :super_barato, SuperBarato.Crawler,
     ],
     jumbo: [
       interval_ms: 1_000,
+      # Firefox (ff*) profiles use curl-impersonate-ff which is built
+      # against NSS and can't find a CA bundle in our slim container —
+      # every ff request fails with curl exit 60 before reaching the
+      # target. Edge and Safari profiles use curl-impersonate-chrome
+      # (BoringSSL with bundled CAs) and work fine.
       fallback_profiles: [
         :chrome116,
         :chrome107,
         :chrome100,
         :chrome99,
-        :ff117,
-        :ff109,
-        :ff102,
         :edge101,
         :edge99,
         :safari15_5
@@ -120,14 +122,16 @@ config :super_barato, SuperBarato.Crawler,
     ],
     santa_isabel: [
       interval_ms: 1_000,
+      # Firefox (ff*) profiles use curl-impersonate-ff which is built
+      # against NSS and can't find a CA bundle in our slim container —
+      # every ff request fails with curl exit 60 before reaching the
+      # target. Edge and Safari profiles use curl-impersonate-chrome
+      # (BoringSSL with bundled CAs) and work fine.
       fallback_profiles: [
         :chrome116,
         :chrome107,
         :chrome100,
         :chrome99,
-        :ff117,
-        :ff109,
-        :ff102,
         :edge101,
         :edge99,
         :safari15_5
@@ -142,14 +146,16 @@ config :super_barato, SuperBarato.Crawler,
     ],
     tottus: [
       interval_ms: 1_000,
+      # Firefox (ff*) profiles use curl-impersonate-ff which is built
+      # against NSS and can't find a CA bundle in our slim container —
+      # every ff request fails with curl exit 60 before reaching the
+      # target. Edge and Safari profiles use curl-impersonate-chrome
+      # (BoringSSL with bundled CAs) and work fine.
       fallback_profiles: [
         :chrome116,
         :chrome107,
         :chrome100,
         :chrome99,
-        :ff117,
-        :ff109,
-        :ff102,
         :edge101,
         :edge99,
         :safari15_5
