@@ -41,6 +41,7 @@ defmodule SuperBaratoWeb.Router do
     resources "/crawlers/schedules", ScheduleController, except: [:show]
     get "/crawlers/live", RuntimeController, :index
     post "/crawlers/live/:chain/:kind", RuntimeController, :trigger
+    post "/crawlers/live/:chain/flush", RuntimeController, :flush
 
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
 

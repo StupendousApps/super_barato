@@ -52,6 +52,33 @@ defmodule SuperBaratoWeb.Admin.RuntimeController do
     end
   end
 
+  def flush(conn, %{"chain" => chain}) do
+    case parse_chain(chain) do
+      nil ->
+        conn
+        |> put_flash(:error, "Unknown chain: #{chain}")
+        |> redirect(to: ~p"/crawlers/live")
+
+      chain_atom ->
+        case Crawler.flush_queue(chain_atom) do
+          {:ok, n} ->
+            conn
+            |> put_flash(:info, "Flushed #{n} task(s) from #{chain}'s queue.")
+            |> redirect(to: ~p"/crawlers/live")
+
+          {:error, :pipeline_not_running} ->
+            conn
+            |> put_flash(:error, "Pipeline for #{chain} is not running.")
+            |> redirect(to: ~p"/crawlers/live")
+
+          {:error, reason} ->
+            conn
+            |> put_flash(:error, "Flush failed: #{inspect(reason)}")
+            |> redirect(to: ~p"/crawlers/live")
+        end
+    end
+  end
+
   defp parse_chain(s) when is_binary(s) do
     try do
       atom = String.to_existing_atom(s)

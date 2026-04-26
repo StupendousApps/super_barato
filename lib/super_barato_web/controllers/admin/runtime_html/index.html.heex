@@ -53,6 +53,23 @@
             <.sfsymbol name="play.circle" />
           </.button>
         </.form>
+        <.form
+          for={%{}}
+          action={~p"/crawlers/live/#{s.chain}/flush"}
+          method="post"
+          data-confirm={"Drop every queued task for #{s.chain}? This is non-reversible."}
+        >
+          <.button
+            type="submit"
+            variant={:subtle}
+            size={:sm}
+            disabled={!s.running}
+            aria-label="Flush queue"
+            title="Flush queue"
+          >
+            <.sfsymbol name="trash" />
+          </.button>
+        </.form>
       </.row_actions>
     </:action>
   </.table>

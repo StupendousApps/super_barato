@@ -45,6 +45,18 @@ defmodule SuperBarato.Crawler.Chain.Queue do
     GenServer.call(via(chain), :size)
   end
 
+  @doc """
+  Drops every task currently queued AND every task parked in a pending
+  push. Returns the count discarded. Used by the admin "Flush queue"
+  button so a runaway producer (e.g. firing 50k tasks against a broken
+  parser) can be stopped without restarting the container or letting
+  it drain in real time. Pending pushes get `:ok` replies so the
+  producer process unblocks and exits naturally.
+  """
+  def clear(chain) do
+    GenServer.call(via(chain), :clear)
+  end
+
   def child_spec(opts) do
     chain = Keyword.fetch!(opts, :chain)
 
@@ -119,6 +131,21 @@ defmodule SuperBarato.Crawler.Chain.Queue do
 
   def handle_call(:size, _from, state) do
     {:reply, :queue.len(state.q), state}
+  end
+
+  # Drop everything queued + reply :ok to anyone parked in a push so
+  # they can move on. Parked pops are left intact — they're harmless
+  # and the next legitimate push will service them.
+  def handle_call(:clear, _from, state) do
+    queued = :queue.len(state.q)
+    parked = :queue.len(state.pending_pushes)
+
+    state.pending_pushes
+    |> :queue.to_list()
+    |> Enum.each(fn {pusher_from, _task} -> GenServer.reply(pusher_from, :ok) end)
+
+    {:reply, queued + parked,
+     %{state | q: :queue.new(), pending_pushes: :queue.new()}}
   end
 
   # After a pop frees a slot, service one parked pusher if any.

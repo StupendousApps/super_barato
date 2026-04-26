@@ -304,8 +304,20 @@ defmodule SuperBarato.Crawler.Cencosud do
 
           resp.status == 200 ->
             case parse_pdp(cfg, resp.body, url) do
-              {:ok, %Listing{} = listing} -> {:ok, [listing]}
-              {:error, _} = err -> err
+              {:ok, %Listing{} = listing} ->
+                {:ok, [listing]}
+
+              {:error, :no_product_jsonld} = err ->
+                # Diagnostic for the prod-vs-laptop discrepancy: log enough
+                # of the body shape to tell encoding garbage from missing
+                # JSON-LD from a different markup variant. Throttle by
+                # sampling at random so we don't fill logs when 50k URLs
+                # all fail. Remove once the cause is identified.
+                if :rand.uniform(20) == 1, do: log_body_sample(cfg, url, resp)
+                err
+
+              {:error, _} = err ->
+                err
             end
 
           true ->
@@ -315,6 +327,36 @@ defmodule SuperBarato.Crawler.Cencosud do
       {:error, _} = err ->
         err
     end
+  end
+
+  defp log_body_sample(cfg, url, %Http.Response{body: body, headers: headers}) do
+    require Logger
+
+    enc =
+      Enum.find_value(headers, "<no content-encoding>", fn {k, v} ->
+        if String.downcase(k) == "content-encoding", do: v
+      end)
+
+    ctype =
+      Enum.find_value(headers, "<no content-type>", fn {k, v} ->
+        if String.downcase(k) == "content-type", do: v
+      end)
+
+    size = byte_size(body)
+
+    head =
+      body
+      |> binary_part(0, min(120, size))
+      |> :binary.bin_to_list()
+      |> Enum.map(fn
+        b when b in 32..126 -> <<b>>
+        b -> "\\x#{Integer.to_string(b, 16) |> String.pad_leading(2, "0")}"
+      end)
+      |> IO.iodata_to_binary()
+
+    Logger.warning(
+      "[#{cfg.chain}] no_product_jsonld diag url=#{url} ctype=#{ctype} enc=#{enc} size=#{size} head=#{head}"
+    )
   end
 
   defp profile_for(cfg) do

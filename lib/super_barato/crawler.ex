@@ -85,6 +85,19 @@ defmodule SuperBarato.Crawler do
   defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.SitemapProducer
   defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
 
+  @doc """
+  Drops every queued task for `chain` and unblocks any parked
+  producer push. Returns `{:ok, count}` where `count` is how many
+  tasks were discarded, or `{:error, :pipeline_not_running}`.
+  """
+  def flush_queue(chain) when is_atom(chain) do
+    cond do
+      chain not in known_chains() -> {:error, :unknown_chain}
+      not pipeline_running?(chain) -> {:error, :pipeline_not_running}
+      true -> {:ok, SuperBarato.Crawler.Chain.Queue.clear(chain)}
+    end
+  end
+
   defp pipeline_running?(chain) do
     case GenServer.whereis(
            {:via, Registry,
