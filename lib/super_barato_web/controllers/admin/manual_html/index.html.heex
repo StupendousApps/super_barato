@@ -1,0 +1,89 @@
+<.sub_navigation active={@sub_nav}>
+  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
+  <:item key={:runtime} href={~p"/crawlers/live"}>Live</:item>
+  <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
+</.sub_navigation>
+
+<.admin_container title="Manual probe">
+  <p class="text-sm opacity-70 mb-4">
+    Synchronous one-shot fetch + parse, using the same Http stack the worker uses.
+    No GenServers, no DB writes — pick chain, kind, and (for product PDPs) a
+    category; the system resolves the URL and shows you every step.
+  </p>
+
+  <.form for={%{}} method="get" action={~p"/crawlers/manual"} class="grid grid-cols-1 sm:grid-cols-[160px_180px_1fr_120px] gap-2 items-end mb-4">
+    <label class="block">
+      <span class="text-xs opacity-70">Chain</span>
+      <select
+        name="chain"
+        onchange="this.form.submit()"
+        class="block w-full rounded border border-gray-300 px-2 py-1 text-sm"
+      >
+        <%= for ch <- @chains do %>
+          <option value={ch} selected={@chain == ch}>{SuperBaratoWeb.Admin.ListingHTML.chain_label(ch)}</option>
+        <% end %>
+      </select>
+    </label>
+
+    <label class="block">
+      <span class="text-xs opacity-70">Kind</span>
+      <select name="kind" class="block w-full rounded border border-gray-300 px-2 py-1 text-sm">
+        <%= for k <- @kinds do %>
+          <option value={k} selected={@kind == k}>{SuperBarato.Crawler.Probe.kind_label(k)}</option>
+        <% end %>
+      </select>
+    </label>
+
+    <label class="block">
+      <span class="text-xs opacity-70">
+        Category
+        <%= if @kind != :product_pdp do %>
+          <span class="opacity-50">(used only for product PDP)</span>
+        <% end %>
+      </span>
+      <select
+        name="category_slug"
+        class="block w-full rounded border border-gray-300 px-2 py-1 text-sm"
+        disabled={@kind != :product_pdp}
+      >
+        <option value="">— pick the first available —</option>
+        <%= for {label, slug} <- @category_options do %>
+          <option value={slug} selected={@category_slug == slug}>{label}</option>
+        <% end %>
+      </select>
+    </label>
+
+    <input type="hidden" name="run" value="1" />
+    <.button type="submit" variant={:primary} size={:md}>
+      Run probe
+    </.button>
+  </.form>
+
+  <%!-- Resolved URL preview, even before running --%>
+  <%= if @resolved_url do %>
+    <div class="text-xs mb-4 break-all">
+      <span class="opacity-60">URL:</span>
+      <code class="ml-1">{@resolved_url}</code>
+    </div>
+  <% else %>
+    <%= if @kind == :product_pdp and @category_options == [] do %>
+      <p class="text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 rounded p-2 mb-4">
+        No categories indexed for this chain yet — run a categories probe (or
+        the Discover categories cron) first.
+      </p>
+    <% end %>
+  <% end %>
+
+  <%= if @report do %>
+    <%= cond do %>
+      <% Map.get(@report, :__exception__) -> %>
+        <section class="border border-red-300 bg-red-50 rounded p-3 mb-4">
+          <h3 class="font-semibold text-red-800 mb-1">Probe raised an exception</h3>
+          <pre class="text-xs whitespace-pre-wrap">{@report.message}</pre>
+        </section>
+
+      <% true -> %>
+        <.report_view report={@report} />
+    <% end %>
+  <% end %>
+</.admin_container>

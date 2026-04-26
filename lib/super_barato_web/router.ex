@@ -43,6 +43,8 @@ defmodule SuperBaratoWeb.Router do
     post "/crawlers/live/:chain/:kind", RuntimeController, :trigger
     post "/crawlers/live/:chain/flush", RuntimeController, :flush
 
+    get "/crawlers/manual", ManualController, :index
+
     resources "/users", UserController, only: [:index, :edit, :update, :delete]
 
     # The library's <.top_navigation> logout slot submits POST, so we
