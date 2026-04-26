@@ -111,6 +111,7 @@ defmodule SuperBarato.Catalog do
       current_promotions: listing.promotions || %{},
       first_seen_at: now,
       last_discovered_at: now,
+      last_priced_at: now,
       active: true
     }
 
@@ -121,7 +122,6 @@ defmodule SuperBarato.Catalog do
         {:replace,
          [
            :chain_product_id,
-           :ean,
            :name,
            :brand,
            :image_url,
@@ -131,10 +131,15 @@ defmodule SuperBarato.Catalog do
            :current_promo_price,
            :current_promotions,
            :last_discovered_at,
+           :last_priced_at,
            :active,
            :updated_at
          ]},
-      conflict_target: [:chain, :chain_sku],
+      # Identity is `(chain, chain_sku, ean)`. NULL eans are folded
+      # to '' to keep SQLite's "every NULL is distinct" behaviour from
+      # making the upsert a no-op. Matches the unique expression index
+      # in chain_listings_uniq_includes_ean.
+      conflict_target: {:unsafe_fragment, "(chain, chain_sku, IFNULL(ean, ''))"},
       returning: true
     )
   end

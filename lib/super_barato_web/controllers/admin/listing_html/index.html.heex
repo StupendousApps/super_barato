@@ -88,6 +88,16 @@
       <% end %>
     </:col>
 
+    <:col
+      :let={l}
+      label="Last priced"
+      nowrap
+      sort={sort_dir("last_priced_at", @sort)}
+      sort_href={sort_href(~p"/listings", @filters, "last_priced_at", @sort)}
+    >
+      {format_datetime(l.last_priced_at)}
+    </:col>
+
     <%!-- Linked product, looked up via product_listings. "—" when no
          link exists (linker hasn't run, or no EAN to match on). --%>
     <:col :let={l} label="Product link">
@@ -98,16 +108,6 @@
           <div>{p.canonical_name}</div>
           <div :if={p.ean} class="text-xs opacity-60 font-mono">{p.ean}</div>
       <% end %>
-    </:col>
-
-    <:col
-      :let={l}
-      label="Last priced"
-      nowrap
-      sort={sort_dir("last_priced_at", @sort)}
-      sort_href={sort_href(~p"/listings", @filters, "last_priced_at", @sort)}
-    >
-      {format_datetime(l.last_priced_at)}
     </:col>
   </.table>
 
