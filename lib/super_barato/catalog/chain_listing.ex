@@ -7,12 +7,28 @@ defmodule SuperBarato.Catalog.ChainListing do
     field :chain_sku, :string
     field :chain_product_id, :string
 
+    # Identity key — `Linker.Identity.encode/1` over the id-shaped
+    # subset of `raw` (SKU, EAN, UPC, GTINs, …). The unique index
+    # lives on (chain, identifiers_key); any change to the id set
+    # produces a different key and a fresh row.
+    field :identifiers_key, :string
+
+    # Convenience denormalization of one well-known id key so the
+    # admin EAN filter / sort work without a JSON path expression.
+    # Projection of `raw`, not separate truth.
     field :ean, :string
+
+    # Per-listing display + state (independent of identity).
     field :name, :string
     field :brand, :string
     field :image_url, :string
     field :category_path, :string
     field :pdp_url, :string
+
+    # Everything else the chain sent — descriptions, ratings, the
+    # breadcrumb node, offers, images, etc. Source of truth for any
+    # field not denormalized above.
+    field :raw, :map, default: %{}
 
     field :current_regular_price, :integer
     field :current_promo_price, :integer
@@ -27,17 +43,20 @@ defmodule SuperBarato.Catalog.ChainListing do
   end
 
   @discovery_fields ~w(
-    chain chain_sku chain_product_id ean name brand image_url
-    category_path pdp_url current_regular_price current_promo_price
-    current_promotions last_discovered_at last_priced_at first_seen_at active
+    chain chain_sku chain_product_id
+    identifiers_key
+    ean name brand image_url category_path pdp_url
+    raw
+    current_regular_price current_promo_price current_promotions
+    last_discovered_at last_priced_at first_seen_at active
   )a
 
   def discovery_changeset(listing, attrs) do
     listing
     |> cast(attrs, @discovery_fields)
-    |> validate_required([:chain, :chain_sku, :name, :first_seen_at])
-    |> unique_constraint([:chain, :chain_sku, :ean],
-      name: :chain_listings_chain_sku_ean_index
+    |> validate_required([:chain, :chain_sku, :name, :first_seen_at, :identifiers_key])
+    |> unique_constraint([:chain, :identifiers_key],
+      name: :chain_listings_chain_identifiers_key_index
     )
   end
 

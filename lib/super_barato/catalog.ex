@@ -100,12 +100,14 @@ defmodule SuperBarato.Catalog do
       chain: to_string(listing.chain),
       chain_sku: listing.chain_sku,
       chain_product_id: listing.chain_product_id,
+      identifiers_key: listing.identifiers_key,
       ean: listing.ean,
       name: listing.name,
       brand: listing.brand,
       image_url: listing.image_url,
       pdp_url: listing.pdp_url,
       category_path: listing.category_path,
+      raw: listing.raw || %{},
       current_regular_price: listing.regular_price,
       current_promo_price: listing.promo_price,
       current_promotions: listing.promotions || %{},
@@ -123,11 +125,13 @@ defmodule SuperBarato.Catalog do
           {:replace,
            [
              :chain_product_id,
+             :ean,
              :name,
              :brand,
              :image_url,
              :category_path,
              :pdp_url,
+             :raw,
              :current_regular_price,
              :current_promo_price,
              :current_promotions,
@@ -136,11 +140,12 @@ defmodule SuperBarato.Catalog do
              :active,
              :updated_at
            ]},
-        # Identity is `(chain, chain_sku, ean)`. NULL eans are folded
-        # to '' to keep SQLite's "every NULL is distinct" behaviour
-        # from making the upsert a no-op. Matches the unique expression
-        # index in chain_listings_uniq_includes_ean.
-        conflict_target: {:unsafe_fragment, "(chain, chain_sku, IFNULL(ean, ''))"},
+        # Identity is `(chain, identifiers_key)` — see migration
+        # 20260426222000_chain_listings_identifiers_and_raw. The
+        # parser writes `identifiers_key` via `Linker.Identity.encode/1`
+        # over the id-shaped fields it pulled from `raw`; any change
+        # to that set produces a different key and a fresh row.
+        conflict_target: [:chain, :identifiers_key],
         returning: true
       )
 
