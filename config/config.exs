@@ -99,7 +99,7 @@ config :super_barato, SuperBarato.Crawler,
     # Jumbo + Santa Isabel use sitemap-driven discovery: PDPs on
     # `www.<chain>.cl` are served from Cencosud's nginx (no Cloudflare,
     # reachable from prod) and the sitemaps live on CloudFront/S3
-    # (also unprotected). Daily product walks use SitemapProducer
+    # (also unprotected). Daily product walks use ProductProducer
     # which streams every PDP URL into the chain Queue. At 1 req/s a
     # full Jumbo pass takes ~14 hours; Santa Isabel ~4 hours.
     jumbo: [
@@ -110,7 +110,7 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[05:30:00]]},
-         {SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [[chain: :jumbo]]}}
+         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :jumbo]]}}
       ]
     ],
     santa_isabel: [
@@ -121,7 +121,7 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.Queue, :push,
           [:santa_isabel, {:discover_categories, %{chain: :santa_isabel, parent: nil}}]}},
         {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[06:00:00]]},
-         {SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [[chain: :santa_isabel]]}}
+         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
     # Tottus is on Cloudflare and the prod IP is banned at the edge.

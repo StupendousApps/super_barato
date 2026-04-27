@@ -19,7 +19,7 @@ defmodule SuperBarato.Crawler.SantaIsabel do
     sitemap_index: "https://www.santaisabel.cl/sitemap.xml"
   }
 
-  @doc "Exposed so `Cencosud.SitemapProducer` can fetch the sitemap layout."
+  @doc "Exposed so `Cencosud.ProductProducer` can fetch the sitemap layout."
   def cencosud_config, do: @config
 
   @impl true

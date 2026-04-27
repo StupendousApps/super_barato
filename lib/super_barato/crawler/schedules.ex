@@ -146,7 +146,7 @@ defmodule SuperBarato.Crawler.Schedules do
   defp infer_kind({SuperBarato.Crawler.Chain.ProductProducer, :run, [_]}),
     do: "discover_products"
 
-  defp infer_kind({SuperBarato.Crawler.Cencosud.SitemapProducer, :run, [_]}),
+  defp infer_kind({SuperBarato.Crawler.Cencosud.ProductProducer, :run, [_]}),
     do: "discover_products"
 
   defp infer_kind(other),

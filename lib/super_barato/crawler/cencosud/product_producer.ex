@@ -1,4 +1,4 @@
-defmodule SuperBarato.Crawler.Cencosud.SitemapProducer do
+defmodule SuperBarato.Crawler.Cencosud.ProductProducer do
   @moduledoc """
   Transient task spawned by the chain's Cron, replacing the leaf-
   category iteration the generic `Chain.ProductProducer` does for

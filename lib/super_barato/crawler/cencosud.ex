@@ -198,7 +198,7 @@ defmodule SuperBarato.Crawler.Cencosud do
   # Sitemap discovery — list every product PDP URL the chain
   # advertises, by walking the chain's sitemap index. Returns a flat
   # list of canonical URLs (e.g. `https://www.jumbo.cl/<slug>/p`).
-  # Used by `Cencosud.SitemapProducer` to enqueue per-PDP fetch tasks
+  # Used by `Cencosud.ProductProducer` to enqueue per-PDP fetch tasks
   # against the Worker's regular politeness gap.
   @spec list_sitemap_urls(Config.t()) :: {:ok, [String.t()]} | {:error, term()}
   def list_sitemap_urls(%Config{} = cfg) do

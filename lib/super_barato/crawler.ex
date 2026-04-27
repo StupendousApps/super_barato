@@ -81,8 +81,8 @@ defmodule SuperBarato.Crawler do
 
   # Per-chain dispatch: Cencosud chains discover via sitemap;
   # Lider/Unimarc keep iterating leaf categories from the DB.
-  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.SitemapProducer
-  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.SitemapProducer
+  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.ProductProducer
+  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.ProductProducer
   defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
 
   @doc """

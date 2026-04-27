@@ -107,8 +107,8 @@ defmodule SuperBarato.Crawler.Schedule do
     {producer_for(chain), :run, [[chain: chain]]}
   end
 
-  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.SitemapProducer
-  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.SitemapProducer
+  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.ProductProducer
+  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.ProductProducer
   defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
 
   ## Parsing helpers — also used by the context for validation.
