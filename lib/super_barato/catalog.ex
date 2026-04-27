@@ -115,34 +115,49 @@ defmodule SuperBarato.Catalog do
       active: true
     }
 
-    %ChainListing{}
-    |> ChainListing.discovery_changeset(attrs)
-    |> Repo.insert(
-      on_conflict:
-        {:replace,
-         [
-           :chain_product_id,
-           :name,
-           :brand,
-           :image_url,
-           :category_path,
-           :pdp_url,
-           :current_regular_price,
-           :current_promo_price,
-           :current_promotions,
-           :last_discovered_at,
-           :last_priced_at,
-           :active,
-           :updated_at
-         ]},
-      # Identity is `(chain, chain_sku, ean)`. NULL eans are folded
-      # to '' to keep SQLite's "every NULL is distinct" behaviour from
-      # making the upsert a no-op. Matches the unique expression index
-      # in chain_listings_uniq_includes_ean.
-      conflict_target: {:unsafe_fragment, "(chain, chain_sku, IFNULL(ean, ''))"},
-      returning: true
-    )
+    result =
+      %ChainListing{}
+      |> ChainListing.discovery_changeset(attrs)
+      |> Repo.insert(
+        on_conflict:
+          {:replace,
+           [
+             :chain_product_id,
+             :name,
+             :brand,
+             :image_url,
+             :category_path,
+             :pdp_url,
+             :current_regular_price,
+             :current_promo_price,
+             :current_promotions,
+             :last_discovered_at,
+             :last_priced_at,
+             :active,
+             :updated_at
+           ]},
+        # Identity is `(chain, chain_sku, ean)`. NULL eans are folded
+        # to '' to keep SQLite's "every NULL is distinct" behaviour
+        # from making the upsert a no-op. Matches the unique expression
+        # index in chain_listings_uniq_includes_ean.
+        conflict_target: {:unsafe_fragment, "(chain, chain_sku, IFNULL(ean, ''))"},
+        returning: true
+      )
+
+    case result do
+      {:ok, row} -> {:ok, upsert_action(row), row}
+      {:error, _} = err -> err
+    end
   end
+
+  # Did the upsert insert or update? Ecto's on_conflict is opaque to
+  # this, so we infer from the returned row: on insert, both timestamps
+  # are set to the same `now`; on conflict-update, `inserted_at` is
+  # preserved from the original row and only `updated_at` advances.
+  # The DateTime equality is exact at second resolution, so this is
+  # robust as long as `now` is truncated the same way for both fields.
+  defp upsert_action(%ChainListing{inserted_at: t, updated_at: t}), do: :inserted
+  defp upsert_action(%ChainListing{}), do: :updated
 
   @doc """
   Refreshes a listing's current price columns. Price history is

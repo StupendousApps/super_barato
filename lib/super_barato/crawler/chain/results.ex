@@ -16,6 +16,7 @@ defmodule SuperBarato.Crawler.Chain.Results do
   require Logger
 
   alias SuperBarato.{Catalog, PriceLog}
+  alias SuperBarato.Linker
 
   def start_link(opts) do
     chain = Keyword.fetch!(opts, :chain)
@@ -88,12 +89,7 @@ defmodule SuperBarato.Crawler.Chain.Results do
   # observation to the per-product file log.
   defp persist(state, {:discover_products, %{slug: slug}}, listings)
        when is_list(listings) do
-    Enum.each(listings, fn listing ->
-      case Catalog.upsert_listing(listing) do
-        {:ok, _} -> log_price(listing)
-        {:error, cs} -> Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
-      end
-    end)
+    Enum.each(listings, &persist_listing/1)
 
     # Per-category log lives at :debug because a full daily product
     # walk fires this once per leaf category (1000s of times). The
@@ -106,12 +102,7 @@ defmodule SuperBarato.Crawler.Chain.Results do
   # category-batch path does. PriceLog.append captures the price
   # observation per call.
   defp persist(_state, {:fetch_product_pdp, _meta}, listings) when is_list(listings) do
-    Enum.each(listings, fn listing ->
-      case Catalog.upsert_listing(listing) do
-        {:ok, _} -> log_price(listing)
-        {:error, cs} -> Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
-      end
-    end)
+    Enum.each(listings, &persist_listing/1)
   end
 
   # Ad-hoc single-SKU refresh: look up existing listing by identifier,
@@ -135,6 +126,27 @@ defmodule SuperBarato.Crawler.Chain.Results do
     Logger.warning(
       "[#{state.chain}] unknown task shape: task=#{inspect(task)} payload=#{inspect(payload, limit: 3)}"
     )
+  end
+
+  # Single point that:
+  #   1. Upserts the chain_listing.
+  #   2. Appends a price observation when the row carries a price.
+  #   3. Notifies the Linker on inserts (not updates) so it can
+  #      attach this listing to a Product. Updates don't fire — the
+  #      link, if any, was decided when the row was first inserted;
+  #      EAN drift handling is a separate concern.
+  defp persist_listing(listing) do
+    case Catalog.upsert_listing(listing) do
+      {:ok, :inserted, %{id: id}} ->
+        log_price(listing)
+        Linker.Worker.link_listing(id)
+
+      {:ok, :updated, _row} ->
+        log_price(listing)
+
+      {:error, cs} ->
+        Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
+    end
   end
 
   # Appends a `<unix> <regular> [<promo>]` line to the product's log

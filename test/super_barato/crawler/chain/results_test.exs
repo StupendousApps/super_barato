@@ -137,7 +137,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
 
   describe "record/3 with :fetch_product_info task (single-SKU refresh)" do
     setup %{chain: chain} do
-      {:ok, existing} =
+      {:ok, _action, existing} =
         Catalog.upsert_listing(%Listing{
           chain: chain,
           chain_sku: "123",

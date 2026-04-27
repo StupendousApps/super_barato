@@ -39,7 +39,7 @@ defmodule SuperBarato.Crawler.StatusTest do
     test "DB-derived fields reflect the catalog regardless of pipeline state" do
       now = DateTime.utc_now() |> DateTime.truncate(:second)
 
-      {:ok, _} =
+      {:ok, _action, _row} =
         Catalog.upsert_listing(%Listing{
           chain: :unimarc,
           chain_sku: "x-1",

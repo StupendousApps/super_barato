@@ -15,7 +15,10 @@ defmodule SuperBarato.Application do
         SuperBarato.Repo,
         {DNSCluster, query: Application.get_env(:super_barato, :dns_cluster_query) || :ignore},
         {Phoenix.PubSub, name: SuperBarato.PubSub},
-        {Registry, keys: :unique, name: SuperBarato.Crawler.Registry}
+        {Registry, keys: :unique, name: SuperBarato.Crawler.Registry},
+        # Single-process consumer of "new listing inserted" signals
+        # from the crawler. Sits idle until the first cast arrives.
+        SuperBarato.Linker.Worker
       ] ++
         chain_pipeline_specs() ++
         [SuperBaratoWeb.Endpoint]
