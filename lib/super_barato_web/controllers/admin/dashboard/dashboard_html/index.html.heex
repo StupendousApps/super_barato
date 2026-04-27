@@ -1,5 +1,70 @@
 <.admin_container>
   <.page_header title="Dashboard" />
-  <p>Welcome, {@current_scope.user.email}.</p>
-  <p>Use the top navigation to manage listings, categories, crawlers, and users.</p>
+
+  <%!-- Top-level totals: each tile maps to a top-nav section. --%>
+  <.columns>
+    <:column>
+      <.data_card
+        title="Products"
+        subtitle={"#{@totals.multi_chain_products} cross-chain"}
+        value={Integer.to_string(@totals.products)}
+      />
+    </:column>
+    <:column>
+      <.data_card
+        title="Listings"
+        subtitle="Across all chains"
+        value={Integer.to_string(@totals.listings)}
+        color={:blue}
+      />
+    </:column>
+    <:column>
+      <.data_card
+        title="Categories"
+        subtitle="In scope"
+        value={Integer.to_string(@totals.categories)}
+        color={:purple}
+      />
+    </:column>
+    <:column>
+      <.data_card
+        title="Linker rows"
+        subtitle="product_listings"
+        value={Integer.to_string(@totals.links)}
+        color={:green}
+      />
+    </:column>
+  </.columns>
+
+  <.section_header title="Linked listings by chain" />
+
+  <.columns>
+    <:column>
+      <.data_card
+        title="Multi-chain"
+        subtitle="Linked to a product carried on 2+ chains"
+        bars={@chain_bars.multi}
+        labels={@chain_labels}
+        color={:green}
+      />
+    </:column>
+    <:column>
+      <.data_card
+        title="Single-chain"
+        subtitle="Linked to a product only on this chain"
+        bars={@chain_bars.single}
+        labels={@chain_labels}
+        color={:yellow}
+      />
+    </:column>
+    <:column>
+      <.data_card
+        title="Unlinked"
+        subtitle="No product link yet"
+        bars={@chain_bars.none}
+        labels={@chain_labels}
+        color={:red}
+      />
+    </:column>
+  </.columns>
 </.admin_container>
