@@ -12,9 +12,12 @@ defmodule SuperBarato.Crawler.Scope do
   the cross-chain Linker simply leaves the non-food sub-listings as
   single-chain rows.
 
-  Match is by **top-level slug** (first path segment). All descendants
-  of a blacklisted top-level are also blacklisted — sub-trees aren't
-  individually addressable here.
+  Match is by **path prefix**. Each blacklist entry is a slash-joined
+  slug; if the listing's slug equals or descends from that prefix it's
+  blacklisted. Top-level entries (`hogar`) catch the entire branch;
+  multi-segment entries (`mundo-bebe-y-jugueteria/jugueteria`) drop
+  a sub-tree while leaving siblings (`mundo-bebe-y-jugueteria/bebes`)
+  in scope.
   """
 
   @blacklists %{
@@ -35,6 +38,7 @@ defmodule SuperBarato.Crawler.Scope do
       parrillas-y-jardin
       automovil
       mainstays
+      mundo-bebe-y-jugueteria/jugueteria
     ),
     "unimarc" => ~w(
       hogar
@@ -50,17 +54,35 @@ defmodule SuperBarato.Crawler.Scope do
                     {chain, MapSet.new(slugs)}
                   end)
 
-  @doc "True iff `slug`'s top-level segment is on `chain`'s blacklist."
+  @doc """
+  True iff any path-prefix of `slug` matches an entry on `chain`'s
+  blacklist. A blacklisted prefix drops itself and every descendant.
+  """
   @spec blacklisted?(atom() | String.t(), String.t()) :: boolean()
   def blacklisted?(chain, slug) when is_atom(chain),
     do: blacklisted?(Atom.to_string(chain), slug)
 
   def blacklisted?(chain, slug) when is_binary(chain) and is_binary(slug) do
-    top = slug |> String.split("/", parts: 2) |> List.first()
-    @blacklist_sets |> Map.get(chain, MapSet.new()) |> MapSet.member?(top)
+    set = Map.get(@blacklist_sets, chain, MapSet.new())
+
+    if MapSet.size(set) == 0 do
+      false
+    else
+      slug
+      |> String.split("/")
+      |> prefixes()
+      |> Enum.any?(&MapSet.member?(set, &1))
+    end
   end
 
   def blacklisted?(_, _), do: false
+
+  # ["a", "b", "c"] -> ["a", "a/b", "a/b/c"]
+  defp prefixes(segments) do
+    segments
+    |> Enum.scan([], fn seg, acc -> acc ++ [seg] end)
+    |> Enum.map(&Enum.join(&1, "/"))
+  end
 
   @doc "Inverse of `blacklisted?/2`."
   @spec in_scope?(atom() | String.t(), String.t()) :: boolean()

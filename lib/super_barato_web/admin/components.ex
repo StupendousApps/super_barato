@@ -28,7 +28,8 @@ defmodule SuperBaratoWeb.Admin.Components do
     santa_isabel: "/images/chains/santa_isabel.png",
     tottus: "/images/chains/tottus.png",
     lider: "/images/chains/lider.ico",
-    unimarc: "/images/chains/unimarc.ico"
+    unimarc: "/images/chains/unimarc.ico",
+    acuenta: "/images/chains/acuenta.ico"
   }
 
   @chain_site_urls %{

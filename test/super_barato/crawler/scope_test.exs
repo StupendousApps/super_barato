@@ -46,8 +46,16 @@ defmodule SuperBarato.Crawler.ScopeTest do
       refute Scope.blacklisted?(:lider, "salud-y-estilos-de-vida")
       refute Scope.blacklisted?(:lider, "perfumeria-y-salud")
       refute Scope.blacklisted?(:lider, "la-boti")
-      # The mixed bebé+jugueteria branch is kept whole; user said babies stay.
+    end
+
+    test "Lider mundo-bebe-y-jugueteria: keeps the parent + bebés siblings, drops jugueteria sub-tree" do
       refute Scope.blacklisted?(:lider, "mundo-bebe-y-jugueteria")
+      refute Scope.blacklisted?(:lider, "mundo-bebe-y-jugueteria/panales-y-toallas-humedas")
+      refute Scope.blacklisted?(:lider, "mundo-bebe-y-jugueteria/alimentacion-bebe")
+
+      assert Scope.blacklisted?(:lider, "mundo-bebe-y-jugueteria/jugueteria")
+      assert Scope.blacklisted?(:lider, "mundo-bebe-y-jugueteria/jugueteria/vehiculos-y-rodados")
+      assert Scope.blacklisted?(:lider, "mundo-bebe-y-jugueteria/jugueteria/peluches/oso-de-felpa")
     end
 
     test "unknown chain → never blacklisted" do

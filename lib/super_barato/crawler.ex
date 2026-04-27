@@ -9,10 +9,17 @@ defmodule SuperBarato.Crawler do
   `SuperBarato.Application` when `chains_enabled` is true in config.
   """
 
+  # Order is the public ordering of chains everywhere they're listed —
+  # admin runtime page, schedule editor, listing/category/product
+  # filter dropdowns, Status.all/0. Map.keys/1 doesn't guarantee a
+  # stable order across BEAM versions, so we keep the order in a
+  # separate list and look adapters up in the map.
+  @chain_order ~w(jumbo santa_isabel unimarc lider tottus acuenta)a
+
   @adapters %{
-    unimarc: SuperBarato.Crawler.Unimarc,
     jumbo: SuperBarato.Crawler.Jumbo,
     santa_isabel: SuperBarato.Crawler.SantaIsabel,
+    unimarc: SuperBarato.Crawler.Unimarc,
     lider: SuperBarato.Crawler.Lider,
     tottus: SuperBarato.Crawler.Tottus,
     acuenta: SuperBarato.Crawler.Acuenta
@@ -20,7 +27,7 @@ defmodule SuperBarato.Crawler do
 
   def adapter(chain) when is_atom(chain), do: Map.fetch!(@adapters, chain)
 
-  def known_chains, do: Map.keys(@adapters)
+  def known_chains, do: @chain_order
 
   @doc """
   Manually fire a discovery run for `chain` from outside the schedule
