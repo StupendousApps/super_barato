@@ -33,7 +33,7 @@ defmodule SuperBaratoWeb.Router do
   scope "/", SuperBaratoWeb.Admin, host: "admin.", as: :admin do
     pipe_through [:browser, :require_admin]
 
-    get "/", PageController, :index
+    get "/", DashboardController, :index
     get "/products", ProductController, :index
     get "/products/:id", ProductController, :show
     get "/products/:id/merge", ProductController, :merge_new

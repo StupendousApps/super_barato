@@ -1,4 +1,4 @@
-defmodule SuperBaratoWeb.Admin.PageController do
+defmodule SuperBaratoWeb.Admin.DashboardController do
   use SuperBaratoWeb, :controller
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
