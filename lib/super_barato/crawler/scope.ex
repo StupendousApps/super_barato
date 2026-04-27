@@ -44,10 +44,9 @@ defmodule SuperBarato.Crawler.Scope do
       hogar
     ),
     "tottus" => ~w(),
-    # Empty until we see Acuenta's actual category tree (Instaleap
-    # multi-tenant — top-levels not yet known). Filled in once the
-    # parser lands.
-    "acuenta" => ~w()
+    "acuenta" => ~w(
+      hogar-entretencion-y-tecnologia
+    )
   }
 
   @blacklist_sets Map.new(@blacklists, fn {chain, slugs} ->

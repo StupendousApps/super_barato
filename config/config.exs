@@ -151,15 +151,28 @@ config :super_barato, SuperBarato.Crawler,
     # Lider's Akamai blocks Chrome 110+; only older Chrome profiles
     # pass. We lead with chrome107 (confirmed working) and fall back to
     # 104/100/99 if it ever starts getting challenged.
-    # Acuenta — registered but parsers not yet implemented. Pipeline
-    # boots (Queue/Worker/Cron/Results live), schedule is empty so
-    # nothing fires automatically; manual triggers will short-circuit
-    # with `{:error, :not_implemented}` from the adapter. Real schedule
-    # ships alongside the parser.
+    # Acuenta — Walmart Chile's discount banner, storefronted by
+    # Instaleap. All listing data flows through a single GraphQL
+    # endpoint; no Cloudflare/Akamai in front, so curl-impersonate
+    # profiles are belt-and-braces (we POST JSON, no fingerprinting
+    # to defeat).
+    #
+    # No `fetch_product_pdp` implementation — Instaleap doesn't expose
+    # a per-EAN/per-SKU lookup we know of, so daily price refresh
+    # re-runs ProductProducer (full leaf-category walk) instead of
+    # ListingProducer. Slower but accurate; ~10k products at 1 req/s
+    # ≈ 3 hours per refresh, well within a single off-peak window.
     acuenta: [
       interval_ms: 1_000,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
-      schedule: []
+      schedule: [
+        {{:weekly, [:mon], [~T[05:00:00]]},
+         {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :acuenta]]}},
+        {{:weekly, [:mon], [~T[07:30:00]]},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :acuenta]]}},
+        {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[07:30:00]]},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :acuenta]]}}
+      ]
     ],
     lider: [
       interval_ms: 2_000,
