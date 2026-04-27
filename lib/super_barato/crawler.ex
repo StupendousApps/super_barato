@@ -14,7 +14,8 @@ defmodule SuperBarato.Crawler do
     jumbo: SuperBarato.Crawler.Jumbo,
     santa_isabel: SuperBarato.Crawler.SantaIsabel,
     lider: SuperBarato.Crawler.Lider,
-    tottus: SuperBarato.Crawler.Tottus
+    tottus: SuperBarato.Crawler.Tottus,
+    acuenta: SuperBarato.Crawler.Acuenta
   }
 
   def adapter(chain) when is_atom(chain), do: Map.fetch!(@adapters, chain)

@@ -151,6 +151,16 @@ config :super_barato, SuperBarato.Crawler,
     # Lider's Akamai blocks Chrome 110+; only older Chrome profiles
     # pass. We lead with chrome107 (confirmed working) and fall back to
     # 104/100/99 if it ever starts getting challenged.
+    # Acuenta — registered but parsers not yet implemented. Pipeline
+    # boots (Queue/Worker/Cron/Results live), schedule is empty so
+    # nothing fires automatically; manual triggers will short-circuit
+    # with `{:error, :not_implemented}` from the adapter. Real schedule
+    # ships alongside the parser.
+    acuenta: [
+      interval_ms: 1_000,
+      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+      schedule: []
+    ],
     lider: [
       interval_ms: 2_000,
       # Only older Chromium-family profiles slip past Akamai's JA3

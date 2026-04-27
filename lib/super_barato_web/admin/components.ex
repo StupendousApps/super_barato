@@ -19,7 +19,8 @@ defmodule SuperBaratoWeb.Admin.Components do
     jumbo: "Jumbo",
     santa_isabel: "Santa Isabel",
     lider: "Líder",
-    tottus: "Tottus"
+    tottus: "Tottus",
+    acuenta: "aCuenta"
   }
 
   @chain_favicons %{
@@ -35,7 +36,8 @@ defmodule SuperBaratoWeb.Admin.Components do
     "santa_isabel" => "https://www.santaisabel.cl",
     "tottus" => "https://www.tottus.cl",
     "lider" => "https://super.lider.cl",
-    "unimarc" => "https://www.unimarc.cl"
+    "unimarc" => "https://www.unimarc.cl",
+    "acuenta" => "https://www.acuenta.cl"
   }
 
   @doc "Human-friendly chain label, e.g. `:santa_isabel` -> `\"Santa Isabel\"`."
