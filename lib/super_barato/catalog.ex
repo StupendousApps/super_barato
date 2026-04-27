@@ -13,6 +13,7 @@ defmodule SuperBarato.Catalog do
   import Ecto.Query
 
   alias SuperBarato.Catalog.{Category, ChainListing, Product, ProductEan}
+  alias SuperBarato.Search.Q
   alias SuperBarato.Crawler.Category, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
@@ -273,13 +274,7 @@ defmodule SuperBarato.Catalog do
   defp apply_chain_filter(query, chain) when is_binary(chain),
     do: where(query, [l], l.chain == ^chain)
 
-  defp apply_q_filter(query, nil), do: query
-  defp apply_q_filter(query, ""), do: query
-
-  defp apply_q_filter(query, q) when is_binary(q) do
-    like = "%" <> String.replace(q, "%", "\\%") <> "%"
-    where(query, [l], like(l.name, ^like) or like(l.brand, ^like))
-  end
+  defp apply_q_filter(query, q), do: Q.filter(query, q, [:name, :brand])
 
   # EAN filter — prefix-match so users can paste a partial EAN. SQLite
   # LIKE is case-insensitive for ASCII, fine here since EANs are digits.
@@ -353,13 +348,7 @@ defmodule SuperBarato.Catalog do
   defp apply_cat_chain_filter(query, chain) when is_binary(chain),
     do: where(query, [c], c.chain == ^chain)
 
-  defp apply_cat_q_filter(query, nil), do: query
-  defp apply_cat_q_filter(query, ""), do: query
-
-  defp apply_cat_q_filter(query, q) when is_binary(q) do
-    like = "%" <> String.replace(q, "%", "\\%") <> "%"
-    where(query, [c], like(c.name, ^like) or like(c.slug, ^like))
-  end
+  defp apply_cat_q_filter(query, q), do: Q.filter(query, q, [:name, :slug])
 
   defp apply_cat_type_filter(query, :leaf), do: where(query, [c], c.is_leaf == true)
   defp apply_cat_type_filter(query, :parent), do: where(query, [c], c.is_leaf == false)
@@ -418,13 +407,7 @@ defmodule SuperBarato.Catalog do
     }
   end
 
-  defp apply_product_q_filter(query, nil), do: query
-  defp apply_product_q_filter(query, ""), do: query
-
-  defp apply_product_q_filter(query, q) when is_binary(q) do
-    like = "%" <> String.replace(q, "%", "\\%") <> "%"
-    where(query, [p], like(p.canonical_name, ^like) or like(p.brand, ^like))
-  end
+  defp apply_product_q_filter(query, q), do: Q.filter(query, q, [:canonical_name, :brand])
 
   # Product-side EAN filter — join product_eans and prefix-match.
   # Distinct so a multi-EAN product isn't returned twice.
