@@ -53,9 +53,11 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     sources = Linker.sources_by_listing(product.id)
     eans = Catalog.eans_for_product(product.id)
 
-    # Listing search params — only run a search if the admin
-    # actually typed something; the page should still load fast for
-    # admins who just want to view linked listings.
+    # Search params. The `mode` toggle picks listings vs products —
+    # listings → admin-link to this product, products → merge them
+    # into this product. Page only runs a search if the admin typed
+    # something, so view-only loads stay fast.
+    mode = if params["mode"] == "products", do: :products, else: :listings
     q = params["q"] || ""
     chain = parse_chain(params["chain"])
     ean = params["ean"] || ""
@@ -65,25 +67,46 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     search_active? = q != "" or ean != "" or chain != nil
 
     search_result =
-      if search_active? do
-        Catalog.list_listings_page(
-          q: q,
-          ean: ean,
-          chain: chain,
-          page: page,
-          per_page: per_page
-        )
+      cond do
+        not search_active? ->
+          nil
+
+        mode == :listings ->
+          Catalog.list_listings_page(
+            q: q,
+            ean: ean,
+            chain: chain,
+            page: page,
+            per_page: per_page
+          )
+
+        mode == :products ->
+          result =
+            Catalog.list_products_page(q: q, ean: ean, page: page, per_page: per_page)
+
+          # Don't suggest merging the product into itself.
+          %{result | items: Enum.reject(result.items, &(&1.id == product.id))}
       end
 
-    {search_products_by_id, search_chains_by_product_id} =
-      if search_result do
-        listing_ids = Enum.map(search_result.items, & &1.id)
-        products = Linker.products_by_listing_ids(listing_ids)
-        product_ids = products |> Map.values() |> Enum.map(& &1.id) |> Enum.uniq()
-        chains = Linker.chains_by_product_ids(product_ids)
-        {products, chains}
-      else
-        {%{}, %{}}
+    # Per-mode lookups for rendering. Keep the map names mode-specific
+    # so the template doesn't need branching for which one to read.
+    {search_products_by_id, search_chains_by_product_id, search_eans_by_product_id,
+     search_price_range_by_product_id} =
+      cond do
+        is_nil(search_result) ->
+          {%{}, %{}, %{}, %{}}
+
+        mode == :listings ->
+          listing_ids = Enum.map(search_result.items, & &1.id)
+          products = Linker.products_by_listing_ids(listing_ids)
+          pids = products |> Map.values() |> Enum.map(& &1.id) |> Enum.uniq()
+          {products, Linker.chains_by_product_ids(pids), %{}, %{}}
+
+        mode == :products ->
+          pids = Enum.map(search_result.items, & &1.id)
+
+          {%{}, Linker.chains_by_product_ids(pids), Catalog.eans_by_product_ids(pids),
+           Linker.price_range_by_product_ids(pids)}
       end
 
     conn
@@ -93,14 +116,18 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     |> assign(:linked_listing_ids, linked_listing_ids)
     |> assign(:sources, sources)
     |> assign(:eans, eans)
+    |> assign(:search_mode, mode)
     |> assign(:search_active, search_active?)
     |> assign(:search_result, search_result)
     |> assign(:search_products_by_id, search_products_by_id)
     |> assign(:search_chains_by_product_id, search_chains_by_product_id)
+    |> assign(:search_eans_by_product_id, search_eans_by_product_id)
+    |> assign(:search_price_range_by_product_id, search_price_range_by_product_id)
     |> assign(:search_filters, %{
       q: q,
       ean: ean,
       chain: params["chain"] || "",
+      mode: Atom.to_string(mode),
       per_page: params["per_page"] || ""
     })
     |> assign(:chains, [nil | Crawler.known_chains()])

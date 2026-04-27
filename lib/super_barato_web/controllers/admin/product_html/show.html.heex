@@ -2,7 +2,7 @@
   <.page_header title={@product.canonical_name}>
     <:back href={~p"/products"}>All products</:back>
     <:actions>
-      <.button href={~p"/products/#{@product.id}/merge"} variant={:subtle}>
+      <.button href={~p"/products/#{@product.id}?#{[mode: "products"]}"} variant={:subtle}>
         Merge into another product…
       </.button>
     </:actions>
@@ -77,11 +77,16 @@
     </:col>
   </.table>
 
-  <.section_header title="Search listings to link" />
+  <.section_header title="Search" />
 
   <.form for={%{}} method="get" action={~p"/products/#{@product.id}"}>
     <.filters>
+      <.segmented name="mode" value={@search_filters.mode}>
+        <:option value="listings">Listings</:option>
+        <:option value="products">Products</:option>
+      </.segmented>
       <.input
+        :if={@search_mode == :listings}
         name="chain"
         type="select"
         value={@search_filters.chain}
@@ -103,12 +108,17 @@
       />
       <:actions>
         <.button type="submit" variant={:primary}>Search</.button>
-        <.button href={~p"/products/#{@product.id}"} variant={:subtle}>Reset</.button>
+        <.button
+          href={~p"/products/#{@product.id}?#{[mode: @search_filters.mode]}"}
+          variant={:subtle}
+        >
+          Reset
+        </.button>
       </:actions>
     </.filters>
   </.form>
 
-  <%= if @search_active do %>
+  <%= if @search_active and @search_mode == :listings do %>
     <.table rows={@search_result.items} empty="No matching listings.">
       <:col :let={l} label="Chain"><.chain_badge chain={l.chain} /></:col>
 
@@ -167,6 +177,75 @@
             <.button type="submit" variant={:primary}>Link</.button>
           </.form>
         <% end %>
+      </:col>
+    </.table>
+
+    <.pagination
+      page={@search_result.page}
+      total_pages={@search_result.total_pages}
+      base_url={~p"/products/#{@product.id}"}
+      params={@search_filters}
+    />
+  <% end %>
+
+  <%= if @search_active and @search_mode == :products do %>
+    <.table rows={@search_result.items} empty="No matching products.">
+      <:col :let={p} label="Image" nowrap>
+        <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" class="data-table__thumb" />
+      </:col>
+
+      <:col :let={p} label="Product">
+        <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
+        <% chains = Map.get(@search_chains_by_product_id, p.id, []) %>
+        <div
+          :if={chains != []}
+          class="cell-secondary"
+          style="display: inline-flex; gap: 0.35rem; align-items: center;"
+        >
+          <.chain_badge :for={c <- chains} chain={c} />
+        </div>
+      </:col>
+
+      <:col :let={p} label="Brand" nowrap>{p.brand || "—"}</:col>
+
+      <:col :let={p} label="EAN(s)" nowrap>
+        <% eans = Map.get(@search_eans_by_product_id, p.id, []) %>
+        <%= case eans do %>
+          <% [] -> %>—
+          <% [one] -> %>{one}
+          <% [first | rest] -> %>
+            <div>{first}</div>
+            <div class="cell-secondary">+{length(rest)} more</div>
+        <% end %>
+      </:col>
+
+      <:col :let={p} label="Price" nowrap align={:right}>
+        <%= case Map.get(@search_price_range_by_product_id, p.id) do %>
+          <% nil -> %>
+            <span class="cell-secondary">—</span>
+          <% {min_p, max_p} when min_p == max_p -> %>
+            {format_clp(min_p)}
+          <% {min_p, max_p} -> %>
+            <div>{format_clp(min_p)}</div>
+            <div class="cell-secondary">– {format_clp(max_p)}</div>
+        <% end %>
+      </:col>
+
+      <:col :let={p} label="" nowrap align={:right}>
+        <.form
+          for={%{}}
+          method="post"
+          action={~p"/products/#{p.id}/merge"}
+        >
+          <input type="hidden" name="target_id" value={@product.id} />
+          <.button
+            type="submit"
+            variant={:primary}
+            data-confirm={"Merge \"#{p.canonical_name}\" into \"#{@product.canonical_name}\"? The matched product will be deleted."}
+          >
+            Merge into this
+          </.button>
+        </.form>
       </:col>
     </.table>
 

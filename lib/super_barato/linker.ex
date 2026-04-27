@@ -167,6 +167,31 @@ defmodule SuperBarato.Linker do
   end
 
   @doc """
+  `%{product_id => {min_eff, max_eff}}` for the given product ids,
+  computed across each product's linked listings using the effective
+  current price (promo if it beats regular, else regular). Listings
+  with no current_regular_price contribute nothing. Products with no
+  priced listings are absent from the map.
+  """
+  def price_range_by_product_ids(product_ids) when is_list(product_ids) do
+    from(pl in ProductListing,
+      join: l in ChainListing,
+      on: l.id == pl.chain_listing_id,
+      where: pl.product_id in ^product_ids and not is_nil(l.current_regular_price),
+      select: {pl.product_id, l.current_regular_price, l.current_promo_price}
+    )
+    |> Repo.all()
+    |> Enum.reduce(%{}, fn {pid, reg, promo}, acc ->
+      eff =
+        if is_integer(promo) and is_integer(reg) and promo < reg, do: promo, else: reg
+
+      Map.update(acc, pid, {eff, eff}, fn {min_p, max_p} ->
+        {min(min_p, eff), max(max_p, eff)}
+      end)
+    end)
+  end
+
+  @doc """
   `%{product_id => [chain_atom, ...]}` for the given product ids —
   every distinct chain a product is linked on, in alphabetical order.
   Used by the listings index to show small chain-badge stacks under

@@ -84,6 +84,7 @@ defmodule SuperBaratoWeb.Admin.ListingController do
     result_product_ids = Enum.map(result.items, & &1.id)
     eans_by_product_id = Catalog.eans_by_product_ids(result_product_ids)
     chains_by_product_id = Linker.chains_by_product_ids(result_product_ids)
+    price_range_by_product_id = Linker.price_range_by_product_ids(result_product_ids)
 
     conn
     |> assign(:top_nav, :listings)
@@ -94,6 +95,7 @@ defmodule SuperBaratoWeb.Admin.ListingController do
     |> assign(:result, result)
     |> assign(:eans_by_product_id, eans_by_product_id)
     |> assign(:chains_by_product_id, chains_by_product_id)
+    |> assign(:price_range_by_product_id, price_range_by_product_id)
     |> assign(:filters, %{q: q, ean: ean})
     |> assign(:page_title, "Link · #{listing.name}")
     |> render(:link_picker)

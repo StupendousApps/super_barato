@@ -14,6 +14,16 @@
         <:row label="Name">{@listing.name}</:row>
         <:row label="Brand">{@listing.brand || "—"}</:row>
         <:row label="EAN">{@listing.ean || "—"}</:row>
+        <:row label="Price">
+          <%= if @listing.current_promo_price && @listing.current_regular_price && @listing.current_promo_price < @listing.current_regular_price do %>
+            <strong>{format_clp(@listing.current_promo_price)}</strong>
+            <span class="cell-secondary" style="text-decoration: line-through;">
+              {format_clp(@listing.current_regular_price)}
+            </span>
+          <% else %>
+            {format_clp(@listing.current_regular_price)}
+          <% end %>
+        </:row>
         <:row label="URL">
           <%= if @listing.pdp_url do %>
             <a href={@listing.pdp_url} target="_blank" rel="noopener">{@listing.pdp_url}</a>
@@ -140,6 +150,18 @@
         <% [first | rest] -> %>
           <div>{first}</div>
           <div class="cell-secondary">+{length(rest)} more</div>
+      <% end %>
+    </:col>
+
+    <:col :let={p} label="Price" nowrap align={:right}>
+      <%= case Map.get(@price_range_by_product_id, p.id) do %>
+        <% nil -> %>
+          <span class="cell-secondary">—</span>
+        <% {min_p, max_p} when min_p == max_p -> %>
+          {format_clp(min_p)}
+        <% {min_p, max_p} -> %>
+          <div>{format_clp(min_p)}</div>
+          <div class="cell-secondary">– {format_clp(max_p)}</div>
       <% end %>
     </:col>
 
