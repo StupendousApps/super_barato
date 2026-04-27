@@ -7,7 +7,7 @@ defmodule SuperBarato.Crawler.CencosudTest do
   @jumbo %Cencosud.Config{
     chain: :jumbo,
     site_url: "https://www.jumbo.cl",
-    categories_url: "https://assets.jumbo.cl/json/categories.json",
+    categories_url: "https://assets.jumbo.cl/sitemap/category-0.xml",
     sales_channel: "1",
     sitemap_index: "https://assets.jumbo.cl/sitemap.xml"
   }
@@ -15,21 +15,27 @@ defmodule SuperBarato.Crawler.CencosudTest do
   @santa_isabel %Cencosud.Config{
     chain: :santa_isabel,
     site_url: "https://www.santaisabel.cl",
-    categories_url: "https://assets.jumbo.cl/json/santaisabel/categories.json",
+    categories_url: "https://assets.santaisabel.cl/sitemap/sitemap-categories.xml",
     sales_channel: "6",
     sitemap_index: "https://www.santaisabel.cl/sitemap.xml"
   }
 
-  describe "parse_categories/2 (Jumbo fixture)" do
+  @sitemap_dir Path.expand("../../fixtures/cencosud", __DIR__)
+  defp xml(name), do: File.read!(Path.join(@sitemap_dir, name))
+
+  describe "parse_categories_xml/2 (Jumbo category sitemap)" do
     setup do
-      tree = Fixtures.json!(:jumbo, "categories.json")
-      cats = Cencosud.parse_categories(:jumbo, tree)
+      cats = Cencosud.parse_categories_xml(:jumbo, xml("jumbo_category-0.xml"))
       {:ok, cats: cats}
     end
 
     test "returns Category structs tagged with the chain", %{cats: cats} do
       assert length(cats) > 0
       assert Enum.all?(cats, &match?(%Category{chain: :jumbo}, &1))
+    end
+
+    test "external_id is nil — sitemap doesn't carry numeric ids", %{cats: cats} do
+      assert Enum.all?(cats, &(&1.external_id == nil))
     end
 
     test "top-levels have level 1 and nil parent", %{cats: cats} do
@@ -57,26 +63,26 @@ defmodule SuperBarato.Crawler.CencosudTest do
       end)
     end
 
-    test "a known category (Lácteos y Quesos) appears as a top-level", %{cats: cats} do
-      lacteos = Enum.find(cats, &(&1.slug == "lacteos-y-quesos"))
-      assert lacteos
-      assert lacteos.level == 1
-      assert lacteos.parent_slug == nil
-      assert lacteos.name == "Lácteos y Quesos"
-      assert lacteos.external_id == "1"
+    test "a known top-level slug surfaces with a humanized name", %{cats: cats} do
+      vacuno = Enum.find(cats, &(&1.slug == "carnes-y-pescados"))
+      assert vacuno
+      assert vacuno.level == 1
+      assert vacuno.parent_slug == nil
+      # "carnes-y-pescados" -> "Carnes Y Pescados"; capitalization is
+      # naive on purpose, slug + URL are what downstream uses.
+      assert vacuno.name == "Carnes Y Pescados"
     end
   end
 
-  describe "parse_categories/2 (Santa Isabel fixture)" do
-    test "produces SI-tagged categories with a different top-level set" do
-      tree = Fixtures.json!(:santa_isabel, "categories.json")
-      cats = Cencosud.parse_categories(:santa_isabel, tree)
-
+  describe "parse_categories_xml/2 (Santa Isabel category sitemap)" do
+    test "produces SI-tagged categories" do
+      cats = Cencosud.parse_categories_xml(:santa_isabel, xml("santa_isabel_category.xml"))
+      assert length(cats) > 0
       assert Enum.all?(cats, &match?(%Category{chain: :santa_isabel}, &1))
 
-      # Santa Isabel's first top-level has id 1 and a different (combined) name
-      first = Enum.find(cats, &(&1.external_id == "1" and &1.level == 1))
-      assert first.name == "Lácteos, Huevos y Congelados"
+      # Bare host URL (https://www.santaisabel.cl) is filtered out —
+      # no category at the empty path.
+      refute Enum.any?(cats, &(&1.slug == ""))
     end
   end
 

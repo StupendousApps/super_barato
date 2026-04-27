@@ -14,7 +14,7 @@ defmodule SuperBarato.Crawler.SantaIsabel do
   @config %Cencosud.Config{
     chain: :santa_isabel,
     site_url: "https://www.santaisabel.cl",
-    categories_url: "https://assets.jumbo.cl/json/santaisabel/categories.json",
+    categories_url: "https://assets.santaisabel.cl/sitemap/sitemap-categories.xml",
     sales_channel: "6",
     sitemap_index: "https://www.santaisabel.cl/sitemap.xml"
   }

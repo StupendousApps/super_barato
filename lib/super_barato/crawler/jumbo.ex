@@ -14,7 +14,7 @@ defmodule SuperBarato.Crawler.Jumbo do
   @config %Cencosud.Config{
     chain: :jumbo,
     site_url: "https://www.jumbo.cl",
-    categories_url: "https://assets.jumbo.cl/json/categories.json",
+    categories_url: "https://assets.jumbo.cl/sitemap/category-0.xml",
     sales_channel: "1",
     sitemap_index: "https://assets.jumbo.cl/sitemap.xml"
   }

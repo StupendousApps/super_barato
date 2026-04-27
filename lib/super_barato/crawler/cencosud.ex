@@ -61,57 +61,84 @@ defmodule SuperBarato.Crawler.Cencosud do
   end
 
   # Stage 1: categories
+  #
+  # Source is the chain's category sitemap (XML), not the legacy
+  # categories.json BFF endpoint. The sitemap lists URLs like
+  # `https://www.jumbo.cl/<seg1>/<seg2>/<seg3>` — one entry per
+  # category at every level, no name/id metadata. We derive:
+  #
+  #   slug        = path with the leading slash stripped
+  #   parent_slug = path with the last segment stripped (nil at level 1)
+  #   level       = number of path segments
+  #   name        = humanized last segment ("carnes-y-pescados" →
+  #                 "Carnes Y Pescados"). Best-effort; the URL is what
+  #                 actually matters downstream.
+  #
+  # No `external_id` — the sitemap doesn't carry numeric ids. Field
+  # stays nullable on Category, fine.
 
-  @spec discover_categories(Config.t()) :: {:ok, [Category.t()]} | :blocked | {:error, term()}
+  @spec discover_categories(Config.t()) :: {:ok, [Category.t()]} | {:error, term()}
   def discover_categories(%Config{} = cfg) do
-    case get_json(cfg, cfg.categories_url, :high) do
-      {:ok, tree} when is_list(tree) ->
-        {:ok, parse_categories(cfg.chain, tree)}
-
-      {:ok, _other} ->
-        {:error, :malformed_category_tree}
-
-      :blocked ->
-        :blocked
-
-      {:error, _} = err ->
-        err
+    case fetch_xml(cfg, cfg.categories_url) do
+      {:ok, body} -> {:ok, parse_categories_xml(cfg.chain, body)}
+      {:error, _} = err -> err
     end
   end
 
   @doc false
-  def parse_categories(chain, tree) when is_list(tree) do
-    chain
-    |> flatten_tree(tree)
+  # Public for unit testing against the captured sitemap fixture.
+  def parse_categories_xml(chain, xml) when is_binary(xml) do
+    xml
+    |> extract_locs("url")
+    |> Enum.map(&path_only/1)
+    |> Enum.reject(&(&1 in [nil, ""]))
+    |> Enum.uniq()
+    |> Enum.map(&category_from_path(chain, &1))
     |> mark_leaves()
   end
 
-  defp flatten_tree(chain, nodes, parent_slug \\ nil, level \\ 1) do
-    Enum.flat_map(nodes, fn node ->
-      slug = slug_from_url(node["url"])
-
-      cat = %Category{
-        chain: chain,
-        slug: slug,
-        name: node["name"],
-        external_id: to_string_if_present(node["id"]),
-        parent_slug: parent_slug,
-        level: level
-      }
-
-      children = List.wrap(node["children"])
-      [cat | flatten_tree(chain, children, slug, level + 1)]
-    end)
-  end
-
-  defp slug_from_url(url) when is_binary(url) do
+  defp path_only(url) when is_binary(url) do
     case URI.parse(url) do
-      %URI{path: nil} -> ""
+      %URI{path: nil} -> nil
+      %URI{path: "/"} -> nil
       %URI{path: path} -> String.trim_leading(path, "/")
     end
   end
 
-  defp slug_from_url(_), do: ""
+  defp path_only(_), do: nil
+
+  defp category_from_path(chain, path) when is_binary(path) do
+    segments = String.split(path, "/", trim: true)
+    last = List.last(segments)
+
+    parent_slug =
+      case Enum.drop(segments, -1) do
+        [] -> nil
+        ps -> Enum.join(ps, "/")
+      end
+
+    %Category{
+      chain: chain,
+      slug: path,
+      name: humanize_slug(last),
+      external_id: nil,
+      parent_slug: parent_slug,
+      level: length(segments)
+    }
+  end
+
+  # "carnes-y-pescados" -> "Carnes Y Pescados". Triple-dashes (e.g.
+  # "cuisine---co" on SI) collapse to a single space via the trim:
+  # split. This is best-effort; admins can rename categories later if
+  # the heuristic produces something ugly.
+  defp humanize_slug(slug) when is_binary(slug) do
+    slug
+    |> String.replace("-", " ")
+    |> String.split(" ", trim: true)
+    |> Enum.map_join(" ", &String.capitalize/1)
+  end
+
+  defp humanize_slug(_), do: ""
 
   defp mark_leaves(categories) do
     parent_slugs =

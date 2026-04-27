@@ -212,34 +212,23 @@ defmodule SuperBarato.Crawler.Probe do
 
   ## Parse stages — chain + kind specific
 
-  # Cencosud :categories — fetch categories.json and parse into Category structs.
+  # Cencosud :categories — parse the category sitemap (XML) into
+  # Category structs. (categories.json retired; sitemap is the source.)
   defp run_parse_steps(chain, :categories, %Cencosud.Config{} = _cfg, {:ok, %Http.Response{status: 200, body: body}}, _url)
        when chain in @cencosud_chains do
-    case Jason.decode(body) do
-      {:ok, tree} when is_list(tree) ->
-        cats = Cencosud.parse_categories(chain, tree)
+    cats = Cencosud.parse_categories_xml(chain, body)
 
-        {%{
-           categories: cats,
-           outcome: {:ok, {:categories, length(cats)}}
-         },
-         [
-           %Step{name: "Decode categories JSON", status: :ok, detail: "list of #{length(tree)} top-level"},
-           %Step{
-             name: "Cencosud.parse_categories/2",
-             status: :ok,
-             detail: "#{length(cats)} categories (#{Enum.count(cats, & &1.is_leaf)} leaves)"
-           }
-         ]}
-
-      {:ok, _} ->
-        {%{outcome: {:error, :malformed_category_tree}},
-         [%Step{name: "Decode categories JSON", status: :error, detail: "expected JSON array"}]}
-
-      {:error, %Jason.DecodeError{} = err} ->
-        {%{outcome: {:error, {:json_decode, Exception.message(err)}}},
-         [%Step{name: "Decode categories JSON", status: :error, detail: Exception.message(err)}]}
-    end
+    {%{
+       categories: cats,
+       outcome: {:ok, {:categories, length(cats)}}
+     },
+     [
+       %Step{
+         name: "Cencosud.parse_categories_xml/2",
+         status: :ok,
+         detail: "#{length(cats)} categories (#{Enum.count(cats, & &1.is_leaf)} leaves)"
+       }
+     ]}
   end
 
   # Cencosud :product_pdp — extract JSON-LD blocks, parse Product node.
