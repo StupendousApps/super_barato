@@ -15,19 +15,10 @@ defmodule SuperBaratoWeb.Admin.ScheduleHTML do
   end
 
   def kind_options do
-    [
-      {"Discover categories", "discover_categories"},
-      {"Discover products", "discover_products"},
-      {"Refresh listings", "refresh_listings"}
-    ]
+    Enum.map(SuperBarato.Crawler.Schedule.kinds(), fn k -> {k, k} end)
   end
 
   def kind_filter_options, do: [{"Any", ""} | kind_options()]
-
-  def kind_label("discover_categories"), do: "Discover categories"
-  def kind_label("discover_products"), do: "Discover products"
-  def kind_label("refresh_listings"), do: "Refresh listings"
-  def kind_label(other), do: other
 
   attr :changeset, Ecto.Changeset, required: true
   attr :action, :string, required: true

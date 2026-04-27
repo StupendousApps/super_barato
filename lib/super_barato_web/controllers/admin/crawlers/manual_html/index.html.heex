@@ -27,7 +27,7 @@
         type="select"
         value={@kind}
         label="Kind"
-        options={Enum.map(@kinds, fn k -> {SuperBarato.Crawler.Probe.kind_label(k), Atom.to_string(k)} end)}
+        options={Enum.map(@kinds, fn k -> {Atom.to_string(k), Atom.to_string(k)} end)}
       />
       <%!-- Always rendered so the form keeps it on submit; visibility is
            toggled client-side by the kind <select>'s change handler.

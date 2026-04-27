@@ -36,7 +36,7 @@
 
   <.table rows={@schedules} empty="No cron jobs yet.">
     <:col :let={s} label="Chain">{chain_label(s.chain)}</:col>
-    <:col :let={s} label="Kind">{kind_label(s.kind)}</:col>
+    <:col :let={s} label="Kind">{s.kind}</:col>
     <:col :let={s} label="Days">{s.days}</:col>
     <:col :let={s} label="Times">{s.times}</:col>
     <:col :let={s} label="Active" align={:center}>{s.active && "✓"}</:col>

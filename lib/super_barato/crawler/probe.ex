@@ -62,10 +62,6 @@ defmodule SuperBarato.Crawler.Probe do
 
   def kinds, do: @kinds
 
-  def kind_label(:categories), do: "Categories tree"
-  def kind_label(:product_pdp), do: "Product PDP"
-  def kind_label(other), do: to_string(other)
-
   @doc """
   Lists leaf categories for `chain` formatted for a `<select>` —
   `[{label, slug}, ...]` ordered by name. Returns `[]` when the chain
