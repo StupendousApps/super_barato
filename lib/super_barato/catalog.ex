@@ -12,7 +12,7 @@ defmodule SuperBarato.Catalog do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{Category, ChainListing, Product}
+  alias SuperBarato.Catalog.{Category, ChainListing, Product, ProductEan}
   alias SuperBarato.Crawler.Category, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
@@ -380,7 +380,6 @@ defmodule SuperBarato.Catalog do
   @product_sortable %{
     "canonical_name" => :canonical_name,
     "brand" => :brand,
-    "ean" => :ean,
     "inserted_at" => :inserted_at,
     "updated_at" => :updated_at
   }
@@ -390,7 +389,7 @@ defmodule SuperBarato.Catalog do
   `list_listings_page/1`.
 
   Options: `:q` (LIKE on canonical_name / brand), `:ean` (prefix
-  match), `:sort`, `:page`, `:per_page`.
+  match — joins `product_eans`), `:sort`, `:page`, `:per_page`.
   """
   def list_products_page(opts \\ []) do
     page = max(1, opts[:page] || 1)
@@ -399,7 +398,7 @@ defmodule SuperBarato.Catalog do
     query =
       Product
       |> apply_product_q_filter(opts[:q])
-      |> apply_ean_filter(opts[:ean])
+      |> apply_product_ean_filter(opts[:ean])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -425,6 +424,56 @@ defmodule SuperBarato.Catalog do
   defp apply_product_q_filter(query, q) when is_binary(q) do
     like = "%" <> String.replace(q, "%", "\\%") <> "%"
     where(query, [p], like(p.canonical_name, ^like) or like(p.brand, ^like))
+  end
+
+  # Product-side EAN filter — join product_eans and prefix-match.
+  # Distinct so a multi-EAN product isn't returned twice.
+  defp apply_product_ean_filter(query, nil), do: query
+  defp apply_product_ean_filter(query, ""), do: query
+
+  defp apply_product_ean_filter(query, ean) when is_binary(ean) do
+    like = String.replace(ean, "%", "\\%") <> "%"
+
+    from p in query,
+      join: pe in SuperBarato.Catalog.ProductEan,
+      on: pe.product_id == p.id,
+      where: like(pe.ean, ^like),
+      distinct: true
+  end
+
+  @doc "Look up the Product anchored on `ean` (via `product_eans`)."
+  def get_product_by_ean(ean) when is_binary(ean) do
+    case Repo.get_by(ProductEan, ean: ean) do
+      nil -> nil
+      %ProductEan{product_id: pid} -> Repo.get(Product, pid)
+    end
+  end
+
+  @doc "Returns every EAN attached to `product_id`, oldest-first."
+  def eans_for_product(product_id) do
+    Repo.all(
+      from pe in ProductEan,
+        where: pe.product_id == ^product_id,
+        order_by: pe.inserted_at,
+        select: pe.ean
+    )
+  end
+
+  @doc """
+  Bulk lookup: `%{product_id => [ean, ...]}` for the given product
+  ids. Used by the products index to render an "N EANs" / "first EAN"
+  cell in one query.
+  """
+  def eans_by_product_ids(product_ids) when is_list(product_ids) do
+    from(pe in ProductEan,
+      where: pe.product_id in ^product_ids,
+      order_by: pe.inserted_at,
+      select: {pe.product_id, pe.ean}
+    )
+    |> Repo.all()
+    |> Enum.reduce(%{}, fn {pid, ean}, acc ->
+      Map.update(acc, pid, [ean], &(&1 ++ [ean]))
+    end)
   end
 
   defp apply_product_sort(query, "-" <> field), do: apply_product_sort_dir(query, field, :desc)

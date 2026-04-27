@@ -6,13 +6,37 @@ defmodule SuperBarato.Linker do
   re-run, undone, and audited without disturbing the discovery side.
 
   All writes to `product_listings` go through this module.
+
+  ## Link sources
+
+  Every `product_listings` row carries a `source` tag describing how
+  the link was created. Canonical values:
+
+    * `"ean_canonical"` — `Linker.Backfill` matched the listing's
+      canonicalized GTIN-13 against a Product's `ean`. High
+      confidence; produced in bulk.
+    * `"admin"` — a human curator linked the pair through the admin
+      UI (`Linker.link_admin/2`). High confidence by definition;
+      used to fix or supplement what `ean_canonical` couldn't reach
+      (cross-country dupes, granel items, missing EANs).
+
+  Free-form for future passes (`"fuzzy_name"`, `"image_match"`, …)
+  so we can grow strategies without a migration. `Linker.sources/0`
+  is the live list of values that have been used in the DB.
   """
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{ChainListing, Product}
+  alias SuperBarato.Catalog.{ChainListing, Product, ProductEan}
   alias SuperBarato.Linker.ProductListing
   alias SuperBarato.Repo
+
+  @source_ean_canonical "ean_canonical"
+  @source_admin "admin"
+
+  @doc "Canonical source-tag constants. See module docs."
+  def source_ean_canonical, do: @source_ean_canonical
+  def source_admin, do: @source_admin
 
   @doc """
   Link a product to a chain_listing. Idempotent — re-linking the same
@@ -39,6 +63,68 @@ defmodule SuperBarato.Linker do
       on_conflict: {:replace, [:source, :confidence, :linked_at]},
       conflict_target: [:product_id, :chain_listing_id]
     )
+  end
+
+  @doc """
+  Admin-curated link. Replaces any pre-existing link the
+  chain_listing has — a chain_listing belongs to **at most one**
+  product, and an admin pick is the authoritative override.
+  """
+  def link_admin(product_id, chain_listing_id) do
+    Repo.transaction(fn ->
+      from(pl in ProductListing,
+        where:
+          pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id
+      )
+      |> Repo.delete_all()
+
+      case link(product_id, chain_listing_id, source: @source_admin, confidence: 1.0) do
+        {:ok, row} -> row
+        {:error, cs} -> Repo.rollback(cs)
+      end
+    end)
+  end
+
+  @doc """
+  Merge `source_id` into `target_id`: reattach every `product_eans`
+  row + `product_listings` row from source to target, then delete
+  the source product (cascade clears anything left). Idempotent on
+  collisions: if both products already share a chain_listing, the
+  source's link is dropped (target's is the surviving truth).
+  """
+  def merge_products(target_id, source_id)
+      when is_integer(target_id) and is_integer(source_id) and target_id != source_id do
+    Repo.transaction(fn ->
+      target = Repo.get!(Product, target_id)
+      source = Repo.get!(Product, source_id)
+
+      # Reparent EANs.
+      from(pe in ProductEan, where: pe.product_id == ^source.id)
+      |> Repo.update_all(set: [product_id: target.id])
+
+      # Reparent product_listings, preferring target's existing row when
+      # both products share a chain_listing.
+      target_listing_ids =
+        from(pl in ProductListing,
+          where: pl.product_id == ^target.id,
+          select: pl.chain_listing_id
+        )
+        |> Repo.all()
+
+      if target_listing_ids != [] do
+        from(pl in ProductListing,
+          where:
+            pl.product_id == ^source.id and pl.chain_listing_id in ^target_listing_ids
+        )
+        |> Repo.delete_all()
+      end
+
+      from(pl in ProductListing, where: pl.product_id == ^source.id)
+      |> Repo.update_all(set: [product_id: target.id])
+
+      Repo.delete!(source)
+      target
+    end)
   end
 
   @doc "Remove the link between a product and a chain_listing."
@@ -78,6 +164,43 @@ defmodule SuperBarato.Linker do
   def links_for_product(product_id) do
     from(pl in ProductListing, where: pl.product_id == ^product_id)
     |> Repo.all()
+  end
+
+  @doc """
+  `%{product_id => [chain_atom, ...]}` for the given product ids —
+  every distinct chain a product is linked on, in alphabetical order.
+  Used by the listings index to show small chain-badge stacks under
+  the linked product's name.
+  """
+  def chains_by_product_ids(product_ids) when is_list(product_ids) do
+    from(pl in ProductListing,
+      join: l in ChainListing,
+      on: l.id == pl.chain_listing_id,
+      where: pl.product_id in ^product_ids,
+      distinct: true,
+      select: {pl.product_id, l.chain}
+    )
+    |> Repo.all()
+    |> Enum.reduce(%{}, fn {pid, chain}, acc ->
+      atom = String.to_atom(chain)
+      Map.update(acc, pid, [atom], &[atom | &1])
+    end)
+    |> Enum.map(fn {pid, chains} -> {pid, Enum.sort(chains)} end)
+    |> Map.new()
+  end
+
+  @doc """
+  `%{chain_listing_id => source}` for every link on a product. Used
+  by the product show page to show the provenance of each row in
+  the linked-listings table.
+  """
+  def sources_by_listing(product_id) do
+    from(pl in ProductListing,
+      where: pl.product_id == ^product_id,
+      select: {pl.chain_listing_id, pl.source}
+    )
+    |> Repo.all()
+    |> Map.new()
   end
 
   @doc """

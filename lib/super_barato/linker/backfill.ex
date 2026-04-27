@@ -17,7 +17,8 @@ defmodule SuperBarato.Linker.Backfill do
   import Ecto.Query
   require Logger
 
-  alias SuperBarato.Catalog.{ChainListing, Product}
+  alias SuperBarato.Catalog
+  alias SuperBarato.Catalog.{ChainListing, Product, ProductEan}
   alias SuperBarato.Linker
   alias SuperBarato.Linker.Identity
   alias SuperBarato.Repo
@@ -79,7 +80,7 @@ defmodule SuperBarato.Linker.Backfill do
         new_links =
           Enum.reduce(listings, 0, fn entry, n ->
             case Linker.link(product.id, entry.id,
-                   source: "ean_canonical",
+                   source: Linker.source_ean_canonical(),
                    confidence: 1.0,
                    linked_at: now
                  ) do
@@ -107,34 +108,36 @@ defmodule SuperBarato.Linker.Backfill do
     result
   end
 
-  # Insert-or-fetch a Product keyed on the canonical EAN. Returns
-  # `{:created | :existed, %Product{}}`.
+  # Find-or-create a Product anchored on `ean` via `product_eans`.
+  # Returns `{:created | :existed, %Product{}}`. New products always
+  # land with exactly one ProductEan; admin merges later if multiple
+  # EANs turn out to be the same physical product.
   defp upsert_product_by_ean(ean, seed) do
-    attrs = %{
-      ean: ean,
-      canonical_name: seed.name || "(unnamed)",
-      brand: seed.brand,
-      image_url: seed.image_url
-    }
+    case Catalog.get_product_by_ean(ean) do
+      %Product{} = p ->
+        {:existed, p}
 
-    case %Product{}
-         |> Product.changeset(attrs)
-         |> Repo.insert(
-           on_conflict: :nothing,
-           # The unique index on products.ean is partial
-           # (`WHERE ean IS NOT NULL`); SQLite requires the same WHERE
-           # in the ON CONFLICT target for it to match.
-           conflict_target: {:unsafe_fragment, ~s|("ean") WHERE "ean" IS NOT NULL|},
-           returning: true
-         ) do
-      # Returned row has an id → freshly inserted.
-      {:ok, %Product{id: id} = p} when is_integer(id) ->
-        {:created, p}
+      nil ->
+        attrs = %{
+          canonical_name: seed.name || "(unnamed)",
+          brand: seed.brand,
+          image_url: seed.image_url
+        }
 
-      # `on_conflict: :nothing` returns an empty struct on conflict.
-      # Fetch the existing row by ean.
-      {:ok, _} ->
-        {:existed, Repo.get_by!(Product, ean: ean)}
+        Repo.transaction(fn ->
+          {:ok, product} =
+            %Product{} |> Product.changeset(attrs) |> Repo.insert()
+
+          {:ok, _ean_row} =
+            %ProductEan{}
+            |> ProductEan.changeset(%{product_id: product.id, ean: ean})
+            |> Repo.insert()
+
+          product
+        end)
+        |> case do
+          {:ok, p} -> {:created, p}
+        end
     end
   end
 end
