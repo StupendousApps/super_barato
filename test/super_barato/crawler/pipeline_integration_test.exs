@@ -130,12 +130,15 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
       # 2. Program the stub: responds to :discover_products with a
       #    tiny listing for whatever slug it's asked about.
       StubAdapter.set_response(@chain, :discover_products, fn {:discover_products, %{slug: slug}} ->
+        ean = "790#{:erlang.phash2(slug, 1_000_000_000)}"
+
         {:ok,
          [
            %Listing{
              chain: @chain,
              chain_sku: "sku-#{slug}",
-             ean: "790#{:erlang.phash2(slug, 1_000_000_000)}",
+             ean: ean,
+             identifiers_key: "ean=#{ean},sku=sku-#{slug}",
              name: "Product for #{slug}",
              brand: "Test",
              category_path: slug,

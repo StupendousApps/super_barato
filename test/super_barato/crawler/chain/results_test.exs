@@ -67,6 +67,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
           chain: chain,
           chain_sku: "sku-1",
           ean: "7801234567890",
+          identifiers_key: "ean=7801234567890,sku=sku-1",
           name: "Arroz 1kg",
           brand: "Marca A",
           category_path: "despensa/arroz",
@@ -76,6 +77,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
           chain: chain,
           chain_sku: "sku-2",
           ean: "7809876543210",
+          identifiers_key: "ean=7809876543210,sku=sku-2",
           name: "Aceite 1L",
           brand: "Marca B",
           category_path: "despensa/aceites",
@@ -117,6 +119,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
         %Listing{
           chain: chain,
           chain_sku: "sku-noprice",
+          identifiers_key: "sku=sku-noprice",
           name: "X",
           regular_price: nil
         }
@@ -142,6 +145,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
           chain: chain,
           chain_sku: "123",
           ean: "7801234567890",
+          identifiers_key: "ean=7801234567890,sku=123",
           name: "Arroz 1kg",
           regular_price: 1490
         })
@@ -155,6 +159,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
           chain: chain,
           chain_sku: "123",
           ean: "7801234567890",
+          identifiers_key: "ean=7801234567890,sku=123",
           name: "Arroz 1kg",
           regular_price: 1490,
           promo_price: 990
@@ -183,6 +188,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
           chain: chain,
           chain_sku: "UNKNOWN",
           ean: "0000000000000",
+          identifiers_key: "ean=0000000000000,sku=UNKNOWN",
           name: "Unknown",
           regular_price: 100
         }

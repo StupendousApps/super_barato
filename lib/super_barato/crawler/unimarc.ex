@@ -18,6 +18,7 @@ defmodule SuperBarato.Crawler.Unimarc do
   @behaviour SuperBarato.Crawler.Chain
 
   alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Linker.Identity
 
   require Logger
 
@@ -345,11 +346,24 @@ defmodule SuperBarato.Crawler.Unimarc do
     price = outer["price"] || %{}
     {regular, promo} = prices_from_price_obj(price)
 
+    identifiers =
+      %{
+        "sku" => item["sku"],
+        "itemId" => item["itemId"],
+        "productId" => item["productId"],
+        "ean" => item["ean"],
+        "referenceCode" => item["referenceCode"]
+      }
+      |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+      |> Map.new()
+
     %Listing{
       chain: @chain,
       chain_sku: to_string(item["sku"] || item["itemId"]),
       chain_product_id: to_string_if_present(item["productId"]),
       ean: blank_to_nil(item["ean"]),
+      identifiers_key: Identity.encode(identifiers),
+      raw: %{"item" => item, "price" => price, "promotion" => outer["promotion"]},
       name: item["nameComplete"] || item["name"],
       brand: item["brand"],
       image_url: first_image_url(item),

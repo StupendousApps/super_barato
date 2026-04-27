@@ -28,6 +28,7 @@ defmodule SuperBarato.Crawler.Lider do
   @behaviour SuperBarato.Crawler.Chain
 
   alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Linker.Identity
 
   require Logger
 
@@ -234,12 +235,15 @@ defmodule SuperBarato.Crawler.Lider do
     image_info = item["imageInfo"] || %{}
 
     {regular, promo} = parse_search_prices(price_info)
+    identifiers = identifiers_from_item(item)
 
     %Listing{
       chain: @chain,
       chain_sku: usItemId,
       chain_product_id: to_string_if_present(item["id"]),
-      ean: ean_from_upc(item["upc"] || usItemId),
+      ean: blank_to_nil(item["upc"]) || usItemId,
+      identifiers_key: Identity.encode(identifiers),
+      raw: %{"item" => item},
       name: item["name"],
       brand: item["brand"],
       image_url: image_info["thumbnailUrl"],
@@ -328,11 +332,15 @@ defmodule SuperBarato.Crawler.Lider do
 
         imgs = product["imageInfo"] || %{}
 
+        identifiers = identifiers_from_item(product)
+
         listing = %Listing{
           chain: @chain,
           chain_sku: to_string_if_present(product["usItemId"]),
           chain_product_id: to_string_if_present(product["id"]),
-          ean: ean_from_upc(product["upc"] || product["usItemId"]),
+          ean: blank_to_nil(product["upc"]) || product["usItemId"],
+          identifiers_key: Identity.encode(identifiers),
+          raw: %{"product" => product},
           name: product["name"],
           brand: product["brand"],
           image_url: imgs["thumbnailUrl"],
@@ -392,17 +400,31 @@ defmodule SuperBarato.Crawler.Lider do
 
   # Parsing helpers
 
-  defp ean_from_upc(nil), do: nil
-  defp ean_from_upc(""), do: nil
-
-  defp ean_from_upc(upc) when is_binary(upc) do
-    # Strip leading zeros on GTIN-14 to get EAN-13 (or less, on EAN-8
-    # padded to 14). Minimum 8 digits — shorter means non-EAN.
-    trimmed = String.trim_leading(upc, "0")
-    if String.length(trimmed) >= 8, do: trimmed, else: nil
+  # Every id-shaped key Lider's BFF emits, verbatim. Keep usItemId and
+  # upc both — they often carry related but distinct values
+  # (`usItemId` is GTIN-14 padded; `upc` is the raw 12-digit when
+  # available). Don't normalize; the Linker will derive its own
+  # candidates at match time.
+  defp identifiers_from_item(item) when is_map(item) do
+    %{
+      "usItemId" => item["usItemId"],
+      "upc" => item["upc"],
+      "id" => item["id"]
+    }
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    |> Map.new()
   end
 
-  defp ean_from_upc(_), do: nil
+  defp blank_to_nil(nil), do: nil
+  defp blank_to_nil(""), do: nil
+  defp blank_to_nil(s), do: s
+
+  # NOTE: pre-2026-04 the parser passed Lider's `upc`/`usItemId` through
+  # `String.trim_leading("0")` to derive an "ean". That produced
+  # shifted-digit values (`00780162029016` → `780162029016`, which is
+  # GTIN-13 minus the check digit, not the GTIN-13 itself). The chain's
+  # raw values now go straight into `identifiers_key` + `raw`; the
+  # Linker generates canonical candidate forms at match time.
 
   defp decide_prices(regular, current) do
     cond do

@@ -19,6 +19,7 @@ defmodule SuperBarato.Crawler.Cencosud do
   """
 
   alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Linker.Identity
 
   @catalog_api "https://sm-web-api.ecomm.cencosud.com/catalog/api"
   @api_key "WlVnnB7c1BblmgUPOfg"
@@ -472,12 +473,15 @@ defmodule SuperBarato.Crawler.Cencosud do
   defp listing_from_jsonld(%Config{} = cfg, %{} = product, breadcrumb, url) do
     offer = first_offer(product["offers"])
     price = price_int(offer["price"])
+    identifiers = identifiers_from_jsonld(product)
 
     %Listing{
       chain: cfg.chain,
       chain_sku: to_string_if_present(product["sku"]),
       chain_product_id: to_string_if_present(product["sku"]),
       ean: pick_ean(product),
+      identifiers_key: Identity.encode(identifiers),
+      raw: %{"product" => product, "breadcrumb" => breadcrumb},
       name: product["name"],
       brand: brand_name(product["brand"]),
       image_url: first_image(product["image"]),
@@ -488,6 +492,27 @@ defmodule SuperBarato.Crawler.Cencosud do
       promotions: %{}
     }
   end
+
+  # Collect every id-shaped key the JSON-LD Product node volunteered.
+  # Cencosud sometimes emits multiple GTIN flavors (gtin13 + gtin8,
+  # etc.); keep all of them. Values are stored verbatim — no leading-
+  # zero stripping, no normalization. Empty strings drop out at
+  # encode time.
+  defp identifiers_from_jsonld(%{} = product) do
+    %{
+      "sku" => product["sku"],
+      "gtin" => product["gtin"],
+      "gtin8" => product["gtin8"],
+      "gtin12" => product["gtin12"],
+      "gtin13" => product["gtin13"],
+      "gtin14" => product["gtin14"]
+    }
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    |> Map.new()
+  end
+
+  defp referenceId_from(%{"referenceId" => [%{"Value" => v} | _]}) when is_binary(v), do: v
+  defp referenceId_from(_), do: nil
 
   defp first_offer(%{"@type" => "Offer"} = offer), do: offer
   defp first_offer([%{} = offer | _]), do: offer
@@ -569,11 +594,23 @@ defmodule SuperBarato.Crawler.Cencosud do
     offer = commercial_offer(item)
     {regular, promo} = prices_from_offer(offer)
 
+    identifiers =
+      %{
+        "itemId" => item["itemId"],
+        "productId" => product["productId"],
+        "ean" => item["ean"],
+        "referenceId" => referenceId_from(item)
+      }
+      |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+      |> Map.new()
+
     %Listing{
       chain: cfg.chain,
       chain_sku: to_string_if_present(item["itemId"]),
       chain_product_id: to_string_if_present(product["productId"]),
       ean: blank_to_nil(item["ean"]),
+      identifiers_key: Identity.encode(identifiers),
+      raw: %{"product" => product},
       name: product["productName"] || item["name"],
       brand: product["brand"],
       image_url: first_image_url(item),

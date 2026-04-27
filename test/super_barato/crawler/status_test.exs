@@ -42,6 +42,7 @@ defmodule SuperBarato.Crawler.StatusTest do
         Catalog.upsert_listing(%Listing{
           chain: :unimarc,
           chain_sku: "x-1",
+          identifiers_key: "sku=x-1",
           name: "Test",
           regular_price: 100
         })

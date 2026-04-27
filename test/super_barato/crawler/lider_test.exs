@@ -117,9 +117,25 @@ defmodule SuperBarato.Crawler.LiderTest do
       assert is_binary(l.name) and String.contains?(l.name, "Pantrucas")
       assert l.brand == "Lucchetti"
       assert l.regular_price == 990
-      # EAN = usItemId with leading zeros stripped
-      assert l.ean == "780250000052"
+      # EAN is the chain's raw `upc`/`usItemId` value — no
+      # transformation. Linker generates canonical candidates at
+      # match time.
+      assert l.ean == "00780250000052"
       assert String.starts_with?(l.image_url, "https://")
+    end
+
+    test "identifiers_key encodes every id-shaped key", %{listing: l} do
+      # `usItemId` is always present; `upc` is sometimes the same value
+      # and sometimes empty depending on the product. The PDP fixture
+      # has both, so the key carries them as separate entries.
+      assert is_binary(l.identifiers_key)
+      assert l.identifiers_key =~ "usItemId=00780250000052"
+    end
+
+    test "raw carries the source product map", %{listing: l} do
+      assert is_map(l.raw)
+      assert is_map(l.raw["product"])
+      assert l.raw["product"]["usItemId"] == "00780250000052"
     end
   end
 end
