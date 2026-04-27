@@ -120,7 +120,11 @@ defmodule SuperBarato.Crawler.Unimarc do
             :blocked
 
           {:ok, children} ->
-            all = Enum.uniq_by(top_levels ++ children, & &1.slug)
+            all =
+              (top_levels ++ children)
+              |> Enum.uniq_by(& &1.slug)
+              |> then(&SuperBarato.Crawler.Scope.filter(@chain, &1))
+
             {:ok, mark_leaves(all)}
         end
     end

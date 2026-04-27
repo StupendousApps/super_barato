@@ -95,6 +95,7 @@ defmodule SuperBarato.Crawler.Cencosud do
     |> Enum.reject(&(&1 in [nil, ""]))
     |> Enum.uniq()
     |> Enum.map(&category_from_path(chain, &1))
+    |> then(&SuperBarato.Crawler.Scope.filter(chain, &1))
     |> mark_leaves()
   end
 

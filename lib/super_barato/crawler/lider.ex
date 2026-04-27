@@ -106,7 +106,13 @@ defmodule SuperBarato.Crawler.Lider do
 
     case departments do
       list when is_list(list) ->
-        {:ok, extract_categories(list) |> mark_leaves()}
+        cats =
+          list
+          |> extract_categories()
+          |> then(&SuperBarato.Crawler.Scope.filter(@chain, &1))
+          |> mark_leaves()
+
+        {:ok, cats}
 
       _ ->
         {:error, :no_nav_module}
