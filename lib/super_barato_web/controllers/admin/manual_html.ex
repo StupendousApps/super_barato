@@ -1,12 +1,10 @@
 defmodule SuperBaratoWeb.Admin.ManualHTML do
   use SuperBaratoWeb, :html
   use StupendousAdmin
-
-  alias SuperBaratoWeb.Admin.ListingHTML
+  import SuperBaratoWeb.Admin.Components
 
   embed_templates "manual_html/*"
 
-  defdelegate chain_label(chain), to: ListingHTML
 
   attr :report, :any, required: true
 

@@ -1,6 +1,6 @@
 <.sub_navigation active={@sub_nav}>
-  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
   <:item key={:runtime} href={~p"/crawlers/live"}>Live</:item>
+  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
   <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
@@ -18,7 +18,7 @@
         type="select"
         value={@chain}
         label="Chain"
-        options={Enum.map(@chains, fn ch -> {SuperBaratoWeb.Admin.ListingHTML.chain_label(ch), Atom.to_string(ch)} end)}
+        options={Enum.map(@chains, fn ch -> {chain_label(ch), Atom.to_string(ch)} end)}
         onchange="this.form.submit()"
       />
       <.input

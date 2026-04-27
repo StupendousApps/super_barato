@@ -36,26 +36,15 @@
       sort={sort_dir("chain", @sort)}
       sort_href={sort_href(~p"/listings", @filters, "chain", @sort)}
     >
-      <%= case chain_favicon(l.chain) do %>
-        <% nil -> %>
-          {chain_label(l.chain)}
-        <% src -> %>
-          <img
-            src={src}
-            alt={chain_label(l.chain)}
-            title={chain_label(l.chain)}
-            loading="lazy"
-            class="chain-favicon"
-          />
-      <% end %>
+      <.chain_badge chain={l.chain} />
     </:col>
 
     <:col :let={l} label="Image" nowrap>
       <img :if={l.image_url} src={l.image_url} alt="" loading="lazy" class="data-table__thumb" />
     </:col>
 
-    <%!-- Combined Name + Brand: name on top, brand dim below. Sort key
-         stays "name" so the column header still works as expected. --%>
+    <%!-- Combined Name + (SKU · Brand): name on top, dim "sku · brand"
+         line below. Sort key stays "name". --%>
     <:col
       :let={l}
       label="Product"
@@ -63,10 +52,11 @@
       sort_href={sort_href(~p"/listings", @filters, "name", @sort)}
     >
       <div>{l.name}</div>
-      <div :if={l.brand} class="listings-table__brand">{l.brand}</div>
+      <div class="cell-secondary">
+        {[l.chain_sku, l.brand] |> Enum.reject(&(&1 in [nil, ""])) |> Enum.join(" · ")}
+      </div>
     </:col>
 
-    <:col :let={l} label="SKU" nowrap>{l.chain_sku}</:col>
     <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
 
     <%!-- Combined regular + promo: when a promo is active and lower

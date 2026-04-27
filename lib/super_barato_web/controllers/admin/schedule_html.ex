@@ -1,17 +1,17 @@
 defmodule SuperBaratoWeb.Admin.ScheduleHTML do
   use SuperBaratoWeb, :html
   use StupendousAdmin
+  import SuperBaratoWeb.Admin.Components
 
   alias SuperBarato.Crawler
   alias SuperBaratoWeb.Admin.ListingHTML
 
   embed_templates "schedule_html/*"
 
-  defdelegate chain_label(chain), to: ListingHTML
   defdelegate format_datetime(dt), to: ListingHTML
 
   def chain_options do
-    [{"Any", ""} | Enum.map(Crawler.known_chains(), fn c -> {ListingHTML.chain_label(c), Atom.to_string(c)} end)]
+    [{"Any", ""} | Enum.map(Crawler.known_chains(), fn c -> {chain_label(c), Atom.to_string(c)} end)]
   end
 
   def kind_options do

@@ -3,8 +3,10 @@
    --font-size-*, etc.) so it stays consistent if the host theme
    changes. */
 
-/* Listings table — secondary line under the product name (brand). */
-.listings-table__brand {
+/* Stacked cell — small dim line below the primary value. Used for
+   "sku · brand" under product names, "last seen" under counters, and
+   any other compact "main + secondary" pair in admin tables. */
+.cell-secondary {
     font-size: var(--font-size-xs, 0.75rem);
     color: var(--text-color-3, #888);
     margin-top: 2px;

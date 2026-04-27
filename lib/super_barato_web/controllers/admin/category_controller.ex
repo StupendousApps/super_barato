@@ -11,7 +11,7 @@ defmodule SuperBaratoWeb.Admin.CategoryController do
   def index(conn, params) do
     chain = parse_chain(params["chain"])
     q = params["q"] || ""
-    leaves_only = params["leaves_only"] == "yes"
+    type = parse_type(params["type"])
     sort = params["sort"] || "-last_seen_at"
     page = parse_int(params["page"], 1)
     per_page = parse_int(params["per_page"], 25)
@@ -20,7 +20,7 @@ defmodule SuperBaratoWeb.Admin.CategoryController do
       Catalog.list_categories_page(
         chain: chain,
         q: q,
-        leaves_only: leaves_only,
+        type: type,
         sort: sort,
         page: page,
         per_page: per_page
@@ -29,7 +29,7 @@ defmodule SuperBaratoWeb.Admin.CategoryController do
     filters = %{
       chain: params["chain"] || "",
       q: q,
-      leaves_only: params["leaves_only"] || "",
+      type: params["type"] || "",
       per_page: params["per_page"] || ""
     }
 
@@ -54,6 +54,10 @@ defmodule SuperBaratoWeb.Admin.CategoryController do
       ArgumentError -> nil
     end
   end
+
+  defp parse_type("leaf"), do: :leaf
+  defp parse_type("parent"), do: :parent
+  defp parse_type(_), do: :all
 
   defp parse_int(nil, d), do: d
 

@@ -10,11 +10,11 @@
     <.filters>
       <.input name="q" value={@filters.q} label="Search" placeholder="Name or slug" />
       <.input
-        name="leaves_only"
+        name="type"
         type="select"
-        value={@filters.leaves_only}
-        label="Leaves only"
-        options={[{"Any", ""}, {"Yes", "yes"}]}
+        value={@filters.type}
+        label="Type"
+        options={[{"All", ""}, {"Leaf", "leaf"}, {"Parent", "parent"}]}
       />
       <.input
         name="per_page"
@@ -37,7 +37,7 @@
       sort={sort_dir("chain", @sort)}
       sort_href={sort_href(~p"/categories", @filters, "chain", @sort)}
     >
-      {chain_label(c.chain)}
+      <.chain_badge chain={c.chain} />
     </:col>
     <:col
       :let={c}
@@ -47,7 +47,14 @@
     >
       {c.name}
     </:col>
-    <:col :let={c} label="Slug" nowrap>{c.slug}</:col>
+    <:col :let={c} label="URL" nowrap>
+      <%= case chain_site_url(c.chain, c.slug) do %>
+        <% nil -> %>
+          —
+        <% url -> %>
+          <a href={url} target="_blank" rel="noopener">{url}</a>
+      <% end %>
+    </:col>
     <:col :let={c} label="Parent" nowrap>{c.parent_slug || "—"}</:col>
     <:col
       :let={c}
