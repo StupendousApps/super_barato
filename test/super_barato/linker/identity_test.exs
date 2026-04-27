@@ -127,6 +127,25 @@ defmodule SuperBarato.Linker.IdentityTest do
       assert Identity.canonicalize_gtin13("not a number") == nil
     end
 
+    test "11-digit base recovered (Lider-style: data digits with leading zeros + check stripped)" do
+      # Sacapita Galletas Saladas Sal de Mar 120g — Lider stores
+      # `00074283214699` (14 chars). Strip leading zeros → 11
+      # digits `74283214699` → pad to 12 with one leading zero,
+      # append check digit. Canonical GTIN-13 = `0742832146999`,
+      # which Jumbo and Unimarc carry verbatim.
+      assert Identity.canonicalize_gtin13("00074283214699") == "0742832146999"
+    end
+
+    test "10-digit base recovered (Lider-style with two leading zeros stripped + check stripped)" do
+      # Monster Energy Original 473ml — Lider stores
+      # `00007084700951` (14 chars). Strip → 10 digits `7084700951`
+      # → pad to 12 with two leading zeros → append check → 13.
+      assert Identity.canonicalize_gtin13("00007084700951") == "0070847009511"
+
+      # Pringles BBQ 158g — same shape.
+      assert Identity.canonicalize_gtin13("00003800018371") == "0038000183713"
+    end
+
     test "cross-chain symmetry — same product on every chain → same canonical" do
       jumbo = Identity.canonicalize_gtin13("7802900332402")
       santa_isabel = Identity.canonicalize_gtin13("7802900332402")
@@ -139,6 +158,59 @@ defmodule SuperBarato.Linker.IdentityTest do
       assert jumbo == lider_us_item
       assert jumbo == lider_upc
       assert jumbo == "7802900332402"
+    end
+  end
+
+  describe "canonicalize_ean8/1 — EAN-8 verbatim namespace" do
+    test "8-digit numeric input is returned as-is" do
+      assert Identity.canonicalize_ean8("78600010") == "78600010"
+      assert Identity.canonicalize_ean8("90446849") == "90446849"
+    end
+
+    test "in-store / restricted prefixes still pass — no check-digit gate" do
+      # Cencosud's 24xxxxxx granel codes — chains assign their own
+      # numbering inside the GS1 reserved range. Same value on Jumbo
+      # and SI is the cross-chain match we want; we don't filter.
+      assert Identity.canonicalize_ean8("24959490") == "24959490"
+      assert Identity.canonicalize_ean8("24856751") == "24856751"
+    end
+
+    test "non-digit chars stripped" do
+      assert Identity.canonicalize_ean8("786-00010") == "78600010"
+      assert Identity.canonicalize_ean8("ean: 78600010") == "78600010"
+    end
+
+    test "integer input" do
+      assert Identity.canonicalize_ean8(78_600_010) == "78600010"
+    end
+
+    test "7-digit input gets EAN-8 check digit appended" do
+      # Lider stores `00000007801418` (14 chars) for the same
+      # Mote-con-Huesillos product Unimarc carries as `78014183`.
+      # `7801418` → check digit `3` (EAN-8 weights 3,1,3,1,3,1,3
+      # over the 7 data digits, sum 67, 10-(67%10) = 3).
+      assert Identity.canonicalize_ean8("7801418") == "78014183"
+    end
+
+    test "Lider-style leading-zero-padded EAN-8 strips back to canonical" do
+      # 14-char Lider form for Mote con Huesillos.
+      assert Identity.canonicalize_ean8("00000007801418") == "78014183"
+
+      # Other Lider 7-digit-base examples we found in the catalog.
+      assert Identity.canonicalize_ean8("00000007804111") == "78041110"
+      assert Identity.canonicalize_ean8("00000007800750") == "78007505"
+    end
+
+    test "wrong length returns nil" do
+      assert Identity.canonicalize_ean8("123456") == nil
+      assert Identity.canonicalize_ean8("123456789") == nil
+      assert Identity.canonicalize_ean8("7801620290160") == nil
+    end
+
+    test "nil / empty / nonsense returns nil" do
+      assert Identity.canonicalize_ean8(nil) == nil
+      assert Identity.canonicalize_ean8("") == nil
+      assert Identity.canonicalize_ean8("not a number") == nil
     end
   end
 end

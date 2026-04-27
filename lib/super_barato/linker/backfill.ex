@@ -44,38 +44,45 @@ defmodule SuperBarato.Linker.Backfill do
       )
       |> Repo.all()
 
-    {by_gtin, canonicalized} =
+    # Two parallel keyspaces — GTIN-13 (canonicalized via the
+    # full normalisation flow) and EAN-8 (used verbatim, no
+    # transform). A listing's EAN goes into whichever bucket its
+    # value canonicalizes to; if neither fires, the listing stays
+    # unlinked and is admin work later.
+    {by_key, canonicalized} =
       Enum.reduce(rows, {%{}, 0}, fn {id, ean, name, brand, image_url}, {acc, n} ->
-        case Identity.canonicalize_gtin13(ean) do
+        canonical_key =
+          Identity.canonicalize_gtin13(ean) || Identity.canonicalize_ean8(ean)
+
+        case canonical_key do
           nil ->
             {acc, n}
 
-          g ->
+          k ->
             entry = %{id: id, name: name, brand: brand, image_url: image_url}
-            {Map.update(acc, g, [entry], &[entry | &1]), n + 1}
+            {Map.update(acc, k, [entry], &[entry | &1]), n + 1}
         end
       end)
 
     if log? do
       Logger.info(
         "linker backfill: #{length(rows)} listings, #{canonicalized} canonicalized, " <>
-          "#{map_size(by_gtin)} distinct GTIN-13"
+          "#{map_size(by_key)} distinct EAN keys"
       )
     end
 
-    # Find-or-create one Product per GTIN-13. Done one at a time so the
-    # ean unique index handles concurrent backfill runs safely (we lose
-    # bulk-insert speed but gain simplicity; 37k inserts run in seconds
-    # on SQLite WAL).
+    # Find-or-create one Product per EAN key (GTIN-13 or EAN-8).
+    # Done one at a time so the unique index handles concurrent
+    # backfill runs safely; on SQLite WAL the throughput is fine.
     {products_created, products_seen, links_written} =
-      Enum.reduce(by_gtin, {0, 0, 0}, fn {gtin13, listings}, {created, seen, links} ->
+      Enum.reduce(by_key, {0, 0, 0}, fn {key, listings}, {created, seen, links} ->
         # Use the first listing's display fields as Product seeds. The
         # cross-chain canonicalization step happens in a separate pass
         # later — for now any listing's name/brand is "good enough" for
         # a placeholder Product the admin can curate.
         seed = List.first(listings)
 
-        {action, product} = upsert_product_by_ean(gtin13, seed)
+        {action, product} = upsert_product_by_ean(key, seed)
 
         new_links =
           Enum.reduce(listings, 0, fn entry, n ->
