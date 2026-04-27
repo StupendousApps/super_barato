@@ -109,7 +109,7 @@ defmodule SuperBarato.Crawler.ScheduleTest do
       assert Schedule.to_cron_entry(s) == :skip
     end
 
-    test "discover_categories renders a Queue.push MFA" do
+    test "discover_categories renders a CategoryProducer MFA" do
       s = %Schedule{
         chain: "unimarc",
         kind: "discover_categories",
@@ -119,8 +119,21 @@ defmodule SuperBarato.Crawler.ScheduleTest do
       }
 
       assert {:ok, {{:weekly, [:mon], [~T[04:00:00]]},
-              {SuperBarato.Crawler.Chain.Queue, :push,
-               [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]}}} =
+              {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :unimarc]]}}} =
+               Schedule.to_cron_entry(s)
+    end
+
+    test "refresh_listings renders a ListingProducer MFA" do
+      s = %Schedule{
+        chain: "jumbo",
+        kind: "refresh_listings",
+        days: "tue",
+        times: "06:00:00",
+        active: true
+      }
+
+      assert {:ok, {{:weekly, [:tue], [~T[06:00:00]]},
+              {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :jumbo]]}}} =
                Schedule.to_cron_entry(s)
     end
 

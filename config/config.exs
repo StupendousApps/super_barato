@@ -83,17 +83,21 @@ config :super_barato, SuperBarato.Crawler,
     # `products` does both discovery and price refresh: the search
     # endpoints return current prices alongside product data, and
     # Chain.Results appends every observation to PriceLog.
+    #
+    # Three-stage cron pattern across all chains:
+    #   * stage 1 (CategoryProducer) — weekly Monday discovery.
+    #   * stage 2 (ProductProducer)  — weekly Monday discovery.
+    #   * stage 3 (ListingProducer)  — daily Tue–Sun price refresh.
     unimarc: [
       interval_ms: 1_000,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
-        # Weekly category discovery — Monday 04:00 UTC.
         {{:weekly, [:mon], [~T[04:00:00]]},
-         {SuperBarato.Crawler.Chain.Queue, :push,
-          [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]}},
-        # Daily product walk (captures prices as a side effect).
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[05:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}}
+         {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :unimarc]]}},
+        {{:weekly, [:mon], [~T[05:00:00]]},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}},
+        {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[05:00:00]]},
+         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :unimarc]]}}
       ]
     ],
     # Jumbo + Santa Isabel use sitemap-driven discovery: PDPs on
@@ -107,10 +111,11 @@ config :super_barato, SuperBarato.Crawler,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:15:00]]},
-         {SuperBarato.Crawler.Chain.Queue, :push,
-          [:jumbo, {:discover_categories, %{chain: :jumbo, parent: nil}}]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[05:30:00]]},
-         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :jumbo]]}}
+         {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :jumbo]]}},
+        {{:weekly, [:mon], [~T[05:30:00]]},
+         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :jumbo]]}},
+        {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[05:30:00]]},
+         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :jumbo]]}}
       ]
     ],
     santa_isabel: [
@@ -118,10 +123,11 @@ config :super_barato, SuperBarato.Crawler,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
-         {SuperBarato.Crawler.Chain.Queue, :push,
-          [:santa_isabel, {:discover_categories, %{chain: :santa_isabel, parent: nil}}]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[06:00:00]]},
-         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :santa_isabel]]}}
+         {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :santa_isabel]]}},
+        {{:weekly, [:mon], [~T[06:00:00]]},
+         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :santa_isabel]]}},
+        {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[06:00:00]]},
+         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
     # Tottus is on Cloudflare and the prod IP is banned at the edge.
@@ -135,10 +141,11 @@ config :super_barato, SuperBarato.Crawler,
       fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
-         {SuperBarato.Crawler.Chain.Queue, :push,
-          [:tottus, {:discover_categories, %{chain: :tottus, parent: nil}}]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[07:00:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :tottus]]}}
+         {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :tottus]]}},
+        {{:weekly, [:mon], [~T[07:00:00]]},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :tottus]]}},
+        {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[07:00:00]]},
+         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :tottus]]}}
       ]
     ],
     # Lider's Akamai blocks Chrome 110+; only older Chrome profiles
@@ -161,10 +168,11 @@ config :super_barato, SuperBarato.Crawler,
       ],
       schedule: [
         {{:weekly, [:mon], [~T[04:45:00]]},
-         {SuperBarato.Crawler.Chain.Queue, :push,
-          [:lider, {:discover_categories, %{chain: :lider, parent: nil}}]}},
-        {{:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[06:30:00]]},
-         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider]]}}
+         {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :lider]]}},
+        {{:weekly, [:mon], [~T[06:30:00]]},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider]]}},
+        {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[06:30:00]]},
+         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :lider]]}}
       ]
     ]
   ]

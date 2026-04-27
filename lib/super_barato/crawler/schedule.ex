@@ -4,12 +4,15 @@ defmodule SuperBarato.Crawler.Schedule do
   of reading from `config/config.exs`.
 
   Each row defines a weekly cadence: fire `{kind}` for `{chain}` on
-  every (day × time) combination. Two `kind`s are supported today:
+  every (day × time) combination. Three `kind`s are supported:
 
-    * `"discover_categories"` — pushes a one-shot category-walk task
-      onto the chain's Queue.
-    * `"discover_products"` — runs the `ProductProducer` that streams
-      leaf-category slugs onto the Queue.
+    * `"discover_categories"` — runs CategoryProducer (stage 1).
+      Cheap; finds the chain's category tree.
+    * `"discover_products"` — runs ProductProducer (stage 2).
+      Expensive; finds new chain_listings rows for the chain.
+    * `"refresh_listings"` — runs ListingProducer (stage 3). Streams
+      every active chain_listing's pdp_url and re-fetches it to update
+      prices. Cheap on the producer side, slow on the worker side.
 
   `to_cron_entry/1` returns the `{cadence, mfa}` tuple expected by
   `Chain.Cron`.
@@ -19,7 +22,7 @@ defmodule SuperBarato.Crawler.Schedule do
 
   alias SuperBarato.Crawler
 
-  @kinds ~w(discover_categories discover_products)
+  @kinds ~w(discover_categories discover_products refresh_listings)
   @days ~w(mon tue wed thu fri sat sun)
 
   schema "crawler_schedules" do
@@ -93,9 +96,7 @@ defmodule SuperBarato.Crawler.Schedule do
 
   defp mfa(%__MODULE__{chain: chain_str, kind: "discover_categories"}) do
     chain = String.to_existing_atom(chain_str)
-
-    {SuperBarato.Crawler.Chain.Queue, :push,
-     [chain, {:discover_categories, %{chain: chain, parent: nil}}]}
+    {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: chain]]}
   end
 
   # Per-chain dispatch: Cencosud-owned chains (Jumbo, Santa Isabel)
@@ -104,12 +105,17 @@ defmodule SuperBarato.Crawler.Schedule do
   # the original DB-leaf-categories iteration.
   defp mfa(%__MODULE__{chain: chain_str, kind: "discover_products"}) do
     chain = String.to_existing_atom(chain_str)
-    {producer_for(chain), :run, [[chain: chain]]}
+    {product_producer_for(chain), :run, [[chain: chain]]}
   end
 
-  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.ProductProducer
-  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.ProductProducer
-  defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
+  defp mfa(%__MODULE__{chain: chain_str, kind: "refresh_listings"}) do
+    chain = String.to_existing_atom(chain_str)
+    {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: chain]]}
+  end
+
+  defp product_producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.ProductProducer
+  defp product_producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.ProductProducer
+  defp product_producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
 
   ## Parsing helpers — also used by the context for validation.
 

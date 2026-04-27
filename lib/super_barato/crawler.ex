@@ -39,7 +39,7 @@ defmodule SuperBarato.Crawler do
   """
   require Logger
 
-  @kinds ~w(discover_categories discover_products)
+  @kinds ~w(discover_categories discover_products refresh_listings)
 
   def trigger(chain, kind) when is_atom(chain) do
     cond do
@@ -58,20 +58,11 @@ defmodule SuperBarato.Crawler do
     end
   end
 
-  defp do_trigger(chain, "discover_categories") do
-    SuperBarato.Crawler.Chain.Queue.push(
-      chain,
-      {:discover_categories, %{chain: chain, parent: nil}}
-    )
-
-    :ok
-  end
-
-  defp do_trigger(chain, "discover_products") do
+  defp do_trigger(chain, kind) do
     {:ok, _pid} =
       Task.Supervisor.start_child(
         SuperBarato.Crawler.Chain.Supervisor.task_sup_name(chain),
-        producer_for(chain),
+        producer_for(chain, kind),
         :run,
         [[chain: chain]]
       )
@@ -79,11 +70,22 @@ defmodule SuperBarato.Crawler do
     :ok
   end
 
-  # Per-chain dispatch: Cencosud chains discover via sitemap;
-  # Lider/Unimarc keep iterating leaf categories from the DB.
-  defp producer_for(:jumbo), do: SuperBarato.Crawler.Cencosud.ProductProducer
-  defp producer_for(:santa_isabel), do: SuperBarato.Crawler.Cencosud.ProductProducer
-  defp producer_for(_), do: SuperBarato.Crawler.Chain.ProductProducer
+  # (chain, kind) → producer module. Mirrors Schedule.mfa/1's dispatch
+  # so the admin trigger button and cron entries pick the same module.
+  defp producer_for(_chain, "discover_categories"),
+    do: SuperBarato.Crawler.Chain.CategoryProducer
+
+  defp producer_for(:jumbo, "discover_products"),
+    do: SuperBarato.Crawler.Cencosud.ProductProducer
+
+  defp producer_for(:santa_isabel, "discover_products"),
+    do: SuperBarato.Crawler.Cencosud.ProductProducer
+
+  defp producer_for(_chain, "discover_products"),
+    do: SuperBarato.Crawler.Chain.ProductProducer
+
+  defp producer_for(_chain, "refresh_listings"),
+    do: SuperBarato.Crawler.Chain.ListingProducer
 
   @doc """
   Drops every queued task for `chain` and unblocks any parked

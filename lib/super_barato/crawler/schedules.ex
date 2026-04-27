@@ -138,8 +138,12 @@ defmodule SuperBarato.Crawler.Schedules do
     length(entries)
   end
 
-  # MFA → kind. Match the two shapes the project uses today; fall back
-  # to raise so unexpected MFAs aren't silently discarded.
+  # MFA → kind. Match every shape the config schedules use; raise on
+  # unknown ones so a typo in config doesn't silently discard a row.
+  defp infer_kind({SuperBarato.Crawler.Chain.CategoryProducer, :run, [_]}),
+    do: "discover_categories"
+
+  # Legacy: pre-CategoryProducer schedules pushed straight to the queue.
   defp infer_kind({SuperBarato.Crawler.Chain.Queue, :push, [_chain, {:discover_categories, _}]}),
     do: "discover_categories"
 
@@ -148,6 +152,9 @@ defmodule SuperBarato.Crawler.Schedules do
 
   defp infer_kind({SuperBarato.Crawler.Cencosud.ProductProducer, :run, [_]}),
     do: "discover_products"
+
+  defp infer_kind({SuperBarato.Crawler.Chain.ListingProducer, :run, [_]}),
+    do: "refresh_listings"
 
   defp infer_kind(other),
     do: raise("Schedules.seed_from_config/0 can't map MFA: #{inspect(other)}")

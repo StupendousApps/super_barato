@@ -56,6 +56,22 @@
         </.form>
         <.form
           for={%{}}
+          action={~p"/crawlers/live/#{s.chain}/refresh_listings"}
+          method="post"
+        >
+          <.button
+            type="submit"
+            variant={:subtle}
+            size={:sm}
+            disabled={!s.running}
+            aria-label="Refresh listings"
+            title="Refresh listings"
+          >
+            <.sfsymbol name="arrow.clockwise" />
+          </.button>
+        </.form>
+        <.form
+          for={%{}}
           action={~p"/crawlers/live/#{s.chain}/flush"}
           method="post"
           data-confirm={"Drop every queued task for #{s.chain}? This is non-reversible."}

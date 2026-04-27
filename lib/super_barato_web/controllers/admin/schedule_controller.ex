@@ -6,7 +6,7 @@ defmodule SuperBaratoWeb.Admin.ScheduleController do
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
   plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
 
-  @kinds ["discover_categories", "discover_products"]
+  @kinds ["discover_categories", "discover_products", "refresh_listings"]
 
   def index(conn, params) do
     chain = parse_chain(params["chain"])

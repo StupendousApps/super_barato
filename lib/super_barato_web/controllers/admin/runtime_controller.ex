@@ -16,7 +16,7 @@ defmodule SuperBaratoWeb.Admin.RuntimeController do
     |> render(:index)
   end
 
-  @kinds ~w(discover_categories discover_products)
+  @kinds ~w(discover_categories discover_products refresh_listings)
 
   def trigger(conn, %{"chain" => chain, "kind" => kind}) do
     chain_atom = parse_chain(chain)

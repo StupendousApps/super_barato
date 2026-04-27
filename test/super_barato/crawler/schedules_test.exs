@@ -96,8 +96,7 @@ defmodule SuperBarato.Crawler.SchedulesTest do
       [{cadence, mfa}] = entries
       assert {:weekly, [:mon], [~T[04:00:00]]} = cadence
 
-      assert {SuperBarato.Crawler.Chain.Queue, :push,
-              [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]} = mfa
+      assert {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :unimarc]]} = mfa
     end
 
     test "returns [] for a chain with no schedules" do
