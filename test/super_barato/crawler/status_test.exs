@@ -17,7 +17,7 @@ defmodule SuperBarato.Crawler.StatusTest do
     end
 
     test "every snapshot has the documented shape" do
-      keys = ~w(chain running profile queue_depth cron_epoch
+      keys = ~w(chain running profile queue_depth
                  schedule_count listings_count last_priced_at
                  categories_count last_seen_at)a
 
@@ -33,7 +33,6 @@ defmodule SuperBarato.Crawler.StatusTest do
       assert s.chain == :unimarc
       assert s.running == false
       assert s.queue_depth == nil
-      assert s.cron_epoch == nil
     end
 
     test "DB-derived fields reflect the catalog regardless of pipeline state" do

@@ -1,12 +1,12 @@
 <.sub_navigation active={@sub_nav}>
-  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
   <:item key={:runtime} href={~p"/crawlers/live"}>Live</:item>
+  <:item key={:schedules} href={~p"/crawlers/schedules"}>Cron Jobs</:item>
   <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
 <.admin_container title="Crawlers · Live">
   <.table rows={@snapshots} empty="No chains registered.">
-    <:col :let={s} label="Chain">{chain_label(s.chain)}</:col>
+    <:col :let={s} label="Chain"><.chain_badge chain={s.chain} /></:col>
     <:col :let={s} label="Pipeline" align={:center}>
       <.pill color={(s.running && :green) || :regular}>
         {(s.running && "running") || "idle"}
@@ -14,12 +14,15 @@
     </:col>
     <:col :let={s} label="Profile">{s.profile || "—"}</:col>
     <:col :let={s} label="Queue" align={:right}>{s.queue_depth || 0}</:col>
-    <:col :let={s} label="Cron epoch" align={:right}>{s.cron_epoch || "—"}</:col>
     <:col :let={s} label="Schedules" align={:right}>{s.schedule_count}</:col>
-    <:col :let={s} label="Listings" align={:right}>{s.listings_count}</:col>
-    <:col :let={s} label="Last priced" nowrap>{format_datetime(s.last_priced_at)}</:col>
-    <:col :let={s} label="Categories" align={:right}>{s.categories_count}</:col>
-    <:col :let={s} label="Last seen" nowrap>{format_datetime(s.last_seen_at)}</:col>
+    <:col :let={s} label="Listings" align={:right}>
+      <div>{s.listings_count}</div>
+      <div class="cell-secondary">{format_datetime(s.last_priced_at)}</div>
+    </:col>
+    <:col :let={s} label="Categories" align={:right}>
+      <div>{s.categories_count}</div>
+      <div class="cell-secondary">{format_datetime(s.last_seen_at)}</div>
+    </:col>
     <:action :let={s}>
       <.row_actions>
         <.form
@@ -27,15 +30,8 @@
           action={~p"/crawlers/live/#{s.chain}/discover_categories"}
           method="post"
         >
-          <.button
-            type="submit"
-            variant={:subtle}
-            size={:sm}
-            disabled={!s.running}
-            aria-label="Discover categories"
-            title="Discover categories"
-          >
-            <.sfsymbol name="folder" />
+          <.button type="submit" variant={:subtle} size={:sm} disabled={!s.running}>
+            <.sfsymbol name="folder" /> Categories
           </.button>
         </.form>
         <.form
@@ -43,15 +39,8 @@
           action={~p"/crawlers/live/#{s.chain}/discover_products"}
           method="post"
         >
-          <.button
-            type="submit"
-            variant={:subtle}
-            size={:sm}
-            disabled={!s.running}
-            aria-label="Discover products"
-            title="Discover products"
-          >
-            <.sfsymbol name="play.circle" />
+          <.button type="submit" variant={:subtle} size={:sm} disabled={!s.running}>
+            <.sfsymbol name="play.circle" /> Products
           </.button>
         </.form>
         <.form
@@ -59,15 +48,8 @@
           action={~p"/crawlers/live/#{s.chain}/refresh_listings"}
           method="post"
         >
-          <.button
-            type="submit"
-            variant={:subtle}
-            size={:sm}
-            disabled={!s.running}
-            aria-label="Refresh listings"
-            title="Refresh listings"
-          >
-            <.sfsymbol name="arrow.clockwise" />
+          <.button type="submit" variant={:subtle} size={:sm} disabled={!s.running}>
+            <.sfsymbol name="arrow.clockwise" /> Price
           </.button>
         </.form>
         <.form
@@ -76,15 +58,8 @@
           method="post"
           data-confirm={"Drop every queued task for #{s.chain}? This is non-reversible."}
         >
-          <.button
-            type="submit"
-            variant={:subtle}
-            size={:sm}
-            disabled={!s.running}
-            aria-label="Flush queue"
-            title="Flush queue"
-          >
-            <.sfsymbol name="trash" />
+          <.button type="submit" variant={:subtle} size={:sm} disabled={!s.running}>
+            <.sfsymbol name="trash" /> Flush
           </.button>
         </.form>
       </.row_actions>

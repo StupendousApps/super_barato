@@ -12,7 +12,7 @@ defmodule SuperBarato.Crawler.Status do
 
   alias SuperBarato.Crawler
   alias SuperBarato.Crawler.{Schedules, Session}
-  alias SuperBarato.Crawler.Chain.{Cron, Queue, Supervisor}
+  alias SuperBarato.Crawler.Chain.{Queue, Supervisor}
   alias SuperBarato.Catalog.{Category, ChainListing}
   alias SuperBarato.Repo
 
@@ -28,7 +28,6 @@ defmodule SuperBarato.Crawler.Status do
       running: pipeline_running?(chain),
       profile: Session.get(chain, :profile),
       queue_depth: queue_depth(chain),
-      cron_epoch: cron_epoch(chain),
       schedule_count: length(Schedules.list_for(chain)),
       listings_count: count(ChainListing, chain),
       last_priced_at: latest(ChainListing, :last_priced_at, chain),
@@ -56,23 +55,6 @@ defmodule SuperBarato.Crawler.Status do
       end
     end
   end
-
-  defp cron_epoch(chain) do
-    case GenServer.whereis(cron_via(chain)) do
-      nil ->
-        nil
-
-      _pid ->
-        try do
-          :sys.get_state(cron_via(chain), 100).epoch
-        catch
-          _, _ -> nil
-        end
-    end
-  end
-
-  defp cron_via(chain),
-    do: {:via, Registry, {SuperBarato.Crawler.Registry, {Cron, chain}}}
 
   defp count(schema, chain) do
     schema
