@@ -11,6 +11,7 @@ defmodule SuperBaratoWeb.Admin.CategoryHTML do
   defdelegate format_datetime(dt), to: ListingHTML
   defdelegate sort_dir(field, current), to: ListingHTML
   defdelegate sort_href(path, params, field, current), to: ListingHTML
+  defdelegate pdp_host(url), to: ListingHTML
 
   def chain_tabs, do: CategoryController.chains()
 

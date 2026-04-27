@@ -46,14 +46,13 @@
       sort={sort_dir("name", @sort)}
       sort_href={sort_href(~p"/categories", @filters, "name", @sort)}
     >
-      {c.name}
-    </:col>
-    <:col :let={c} label="URL" nowrap>
+      <div>{c.name}</div>
       <%= case chain_site_url(c.chain, c.slug) do %>
         <% nil -> %>
-          —
         <% url -> %>
-          <a href={url} target="_blank" rel="noopener">{url}</a>
+          <div class="cell-secondary">
+            <a href={url} target="_blank" rel="noopener">{pdp_host(url)}</a>
+          </div>
       <% end %>
     </:col>
     <:col :let={c} label="Parent" nowrap>{c.parent_slug || "—"}</:col>
