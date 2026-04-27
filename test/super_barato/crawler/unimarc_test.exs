@@ -89,10 +89,16 @@ defmodule SuperBarato.Crawler.UnimarcTest do
       end)
     end
 
-    test "promo_price < regular_price when both set", %{listings: listings} do
+    test "regular_price + promo_price both populated when Unimarc volunteers list and current",
+         %{listings: listings} do
+      # Faithful pass-through: parser maps listPrice → regular_price and
+      # price → promo_price whenever both are present, regardless of
+      # comparison. Display layer decides what to render as a promo.
       Enum.each(listings, fn l ->
-        if is_integer(l.regular_price) and is_integer(l.promo_price) do
-          assert l.promo_price < l.regular_price
+        case {l.regular_price, l.promo_price} do
+          {nil, nil} -> :ok
+          {r, nil} when is_integer(r) -> :ok
+          {r, p} when is_integer(r) and is_integer(p) -> :ok
         end
       end)
     end

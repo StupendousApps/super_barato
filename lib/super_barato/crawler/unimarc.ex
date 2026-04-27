@@ -411,12 +411,16 @@ defmodule SuperBarato.Crawler.Unimarc do
   defp prices_from_price_obj(%{} = price) do
     regular = price_int(price["listPrice"]) || price_int(price["priceWithoutDiscount"])
     current = price_int(price["price"])
-    decide_prices(regular, current)
+    pair_prices(regular, current)
   end
 
-  defp decide_prices(regular, current) do
+  # Parser stores what the chain volunteered, period. When Unimarc
+  # gives us both a list/listPrice/priceWithoutDiscount and a current
+  # price, both columns get populated even if they're equal — the
+  # display layer decides whether to render as a promo.
+  defp pair_prices(regular, current) do
     cond do
-      is_integer(regular) and is_integer(current) and current < regular -> {regular, current}
+      is_integer(regular) and is_integer(current) -> {regular, current}
       is_integer(regular) -> {regular, nil}
       is_integer(current) -> {current, nil}
       true -> {nil, nil}

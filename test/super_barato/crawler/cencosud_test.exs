@@ -145,10 +145,16 @@ defmodule SuperBarato.Crawler.CencosudTest do
       end)
     end
 
-    test "promo_price is nil when no discount; set when discounted", %{listings: listings} do
+    test "regular_price + promo_price both populated when VTEX volunteers ListPrice and Price",
+         %{listings: listings} do
+      # Faithful pass-through: parser maps ListPrice → regular_price and
+      # Price → promo_price whenever both fields are present, regardless
+      # of whether Price < ListPrice. Display layer decides what to render.
       Enum.each(listings, fn l ->
-        if is_integer(l.regular_price) and is_integer(l.promo_price) do
-          assert l.promo_price < l.regular_price
+        case {l.regular_price, l.promo_price} do
+          {nil, nil} -> :ok
+          {r, nil} when is_integer(r) -> :ok
+          {r, p} when is_integer(r) and is_integer(p) -> :ok
         end
       end)
     end

@@ -270,13 +270,13 @@ defmodule SuperBarato.Crawler.Lider do
   defp parse_search_prices(%{"currentPrice" => %{"price" => n}} = pi)
        when is_integer(n) and n > 0 do
     was = price_int(get_in(pi, ["wasPrice", "price"]))
-    decide_prices(was || n, n)
+    pair_prices(was, n)
   end
 
   defp parse_search_prices(%{"linePrice" => s} = pi) when is_binary(s) and s != "" do
     current = price_int(s)
     was = price_int(pi["wasPrice"])
-    decide_prices(was || current, current)
+    pair_prices(was, current)
   end
 
   defp parse_search_prices(_), do: {nil, nil}
@@ -334,7 +334,7 @@ defmodule SuperBarato.Crawler.Lider do
         pi = product["priceInfo"] || %{}
         current = price_int(get_in(pi, ["currentPrice", "price"]))
         was = price_int(get_in(pi, ["wasPrice", "price"]))
-        {regular, promo} = decide_prices(was || current, current)
+        {regular, promo} = pair_prices(was, current)
 
         imgs = product["imageInfo"] || %{}
 
@@ -432,9 +432,13 @@ defmodule SuperBarato.Crawler.Lider do
   # raw values now go straight into `identifiers_key` + `raw`; the
   # Linker generates canonical candidate forms at match time.
 
-  defp decide_prices(regular, current) do
+  # Parser stores what the chain volunteered, period. When Lider's
+  # priceInfo has both `wasPrice` and `currentPrice`, both columns
+  # get populated even if they're equal — the display layer decides
+  # whether to render as a promo. We don't second-guess by comparing.
+  defp pair_prices(regular, current) do
     cond do
-      is_integer(regular) and is_integer(current) and current < regular -> {regular, current}
+      is_integer(regular) and is_integer(current) -> {regular, current}
       is_integer(regular) -> {regular, nil}
       is_integer(current) -> {current, nil}
       true -> {nil, nil}

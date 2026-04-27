@@ -672,12 +672,16 @@ defmodule SuperBarato.Crawler.Cencosud do
 
   defp commercial_offer(_), do: %{}
 
+  # Parser stores what the chain volunteered, period. When VTEX gives
+  # us both ListPrice and Price, the first column gets ListPrice and
+  # the second gets Price even if they're equal — the display layer
+  # decides whether to render as a promo. We don't second-guess.
   defp prices_from_offer(offer) do
     list = price_int(offer["ListPrice"]) || price_int(offer["PriceWithoutDiscount"])
     price = price_int(offer["Price"])
 
     cond do
-      is_integer(list) and is_integer(price) and price < list -> {list, price}
+      is_integer(list) and is_integer(price) -> {list, price}
       is_integer(list) -> {list, nil}
       is_integer(price) -> {price, nil}
       true -> {nil, nil}
