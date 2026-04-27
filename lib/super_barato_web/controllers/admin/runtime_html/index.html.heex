@@ -4,7 +4,8 @@
   <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
-<.admin_container title="Crawlers · Live">
+<.admin_container>
+  <.page_header title="Crawlers · Live" />
   <.table rows={@snapshots} empty="No chains registered.">
     <:col :let={s} label="Chain"><.chain_badge chain={s.chain} /></:col>
     <:col :let={s} label="Pipeline" align={:center}>

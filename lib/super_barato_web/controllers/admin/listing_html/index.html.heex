@@ -4,7 +4,8 @@
   </:item>
 </.sub_navigation>
 
-<.admin_container title="Listings">
+<.admin_container>
+  <.page_header title="Listings" />
   <.form for={%{}} method="get" action={~p"/listings"}>
     <.input :if={@filters.chain != ""} type="hidden" name="chain" value={@filters.chain} />
     <.filters>
@@ -43,17 +44,21 @@
       <img :if={l.image_url} src={l.image_url} alt="" loading="lazy" class="data-table__thumb" />
     </:col>
 
-    <%!-- Combined Name + (SKU · Brand): name on top, dim "sku · brand"
-         line below. Sort key stays "name". --%>
+    <%!-- Combined Name + (SKU · Brand · chain.cl): name on top (linked
+         to our internal listing edit page), dim secondary line below.
+         Sort key stays "name". --%>
     <:col
       :let={l}
-      label="Product"
+      label="Listing"
       sort={sort_dir("name", @sort)}
       sort_href={sort_href(~p"/listings", @filters, "name", @sort)}
     >
-      <div>{l.name}</div>
+      <div><.link href={~p"/listings/#{l.id}/link"}>{l.name}</.link></div>
       <div class="cell-secondary">
         {[l.chain_sku, l.brand] |> Enum.reject(&(&1 in [nil, ""])) |> Enum.join(" · ")}
+        <%= if l.pdp_url do %>
+          · <a href={l.pdp_url} target="_blank" rel="noopener">{pdp_host(l.pdp_url)}</a>
+        <% end %>
       </div>
     </:col>
 
@@ -71,8 +76,8 @@
       sort_href={sort_href(~p"/listings", @filters, "current_regular_price", @sort)}
     >
       <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
-        <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
         <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
+        <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
       <% else %>
         <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
       <% end %>
@@ -88,17 +93,27 @@
       {format_datetime(l.last_priced_at)}
     </:col>
 
-    <%!-- Linked product, looked up via product_listings. "—" when no
-         link exists (linker hasn't run, or no EAN to match on). --%>
-    <:col :let={l} label="Product link">
+    <%!-- Linked product, looked up via product_listings. Name links to
+         our admin product show; secondary line shows the chains the
+         product is carried by. "—" when no link (linker hasn't run,
+         or no EAN to match on). --%>
+    <:col :let={l} label="Product">
       <%= case Map.get(@products_by_id, l.id) do %>
         <% nil -> %>
           <span class="opacity-50">—</span>
         <% p -> %>
-          <div>{p.canonical_name}</div>
-          <div :if={p.ean} class="text-xs opacity-60 font-mono">{p.ean}</div>
+          <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
+          <% chains = Map.get(@chains_by_product_id, p.id, []) %>
+          <div
+            :if={chains != []}
+            class="cell-secondary"
+            style="display: inline-flex; gap: 0.35rem; align-items: center;"
+          >
+            <.chain_badge :for={c <- chains} chain={c} />
+          </div>
       <% end %>
     </:col>
+
   </.table>
 
   <.pagination

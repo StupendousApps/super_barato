@@ -1,0 +1,168 @@
+<.admin_container>
+  <.page_header title={"Listing Detail: #{@listing.name}"}>
+    <:back href={~p"/listings"}>All listings</:back>
+  </.page_header>
+
+  <%!-- Listing card: shows what we're linking from. --%>
+  <.columns>
+    <:column :if={@listing.image_url} width="160px">
+      <img src={@listing.image_url} alt="" loading="lazy" />
+    </:column>
+    <:column>
+      <.key_value>
+        <:row label="Chain"><.chain_badge chain={@listing.chain} /></:row>
+        <:row label="Name">{@listing.name}</:row>
+        <:row label="Brand">{@listing.brand || "—"}</:row>
+        <:row label="EAN">{@listing.ean || "—"}</:row>
+        <:row label="URL">
+          <%= if @listing.pdp_url do %>
+            <a href={@listing.pdp_url} target="_blank" rel="noopener">{@listing.pdp_url}</a>
+          <% else %>
+            —
+          <% end %>
+        </:row>
+      </.key_value>
+    </:column>
+  </.columns>
+
+  <%!-- Currently linked product (if any) — same image + key_value
+       shape as the product show page, plus the table of every linked
+       listing with the Unlink action on this listing's row. --%>
+  <.well :if={@current_product}>
+    <:title>Currently linked</:title>
+
+    <.columns>
+      <:column :if={@current_product.image_url} width="200px">
+        <img src={@current_product.image_url} alt="" loading="lazy" />
+      </:column>
+      <:column>
+        <.key_value>
+          <:row label="Product">
+            <.link href={~p"/products/#{@current_product.id}"}>
+              {@current_product.canonical_name}
+            </.link>
+          </:row>
+          <:row label="Brand">{@current_product.brand || "—"}</:row>
+          <:row label="EANs">
+            <%= case @current_product_eans do %>
+              <% [] -> %>—
+              <% eans -> %>
+                <ul>
+                  <li :for={ean <- eans}>{ean}</li>
+                </ul>
+            <% end %>
+          </:row>
+          <:row label="Linked listings">{length(@current_product_listings)}</:row>
+        </.key_value>
+      </:column>
+    </.columns>
+
+    <.spacer size={:md} />
+
+    <.table rows={@current_product_listings} empty="No other listings linked.">
+      <:col :let={l} label="Chain"><.chain_badge chain={l.chain} /></:col>
+      <:col :let={l} label="Image" nowrap>
+        <img :if={l.image_url} src={l.image_url} alt="" loading="lazy" class="data-table__thumb" />
+      </:col>
+      <:col :let={l} label="Listing">
+        <%= if l.id == @listing.id do %>
+          <div>
+            <strong>{l.name}</strong>
+            <span class="cell-secondary">(this listing)</span>
+          </div>
+        <% else %>
+          <div><.link href={~p"/listings/#{l.id}/link"}>{l.name}</.link></div>
+        <% end %>
+        <div class="cell-secondary">
+          {[l.chain_sku, l.brand] |> Enum.reject(&(&1 in [nil, ""])) |> Enum.join(" · ")}
+          <%= if l.pdp_url do %>
+            · <a href={l.pdp_url} target="_blank" rel="noopener">{pdp_host(l.pdp_url)}</a>
+          <% end %>
+        </div>
+      </:col>
+      <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
+      <:col :let={l} label="Price" nowrap align={:right}>
+        <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
+          <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
+          <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
+        <% else %>
+          <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
+        <% end %>
+      </:col>
+      <:col :let={l} label="" nowrap align={:right}>
+        <%= if l.id == @listing.id do %>
+          <.form
+            for={%{}}
+            method="delete"
+            action={~p"/listings/#{@listing.id}/link?product_id=#{@current_product.id}"}
+          >
+            <.button type="submit" variant={:danger}>Unlink</.button>
+          </.form>
+        <% end %>
+      </:col>
+    </.table>
+  </.well>
+
+  <.form for={%{}} method="get" action={~p"/listings/#{@listing.id}/link"}>
+    <.filters>
+      <.input name="q" value={@filters.q} label="Search products" placeholder="Name or brand" />
+      <.input name="ean" value={@filters.ean} label="EAN" placeholder="Prefix" />
+      <:actions>
+        <.button type="submit" variant={:primary}>Search</.button>
+      </:actions>
+    </.filters>
+  </.form>
+
+  <.table rows={@result.items} empty="No matching products.">
+    <:col :let={p} label="Image" nowrap>
+      <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" class="data-table__thumb" />
+    </:col>
+
+    <:col :let={p} label="Product">
+      <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
+      <% chains = Map.get(@chains_by_product_id, p.id, []) %>
+      <div
+        :if={chains != []}
+        class="cell-secondary"
+        style="display: inline-flex; gap: 0.35rem; align-items: center;"
+      >
+        <.chain_badge :for={c <- chains} chain={c} />
+      </div>
+    </:col>
+
+    <:col :let={p} label="Brand" nowrap>{p.brand || "—"}</:col>
+
+    <:col :let={p} label="EAN(s)" nowrap>
+      <% eans = Map.get(@eans_by_product_id, p.id, []) %>
+      <%= case eans do %>
+        <% [] -> %>—
+        <% [one] -> %>{one}
+        <% [first | rest] -> %>
+          <div>{first}</div>
+          <div class="cell-secondary">+{length(rest)} more</div>
+      <% end %>
+    </:col>
+
+    <:col :let={p} label="" nowrap align={:right}>
+      <%= if @current_product && @current_product.id == p.id do %>
+        <.button variant={:success} disabled>Linked</.button>
+      <% else %>
+        <.form
+          for={%{}}
+          method="post"
+          action={~p"/listings/#{@listing.id}/link"}
+        >
+          <input type="hidden" name="product_id" value={p.id} />
+          <.button type="submit" variant={:primary}>Link</.button>
+        </.form>
+      <% end %>
+    </:col>
+  </.table>
+
+  <.pagination
+    page={@result.page}
+    total_pages={@result.total_pages}
+    base_url={~p"/listings/#{@listing.id}/link"}
+    params={@filters}
+  />
+</.admin_container>

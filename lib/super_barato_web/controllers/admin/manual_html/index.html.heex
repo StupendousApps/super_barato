@@ -4,7 +4,8 @@
   <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
-<.admin_container title="Manual probe">
+<.admin_container>
+  <.page_header title="Manual probe" />
   <p class="text-sm opacity-70 mb-4">
     Synchronous one-shot fetch + parse, using the same Http stack the worker
     uses. No GenServers, no DB writes — pick chain, kind, and (for product

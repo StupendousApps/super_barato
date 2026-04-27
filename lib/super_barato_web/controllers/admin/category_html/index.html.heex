@@ -4,7 +4,8 @@
   </:item>
 </.sub_navigation>
 
-<.admin_container title="Categories">
+<.admin_container>
+  <.page_header title="Categories" />
   <.form for={%{}} method="get" action={~p"/categories"}>
     <.input :if={@filters.chain != ""} type="hidden" name="chain" value={@filters.chain} />
     <.filters>

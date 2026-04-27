@@ -1,4 +1,5 @@
-<.admin_container title="Users">
+<.admin_container>
+  <.page_header title="Users" />
   <.table rows={@users} empty="No users yet.">
     <:col :let={u} label="Email">{u.email}</:col>
     <:col :let={u} label="Role">{role_label(u.role)}</:col>

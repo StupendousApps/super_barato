@@ -14,7 +14,8 @@
 
 /* Listings table — price column. Mono font so digits line up cleanly
    in the right-aligned column, regardless of width. When the listing
-   carries a promo, the regular price renders struck-through above it. */
+   carries a promo, the promo is the prominent value on top and the
+   regular renders struck-through beneath it. */
 .listings-table__price,
 .listings-table__price-promo {
     font-family: var(--font-family-mono, ui-monospace, monospace);
@@ -24,8 +25,5 @@
     font-size: var(--font-size-xs, 0.75rem);
     color: var(--text-color-3, #888);
     text-decoration: line-through;
-}
-
-.listings-table__price-promo {
     margin-top: 2px;
 }

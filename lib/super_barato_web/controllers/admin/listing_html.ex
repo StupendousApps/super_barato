@@ -29,6 +29,16 @@ defmodule SuperBaratoWeb.Admin.ListingHTML do
   def format_datetime(nil), do: "—"
   def format_datetime(%DateTime{} = dt), do: Calendar.strftime(dt, "%Y-%m-%d %H:%M")
 
+  @doc "Display host for a PDP URL — strips `www.`."
+  def pdp_host(url) when is_binary(url) do
+    case URI.parse(url) do
+      %URI{host: nil} -> url
+      %URI{host: host} -> String.replace_prefix(host, "www.", "")
+    end
+  end
+
+  def pdp_host(_), do: nil
+
   ## Sort helpers (consumed by the library's <.table>).
 
   @doc "Atom direction for the column header indicator."

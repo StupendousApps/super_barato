@@ -4,10 +4,12 @@
   <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
-<.admin_container title="Cron Jobs">
-  <:actions>
-    <.button href={~p"/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
-  </:actions>
+<.admin_container>
+  <.page_header title="Cron Jobs">
+    <:actions>
+      <.button href={~p"/crawlers/schedules/new"} variant={:primary}>New cron job</.button>
+    </:actions>
+  </.page_header>
 
   <.form for={%{}} method="get" action={~p"/crawlers/schedules"}>
     <.filters>

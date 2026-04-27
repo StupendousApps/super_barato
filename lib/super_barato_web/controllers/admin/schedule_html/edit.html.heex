@@ -4,8 +4,8 @@
   <:item key={:manual} href={~p"/crawlers/manual"}>Manual</:item>
 </.sub_navigation>
 
-<.admin_container title={"Edit · #{chain_label(@schedule.chain)} · #{kind_label(@schedule.kind)}"}>
-  <.page_header title="">
+<.admin_container>
+  <.page_header title={"Edit · #{chain_label(@schedule.chain)} · #{kind_label(@schedule.kind)}"}>
     <:back href={~p"/crawlers/schedules"}>Cron Jobs</:back>
   </.page_header>
 

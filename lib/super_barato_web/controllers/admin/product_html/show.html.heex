@@ -1,0 +1,180 @@
+<.admin_container>
+  <.page_header title={@product.canonical_name}>
+    <:back href={~p"/products"}>All products</:back>
+    <:actions>
+      <.button href={~p"/products/#{@product.id}/merge"} variant={:subtle}>
+        Merge into another product…
+      </.button>
+    </:actions>
+  </.page_header>
+
+  <.columns>
+    <:column :if={@product.image_url} width="200px">
+      <img src={@product.image_url} alt="" loading="lazy" />
+    </:column>
+    <:column>
+      <.key_value>
+        <:row label="Brand">{@product.brand || "—"}</:row>
+        <:row label="EANs (GTIN-13)">
+          <%= case @eans do %>
+            <% [] -> %>
+              —
+            <% list -> %>
+              <ul>
+                <li :for={ean <- list}>{ean}</li>
+              </ul>
+          <% end %>
+        </:row>
+        <:row label="Linked listings">{length(@listings)}</:row>
+      </.key_value>
+    </:column>
+  </.columns>
+
+  <.section_header title="Linked listings" />
+
+  <.table rows={@listings} empty="No linked listings.">
+    <:col :let={l} label="Chain">
+      <.chain_badge chain={l.chain} />
+    </:col>
+
+    <:col :let={l} label="Image" nowrap>
+      <img :if={l.image_url} src={l.image_url} alt="" loading="lazy" class="data-table__thumb" />
+    </:col>
+
+    <:col :let={l} label="Listing">
+      <div><.link href={~p"/listings/#{l.id}/link"}>{l.name}</.link></div>
+      <div class="cell-secondary">
+        {[l.chain_sku, l.brand] |> Enum.reject(&(&1 in [nil, ""])) |> Enum.join(" · ")}
+        <%= if l.pdp_url do %>
+          · <a href={l.pdp_url} target="_blank" rel="noopener">{pdp_host(l.pdp_url)}</a>
+        <% end %>
+      </div>
+    </:col>
+
+    <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
+
+    <:col :let={l} label="Source" nowrap>
+      <.badge>{Map.get(@sources, l.id, "—")}</.badge>
+    </:col>
+
+    <:col :let={l} label="Price" nowrap align={:right}>
+      <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
+        <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
+        <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
+      <% else %>
+        <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
+      <% end %>
+    </:col>
+
+    <:col :let={l} label="" nowrap align={:right}>
+      <.form
+        for={%{}}
+        method="delete"
+        action={~p"/products/#{@product.id}/listings/#{l.id}"}
+      >
+        <.button type="submit" variant={:danger}>Unlink</.button>
+      </.form>
+    </:col>
+  </.table>
+
+  <.section_header title="Search listings to link" />
+
+  <.form for={%{}} method="get" action={~p"/products/#{@product.id}"}>
+    <.filters>
+      <.input
+        name="chain"
+        type="select"
+        value={@search_filters.chain}
+        label="Chain"
+        options={
+          [{"All", ""} | Enum.map(Enum.reject(@chains, &is_nil/1), fn c ->
+            {chain_label(c), Atom.to_string(c)}
+          end)]
+        }
+      />
+      <.input name="q" value={@search_filters.q} label="Search" placeholder="Name or brand" />
+      <.input name="ean" value={@search_filters.ean} label="EAN" placeholder="Prefix" />
+      <.input
+        name="per_page"
+        type="select"
+        value={@search_filters.per_page}
+        label="Per page"
+        options={[{"50", ""}, {"25", "25"}, {"100", "100"}, {"200", "200"}]}
+      />
+      <:actions>
+        <.button type="submit" variant={:primary}>Search</.button>
+        <.button href={~p"/products/#{@product.id}"} variant={:subtle}>Reset</.button>
+      </:actions>
+    </.filters>
+  </.form>
+
+  <%= if @search_active do %>
+    <.table rows={@search_result.items} empty="No matching listings.">
+      <:col :let={l} label="Chain"><.chain_badge chain={l.chain} /></:col>
+
+      <:col :let={l} label="Image" nowrap>
+        <img :if={l.image_url} src={l.image_url} alt="" loading="lazy" class="data-table__thumb" />
+      </:col>
+
+      <:col :let={l} label="Listing">
+        <div><.link href={~p"/listings/#{l.id}/link"}>{l.name}</.link></div>
+        <div class="cell-secondary">
+          {[l.chain_sku, l.brand] |> Enum.reject(&(&1 in [nil, ""])) |> Enum.join(" · ")}
+          <%= if l.pdp_url do %>
+            · <a href={l.pdp_url} target="_blank" rel="noopener">{pdp_host(l.pdp_url)}</a>
+          <% end %>
+        </div>
+      </:col>
+
+      <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
+
+      <:col :let={l} label="Price" nowrap align={:right}>
+        <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
+          <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
+          <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
+        <% else %>
+          <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
+        <% end %>
+      </:col>
+
+      <:col :let={l} label="Product">
+        <%= case Map.get(@search_products_by_id, l.id) do %>
+          <% nil -> %>
+            <span class="opacity-50">—</span>
+          <% p -> %>
+            <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
+            <% chains = Map.get(@search_chains_by_product_id, p.id, []) %>
+            <div
+              :if={chains != []}
+              class="cell-secondary"
+              style="display: inline-flex; gap: 0.35rem; align-items: center;"
+            >
+              <.chain_badge :for={c <- chains} chain={c} />
+            </div>
+        <% end %>
+      </:col>
+
+      <:col :let={l} label="" nowrap align={:right}>
+        <%= if MapSet.member?(@linked_listing_ids, l.id) do %>
+          <.button variant={:success} disabled>Linked</.button>
+        <% else %>
+          <.form
+            for={%{}}
+            method="post"
+            action={~p"/products/#{@product.id}/listings?#{Map.take(@search_filters, [:q, :ean, :chain])}"}
+          >
+            <input type="hidden" name="listing_id" value={l.id} />
+            <.button type="submit" variant={:primary}>Link</.button>
+          </.form>
+        <% end %>
+      </:col>
+    </.table>
+
+    <.pagination
+      page={@search_result.page}
+      total_pages={@search_result.total_pages}
+      base_url={~p"/products/#{@product.id}"}
+      params={@search_filters}
+    />
+  <% end %>
+</.admin_container>

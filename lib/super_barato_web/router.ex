@@ -35,7 +35,15 @@ defmodule SuperBaratoWeb.Router do
 
     get "/", PageController, :index
     get "/products", ProductController, :index
+    get "/products/:id", ProductController, :show
+    get "/products/:id/merge", ProductController, :merge_new
+    post "/products/:id/merge", ProductController, :merge_create
+    post "/products/:id/listings", ProductController, :link_listing
+    delete "/products/:id/listings/:listing_id", ProductController, :unlink_listing
     get "/listings", ListingController, :index
+    get "/listings/:id/link", ListingController, :link_new
+    post "/listings/:id/link", ListingController, :link_create
+    delete "/listings/:id/link", ListingController, :link_delete
     get "/categories", CategoryController, :index
 
     get "/crawlers", ScheduleController, :index, as: :crawlers_root

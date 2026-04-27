@@ -1,0 +1,67 @@
+<.admin_container>
+  <.page_header title={"Merge: #{@source.canonical_name}"}>
+    <:back href={~p"/products/#{@source.id}"}>Cancel</:back>
+  </.page_header>
+
+  <.well color={:yellow}>
+    Picking a target merges <strong>{@source.canonical_name}</strong>
+    into it. The source product is deleted; its EANs and chain-listing
+    links move to the target. This action cannot be undone.
+  </.well>
+
+  <.form for={%{}} method="get" action={~p"/products/#{@source.id}/merge"}>
+    <.filters>
+      <.input name="q" value={@filters.q} label="Search target" placeholder="Name or brand" />
+      <.input name="ean" value={@filters.ean} label="EAN" placeholder="Prefix" />
+      <:actions>
+        <.button type="submit" variant={:primary}>Search</.button>
+      </:actions>
+    </.filters>
+  </.form>
+
+  <.table rows={@candidates} empty="No matching products.">
+    <:col :let={p} label="Image" nowrap>
+      <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" class="data-table__thumb" />
+    </:col>
+
+    <:col :let={p} label="Product">
+      <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
+      <div :if={p.brand} class="cell-secondary">{p.brand}</div>
+    </:col>
+
+    <:col :let={p} label="EAN(s)" nowrap>
+      <% eans = Map.get(@eans_by_product_id, p.id, []) %>
+      <%= case eans do %>
+        <% [] -> %>—
+        <% [one] -> %>{one}
+        <% [first | rest] -> %>
+          <div>{first}</div>
+          <div class="cell-secondary">+{length(rest)} more</div>
+      <% end %>
+    </:col>
+
+    <:col :let={p} label="" nowrap align={:right}>
+      <.form
+        for={%{}}
+        method="post"
+        action={~p"/products/#{@source.id}/merge"}
+      >
+        <input type="hidden" name="target_id" value={p.id} />
+        <.button
+          type="submit"
+          variant={:primary}
+          data-confirm={"Merge \"#{@source.canonical_name}\" into \"#{p.canonical_name}\"? The source product will be deleted."}
+        >
+          Merge into this
+        </.button>
+      </.form>
+    </:col>
+  </.table>
+
+  <.pagination
+    page={@result.page}
+    total_pages={@result.total_pages}
+    base_url={~p"/products/#{@source.id}/merge"}
+    params={@filters}
+  />
+</.admin_container>

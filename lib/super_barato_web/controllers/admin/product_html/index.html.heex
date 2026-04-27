@@ -1,4 +1,5 @@
-<.admin_container title="Products">
+<.admin_container>
+  <.page_header title="Products" />
   <.form for={%{}} method="get" action={~p"/products"}>
     <.filters>
       <.input name="q" value={@filters.q} label="Search" placeholder="Name or brand" />
@@ -27,25 +28,33 @@
       <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" class="data-table__thumb" />
     </:col>
 
-    <%!-- Canonical name + brand stack, same shape as listings table. --%>
+    <%!-- Canonical name + brand stack, same shape as listings table.
+         Name links to the product show page. --%>
     <:col
       :let={p}
       label="Product"
       sort={sort_dir("canonical_name", @sort)}
       sort_href={sort_href(~p"/products", @filters, "canonical_name", @sort)}
     >
-      <div>{p.canonical_name}</div>
+      <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
       <div :if={p.brand} class="cell-secondary">{p.brand}</div>
     </:col>
 
-    <:col
-      :let={p}
-      label="EAN"
-      nowrap
-      sort={sort_dir("ean", @sort)}
-      sort_href={sort_href(~p"/products", @filters, "ean", @sort)}
-    >
-      {p.ean || "—"}
+    <:col :let={p} label="EAN(s)" nowrap>
+      <% eans = Map.get(@eans_by_product_id, p.id, []) %>
+      <%= case eans do %>
+        <% [] -> %>
+          —
+        <% [one] -> %>
+          {one}
+        <% [first | rest] -> %>
+          <div>{first}</div>
+          <div class="cell-secondary">+{length(rest)} more</div>
+      <% end %>
+    </:col>
+
+    <:col :let={p} label="Listings" nowrap align={:right}>
+      {length(Map.get(@listings_by_product_id, p.id, []))}
     </:col>
 
     <%!-- One column per known chain — current effective price, or "—" if
@@ -58,8 +67,8 @@
           <span class="cell-secondary">—</span>
         <% l -> %>
           <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
-            <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
             <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
+            <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
           <% else %>
             <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
           <% end %>
