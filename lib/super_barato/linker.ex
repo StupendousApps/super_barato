@@ -81,6 +81,25 @@ defmodule SuperBarato.Linker do
   end
 
   @doc """
+  Bulk inverse lookup: given a list of `product_id`s, returns
+  `%{product_id => [%ChainListing{}, ...]}` covering every linked
+  listing. Used by the admin products table to render per-chain
+  price columns in a single query.
+  """
+  def listings_by_product_ids(product_ids) when is_list(product_ids) do
+    from(pl in ProductListing,
+      join: l in ChainListing,
+      on: pl.chain_listing_id == l.id,
+      where: pl.product_id in ^product_ids,
+      select: {pl.product_id, l}
+    )
+    |> Repo.all()
+    |> Enum.reduce(%{}, fn {product_id, listing}, acc ->
+      Map.update(acc, product_id, [listing], &[listing | &1])
+    end)
+  end
+
+  @doc """
   Bulk lookup: given a list of `chain_listing_id`s, returns
   `%{listing_id => %Product{}}` for those that have at least one
   product link. Used by the admin listings table to display the

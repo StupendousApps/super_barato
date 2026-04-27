@@ -12,7 +12,7 @@ defmodule SuperBarato.Catalog do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{Category, ChainListing}
+  alias SuperBarato.Catalog.{Category, ChainListing, Product}
   alias SuperBarato.Crawler.Category, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
@@ -308,8 +308,8 @@ defmodule SuperBarato.Catalog do
   Paginated categories for the admin table. Same result shape as
   `list_listings_page/1`.
 
-  Options: `:chain`, `:q` (LIKE on name / slug), `:leaves_only` (boolean),
-  `:sort`, `:page`, `:per_page`.
+  Options: `:chain`, `:q` (LIKE on name / slug), `:type` (`:leaf` /
+  `:parent` / `:all`), `:sort`, `:page`, `:per_page`.
   """
   def list_categories_page(opts \\ []) do
     page = max(1, opts[:page] || 1)
@@ -319,7 +319,7 @@ defmodule SuperBarato.Catalog do
       Category
       |> apply_cat_chain_filter(opts[:chain])
       |> apply_cat_q_filter(opts[:q])
-      |> apply_cat_leaves_filter(opts[:leaves_only])
+      |> apply_cat_type_filter(opts[:type])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -356,8 +356,9 @@ defmodule SuperBarato.Catalog do
     where(query, [c], like(c.name, ^like) or like(c.slug, ^like))
   end
 
-  defp apply_cat_leaves_filter(query, true), do: where(query, [c], c.is_leaf == true)
-  defp apply_cat_leaves_filter(query, _), do: query
+  defp apply_cat_type_filter(query, :leaf), do: where(query, [c], c.is_leaf == true)
+  defp apply_cat_type_filter(query, :parent), do: where(query, [c], c.is_leaf == false)
+  defp apply_cat_type_filter(query, _), do: query
 
   defp apply_cat_sort(query, "-" <> field), do: apply_cat_sort_dir(query, field, :desc)
   defp apply_cat_sort(query, field), do: apply_cat_sort_dir(query, field, :asc)
@@ -366,6 +367,68 @@ defmodule SuperBarato.Catalog do
     case Map.fetch(@category_sortable, field) do
       {:ok, atom} -> order_by(query, [c], [{^dir, field(c, ^atom)}])
       :error -> order_by(query, [c], desc: c.last_seen_at)
+    end
+  end
+
+  # Products
+
+  @product_sortable %{
+    "canonical_name" => :canonical_name,
+    "brand" => :brand,
+    "ean" => :ean,
+    "inserted_at" => :inserted_at,
+    "updated_at" => :updated_at
+  }
+
+  @doc """
+  Paginated products for the admin table. Same result shape as
+  `list_listings_page/1`.
+
+  Options: `:q` (LIKE on canonical_name / brand), `:ean` (prefix
+  match), `:sort`, `:page`, `:per_page`.
+  """
+  def list_products_page(opts \\ []) do
+    page = max(1, opts[:page] || 1)
+    per_page = opts[:per_page] |> clamp_per_page()
+
+    query =
+      Product
+      |> apply_product_q_filter(opts[:q])
+      |> apply_ean_filter(opts[:ean])
+
+    total_entries = Repo.aggregate(query, :count)
+
+    items =
+      query
+      |> apply_product_sort(opts[:sort] || "-updated_at")
+      |> limit(^per_page)
+      |> offset(^((page - 1) * per_page))
+      |> Repo.all()
+
+    %{
+      items: items,
+      page: page,
+      per_page: per_page,
+      total_entries: total_entries,
+      total_pages: max(1, div(total_entries + per_page - 1, per_page))
+    }
+  end
+
+  defp apply_product_q_filter(query, nil), do: query
+  defp apply_product_q_filter(query, ""), do: query
+
+  defp apply_product_q_filter(query, q) when is_binary(q) do
+    like = "%" <> String.replace(q, "%", "\\%") <> "%"
+    where(query, [p], like(p.canonical_name, ^like) or like(p.brand, ^like))
+  end
+
+  defp apply_product_sort(query, "-" <> field), do: apply_product_sort_dir(query, field, :desc)
+  defp apply_product_sort(query, field), do: apply_product_sort_dir(query, field, :asc)
+
+  defp apply_product_sort_dir(query, field, dir) do
+    case Map.fetch(@product_sortable, field) do
+      {:ok, atom} -> order_by(query, [p], [{^dir, field(p, ^atom)}])
+      :error -> order_by(query, [p], desc: p.updated_at)
     end
   end
 end

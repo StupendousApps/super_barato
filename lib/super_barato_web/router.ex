@@ -34,6 +34,7 @@ defmodule SuperBaratoWeb.Router do
     pipe_through [:browser, :require_admin]
 
     get "/", PageController, :index
+    get "/products", ProductController, :index
     get "/listings", ListingController, :index
     get "/categories", CategoryController, :index
 
