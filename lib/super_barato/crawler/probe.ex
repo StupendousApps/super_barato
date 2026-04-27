@@ -83,10 +83,25 @@ defmodule SuperBarato.Crawler.Probe do
   """
   def resolve_url(%{chain: chain, kind: :categories}) when is_atom(chain) do
     case config_for(chain) do
-      %Cencosud.Config{categories_url: url} when is_binary(url) -> {:ok, url}
-      _ -> {:error, :no_categories_endpoint}
+      %Cencosud.Config{categories_url: url} when is_binary(url) ->
+        {:ok, url}
+
+      _ ->
+        # Non-Cencosud chains discover categories programmatically
+        # (multi-step traversal or GraphQL POST), but for the probe
+        # we can still hit the first URL the chain's
+        # `discover_categories` would issue and inspect the
+        # response — useful for confirming reachability.
+        case categories_probe_url(chain) do
+          nil -> {:error, :no_categories_endpoint}
+          url -> {:ok, url}
+        end
     end
   end
+
+  defp categories_probe_url(:tottus), do: "https://www.tottus.cl/tottus-cl/lista/CATG27054/Tottus"
+  defp categories_probe_url(:lider), do: "https://super.lider.cl/"
+  defp categories_probe_url(_), do: nil
 
   def resolve_url(%{chain: chain, kind: :product_pdp, category_slug: slug}) when is_binary(slug) do
     sample_pdp_url_for_category(chain, slug)
