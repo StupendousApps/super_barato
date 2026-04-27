@@ -1,21 +1,37 @@
 defmodule SuperBarato.Crawler.Chain.Queue do
   @moduledoc """
-  Bounded FIFO task queue, one per chain. The Worker pops; Cron,
-  Producer, Results, and (for requeue-on-block) Worker itself push.
+  Bounded FIFO task queue with **high/low watermark backpressure**,
+  one per chain. The Worker pops; Cron, Producer, Results, and (for
+  requeue-on-block) Worker itself push.
 
-  Push/pop are blocking calls — `push/2` blocks the caller when the
-  queue is full; `pop/1` blocks when empty. Parked callers are held in
-  internal FIFOs and serviced when the other side makes progress, so
-  the queue is the backpressure primitive for the whole pipeline.
+  Push/pop are blocking calls — `push/2` parks the caller when the
+  queue is full or the gate is closed; `pop/1` parks when empty.
+  Parked callers are held in internal FIFOs.
 
-  `requeue/2` (for the Worker-on-block path) puts a task back at the
-  front of the queue and bypasses the capacity check — it's a swap,
-  not an add, so it shouldn't deadlock a full queue.
+  ## Watermarks
+
+  Naive backpressure (release one parked push per pop) keeps the
+  queue at `capacity-1 ↔ capacity` in steady state — invisible
+  oscillation. With watermarks the queue runs in **bursts**:
+
+    * Producer pushes freely until `:capacity` (high watermark).
+    * At `:capacity`, the gate closes; further pushes park.
+    * Pops drain the queue normally, parked pushes stay parked.
+    * When the queue drains to `:low_water`, the gate reopens and
+      all parked pushes flood back in (up to `:capacity`).
+
+  Default `capacity: 50`, `low_water: 30`. The producer wakes up to
+  push 20 tasks at once every ~30 seconds (worker drains at 1 req/s),
+  giving a much more useful queue-size signal in the dashboard.
+
+  `requeue/2` (worker-on-block path) bypasses both the gate and the
+  capacity check — it's a swap, not an add.
   """
 
   use GenServer
 
-  @default_capacity 200
+  @default_capacity 50
+  @default_low_water 30
   @call_timeout :infinity
 
   # Public API
@@ -75,9 +91,24 @@ defmodule SuperBarato.Crawler.Chain.Queue do
 
   @impl true
   def init(opts) do
+    capacity = Keyword.get(opts, :capacity, @default_capacity)
+    # Allow the caller to opt into a tighter low-water than the
+    # default. Clamp to (0, capacity) so a misconfig can't deadlock
+    # the gate.
+    low_water =
+      opts
+      |> Keyword.get(:low_water, default_low_water(capacity))
+      |> max(0)
+      |> min(capacity)
+
     state = %{
       chain: Keyword.fetch!(opts, :chain),
-      capacity: Keyword.get(opts, :capacity, @default_capacity),
+      capacity: capacity,
+      low_water: low_water,
+      # Gate `open?` controls whether *new* pushes go straight into
+      # the queue. Closes when we hit `capacity`; reopens when pops
+      # drain below `low_water`.
+      open?: true,
       q: :queue.new(),
       pending_pops: :queue.new(),
       pending_pushes: :queue.new()
@@ -86,7 +117,13 @@ defmodule SuperBarato.Crawler.Chain.Queue do
     {:ok, state}
   end
 
-  # Push: hand directly to a waiting pop if any; else enqueue if room; else park.
+  defp default_low_water(capacity) when capacity >= 4, do: div(capacity * 6, 10)
+  defp default_low_water(_), do: 0
+
+  # Push: hand directly to a waiting pop if any (bypasses the gate
+  # entirely — that's a degenerate case where the worker is faster
+  # than the producer). Otherwise, if the gate is open and the queue
+  # has room, enqueue. Else park.
   @impl true
   def handle_call({:push, task}, from, state) do
     case :queue.out(state.pending_pops) do
@@ -95,15 +132,20 @@ defmodule SuperBarato.Crawler.Chain.Queue do
         {:reply, :ok, %{state | pending_pops: rest}}
 
       {:empty, _} ->
-        if :queue.len(state.q) < state.capacity do
-          {:reply, :ok, %{state | q: :queue.in(task, state.q)}}
-        else
-          {:noreply, %{state | pending_pushes: :queue.in({from, task}, state.pending_pushes)}}
+        cond do
+          state.open? and :queue.len(state.q) < state.capacity ->
+            new_q = :queue.in(task, state.q)
+            new_open? = :queue.len(new_q) < state.capacity
+            {:reply, :ok, %{state | q: new_q, open?: new_open?}}
+
+          true ->
+            {:noreply, %{state | pending_pushes: :queue.in({from, task}, state.pending_pushes)}}
         end
     end
   end
 
-  # Requeue: front of queue, bypasses capacity, hand directly to waiting pop if any.
+  # Requeue: front of queue, bypasses capacity AND the gate (it's a
+  # swap, not an add), hand directly to waiting pop if any.
   def handle_call({:requeue, task}, _from, state) do
     case :queue.out(state.pending_pops) do
       {{:value, pop_from}, rest} ->
@@ -115,16 +157,19 @@ defmodule SuperBarato.Crawler.Chain.Queue do
     end
   end
 
-  # Pop: hand oldest item if any; else park. When we pop, also wake a parked pusher if any.
+  # Pop: hand oldest item if any; else park. After dequeuing, if the
+  # gate is closed and we've drained to `low_water`, reopen and flood
+  # parked pushes into the queue (up to capacity).
   def handle_call(:pop, from, state) do
     case :queue.out(state.q) do
       {{:value, task}, rest} ->
-        state = maybe_accept_pending_push(%{state | q: rest})
+        state = maybe_reopen_and_drain(%{state | q: rest})
         {:reply, task, state}
 
       {:empty, _} ->
-        # If someone is parked in push but queue is empty, that can't happen
-        # (pushes only park when queue is full). Just park this pop.
+        # Pushes only park when the gate is closed (size at capacity)
+        # — at which point the queue can't be empty. So an empty
+        # queue can't have parked pushes. Just park this pop.
         {:noreply, %{state | pending_pops: :queue.in(from, state.pending_pops)}}
     end
   end
@@ -134,8 +179,8 @@ defmodule SuperBarato.Crawler.Chain.Queue do
   end
 
   # Drop everything queued + reply :ok to anyone parked in a push so
-  # they can move on. Parked pops are left intact — they're harmless
-  # and the next legitimate push will service them.
+  # they can move on. Reopens the gate. Parked pops are left intact —
+  # they're harmless and the next legitimate push will service them.
   def handle_call(:clear, _from, state) do
     queued = :queue.len(state.q)
     parked = :queue.len(state.pending_pushes)
@@ -145,18 +190,36 @@ defmodule SuperBarato.Crawler.Chain.Queue do
     |> Enum.each(fn {pusher_from, _task} -> GenServer.reply(pusher_from, :ok) end)
 
     {:reply, queued + parked,
-     %{state | q: :queue.new(), pending_pushes: :queue.new()}}
+     %{state | q: :queue.new(), pending_pushes: :queue.new(), open?: true}}
   end
 
-  # After a pop frees a slot, service one parked pusher if any.
-  defp maybe_accept_pending_push(state) do
-    case :queue.out(state.pending_pushes) do
-      {{:value, {pusher_from, task}}, rest} ->
-        GenServer.reply(pusher_from, :ok)
-        %{state | q: :queue.in(task, state.q), pending_pushes: rest}
+  # When a pop drops queue size to (or below) low_water, reopen the
+  # gate and drain parked pushes back in until queue is at capacity
+  # or no parked pushes remain.
+  defp maybe_reopen_and_drain(%{open?: false} = state) do
+    if :queue.len(state.q) <= state.low_water do
+      drain_pending_pushes(%{state | open?: true})
+    else
+      state
+    end
+  end
 
-      {:empty, _} ->
+  defp maybe_reopen_and_drain(state), do: state
+
+  defp drain_pending_pushes(state) do
+    cond do
+      :queue.len(state.q) >= state.capacity ->
+        %{state | open?: false}
+
+      :queue.is_empty(state.pending_pushes) ->
         state
+
+      true ->
+        {{:value, {pusher_from, task}}, rest} = :queue.out(state.pending_pushes)
+        GenServer.reply(pusher_from, :ok)
+
+        new_q = :queue.in(task, state.q)
+        drain_pending_pushes(%{state | q: new_q, pending_pushes: rest})
     end
   end
 end

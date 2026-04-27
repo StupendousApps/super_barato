@@ -51,7 +51,8 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
         SuperBarato.Crawler.Schedules.cron_entries(chain)
       end)
 
-    queue_capacity = Keyword.get(opts, :queue_capacity, 200)
+    queue_capacity = Keyword.get(opts, :queue_capacity, 50)
+    queue_low_water = Keyword.get(opts, :queue_low_water, div(queue_capacity * 6, 10))
     interval_ms = Keyword.get(opts, :interval_ms, 1_000)
     fallback_profiles = Keyword.get(opts, :fallback_profiles, [:chrome116])
     block_backoff_ms = Keyword.get(opts, :block_backoff_ms, 60_000)
@@ -63,7 +64,7 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
 
     children = [
       {Results, chain: chain, adapter: adapter},
-      {Queue, chain: chain, capacity: queue_capacity},
+      {Queue, chain: chain, capacity: queue_capacity, low_water: queue_low_water},
       {Worker,
        chain: chain,
        adapter: adapter,
