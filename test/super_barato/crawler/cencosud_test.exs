@@ -86,6 +86,35 @@ defmodule SuperBarato.Crawler.CencosudTest do
     end
   end
 
+  describe "category-pruning end-to-end (sitemap → Scope filter)" do
+    test "Jumbo: blacklisted hogar-jugueteria-y-libreria branch is dropped" do
+      cats = Cencosud.parse_categories_xml(:jumbo, xml("jumbo_category-0.xml"))
+
+      # No top-level + no descendants survive.
+      refute Enum.any?(cats, &String.starts_with?(&1.slug, "hogar-jugueteria-y-libreria"))
+
+      # Sanity check: a non-blacklisted top-level still comes through.
+      assert Enum.any?(cats, &(&1.slug == "despensa"))
+    end
+
+    test "Santa Isabel: blacklisted `hogar` and `hogar-jugueteria-y-libreria` branches are dropped" do
+      cats = Cencosud.parse_categories_xml(:santa_isabel, xml("santa_isabel_category.xml"))
+
+      refute Enum.any?(cats, fn c ->
+               c.slug == "hogar" or String.starts_with?(c.slug, "hogar/")
+             end)
+
+      refute Enum.any?(
+               cats,
+               &String.starts_with?(&1.slug, "hogar-jugueteria-y-libreria")
+             )
+
+      # Food top-levels still in.
+      assert Enum.any?(cats, &(&1.slug == "carnes-y-pescados"))
+      assert Enum.any?(cats, &(&1.slug == "despensa"))
+    end
+  end
+
   describe "parse_products/3 (Jumbo search fixture)" do
     setup do
       products = Fixtures.json!(:jumbo, "search_leche_en_polvo_page1.json")

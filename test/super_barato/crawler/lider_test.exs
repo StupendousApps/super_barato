@@ -43,6 +43,38 @@ defmodule SuperBarato.Crawler.LiderTest do
       assert is_binary(desp.external_id)
     end
 
+    test "blacklisted top-levels are filtered before mark_leaves runs", %{cats: cats} do
+      slugs = Enum.map(cats, & &1.slug)
+
+      # Every Lider blacklist entry — top-level departments must be
+      # absent from the parsed tree (they get dropped before
+      # mark_leaves).
+      for top <- ~w(hogar libreria-y-cumpleanos tecno-y-electro
+                    ferreteria vestuario deporte-y-aire-libre
+                    parrillas-y-jardin automovil mainstays) do
+        refute Enum.any?(slugs, &(&1 == top or String.starts_with?(&1, top <> "/"))),
+               "expected #{top} branch to be filtered out, but found in: " <>
+                 inspect(Enum.filter(slugs, &(&1 == top or String.starts_with?(&1, top <> "/"))))
+      end
+    end
+
+    test "the mundo-bebe-y-jugueteria/jugueteria sub-tree is dropped, non-toy siblings remain",
+         %{cats: cats} do
+      slugs = Enum.map(cats, & &1.slug)
+
+      refute Enum.any?(slugs, &String.starts_with?(&1, "mundo-bebe-y-jugueteria/jugueteria"))
+
+      # Lider stores top-level slugs as `<dept>/<id>` so the bare
+      # parent slug doesn't appear; instead, multiple siblings under
+      # the parent prefix should still be in scope (panales, alimentación,
+      # perfumería, …).
+      kept_under_parent =
+        Enum.filter(slugs, &String.starts_with?(&1, "mundo-bebe-y-jugueteria/"))
+
+      assert length(kept_under_parent) > 0,
+             "expected non-toy mundo-bebe-y-jugueteria/* siblings to survive"
+    end
+
     test "sub-categories reference an existing parent_slug", %{cats: cats} do
       parent_slugs = cats |> Enum.map(& &1.slug) |> MapSet.new()
       l2 = Enum.filter(cats, &(&1.level == 2))
