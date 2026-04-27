@@ -68,20 +68,35 @@ defmodule SuperBarato.Linker do
   @doc """
   Admin-curated link. Replaces any pre-existing link the
   chain_listing has — a chain_listing belongs to **at most one**
-  product, and an admin pick is the authoritative override.
+  product, and an admin pick is the authoritative override. Any
+  previously-linked product that ends up with zero listings is
+  hard-deleted so it doesn't pollute the products list.
   """
   def link_admin(product_id, chain_listing_id) do
     Repo.transaction(fn ->
+      orphan_candidates =
+        from(pl in ProductListing,
+          where:
+            pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id,
+          select: pl.product_id
+        )
+        |> Repo.all()
+        |> Enum.uniq()
+
       from(pl in ProductListing,
         where:
           pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id
       )
       |> Repo.delete_all()
 
-      case link(product_id, chain_listing_id, source: @source_admin, confidence: 1.0) do
-        {:ok, row} -> row
-        {:error, cs} -> Repo.rollback(cs)
-      end
+      result =
+        case link(product_id, chain_listing_id, source: @source_admin, confidence: 1.0) do
+          {:ok, row} -> row
+          {:error, cs} -> Repo.rollback(cs)
+        end
+
+      Enum.each(orphan_candidates, &delete_if_orphan/1)
+      result
     end)
   end
 
@@ -127,15 +142,53 @@ defmodule SuperBarato.Linker do
     end)
   end
 
-  @doc "Remove the link between a product and a chain_listing."
+  @doc """
+  Remove the link between a product and a chain_listing. If the
+  product is left with zero listings, it's hard-deleted (cascades
+  through `product_eans`).
+  """
   def unlink(product_id, chain_listing_id) do
-    from(pl in ProductListing,
-      where: pl.product_id == ^product_id and pl.chain_listing_id == ^chain_listing_id
-    )
-    |> Repo.delete_all()
+    Repo.transaction(fn ->
+      {n, _} =
+        from(pl in ProductListing,
+          where: pl.product_id == ^product_id and pl.chain_listing_id == ^chain_listing_id
+        )
+        |> Repo.delete_all()
+
+      if n > 0 do
+        delete_if_orphan(product_id)
+        :ok
+      else
+        :not_found
+      end
+    end)
     |> case do
-      {0, _} -> :not_found
-      {_, _} -> :ok
+      {:ok, result} -> result
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc """
+  Delete `product_id` if no `product_listings` rows reference it.
+  Returns `:deleted` or `:kept`. Cascades through `product_eans`
+  via the FK `on_delete: :delete_all`.
+  """
+  def delete_if_orphan(product_id) when is_integer(product_id) or is_binary(product_id) do
+    count =
+      Repo.aggregate(
+        from(pl in ProductListing, where: pl.product_id == ^product_id),
+        :count
+      )
+
+    if count == 0 do
+      case Repo.get(Product, product_id) do
+        nil -> :kept
+        product ->
+          Repo.delete!(product)
+          :deleted
+      end
+    else
+      :kept
     end
   end
 
