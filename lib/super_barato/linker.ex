@@ -15,6 +15,11 @@ defmodule SuperBarato.Linker do
     * `"ean_canonical"` — `Linker.Backfill` matched the listing's
       canonicalized GTIN-13 against a Product's `ean`. High
       confidence; produced in bulk.
+    * `"single_chain"` — listing has no usable EAN (Tottus's loose
+      meat, produce sold by weight, anything where the chain doesn't
+      expose a barcode). Each such listing gets a placeholder Product
+      with no `ProductEan` rows; admin or a future fuzzy pass can
+      merge these into canonical Products via `merge_products/2`.
     * `"admin"` — a human curator linked the pair through the admin
       UI (`Linker.link_admin/2`). High confidence by definition;
       used to fix or supplement what `ean_canonical` couldn't reach
@@ -35,10 +40,12 @@ defmodule SuperBarato.Linker do
   alias SuperBarato.Linker.Identity
 
   @source_ean_canonical "ean_canonical"
+  @source_single_chain "single_chain"
   @source_admin "admin"
 
   @doc "Canonical source-tag constants. See module docs."
   def source_ean_canonical, do: @source_ean_canonical
+  def source_single_chain, do: @source_single_chain
   def source_admin, do: @source_admin
 
   @doc """
@@ -87,6 +94,46 @@ defmodule SuperBarato.Linker do
     do: Identity.canonicalize_gtin13(ean) || Identity.canonicalize_ean8(ean)
 
   def canonical_key_for_listing(_), do: nil
+
+  @doc """
+  Find-or-create a placeholder Product for a listing that has no
+  usable EAN. Returns `{:created | :existed, %Product{}}`. Idempotent:
+  if the listing already has a Product via `product_listings`, that
+  one is reused; otherwise a fresh Product (with **no** ProductEan
+  rows) is inserted and seeded from the listing's display fields.
+
+  Used for chains that don't expose barcodes for some product classes
+  (Tottus's loose deli, produce-by-weight). These Products are
+  single-chain by definition; admins or a future fuzzy-match pass
+  can merge them into canonical EAN-keyed Products via
+  `merge_products/2`.
+  """
+  def find_or_create_eanless_product_for_listing(%ChainListing{} = listing) do
+    case existing_product_for_listing(listing.id) do
+      %Product{} = p ->
+        {:existed, p}
+
+      nil ->
+        attrs = %{
+          canonical_name: listing.name || "(unnamed)",
+          brand: listing.brand,
+          image_url: listing.image_url
+        }
+
+        {:ok, product} = %Product{} |> Product.changeset(attrs) |> Repo.insert()
+        {:created, product}
+    end
+  end
+
+  defp existing_product_for_listing(chain_listing_id) do
+    from(p in Product,
+      join: pl in ProductListing,
+      on: pl.product_id == p.id,
+      where: pl.chain_listing_id == ^chain_listing_id,
+      limit: 1
+    )
+    |> Repo.one()
+  end
 
   @doc """
   Link a product to a chain_listing. Idempotent — re-linking the same

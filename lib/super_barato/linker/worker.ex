@@ -11,9 +11,12 @@ defmodule SuperBarato.Linker.Worker do
   listings for the same EAN can't race two `Product` inserts past
   the unique index.
 
-  Listings whose `ean` doesn't canonicalize (nil, malformed, granel
-  with no barcode) are silently skipped — `Linker.Backfill` periodically
-  retries with a wider net (and admins can link the long tail manually).
+  Listings without a usable EAN (Tottus's loose meat, produce sold by
+  weight, anything where the chain doesn't expose a barcode) are linked
+  to a single-chain placeholder Product instead of being skipped, so
+  every listing produces exactly one Product on first sight. Cross-chain
+  matching for those long-tail rows is left to `Linker.merge_products/2`
+  (admin or a future fuzzy pass).
   """
 
   use GenServer
@@ -60,18 +63,33 @@ defmodule SuperBarato.Linker.Worker do
   end
 
   defp link_one(id) do
-    with %ChainListing{} = listing <- Repo.get(ChainListing, id),
-         key when is_binary(key) <- Linker.canonical_key_for_listing(listing) do
-      seed = %{name: listing.name, brand: listing.brand, image_url: listing.image_url}
-      {_action, product} = Linker.find_or_create_product_for_ean(key, seed)
+    case Repo.get(ChainListing, id) do
+      nil ->
+        :skip
 
-      Linker.link(product.id, listing.id,
-        source: Linker.source_ean_canonical(),
-        confidence: 1.0,
-        linked_at: DateTime.utc_now() |> DateTime.truncate(:second)
-      )
-    else
-      _ -> :skip
+      %ChainListing{} = listing ->
+        case Linker.canonical_key_for_listing(listing) do
+          key when is_binary(key) ->
+            seed = %{name: listing.name, brand: listing.brand, image_url: listing.image_url}
+            {_action, product} = Linker.find_or_create_product_for_ean(key, seed)
+
+            Linker.link(product.id, listing.id,
+              source: Linker.source_ean_canonical(),
+              confidence: 1.0,
+              linked_at: now()
+            )
+
+          nil ->
+            {_action, product} = Linker.find_or_create_eanless_product_for_listing(listing)
+
+            Linker.link(product.id, listing.id,
+              source: Linker.source_single_chain(),
+              confidence: 0.5,
+              linked_at: now()
+            )
+        end
     end
   end
+
+  defp now, do: DateTime.utc_now() |> DateTime.truncate(:second)
 end
