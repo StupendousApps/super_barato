@@ -39,6 +39,27 @@ defmodule SuperBarato.Crawler.Scope do
       automovil
       mainstays
       mundo-bebe-y-jugueteria/jugueteria
+
+      # Slugs that started appearing after Lider's nav refresh —
+      # the old `tecno-y-electro` / `vestuario` / `deporte-y-aire-libre`
+      # umbrellas were split into individual departments, and a
+      # cross-cutting BCI promo joined the menu. Old slugs above stay
+      # for defensive coverage of any historical fixture data.
+      aprovecha-tu-lider-bci
+      tecno
+      celulares
+      computacion
+      electrohogar
+      muebles
+      dormitorio
+      decohogar
+      climatizacion
+      juguetes-y-entretencion
+      mujer
+      hombre
+      infantil
+      maletas-y-accesorios-de-viaje
+      deportes-y-aire-libre
     ),
     "unimarc" => ~w(
       hogar

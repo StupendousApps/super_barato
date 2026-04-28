@@ -19,6 +19,16 @@ defmodule SuperBarato.Crawler.ScopeTest do
       end
     end
 
+    test "drops Lider current-nav promos and split-out departments" do
+      for top <- ~w(aprovecha-tu-lider-bci tecno celulares computacion
+                    electrohogar muebles dormitorio decohogar climatizacion
+                    juguetes-y-entretencion mujer hombre infantil
+                    maletas-y-accesorios-de-viaje deportes-y-aire-libre) do
+        assert Scope.blacklisted?(:lider, top), "expected #{top} blacklisted"
+        assert Scope.blacklisted?(:lider, top <> "/87654321")
+      end
+    end
+
     test "drops Unimarc hogar; keeps everything else" do
       assert Scope.blacklisted?(:unimarc, "hogar")
       refute Scope.blacklisted?(:unimarc, "limpieza")
