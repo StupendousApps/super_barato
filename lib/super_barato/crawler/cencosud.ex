@@ -80,69 +80,17 @@ defmodule SuperBarato.Crawler.Cencosud do
 
   @spec discover_categories(Config.t()) :: {:ok, [Category.t()]} | {:error, term()}
   def discover_categories(%Config{} = cfg) do
-    with {:ok, urls} <- expand_categories_urls(cfg),
-         {:ok, bodies} <- fetch_all_xml(cfg, urls) do
-      {:ok, parse_categories_xml(cfg.chain, bodies)}
-    end
-  end
-
-  # Some chains paginate the category sitemap into `category-0.xml`,
-  # `category-1.xml`, … but the master `sitemap.xml` index sometimes
-  # only references one of them (Jumbo currently lists `-0` and silently
-  # serves `-1` outside the index, missing entire grocery aisles like
-  # `chocolates-galletas-y-dulces` and `fiambreria-y-encurtidos`).
-  #
-  # If the configured `categories_url` matches `<prefix>-N.xml`, we
-  # probe N+1, N+2, … until a 404 to be sure we've collected every
-  # split. URLs that don't fit the numbered pattern fetch as-is.
-  defp expand_categories_urls(%Config{categories_url: url} = cfg) do
-    case Regex.run(~r/^(.+-)(\d+)(\.xml)$/, url) do
-      [_, prefix, n_str, suffix] ->
-        n = String.to_integer(n_str)
-        rest = probe_numbered(cfg, prefix, n + 1, suffix, [])
-        {:ok, [url | rest]}
-
-      _ ->
-        {:ok, [url]}
-    end
-  end
-
-  defp probe_numbered(cfg, prefix, n, suffix, acc) when n < 100 do
-    candidate = prefix <> Integer.to_string(n) <> suffix
-
-    case Http.get(candidate, chain: cfg.chain, headers: xml_headers(cfg)) do
-      {:ok, %Http.Response{status: 200}} ->
-        probe_numbered(cfg, prefix, n + 1, suffix, [candidate | acc])
-
-      _ ->
-        Enum.reverse(acc)
-    end
-  end
-
-  defp probe_numbered(_cfg, _prefix, _n, _suffix, acc), do: Enum.reverse(acc)
-
-  defp fetch_all_xml(cfg, urls) do
-    Enum.reduce_while(urls, {:ok, []}, fn url, {:ok, acc} ->
-      case fetch_xml(cfg, url) do
-        {:ok, body} -> {:cont, {:ok, [body | acc]}}
-        {:error, _} = err -> {:halt, err}
-      end
-    end)
-    |> case do
-      {:ok, list} -> {:ok, Enum.reverse(list)}
-      err -> err
+    case fetch_xml(cfg, cfg.categories_url) do
+      {:ok, body} -> {:ok, parse_categories_xml(cfg.chain, body)}
+      {:error, _} = err -> err
     end
   end
 
   @doc false
   # Public for unit testing against the captured sitemap fixture.
-  # Accepts either a single XML body or a list of bodies (one per
-  # paginated sitemap file).
-  def parse_categories_xml(chain, xml_or_list) do
-    bodies = List.wrap(xml_or_list)
-
-    bodies
-    |> Enum.flat_map(&extract_locs(&1, "url"))
+  def parse_categories_xml(chain, xml) when is_binary(xml) do
+    xml
+    |> extract_locs("url")
     |> Enum.map(&path_only/1)
     |> Enum.reject(&(&1 in [nil, ""]))
     |> Enum.uniq()
