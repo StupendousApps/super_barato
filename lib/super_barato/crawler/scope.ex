@@ -68,13 +68,43 @@ defmodule SuperBarato.Crawler.Scope do
       CATG24817/Black-Week
       CATG25257/San-Valentin
       CATG27086/Celebraciones
+      CATG29069/Escolares
+      CATG27082/Escolares-y-libreria
+      CATG27077/Jugueteria
+      CATG27080/Deporte-y-aire-libre
+      CATG27088/Electro
+      CATG27088/Electro-y-tecnologia
+      CATG28816/Vestuario
+      CATG27088/Electro-y-Tecnologia
+      CATG27079/Hogar-y-Ferreteria
     ),
     "acuenta" => ~w(
       hogar-entretencion-y-tecnologia
     )
   }
 
+  # Whitelist exceptions: slugs that override a blacklisted ancestor.
+  # The ancestry walk picks the closest match — if the first
+  # blacklist/whitelist hit climbing from the node is a whitelist,
+  # the node stays in scope even though one of its ancestors is on
+  # the blacklist.
+  #
+  # Example for Tottus: `Escolares y Librería` is non-grocery overall
+  # (papelería, mochilas, vestuario), but its `Colaciones` (snacks)
+  # and `Útiles de Aseo` (hygiene) sub-trees ARE grocery.
+  @whitelists %{
+    "tottus" => ~w(
+      CATG27968/Colaciones
+      CATG27965/Utiles-de-Aseo
+      CATG29073/Colaciones
+    )
+  }
+
   @blacklist_sets Map.new(@blacklists, fn {chain, slugs} ->
+                    {chain, MapSet.new(slugs)}
+                  end)
+
+  @whitelist_sets Map.new(@whitelists, fn {chain, slugs} ->
                     {chain, MapSet.new(slugs)}
                   end)
 
@@ -114,47 +144,69 @@ defmodule SuperBarato.Crawler.Scope do
 
   @doc """
   Drops blacklisted categories from a list of `%Crawler.Category{}`
-  structs, including descendants of blacklisted categories whose own
-  slug doesn't share the blacklisted prefix. Used by each chain's
+  structs, with whitelist exceptions that can rescue a sub-tree
+  inside a blacklisted ancestor. Used by each chain's
   `discover_categories` immediately before `mark_leaves/1`.
+
+  The decision walks self → ancestor chain. The first whitelist or
+  blacklist hit wins:
+
+    * whitelist hit  → keep
+    * blacklist hit  → drop
+    * neither found  → keep (default)
 
   Slug-prefix matching alone is sufficient for chains where slugs
   encode the path (Cencosud / Lider — `hogar-jugueteria/jugueteria/...`),
   but Tottus uses flat per-node slugs (`CATG27997/Menaje`) where the
-  hierarchy lives only in `parent_slug`. We also walk the parent chain
-  so blacklisting `CATG25257/San-Valentin` correctly drops every
-  descendant the slug-prefix would miss.
+  hierarchy lives only in `parent_slug`, so the walk uses parent_slug.
   """
   @spec filter(atom() | String.t(), [struct()]) :: [struct()]
   def filter(chain, categories) when is_list(categories) do
+    chain_str = if is_atom(chain), do: Atom.to_string(chain), else: chain
     by_slug = Map.new(categories, &{&1.slug, &1})
 
     Enum.reject(categories, fn cat ->
-      blacklisted?(chain, cat.slug) or ancestor_blacklisted?(chain, cat, by_slug)
+      decision(chain_str, cat, by_slug) == :drop
     end)
   end
 
-  defp ancestor_blacklisted?(chain, cat, by_slug),
-    do: ancestor_blacklisted?(chain, cat, by_slug, MapSet.new())
+  defp decision(chain, cat, by_slug),
+    do: decision(chain, cat, by_slug, MapSet.new())
 
-  defp ancestor_blacklisted?(chain, %{parent_slug: parent}, by_slug, seen)
-       when is_binary(parent) do
+  defp decision(chain, cat, by_slug, seen) do
     cond do
-      MapSet.member?(seen, parent) ->
-        # Defensive cycle break — shouldn't happen with home-menu data
-        # but a malformed parent_slug chain would otherwise loop.
-        false
+      MapSet.member?(seen, cat.slug) ->
+        # Cycle break.
+        :keep
 
-      blacklisted?(chain, parent) ->
-        true
+      whitelisted?(chain, cat.slug) ->
+        :keep
+
+      blacklisted?(chain, cat.slug) ->
+        :drop
+
+      is_binary(cat.parent_slug) and Map.has_key?(by_slug, cat.parent_slug) ->
+        decision(
+          chain,
+          Map.fetch!(by_slug, cat.parent_slug),
+          by_slug,
+          MapSet.put(seen, cat.slug)
+        )
+
+      is_binary(cat.parent_slug) ->
+        # Parent referenced but not in the candidate list. Fall back to
+        # slug-prefix blacklist on the parent chain.
+        if blacklisted?(chain, cat.parent_slug), do: :drop, else: :keep
 
       true ->
-        case Map.get(by_slug, parent) do
-          nil -> false
-          ancestor -> ancestor_blacklisted?(chain, ancestor, by_slug, MapSet.put(seen, parent))
-        end
+        :keep
     end
   end
 
-  defp ancestor_blacklisted?(_chain, _cat, _by_slug, _seen), do: false
+  defp whitelisted?(chain, slug) do
+    case Map.get(@whitelist_sets, chain) do
+      nil -> false
+      set -> MapSet.member?(set, slug)
+    end
+  end
 end
