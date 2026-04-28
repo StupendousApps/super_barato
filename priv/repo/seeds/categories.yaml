@@ -1,1356 +1,243 @@
 # Unified category taxonomy.
 #
-# Two levels: category → subcategory. Each subcategory carries a
-# `chains` map. Each chain's value is a list of slugs from that
-# chain's category tree (the third column in tmp/categories/*.txt).
-#
-# Slugs are stable IDs; chain categories are routed into a
-# subcategory by matching their *name* (column 1 of the dumps), not
-# their slug, against the unified label here. A given chain may
-# contribute zero, one, or many slugs per subcategory.
-#
-# Lider's category tree is effectively flat (L1 → leaf), so the
-# slugs listed under `lider:` are L1/L2 prefixes — the seeder is
-# expected to prefix-match against chain_listings.category_paths
-# rather than equality-match.
+# Two levels: category → subcategory. Slugs are stable IDs.
+# Chain-specific category links are NOT stored here — they are
+# tracked in the per-chain checklist files at
+# priv/repo/seeds/categories/<chain>.txt and resolved by
+# SuperBarato.Catalog.CategoryChecklist.
 
 - name: Frutas y Verduras
   slug: frutas-y-verduras
   subcategories:
     - name: Frutas
       slug: frutas
-      chains:
-        jumbo:
-          - frutas-y-verduras/frutas
-        santa_isabel:
-          - frutas-y-verduras/frutas
-        lider:
-          - frutas-y-verduras/frutas
-        tottus: []
-        unimarc:
-          - frutas-y-verduras/frutas
-        acuenta:
-          - frutas-y-verduras/06/frutas/0601
-
     - name: Verduras
       slug: verduras
-      chains:
-        jumbo:
-          - frutas-y-verduras/verduras
-        santa_isabel:
-          - frutas-y-verduras/verduras
-        lider:
-          - frutas-y-verduras/verduras
-        tottus: []
-        unimarc:
-          - frutas-y-verduras/verduras
-        acuenta:
-          - frutas-y-verduras/06/verduras/0602
-
     - name: Frutos Secos y Semillas
       slug: frutos-secos
-      chains:
-        jumbo:
-          - frutas-y-verduras/frutos-secos-y-semillas
-        santa_isabel:
-          - frutas-y-verduras/frutos-secos-y-semillas
-        lider:
-          - frutas-y-verduras/frutos-secos
-        tottus: []
-        unimarc:
-          - frutas-y-verduras/frutos-secos
-        acuenta: []
-
     - name: Orgánicos
       slug: organicos
-      chains:
-        jumbo:
-          - frutas-y-verduras/frutas-y-verduras-organicas
-        santa_isabel:
-          - frutas-y-verduras/frutas-y-verduras-organicas
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
 
 - name: Carnes y Pescados
   slug: carnes-y-pescados
   subcategories:
     - name: Vacuno
       slug: vacuno
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider:
-          - carnes-y-pescados/vacuno
-        tottus: []
-        unimarc:
-          - carnes/vacuno
-        acuenta:
-          - carnes/03/vacuno/0305
-
     - name: Pollo
       slug: pollo
-      chains:
-        jumbo:
-          - carnes-y-pescados/pollo
-        santa_isabel:
-          - carnes-y-pescados/pollo
-        lider:
-          - carnes-y-pescados/pollo
-        tottus: []
-        unimarc:
-          - carnes/pollo
-        acuenta:
-          - carnes/03/pollo/0304
-
     - name: Cerdo y Cordero
       slug: cerdo-y-cordero
-      chains:
-        jumbo:
-          - carnes-y-pescados/cerdo-y-cordero
-        santa_isabel:
-          - carnes-y-pescados/cerdo-y-cordero
-        lider:
-          - carnes-y-pescados/cerdo
-          - carnes-y-pescados/cordero
-        tottus: []
-        unimarc:
-          - carnes/cerdo
-          - carnes/cordero-y-otros
-        acuenta:
-          - carnes/03/cerdo/0302
-
     - name: Pavo
       slug: pavo
-      chains:
-        jumbo:
-          - carnes-y-pescados/pavo
-        santa_isabel:
-          - carnes-y-pescados/pavo
-        lider:
-          - carnes-y-pescados/pavo
-        tottus: []
-        unimarc:
-          - carnes/pavo
-        acuenta:
-          - carnes/03/pavo/0306
-
     - name: Pescados y Mariscos
       slug: pescados-y-mariscos
-      chains:
-        jumbo:
-          - carnes-y-pescados/pescados
-          - carnes-y-pescados/mariscos
-          - carnes-y-pescados/camarones
-          - carnes-y-pescados/gourmet-del-mar
-        santa_isabel:
-          - carnes-y-pescados/pescados
-          - carnes-y-pescados/mariscos
-          - carnes-y-pescados/camarones
-          - carnes-y-pescados/gourmet-del-mar
-        lider:
-          - carnes-y-pescados/pescados-y-mariscos
-        tottus:
-          - CATG27127/Pescados-y-Mariscos
-        unimarc:
-          - carnes/pescaderia
-        acuenta:
-          - carnes/03/pescados-y-mariscos/0303
-
     - name: Salchichas y Parrilleros
       slug: salchichas-y-parrilleros
-      chains:
-        jumbo:
-          - quesos-y-fiambres/salchichas-y-parrilleros
-        santa_isabel:
-          - quesos-y-fiambres/salchichas-y-parrilleros
-        lider:
-          - carnes-y-pescados/para-parrilla
-        tottus: []
-        unimarc: []
-        acuenta:
-          - carnes/03/salchichas-y-parrilleros/0307
 
 - name: Lácteos y Quesos
   slug: lacteos-y-quesos
   subcategories:
     - name: Leches
       slug: leches
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/leches
-          - lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas
-        santa_isabel:
-          - lacteos-huevos-y-congelados/leches
-          - lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas
-        lider:
-          - frescos-y-lacteos/leche
-        tottus:
-          - CATG27179/Leches
-        unimarc:
-          - lacteos-huevos-y-refrigerados/leches-y-cremas
-        acuenta:
-          - frescos-y-lacteos/07/leches-y-cremas/0703
-
     - name: Yoghurt
       slug: yoghurt
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/yoghurt
-        santa_isabel:
-          - lacteos-huevos-y-congelados/yoghurt
-        lider:
-          - frescos-y-lacteos/yoghurt
-        tottus:
-          - CATG27182/Yoghurt
-        unimarc:
-          - lacteos-huevos-y-refrigerados/yoghurt
-        acuenta:
-          - frescos-y-lacteos/07/yoghurt/0708
-
     - name: Quesos
       slug: quesos
-      chains:
-        jumbo:
-          - quesos-y-fiambres/quesos
-        santa_isabel:
-          - quesos-y-fiambres/quesos
-        lider:
-          - frescos-y-lacteos/quesos
-        tottus:
-          - CATG27180/Quesos
-        unimarc:
-          - quesos-y-fiambres/quesos
-        acuenta:
-          - frescos-y-lacteos/07/quesos-y-quesillos/0707
-
     - name: Mantequillas y Margarinas
       slug: mantequillas
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/mantequillas-y-margarinas
-        santa_isabel:
-          - lacteos-huevos-y-congelados/mantequillas-y-margarinas
-        lider:
-          - frescos-y-lacteos/mantequillas-y-margarinas
-        tottus:
-          - CATG27185/Mantequillas-y-Mantecas
-        unimarc:
-          - lacteos-huevos-y-refrigerados/mantequillas
-        acuenta:
-          - frescos-y-lacteos/07/huevos-y-mantequillas/0702
-
     - name: Cremas
       slug: cremas
-      chains:
-        jumbo:
-          - despensa/harinas-postres-y-reposteria/cremas
-        santa_isabel:
-          - despensa/harinas-postres-y-reposteria/cremas
-        lider:
-          - frescos-y-lacteos/cremas
-        tottus:
-          - CATG27192/Cremas
-        unimarc: []
-        acuenta: []
-
     - name: Postres Refrigerados
       slug: postres
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/postres-refrigerados
-        santa_isabel:
-          - lacteos-huevos-y-congelados/postres-refrigerados
-        lider:
-          - frescos-y-lacteos/postres-refrigerados
-        tottus:
-          - CATG27189/Postres-Listos
-        unimarc:
-          - lacteos-huevos-y-refrigerados/postres
-        acuenta:
-          - frescos-y-lacteos/07/postres/0706
-
     - name: Huevos
       slug: huevos
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/huevos
-        santa_isabel:
-          - lacteos-huevos-y-congelados/huevos
-        lider:
-          - frescos-y-lacteos/huevos
-        tottus: []
-        unimarc:
-          - lacteos-huevos-y-refrigerados/huevos
-        acuenta: []
-
     - name: Bebidas Vegetales
       slug: bebidas-vegetales
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/bebidas-vegetales
-        santa_isabel:
-          - lacteos-huevos-y-congelados/bebidas-vegetales
-        lider:
-          - frescos-y-lacteos/bebidas-vegetales
-        tottus: []
-        unimarc:
-          - lacteos-huevos-y-refrigerados/bebidas-vegetales
-        acuenta: []
 
 - name: Fiambres
   slug: fiambres
   subcategories:
     - name: Fiambres y Embutidos
       slug: fiambres-y-embutidos
-      chains:
-        jumbo:
-          - quesos-y-fiambres/fiambres
-        santa_isabel:
-          - quesos-y-fiambres/fiambres
-        lider:
-          - frescos-y-lacteos/fiambres-y-embutidos
-        tottus: []
-        unimarc:
-          - quesos-y-fiambres/fiambres-y-embutidos
-        acuenta:
-          - frescos-y-lacteos/07/fiambreria/0701
-
     - name: Aceitunas, Pepinillos y Encurtidos
       slug: aceitunas-pepinillos
-      chains:
-        jumbo:
-          - quesos-y-fiambres/aceitunas-pepinillos-y-otros
-        santa_isabel:
-          - quesos-y-fiambres/aceitunas-pepinillos-y-otros
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
 
 - name: Bebidas
   slug: bebidas
   subcategories:
     - name: Aguas
       slug: aguas
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/aguas
-        santa_isabel:
-          - botilleria/aguas
-        lider:
-          - bebidas-y-snacks/aguas
-        tottus:
-          - CATG27215/Aguas
-        unimarc:
-          - bebidas-y-licores/aguas
-        acuenta:
-          - bebidas-y-snacks/02/aguas/0201
-
     - name: Bebidas Gaseosas
       slug: bebidas-gaseosas
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/bebidas-gaseosas
-        santa_isabel:
-          - botilleria/bebidas-gaseosas
-        lider:
-          - bebidas-y-snacks/bebidas
-        tottus:
-          - CATG27217/Bebidas
-        unimarc:
-          - bebidas-y-licores/bebidas
-        acuenta:
-          - bebidas-y-snacks/02/bebidas/0202
-
     - name: Jugos
       slug: jugos
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/jugos
-        santa_isabel:
-          - botilleria/jugos
-        lider:
-          - bebidas-y-snacks/jugos
-        tottus:
-          - CATG27216/Jugos-y-Nectar
-        unimarc:
-          - bebidas-y-licores/jugos
-        acuenta:
-          - bebidas-y-snacks/02/jugos/0205
-
     - name: Energéticas e Isotónicas
       slug: energeticas-isotonicas
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/bebidas-energeticas
-          - licores-bebidas-y-aguas/bebidas-isotonicas-y-sueros
-        santa_isabel:
-          - botilleria/bebidas-energeticas
-          - botilleria/bebidas-isotonicas-y-sueros
-        lider:
-          - bebidas-y-snacks/bebidas-funcionales
-        tottus:
-          - CATG27218/Isotonicas-y-energeticas
-        unimarc: []
-        acuenta:
-          - bebidas-y-snacks/02/energeticas-e-isotonicas/0209
-
     - name: Té e Infusiones Frías
       slug: te-frio
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/infusiones-frias
-        santa_isabel:
-          - botilleria/infusiones-frias
-        lider: []
-        tottus:
-          - CATG27219/Te-liquido-y-limonadas
-        unimarc: []
-        acuenta: []
 
 - name: Licores
   slug: licores
   subcategories:
     - name: Cervezas
       slug: cervezas
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/cervezas
-        santa_isabel:
-          - botilleria/cervezas
-          - vinos-cervezas-y-licores/packs-de-cervezas
-        lider:
-          - la-boti/cerveza
-        tottus:
-          - CATG27083/Cervezas
-        unimarc:
-          - bebidas-y-licores/cervezas
-        acuenta:
-          - el-bar/80/cervezas/8001
-
     - name: Vinos
       slug: vinos
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/vinos
-        santa_isabel:
-          - botilleria/vinos
-        lider:
-          - la-boti/vinos
-          - la-boti/vinos-y-espumantes-3x
-        tottus:
-          - CATG27210/Otros-Vinos
-          - CATG28173/Vino-Blanco
-          - CATG27210/Vinos
-        unimarc:
-          - bebidas-y-licores/vinos-y-espumantes
-        acuenta:
-          - el-bar/80/vinos/8002
-
     - name: Espumantes
       slug: espumantes
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/espumantes-y-sidras
-        santa_isabel:
-          - botilleria/espumantes-y-sidras
-        lider:
-          - la-boti/espumantes
-        tottus:
-          - CATG27211/Espumantes
-        unimarc: []
-        acuenta:
-          - el-bar/80/espumantes/8006
-
     - name: Destilados
       slug: destilados
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/destilados
-          - licores-bebidas-y-aguas/licores-y-spritz
-          - licores-bebidas-y-aguas/cocteles
-        santa_isabel:
-          - botilleria/destilados
-          - botilleria/licores-y-spritz
-          - botilleria/cocteles
-        lider:
-          - la-boti/destilados
-          - la-boti/coctel
-        tottus:
-          - CATG27214/Destilados
-          - CATG27213/Licores-y-cocteles
-          - CATG27212/Bar
-        unimarc:
-          - bebidas-y-licores/destilados-y-licores
-        acuenta:
-          - el-bar/80/destilados/8003
-          - el-bar/80/coctel/8005
-
     - name: Sin Alcohol
       slug: sin-alcohol
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/sin-alcohol
-        santa_isabel:
-          - botilleria/sin-alcohol
-        lider:
-          - la-boti/sin-alcohol
-        tottus: []
-        unimarc: []
-        acuenta:
-          - el-bar/80/sin-alcohol/8004
 
 - name: Despensa
   slug: despensa
   subcategories:
     - name: Aceites y Aliños
       slug: aceites-y-alinos
-      chains:
-        jumbo:
-          - despensa/aceites-sal-y-condimentos
-        santa_isabel:
-          - despensa/aceites-sal-y-condimentos
-        lider:
-          - despensa/aceites-y-aderezos
-        tottus: []
-        unimarc:
-          - despensa/aceite-y-alinos
-        acuenta:
-          - despensa/05/aceites-y-vinagres/0501
-          - despensa/05/sal-y-condimentos/0518
-
     - name: Aderezos y Salsas
       slug: aderezos-y-salsas
-      chains:
-        jumbo:
-          - despensa/aderezos-y-salsas
-        santa_isabel:
-          - despensa/aderezos-y-salsas
-        lider:
-          - despensa/salsas
-        tottus: []
-        unimarc:
-          - despensa/condimentos-y-salsas
-        acuenta:
-          - despensa/05/salsas-y-aderezos/0519
-
     - name: Arroz, Legumbres y Quinoa
       slug: arroz-y-legumbres
-      chains:
-        jumbo:
-          - despensa/arroz-quinoa-cuscus
-          - despensa/legumbres
-        santa_isabel:
-          - despensa/arroz-quinoa-cuscus
-          - despensa/legumbres
-        lider:
-          - despensa/arroz-y-legumbres
-        tottus: []
-        unimarc:
-          - despensa/arroz-y-legumbres
-        acuenta:
-          - despensa/05/arroz-legumbres-y-semillas/0502
-
     - name: Fideos y Pastas
       slug: pastas
-      chains:
-        jumbo:
-          - despensa/fideos-pastas-y-salsas
-        santa_isabel:
-          - despensa/fideos-pastas-y-salsas
-        lider:
-          - despensa/pastas-y-salsas
-        tottus: []
-        unimarc:
-          - despensa/fideos-pastas-y-salsas
-        acuenta:
-          - despensa/05/fideos-pastas-y-salsas/0516
-
     - name: Conservas
       slug: conservas
-      chains:
-        jumbo:
-          - despensa/conservas
-        santa_isabel:
-          - despensa/conservas
-        lider:
-          - despensa/conservas
-        tottus: []
-        unimarc:
-          - despensa/conservas
-        acuenta:
-          - despensa/05/conservas/0506
-
     - name: Azúcar y Endulzantes
       slug: azucar-y-endulzantes
-      chains:
-        jumbo:
-          - despensa/azucar-y-endulzantes
-        santa_isabel:
-          - despensa/azucar-y-endulzantes
-        lider: []
-        tottus: []
-        unimarc:
-          - despensa/azucar-y-endulzantes
-        acuenta:
-          - despensa/05/azucar-y-endulzantes/0503
-
     - name: Harinas y Repostería
       slug: harinas-reposteria
-      chains:
-        jumbo:
-          - despensa/harinas-postres-y-reposteria
-        santa_isabel:
-          - despensa/harinas-postres-y-reposteria
-        lider:
-          - despensa/harinas-y-polvos
-        tottus: []
-        unimarc:
-          - despensa/harina-y-reposteria
-        acuenta:
-          - despensa/05/harinas-y-polvos/0512
-          - despensa/05/reposteria/0517
-
     - name: Sopas e Instantáneos
       slug: sopas-instantaneos
-      chains:
-        jumbo:
-          - despensa/sopas-cremas-e-instantaneos
-        santa_isabel:
-          - despensa/sopas-cremas-e-instantaneos
-        lider:
-          - despensa/alimentos-instantaneos
-        tottus: []
-        unimarc:
-          - despensa/comida-instantanea-y-preparada
-        acuenta:
-          - despensa/05/sopas-cremas-e-instantaneos/0520
-
     - name: Cocina Internacional
       slug: cocina-internacional
-      chains:
-        jumbo:
-          - despensa/comidas-etnicas
-        santa_isabel:
-          - despensa/comidas-etnicas
-        lider:
-          - despensa/cocina-internacional
-        tottus: []
-        unimarc:
-          - despensa/cocina-internacional
-        acuenta: []
 
 - name: Desayuno y Dulces
   slug: desayuno-y-dulces
   subcategories:
     - name: Café, Té y Hierbas
       slug: cafe-te-hierbas
-      chains:
-        jumbo:
-          - despensa/cafe-y-cafeteras
-          - despensa/te-infusiones-y-mate
-        santa_isabel:
-          - despensa/cafe-y-cafeteras
-          - despensa/te-infusiones-y-mate
-        lider:
-          - desayunos-y-dulces/cafe-te-y-hierbas
-        tottus: []
-        unimarc:
-          - desayuno-y-dulces/cafe-te-y-hierbas
-        acuenta:
-          - desayuno-y-dulces/44/cafe-te-y-hierbas/4401
-
     - name: Cereales, Avenas y Barras
       slug: cereales-avenas
-      chains:
-        jumbo:
-          - despensa/cereales-avenas-y-barras
-        santa_isabel:
-          - despensa/cereales-avenas-y-barras
-        lider:
-          - desayunos-y-dulces/cereales
-        tottus: []
-        unimarc:
-          - desayuno-y-dulces/cereales
-        acuenta:
-          - desayuno-y-dulces/44/cereales-avenas-y-barras/4403
-
     - name: Galletas
       slug: galletas
-      chains:
-        jumbo:
-          - chocolates-galletas-y-snacks/galletas
-          - chocolates-galletas-y-snacks/galletas-dulces
-          - chocolates-galletas-y-snacks/galletas-saladas
-          - chocolates-galletas-y-dulces/galletas
-        santa_isabel:
-          - chocolates-galletas-y-snacks/galletas-dulces
-          - chocolates-galletas-y-snacks/galletas-saladas
-        lider:
-          - desayunos-y-dulces/galletas-y-colaciones-dulces
-          - bebidas-y-snacks/snacks-y-picoteo/galletas-saladas
-        tottus: []
-        unimarc:
-          - desayuno-y-dulces/galletas-y-colaciones-dulces
-        acuenta:
-          - desayuno-y-dulces/44/galletas-y-colaciones/4405
-
     - name: Chocolates y Dulces
       slug: chocolates-y-dulces
-      chains:
-        jumbo:
-          - chocolates-galletas-y-snacks/chocolates
-          - chocolates-galletas-y-snacks/dulces
-          - chocolates-galletas-y-dulces/colaciones
-        santa_isabel:
-          - chocolates-galletas-y-snacks/chocolates
-          - chocolates-galletas-y-snacks/dulces
-        lider:
-          - desayunos-y-dulces/chocolates-y-candy
-          - chocolates/tipos
-          - chocolates/variedad
-        tottus: []
-        unimarc:
-          - desayuno-y-dulces/chocolates-y-confites
-        acuenta:
-          - desayuno-y-dulces/44/chocolates-y-dulces/4404
-
     - name: Mermeladas, Miel y Manjar
       slug: mermeladas-miel-manjar
-      chains:
-        jumbo:
-          - despensa/mermeladas-miel-y-otros
-          - lacteos-huevos-y-congelados/manjar-y-dulce-de-leche
-        santa_isabel:
-          - despensa/mermeladas-miel-y-otros
-          - lacteos-huevos-y-congelados/manjar-y-dulce-de-leche
-        lider:
-          - desayunos-y-dulces/dulces-mermeladas-y-manjar
-        tottus: []
-        unimarc:
-          - desayuno-y-dulces/mermelada-y-manjar
-          - desayuno-y-dulces/miel-y-salsas
-        acuenta:
-          - desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406
 
 - name: Snacks
   slug: snacks
   subcategories:
     - name: Snacks Salados
       slug: snacks-salados
-      chains:
-        jumbo:
-          - chocolates-galletas-y-snacks/snacks
-          - chocolates-galletas-y-snacks/pastas-para-coctel-y-untables
-        santa_isabel:
-          - chocolates-galletas-y-snacks/snacks
-          - chocolates-galletas-y-snacks/pastas-para-coctel-y-untables
-        lider:
-          - bebidas-y-snacks/snacks-y-picoteo
-        tottus: []
-        unimarc:
-          - despensa/coctel-y-snacks
-        acuenta:
-          - bebidas-y-snacks/02/snacks-y-galletas-saladas/0208
-
     - name: Colaciones
       slug: colaciones
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider:
-          - colaciones/barritas-y-cereales
-          - colaciones/galletas-y-snack-colacion
-          - colaciones/jugos-colacion
-          - colaciones/leches-colacion
-          - colaciones/yoghurt
-        tottus: []
-        unimarc: []
-        acuenta: []
 
 - name: Congelados
   slug: congelados
   subcategories:
     - name: Comidas Preparadas
       slug: comidas-preparadas
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/comidas-congeladas
-          - experiencias-jumbo/comidas-preparadas
-        santa_isabel:
-          - lacteos-huevos-y-congelados/comidas-congeladas
-        lider:
-          - congelados/comidas-congeladas
-        tottus:
-          - CATG27178/Platos-Preparados
-        unimarc:
-          - congelados/platos-congelados
-        acuenta:
-          - congelados/04/comidas-preparadas/0405
-
     - name: Hamburguesas y Apanados
       slug: hamburguesas-apanados
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/hamburguesas
-          - lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos
-          - lacteos-huevos-y-congelados/churrascos-lomitos-y-otros
-        santa_isabel:
-          - lacteos-huevos-y-congelados/hamburguesas
-          - lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos
-          - lacteos-huevos-y-congelados/churrascos-lomitos-y-otros
-        lider:
-          - congelados/hamburguesas-y-churrascos
-        tottus: []
-        unimarc:
-          - congelados/hamburguesas-apanados-y-churrascos
-        acuenta:
-          - congelados/04/hamburguesas-y-churrascos/0409
-          - congelados/04/nuggets-y-apanados/0407
-
     - name: Helados y Postres
       slug: helados-postres
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/helados-y-postres
-          - lacteos-huevos-y-congelados/hielo
-        santa_isabel:
-          - lacteos-huevos-y-congelados/helados-y-postres
-          - lacteos-huevos-y-congelados/hielo
-          - congelados/hielo
-        lider:
-          - congelados/helados
-        tottus: []
-        unimarc:
-          - congelados/hielo-helados-y-postres
-        acuenta:
-          - congelados/04/helados-y-postres/0402
-
     - name: Frutas y Verduras Congeladas
       slug: frutas-verduras-congeladas
-      chains:
-        jumbo:
-          - lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas
-          - lacteos-huevos-y-congelados/verduras-congeladas
-        santa_isabel:
-          - lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas
-          - lacteos-huevos-y-congelados/verduras-congeladas
-        lider:
-          - congelados/verduras-y-frutas-congeladas
-        tottus: []
-        unimarc:
-          - congelados/frutas-y-verduras-congeladas
-        acuenta:
-          - congelados/04/verduras-y-frutas-congeladas/0403
-
     - name: Pescados y Mariscos Congelados
       slug: pescados-mariscos-congelados
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider: []
-        tottus: []
-        unimarc:
-          - congelados/pescados-y-mariscos
-        acuenta: []
 
 - name: Comidas Preparadas
   slug: comidas-preparadas-frescas
   subcategories:
     - name: Empanadas y Sándwiches
       slug: empanadas-sandwiches
-      chains:
-        jumbo:
-          - catering/empanadas-quiche-y-hamburguesas
-          - catering/sandwich-y-schiacciata
-        santa_isabel:
-          - comidas-preparadas/empanadas-y-sandwiches
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
-
     - name: Pizzas y Pastas Frescas
       slug: pizzas-pastas-frescas
-      chains:
-        jumbo: []
-        santa_isabel:
-          - comidas-preparadas/pizzas
-          - comidas-preparadas/pastas-frescas-y-salsas
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
-
     - name: Platos Preparados
       slug: platos-preparados
-      chains:
-        jumbo:
-          - catering/tablas-dulces-y-saladas
-        santa_isabel:
-          - comidas-preparadas/platos-de-fondo
-          - comidas-preparadas/aperitivos
-          - comidas-preparadas/entradas-y-ensaladas
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta:
-          - frescos-y-lacteos/07/platos-preparados/0709
-
     - name: Pastelería
       slug: pasteleria
-      chains:
-        jumbo:
-          - catering/tortas-cheesecake-y-tartaletas
-          - panaderia-y-pasteleria/pasteleria
-        santa_isabel:
-          - panaderia-y-pasteleria/pasteleria
-          - comidas-preparadas/postres-y-frutas
-        lider: []
-        tottus:
-          - CATG27142/Pasteleria
-        unimarc:
-          - panaderia-y-pasteleria/pasteleria
-        acuenta:
-          - panaderia-y-pasteleria/10/pasteleria/1002
 
 - name: Panadería
   slug: panaderia
   subcategories:
     - name: Pan
       slug: pan
-      chains:
-        jumbo:
-          - panaderia-y-pasteleria/panaderia-envasada
-          - panaderia-y-pasteleria/panaderia-granel
-        santa_isabel:
-          - panaderia-y-pasteleria/panaderia-envasada
-          - panaderia-y-pasteleria/panaderia-granel
-        lider: []
-        tottus:
-          - CATG27140/Panaderia
-        unimarc:
-          - panaderia-y-pasteleria/pan
-          - panaderia-y-pasteleria/pan-envasado
-        acuenta:
-          - panaderia-y-pasteleria/10/panaderia/1001
-
     - name: Masas y Tortillas
       slug: masas-tortillas
-      chains:
-        jumbo:
-          - panaderia-y-pasteleria/masas-y-tortillas
-        santa_isabel:
-          - panaderia-y-pasteleria/masas-y-tortillas
-        lider: []
-        tottus:
-          - CATG27144/Masas-y-Tortillas
-        unimarc: []
-        acuenta:
-          - panaderia-y-pasteleria/10/tortillas-y-masas/1004
 
 - name: Aseo y Limpieza
   slug: aseo-y-limpieza
   subcategories:
     - name: Detergentes y Suavizantes
       slug: detergentes-suavizantes
-      chains:
-        jumbo:
-          - limpieza/limpieza-de-ropa
-        santa_isabel:
-          - limpieza/limpieza-de-ropa
-        lider:
-          - limpieza-y-aseo/detergentes
-        tottus: []
-        unimarc:
-          - limpieza/detergente
-        acuenta:
-          - aseo-y-limpieza/11/detergentes-y-suavizantes/1105
-
     - name: Papeles
       slug: papeles
-      chains:
-        jumbo:
-          - limpieza/papeles-hogar
-        santa_isabel:
-          - limpieza/papeles-hogar
-        lider:
-          - limpieza-y-aseo/papeles
-        tottus: []
-        unimarc:
-          - limpieza/papeles
-        acuenta:
-          - aseo-y-limpieza/11/papeles/1113
-
     - name: Pisos y Muebles
       slug: pisos-muebles
-      chains:
-        jumbo:
-          - limpieza/pisos-y-muebles
-        santa_isabel:
-          - limpieza/pisos-y-muebles
-        lider:
-          - limpieza-y-aseo/pisos-y-muebles
-        tottus: []
-        unimarc:
-          - limpieza/pisos-y-muebles
-        acuenta:
-          - aseo-y-limpieza/11/pisos-y-muebles/1108
-
     - name: Baño y Cocina
       slug: bano-cocina
-      chains:
-        jumbo:
-          - limpieza/bano
-          - limpieza/cocina
-        santa_isabel:
-          - limpieza/bano
-          - limpieza/cocina
-        lider:
-          - limpieza-y-aseo/bano-y-cocina
-        tottus: []
-        unimarc:
-          - limpieza/bano-y-cocina
-        acuenta:
-          - aseo-y-limpieza/11/bano-y-cocina/1107
-
     - name: Aromatizantes y Desodorantes Ambientales
       slug: aromatizantes
-      chains:
-        jumbo:
-          - limpieza/aerosoles-y-aromatizantes
-        santa_isabel:
-          - limpieza/aerosoles-y-aromatizantes
-        lider:
-          - limpieza-y-aseo/ambientadores
-        tottus: []
-        unimarc: []
-        acuenta:
-          - aseo-y-limpieza/11/desodorantes-ambientales/1101
-
     - name: Insecticidas y Desinfección
       slug: insecticidas-desinfeccion
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider:
-          - limpieza-y-aseo/insecticidas-y-control-de-plagas
-          - limpieza-y-aseo/desinfeccion
-        tottus: []
-        unimarc: []
-        acuenta:
-          - aseo-y-limpieza/11/insecticidas-y-plaguicidas/1112
-          - aseo-y-limpieza/11/desinfeccion/1104
-
     - name: Bolsas y Envoltorios
       slug: bolsas-envoltorios
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta:
-          - aseo-y-limpieza/11/bolsas-de-basura-y-envoltorios/1103
-
     - name: Accesorios de Limpieza
       slug: accesorios-limpieza
-      chains:
-        jumbo:
-          - limpieza/accesorios-de-limpieza
-        santa_isabel:
-          - limpieza/accesorios-de-limpieza
-        lider:
-          - limpieza-y-aseo/accesorios-aseo
-        tottus: []
-        unimarc:
-          - limpieza/accesorios-aseo
-          - limpieza/limpieza-hogar
-        acuenta:
-          - aseo-y-limpieza/11/articulos-de-limpieza/1102
 
 - name: Cuidado Personal
   slug: cuidado-personal
   subcategories:
     - name: Cuidado Capilar
       slug: cuidado-capilar
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/cuidado-capilar
-        santa_isabel:
-          - cuidado-personal-y-bebe/cuidado-capilar
-        lider: []
-        tottus:
-          - CATG27996/Cuidado-Capilar
-        unimarc:
-          - perfumeria/cuidado-capilar
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/cuidado-capilar/1201
-
     - name: Cuidado Corporal y Facial
       slug: cuidado-corporal-facial
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/cuidado-corporal
-          - cuidado-personal-y-bebe/cuidado-facial
-        santa_isabel:
-          - cuidado-personal-y-bebe/cuidado-corporal
-          - cuidado-personal-y-bebe/cuidado-facial
-        lider: []
-        tottus:
-          - CATG27148/Cuidado-Corporal
-          - CATG27695/Cuidado-del-Rostro
-        unimarc:
-          - perfumeria/cuidado-corporal-y-facial
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210
-
     - name: Higiene Bucal
       slug: higiene-bucal
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/higiene-bucal
-        santa_isabel:
-          - cuidado-personal-y-bebe/higiene-bucal
-        lider: []
-        tottus: []
-        unimarc:
-          - perfumeria/cuidado-bucal
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/cuidado-bucal/1204
-
     - name: Desodorantes
       slug: desodorantes
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/desodorantes
-        santa_isabel:
-          - cuidado-personal-y-bebe/desodorantes
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
-
     - name: Jabones
       slug: jabones
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/jabones
-        santa_isabel:
-          - cuidado-personal-y-bebe/jabones
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
-
     - name: Cuidado Masculino
       slug: cuidado-masculino
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/cuidado-masculino
-        santa_isabel:
-          - cuidado-personal-y-bebe/cuidado-masculino
-        lider: []
-        tottus: []
-        unimarc:
-          - perfumeria/cuidado-masculino
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/cuidado-masculino/1206
-
     - name: Protección Femenina
       slug: proteccion-femenina
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/proteccion-femenina
-        santa_isabel:
-          - cuidado-personal-y-bebe/proteccion-femenina
-        lider: []
-        tottus: []
-        unimarc:
-          - perfumeria/cuidado-femenino
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/cuidado-femenino/1207
-
     - name: Maquillaje y Belleza
       slug: maquillaje-belleza
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/maquillaje
-          - cuidado-personal-y-bebe/packs-de-cuidado-y-belleza
-        santa_isabel:
-          - cuidado-personal-y-bebe/maquillaje
-          - cuidado-personal-y-bebe/packs-de-cuidado-y-belleza
-        lider: []
-        tottus:
-          - CATG27145/Colonias
-          - CATG27146/Cosmeticos
-          - CATG27694/Tratamientos-y-Coloracion
-        unimarc: []
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202
-
     - name: Depilación y Solares
       slug: depilacion-solares
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/depilacion
-          - cuidado-personal-y-bebe/solares-y-autobronceantes
-        santa_isabel:
-          - cuidado-personal-y-bebe/depilacion
-          - cuidado-personal-y-bebe/solares-y-autobronceantes
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
-
     - name: Adulto Mayor e Incontinencia
       slug: adulto-mayor
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/incontinencia-y-panales-adulto
-        santa_isabel:
-          - cuidado-personal-y-bebe/incontinencia-y-panales-adulto
-        lider: []
-        tottus: []
-        unimarc:
-          - perfumeria/cuidado-adulto
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/cuidado-adulto-mayor/1203
 
 - name: Farmacia
   slug: farmacia
   subcategories:
     - name: Primeros Auxilios y Suplementos
       slug: primeros-auxilios
-      chains:
-        jumbo:
-          - farmacia/primeros-auxilios
-          - farmacia/suplementos-y-vitaminas
-          - farmacia/accesorios-medicos
-          - farmacia/dermocosmetica
-          - farmacia/higiene-bucal-especialidad
-          - farmacia/bienestar-intimo
-        santa_isabel:
-          - cuidado-personal-y-bebe/farmacia
-        lider: []
-        tottus: []
-        unimarc:
-          - perfumeria/farmacia
-        acuenta:
-          - perfumeria-y-cuidado-personal/12/salud-y-primeros-auxilios/1211
 
 - name: Bebé
   slug: bebe
   subcategories:
     - name: Pañales y Toallas Húmedas
       slug: panales
-      chains:
-        jumbo:
-          - cuidado-personal-y-bebe/bebe
-        santa_isabel:
-          - cuidado-personal-y-bebe/bebe
-        lider: []
-        tottus:
-          - CATG27222/Panales-y-Toallas-Humedas
-        unimarc:
-          - bebes-y-ninos/panales-y-toallas-humedas
-        acuenta:
-          - mundo-bebe/09/panales-y-toallas-humedas/0903
-
     - name: Alimentación Bebé
       slug: alimentacion-bebe
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider: []
-        tottus:
-          - CATG27224/Alimentacion-y-Lactancia
-        unimarc:
-          - bebes-y-ninos/alimentacion
-        acuenta:
-          - mundo-bebe/09/alimento-y-formulas-bebe/0902
-          - mundo-bebe/09/accesorios-de-alimentacion-bebe/0901
-
     - name: Higiene y Perfumería Bebé
       slug: higiene-bebe
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider: []
-        tottus:
-          - CATG27223/Perfumeria-Bebe
-        unimarc:
-          - bebes-y-ninos/perfumeria
-        acuenta:
-          - mundo-bebe/09/higiene-y-perfumeria-bebe/0904
-          - mundo-bebe/09/higiene-y-bano/0905
-
     - name: Vestuario y Rodados
       slug: vestuario-rodados
-      chains:
-        jumbo:
-          - mi-bebe/rodados
-          - mi-bebe/vestuario-bebe
-        santa_isabel: []
-        lider: []
-        tottus: []
-        unimarc: []
-        acuenta: []
 
 - name: Mascotas
   slug: mascotas
   subcategories:
     - name: Perros
       slug: perros
-      chains:
-        jumbo:
-          - mascotas/perros
-        santa_isabel:
-          - mascotas/perros
-        lider: []
-        tottus: []
-        unimarc:
-          - mascotas/alimento-perro
-        acuenta:
-          - mascotas/88/perros/8801
-
     - name: Gatos
       slug: gatos
-      chains:
-        jumbo:
-          - mascotas/gatos
-        santa_isabel:
-          - mascotas/gatos
-        lider: []
-        tottus: []
-        unimarc:
-          - mascotas/alimento-gato
-        acuenta:
-          - mascotas/88/gatos/8802
-
     - name: Otras Mascotas
       slug: otras-mascotas
-      chains:
-        jumbo:
-          - mascotas/otras-mascotas
-        santa_isabel:
-          - mascotas/otras-mascotas
-        lider: []
-        tottus: []
-        unimarc:
-          - mascotas/alimento-otras-mascotas
-          - mascotas/accesorios-mascota
-        acuenta: []
-
     - name: Mascotas en el Hogar
       slug: mascotas-hogar
-      chains:
-        jumbo: []
-        santa_isabel: []
-        lider:
-          - limpieza-y-aseo/mascotas-en-casa
-        tottus: []
-        unimarc: []
-        acuenta: []
