@@ -9,10 +9,9 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
   use ExUnit.Case, async: true
 
   alias SuperBarato.Crawler.{Cencosud, Listing}
+  alias SuperBarato.Fixtures
 
-  @fixtures_dir Path.expand("../../fixtures/cencosud", __DIR__)
-
-  defp fixture(name), do: File.read!(Path.join(@fixtures_dir, name))
+  defp fixture(chain, name), do: Fixtures.read!(chain, name)
 
   @jumbo %Cencosud.Config{
     chain: :jumbo,
@@ -32,7 +31,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
 
   describe "extract_locs/2 against real sitemap fixtures" do
     test "Jumbo sitemap index lists 57 sub-sitemaps" do
-      xml = fixture("jumbo_index.xml")
+      xml = fixture(:jumbo, "sitemap_index.xml")
       sub_sitemaps = Cencosud.extract_locs(xml, "sitemap")
 
       assert length(sub_sitemaps) == 57
@@ -43,7 +42,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
     end
 
     test "Jumbo product-0 has 1000 PDP URLs, all canonical /<slug>/p" do
-      xml = fixture("jumbo_product-0.xml")
+      xml = fixture(:jumbo, "sitemap_product-0.xml")
       urls = Cencosud.extract_locs(xml, "url")
 
       assert length(urls) == 1000
@@ -52,13 +51,13 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
     end
 
     test "Jumbo category-0 has 624 category URLs" do
-      xml = fixture("jumbo_category-0.xml")
+      xml = fixture(:jumbo, "sitemap_category-0.xml")
       urls = Cencosud.extract_locs(xml, "url")
       assert length(urls) == 624
     end
 
     test "Santa Isabel index lists 3 sub-sitemaps including the Supabase custom feed" do
-      xml = fixture("santa_isabel_index.xml")
+      xml = fixture(:santa_isabel, "sitemap_index.xml")
       subs = Cencosud.extract_locs(xml, "sitemap")
       assert length(subs) == 3
 
@@ -67,7 +66,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
     end
 
     test "Santa Isabel custom feed has 15_656 PDP URLs" do
-      xml = fixture("santa_isabel_custom.xml")
+      xml = fixture(:santa_isabel, "sitemap_custom.xml")
       urls = Cencosud.extract_locs(xml, "url")
 
       # The custom feed embeds attributes on `<url>` is no — but our
@@ -82,7 +81,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
   describe "parse_pdp/3 — Jumbo PDPs" do
     test "meat PDP — full assertion of every parsed field" do
       url = "https://www.jumbo.cl/lomoliso-envasado-12kgaprox/p"
-      html = fixture("jumbo_pdp_meat.html")
+      html = fixture(:jumbo, "pdp_meat.html")
 
       assert {:ok, %Listing{} = l} = Cencosud.parse_pdp(@jumbo, html, url)
 
@@ -98,7 +97,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
     end
 
     test "water PDP" do
-      assert_jumbo_basics(fixture("jumbo_pdp_water.html"))
+      assert_jumbo_basics(fixture(:jumbo, "pdp_water.html"))
     end
 
     test "nectar PDP — stale sitemap entry (Product node has no name/sku, price 'undefined')" do
@@ -108,13 +107,13 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
       # garbage. Also validates the @graph empty-list-placeholder
       # regression fix (raised BadMapError before).
       url = "https://www.jumbo.cl/nectar-andina/p"
-      html = fixture("jumbo_pdp_nectar.html")
+      html = fixture(:jumbo, "pdp_nectar.html")
 
       assert {:error, :stale_pdp} = Cencosud.parse_pdp(@jumbo, html, url)
     end
 
     test "cleaning PDP" do
-      assert_jumbo_basics(fixture("jumbo_pdp_cleaning.html"))
+      assert_jumbo_basics(fixture(:jumbo, "pdp_cleaning.html"))
     end
   end
 
@@ -131,7 +130,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
   describe "parse_pdp/3 — Santa Isabel PDPs" do
     test "parses water PDP (gtin8 EAN shape)" do
       url = "https://www.santaisabel.cl/agua/p"
-      html = fixture("santa_isabel_pdp_water.html")
+      html = fixture(:santa_isabel, "pdp_water.html")
 
       assert {:ok, %Listing{} = listing} = Cencosud.parse_pdp(@si, html, url)
 
@@ -144,7 +143,7 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
 
     test "parses energy-drink PDP" do
       url = "https://www.santaisabel.cl/monster/p"
-      html = fixture("santa_isabel_pdp_energy.html")
+      html = fixture(:santa_isabel, "pdp_energy.html")
 
       assert {:ok, %Listing{} = listing} = Cencosud.parse_pdp(@si, html, url)
 

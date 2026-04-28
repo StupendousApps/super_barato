@@ -20,12 +20,11 @@ defmodule SuperBarato.Crawler.CencosudTest do
     sitemap_index: "https://www.santaisabel.cl/sitemap.xml"
   }
 
-  @sitemap_dir Path.expand("../../fixtures/cencosud", __DIR__)
-  defp xml(name), do: File.read!(Path.join(@sitemap_dir, name))
+  defp xml(chain, name), do: Fixtures.read!(chain, name)
 
   describe "parse_categories_xml/2 (Jumbo category sitemap)" do
     setup do
-      cats = Cencosud.parse_categories_xml(:jumbo, xml("jumbo_category-0.xml"))
+      cats = Cencosud.parse_categories_xml(:jumbo, xml(:jumbo, "sitemap_category-0.xml"))
       {:ok, cats: cats}
     end
 
@@ -76,7 +75,7 @@ defmodule SuperBarato.Crawler.CencosudTest do
 
   describe "parse_categories_xml/2 (Santa Isabel category sitemap)" do
     test "produces SI-tagged categories" do
-      cats = Cencosud.parse_categories_xml(:santa_isabel, xml("santa_isabel_category.xml"))
+      cats = Cencosud.parse_categories_xml(:santa_isabel, xml(:santa_isabel, "sitemap_category.xml"))
       assert length(cats) > 0
       assert Enum.all?(cats, &match?(%Category{chain: :santa_isabel}, &1))
 
@@ -88,7 +87,7 @@ defmodule SuperBarato.Crawler.CencosudTest do
 
   describe "category-pruning end-to-end (sitemap → Scope filter)" do
     test "Jumbo: blacklisted hogar-jugueteria-y-libreria branch is dropped" do
-      cats = Cencosud.parse_categories_xml(:jumbo, xml("jumbo_category-0.xml"))
+      cats = Cencosud.parse_categories_xml(:jumbo, xml(:jumbo, "sitemap_category-0.xml"))
 
       # No top-level + no descendants survive.
       refute Enum.any?(cats, &String.starts_with?(&1.slug, "hogar-jugueteria-y-libreria"))
@@ -98,7 +97,7 @@ defmodule SuperBarato.Crawler.CencosudTest do
     end
 
     test "Santa Isabel: blacklisted `hogar` and `hogar-jugueteria-y-libreria` branches are dropped" do
-      cats = Cencosud.parse_categories_xml(:santa_isabel, xml("santa_isabel_category.xml"))
+      cats = Cencosud.parse_categories_xml(:santa_isabel, xml(:santa_isabel, "sitemap_category.xml"))
 
       refute Enum.any?(cats, fn c ->
                c.slug == "hogar" or String.starts_with?(c.slug, "hogar/")
