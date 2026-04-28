@@ -73,6 +73,17 @@ defmodule SuperBarato.Crawler.Lider do
   def handle_task({:fetch_product_info, %{identifiers: ids}}),
     do: fetch_product_info(ids)
 
+  # Stage 3 (ListingProducer) — refresh a single PDP by URL. Returns
+  # a one-element listings list to match the shape Cencosud uses.
+  def handle_task({:fetch_product_pdp, %{url: url}}) when is_binary(url) do
+    case fetch_pdp(url) do
+      {:ok, %Listing{} = listing} -> {:ok, [listing]}
+      {:ok, nil} -> {:error, :stale_pdp}
+      :blocked -> :blocked
+      {:error, _} = err -> err
+    end
+  end
+
   def handle_task(other), do: {:error, {:unsupported_task, other}}
 
   # Stage 1
@@ -314,7 +325,10 @@ defmodule SuperBarato.Crawler.Lider do
     # Lider accepts /ip/<anything>/<anything>/<usItemId> and redirects
     # to the canonical URL; we use placeholders.
     url = "#{@site_url}/ip/p/p/#{usItemId}"
+    fetch_pdp(url)
+  end
 
+  defp fetch_pdp(url) when is_binary(url) do
     with {:ok, html} <- fetch_html(url),
          {:ok, data} <- extract_next_data(html),
          {:ok, listing} <- parse_pdp_from_next_data(data) do

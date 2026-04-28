@@ -96,8 +96,13 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :unimarc]]}},
         {{:weekly, [:mon], [~T[05:00:00]]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}},
+        # Stage 3 refresh — re-runs ProductProducer (full leaf-category
+        # walk) rather than ListingProducer (per-PDP fetch). Unimarc's
+        # BFF returns price + EAN per row in the search response, so a
+        # per-PDP fetch would just re-derive what the search already
+        # gave us.
         {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[05:00:00]]},
-         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :unimarc]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}}
       ]
     ],
     # Jumbo + Santa Isabel use sitemap-driven discovery: PDPs on
@@ -194,8 +199,12 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :lider]]}},
         {{:weekly, [:mon], [~T[06:30:00]]},
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider]]}},
+        # Stage 3 refresh — re-runs ProductProducer (full leaf-category
+        # walk) rather than ListingProducer. Lider's `__NEXT_DATA__`
+        # search response already carries price + UPC/usItemId per
+        # row, so per-PDP fetch is wasted work.
         {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[06:30:00]]},
-         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :lider]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :lider]]}}
       ]
     ]
   ]
