@@ -86,6 +86,94 @@ defmodule SuperBarato.Crawler.Cencosud do
     end
   end
 
+  # Stage 1 — categories from the home page's `window.__renderData`
+  #
+  # Both Jumbo and Santa Isabel render their navigation menu from a
+  # JSON-encoded blob assigned to `window.__renderData` on the home
+  # page. The XML category sitemaps and the BFF `categories.json` are
+  # both stale (paths that 301 to the current taxonomy or 410 outright);
+  # `__renderData` is the only source that matches the live menu.
+
+  @spec discover_categories_from_home(Config.t(), String.t()) ::
+          {:ok, [Category.t()]} | {:error, term()}
+  def discover_categories_from_home(%Config{} = cfg, home_url) when is_binary(home_url) do
+    with {:ok, html} <- fetch_html(cfg, home_url),
+         {:ok, data} <- extract_render_data(html),
+         {:ok, cats} <- categories_from_render_data(cfg.chain, data) do
+      {:ok, cats |> then(&SuperBarato.Crawler.Scope.filter(cfg.chain, &1)) |> mark_leaves()}
+    end
+  end
+
+  defp fetch_html(cfg, url) do
+    case Http.get(url, chain: cfg.chain) do
+      {:ok, %Http.Response{status: 200, body: body}} -> {:ok, body}
+      {:ok, %Http.Response{status: status}} -> {:error, {:http_status, status}}
+      {:error, _} = err -> err
+    end
+  end
+
+  @doc false
+  # `window.__renderData = "<json-encoded-string>";` — parsing happens
+  # twice: once to decode the JSON-string literal, then to parse the
+  # actual JSON object.
+  def extract_render_data(html) when is_binary(html) do
+    case Regex.run(~r/window\.__renderData\s*=\s*("(?:[^"\\]|\\.)*");/s, html) do
+      [_, quoted] ->
+        with {:ok, inner} <- Jason.decode(quoted),
+             {:ok, data} <- Jason.decode(inner) do
+          {:ok, data}
+        else
+          _ -> {:error, :malformed_render_data}
+        end
+
+      _ ->
+        {:error, :no_render_data}
+    end
+  end
+
+  @doc false
+  def categories_from_render_data(chain, data) when is_atom(chain) do
+    case get_in(data, ["menu", "acf", "items"]) do
+      items when is_list(items) -> {:ok, walk_render_items(chain, items, 1, nil)}
+      _ -> {:error, :no_menu}
+    end
+  end
+
+  # Recursively flattens the nested `items` tree into `%Category{}`
+  # records. URL-less entries (banner/promo headers) are silently
+  # skipped but their `items` are still walked, so a banner-style
+  # parent doesn't drop its real children.
+  defp walk_render_items(chain, items, level, parent_slug) do
+    Enum.flat_map(items, fn item ->
+      slug = render_item_slug(item["url"])
+      title = item["title"]
+
+      if is_binary(slug) and is_binary(title) do
+        cat = %Category{
+          chain: chain,
+          slug: slug,
+          name: title,
+          parent_slug: parent_slug,
+          level: level,
+          external_id: nil
+        }
+
+        [cat | walk_render_items(chain, item["items"] || [], level + 1, slug)]
+      else
+        walk_render_items(chain, item["items"] || [], level, parent_slug)
+      end
+    end)
+  end
+
+  defp render_item_slug("/" <> rest) do
+    case rest |> String.split("?", parts: 2) |> List.first() do
+      "" -> nil
+      slug -> String.trim_trailing(slug, "/")
+    end
+  end
+
+  defp render_item_slug(_), do: nil
+
   @doc false
   # Public for unit testing against the captured sitemap fixture.
   def parse_categories_xml(chain, xml) when is_binary(xml) do
