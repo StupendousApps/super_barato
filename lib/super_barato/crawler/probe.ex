@@ -99,10 +99,6 @@ defmodule SuperBarato.Crawler.Probe do
     end
   end
 
-  defp categories_probe_url(:tottus), do: "https://www.tottus.cl/tottus-cl/lista/CATG27054/Tottus"
-  defp categories_probe_url(:lider), do: "https://super.lider.cl/"
-  defp categories_probe_url(_), do: nil
-
   def resolve_url(%{chain: chain, kind: :product_pdp, category_slug: slug}) when is_binary(slug) do
     sample_pdp_url_for_category(chain, slug)
     |> with_sitemap_fallback(chain)
@@ -122,6 +118,10 @@ defmodule SuperBarato.Crawler.Probe do
   end
 
   def resolve_url(_), do: {:error, :bad_inputs}
+
+  defp categories_probe_url(:tottus), do: "https://www.tottus.cl/tottus-cl/lista/CATG27054/Tottus"
+  defp categories_probe_url(:lider), do: "https://super.lider.cl/"
+  defp categories_probe_url(_), do: nil
 
   @doc """
   Runs the probe end-to-end. `inputs` is a map with `:chain`, `:kind`,

@@ -31,7 +31,6 @@ defmodule SuperBarato.Crawler.Chain.Queue do
   use GenServer
 
   @default_capacity 50
-  @default_low_water 30
   @call_timeout :infinity
 
   # Public API
