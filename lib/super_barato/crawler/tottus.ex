@@ -18,6 +18,7 @@ defmodule SuperBarato.Crawler.Tottus do
   @behaviour SuperBarato.Crawler.Chain
 
   alias SuperBarato.Crawler.{Category, Http, Listing, Scope, Session}
+  alias SuperBarato.Linker.Identity
 
   require Logger
 
@@ -214,12 +215,15 @@ defmodule SuperBarato.Crawler.Tottus do
   defp parse_search_item(%{"productId" => id} = item, category_slug)
        when is_binary(id) and id != "" do
     {regular, promo} = parse_prices(item["prices"] || [])
+    identifiers = identifiers_from_search_item(item)
 
     %Listing{
       chain: @chain,
       chain_sku: id,
       chain_product_id: to_string_if_present(item["skuId"]),
       ean: nil,
+      identifiers_key: Identity.encode(identifiers),
+      raw: %{"item" => item},
       name: item["displayName"],
       brand: item["brand"],
       image_url: first_media(item["mediaUrls"]),
@@ -276,12 +280,15 @@ defmodule SuperBarato.Crawler.Tottus do
       %{} ->
         variant = List.first(pd["variants"] || []) || %{}
         {regular, promo} = parse_prices(variant["prices"] || [])
+        identifiers = identifiers_from_pdp(pd)
 
         listing = %Listing{
           chain: @chain,
           chain_sku: to_string_if_present(pd["id"]),
           chain_product_id: to_string_if_present(pd["primaryVariantId"]),
           ean: nil,
+          identifiers_key: Identity.encode(identifiers),
+          raw: %{"productData" => pd},
           name: pd["name"],
           brand: pd["brandName"],
           image_url: first_media_url(pd["medias"]),
@@ -294,6 +301,24 @@ defmodule SuperBarato.Crawler.Tottus do
 
         {:ok, listing}
     end
+  end
+
+  defp identifiers_from_search_item(item) when is_map(item) do
+    %{
+      "productId" => item["productId"],
+      "skuId" => item["skuId"]
+    }
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    |> Map.new()
+  end
+
+  defp identifiers_from_pdp(pd) when is_map(pd) do
+    %{
+      "productId" => pd["id"],
+      "skuId" => pd["primaryVariantId"]
+    }
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    |> Map.new()
   end
 
   defp pdp_url(%{"id" => id, "slug" => slug}) when is_binary(id) and is_binary(slug),
