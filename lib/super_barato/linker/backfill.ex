@@ -49,12 +49,21 @@ defmodule SuperBarato.Linker.Backfill do
         Map.update!(acc, :skipped, &(&1 + 1))
 
       _ids ->
-        {_action, product, source} = Linker.find_or_create_product_for_listing(listing)
+        # One transaction per listing — a partial failure rolls back
+        # the Product creation along with the link, so the catalog
+        # never carries phantom Products with zero listings.
+        {:ok, source} =
+          Repo.transaction(fn ->
+            {_action, product, source} =
+              Linker.find_or_create_product_for_listing(listing)
 
-        Linker.set_listing_link(product.id, listing.id,
-          source: source,
-          confidence: confidence_for(source)
-        )
+            Linker.set_listing_link(product.id, listing.id,
+              source: source,
+              confidence: confidence_for(source)
+            )
+
+            source
+          end)
 
         Map.update!(acc, source_to_key(source), &(&1 + 1))
     end

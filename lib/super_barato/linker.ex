@@ -329,6 +329,33 @@ defmodule SuperBarato.Linker do
   end
 
   @doc """
+  Sweep every Product with zero `product_listings` and hard-delete it.
+  Returns the number of deleted Products.
+
+  Run once after a worker bug to clean up any Products that were
+  created without a corresponding link (`set_listing_link` rolling
+  back after `find_or_create_product_for_listing` had already
+  committed). Safe to re-run — picks up exactly the orphans, no
+  false positives, no listings touched.
+  """
+  def sweep_orphan_products do
+    orphan_ids =
+      from(p in Product,
+        left_join: pl in ProductListing,
+        on: pl.product_id == p.id,
+        where: is_nil(pl.id),
+        select: p.id
+      )
+      |> Repo.all()
+
+    {n, _} =
+      from(p in Product, where: p.id in ^orphan_ids)
+      |> Repo.delete_all()
+
+    n
+  end
+
+  @doc """
   Delete `product_id` if no `product_listings` rows reference it.
   Returns `:deleted` or `:kept`. Cascades through `product_identifiers`
   via the FK `on_delete: :delete_all`.

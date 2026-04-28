@@ -76,13 +76,21 @@ defmodule SuperBarato.Linker.Worker do
             :skip
 
           _ids ->
-            {_action, product, source} = Linker.find_or_create_product_for_listing(listing)
+            # Atomic find-or-create + link. Wrapping both in one
+            # transaction means a `set_listing_link` failure (FK
+            # violation, exception inside `link/3`) rolls back the
+            # Product creation too — otherwise we'd accumulate
+            # Products that no listing references.
+            Repo.transaction(fn ->
+              {_action, product, source} =
+                Linker.find_or_create_product_for_listing(listing)
 
-            Linker.set_listing_link(product.id, listing.id,
-              source: source,
-              confidence: confidence_for(source),
-              linked_at: now()
-            )
+              Linker.set_listing_link(product.id, listing.id,
+                source: source,
+                confidence: confidence_for(source),
+                linked_at: now()
+              )
+            end)
         end
     end
   end
