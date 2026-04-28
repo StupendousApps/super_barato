@@ -28,6 +28,11 @@ defmodule SuperBarato.Crawler.Scope do
       hogar
       hogar-jugueteria-y-libreria
     ),
+    # Lider blacklist mixes historical and current slugs. The old
+    # umbrellas (`tecno-y-electro`, `vestuario`, `deporte-y-aire-libre`)
+    # got split into per-vertical entries (`tecno`, `celulares`, etc.);
+    # the historical entries stay for defensive coverage of older
+    # snapshot fixtures, the current ones cover live discovery.
     "lider" => ~w(
       hogar
       libreria-y-cumpleanos
@@ -39,12 +44,6 @@ defmodule SuperBarato.Crawler.Scope do
       automovil
       mainstays
       mundo-bebe-y-jugueteria/jugueteria
-
-      # Slugs that started appearing after Lider's nav refresh —
-      # the old `tecno-y-electro` / `vestuario` / `deporte-y-aire-libre`
-      # umbrellas were split into individual departments, and a
-      # cross-cutting BCI promo joined the menu. Old slugs above stay
-      # for defensive coverage of any historical fixture data.
       aprovecha-tu-lider-bci
       tecno
       celulares
