@@ -15,30 +15,38 @@ defmodule SuperBarato.Crawler.TottusTest do
     end
   end
 
-  describe "children_from_next_data/3 (root fixture)" do
+  describe "categories_from_next_data/1 (home fixture)" do
     setup do
-      html = Fixtures.read!(:tottus, "root_tottus.html")
+      html = Fixtures.read!(:tottus, "home_tottus.html")
       {:ok, data} = Tottus.extract_next_data(html)
-      {:ok, children} = Tottus.children_from_next_data(data, "CATG27054/Tottus", 1)
-      {:ok, children: children}
+      {:ok, cats} = Tottus.categories_from_next_data(data)
+      {:ok, cats: cats}
     end
 
-    test "returns the 25 top-level departments", %{children: children} do
-      assert length(children) >= 20
+    test "returns L1 + L2 + L3 categories from one fetch", %{cats: cats} do
+      # 30+ L1 + dozens of L2 / L3 — total well over the previous 25.
+      assert length(cats) > 50
     end
 
-    test "each child has slug, name, parent_slug, level", %{children: children} do
-      Enum.each(children, fn c ->
+    test "every category has slug, name, level, valid parent_slug", %{cats: cats} do
+      slugs = MapSet.new(cats, & &1.slug)
+
+      Enum.each(cats, fn c ->
         assert String.starts_with?(c.slug, "CATG")
         assert String.contains?(c.slug, "/")
         assert is_binary(c.name) and c.name != ""
-        assert c.parent_slug == "CATG27054/Tottus"
-        assert c.level == 1
+        assert c.level in [1, 2, 3]
+
+        if c.level == 1 do
+          assert is_nil(c.parent_slug)
+        else
+          assert MapSet.member?(slugs, c.parent_slug)
+        end
       end)
     end
 
-    test "includes well-known departments (Carnes, Despensa)", %{children: children} do
-      names = MapSet.new(children, & &1.name)
+    test "includes well-known departments (Carnes, Despensa)", %{cats: cats} do
+      names = MapSet.new(cats, & &1.name)
       assert MapSet.member?(names, "Carnes")
       assert MapSet.member?(names, "Despensa")
     end

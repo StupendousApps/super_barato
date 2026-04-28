@@ -17,7 +17,7 @@ defmodule SuperBarato.Crawler.Tottus do
 
   @behaviour SuperBarato.Crawler.Chain
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Crawler.{Category, Http, Listing, Scope, Session}
 
   require Logger
 
@@ -26,9 +26,12 @@ defmodule SuperBarato.Crawler.Tottus do
   @default_profile :chrome116
   @page_size 48
 
-  # Root category — the supermarket itself. Its "Categoría" facet
-  # lists the 25 top-level departments (Despensa, Carnes, ...).
-  @root_slug "CATG27054/Tottus"
+  # Single-shot category source. The home page's `__NEXT_DATA__` ships
+  # the entire navigation tree under
+  # `serverData.headerData.sisNavigationMenu.entry.categories` —
+  # 38 L1s with nested L2 / L3 lists. One HTTP call is enough; an
+  # earlier per-node BFS variant took 5–10 minutes per pass.
+  @home_url "https://www.tottus.cl/tottus-cl"
 
   @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
 
@@ -67,81 +70,100 @@ defmodule SuperBarato.Crawler.Tottus do
   # Stage 1 — category tree
 
   defp discover_categories do
-    # Walk the tree breadth-first from the root. Each category page
-    # gives us the direct children via the "Categoría" facet.
-    walk_tree([%{slug: @root_slug, name: "Tottus", parent_slug: nil, level: 0}], [])
-  end
-
-  defp walk_tree([], acc), do: {:ok, acc |> Enum.reverse() |> mark_leaves()}
-
-  defp walk_tree([%{slug: slug, name: name, parent_slug: parent, level: level} | rest], acc) do
-    with {:ok, html} <- fetch_html(category_url(slug, nil)),
+    with {:ok, html} <- fetch_html(@home_url),
          {:ok, data} <- extract_next_data(html),
-         {:ok, children} <- children_from_next_data(data, slug, level + 1) do
-      entry =
-        if level == 0 do
-          # Don't include the synthetic root in the output.
-          []
-        else
-          [
-            %Category{
-              chain: @chain,
-              slug: slug,
-              name: name,
-              parent_slug: parent,
-              level: level,
-              external_id: category_id(slug)
-            }
-          ]
-        end
-
-      walk_tree(rest ++ children, entry ++ acc)
-    else
-      :blocked ->
-        :blocked
-
-      {:error, reason} ->
-        Logger.warning("[tottus] discover_categories failed at #{slug}: #{inspect(reason)}")
-        # Skip this branch; keep what we have.
-        walk_tree(rest, acc)
+         {:ok, cats} <- categories_from_next_data(data) do
+      {:ok, cats |> Scope.filter(@chain) |> mark_leaves()}
     end
   end
 
   @doc false
-  def children_from_next_data(data, parent_slug, next_level) do
-    facet =
-      data
-      |> get_in(["props", "pageProps", "facets"])
-      |> List.wrap()
-      |> Enum.find(&category_facet?/1)
+  def categories_from_next_data(data) do
+    nav =
+      get_in(data, [
+        "props",
+        "pageProps",
+        "serverData",
+        "headerData",
+        "sisNavigationMenu",
+        "entry",
+        "categories"
+      ])
 
-    values = (facet && facet["values"]) || []
+    case nav do
+      list when is_list(list) ->
+        cats =
+          list
+          |> Enum.flat_map(&flatten_l1/1)
 
-    children =
-      Enum.flat_map(values, fn v ->
-        case {v["id"], v["title"]} do
-          {id, title} when is_binary(id) and is_binary(title) ->
-            [
-              %{
-                slug: "#{id}/#{url_segment(title)}",
-                name: title,
-                parent_slug: parent_slug,
-                level: next_level
-              }
-            ]
+        {:ok, cats}
 
-          _ ->
-            []
-        end
-      end)
-
-    {:ok, children}
+      _ ->
+        {:error, :no_nav_menu}
+    end
   end
 
-  defp category_facet?(%{"name" => name}) when is_binary(name),
-    do: String.downcase(name) in ["categoría", "categoria"]
+  defp flatten_l1(node) do
+    case build_category(name(node), href(node["item_url"]), nil, 1) do
+      nil ->
+        []
 
-  defp category_facet?(_), do: false
+      l1 ->
+        l2s =
+          for sub <- node["second_level_categories"] || [],
+              cat = build_category(name(sub), href(sub["item_url"]), l1.slug, 2),
+              !is_nil(cat),
+              do: {sub, cat}
+
+        l3s =
+          for {sub, l2} <- l2s,
+              third <- sub["third_level_categories"] || [],
+              cat = build_category(name(third), href(third["item_url"]), l2.slug, 3),
+              !is_nil(cat),
+              do: cat
+
+        [l1 | Enum.map(l2s, fn {_, c} -> c end)] ++ l3s
+    end
+  end
+
+  defp build_category(name, url, parent_slug, level) when is_binary(name) and is_binary(url) do
+    case slug_from_url(url) do
+      nil ->
+        nil
+
+      slug ->
+        %Category{
+          chain: @chain,
+          slug: slug,
+          name: name,
+          parent_slug: parent_slug,
+          level: level,
+          external_id: category_id(slug)
+        }
+    end
+  end
+
+  defp build_category(_, _, _, _), do: nil
+
+  defp name(node), do: node["item_name"] || node["title"]
+
+  # L1 entries store url as `%{"href" => "..."}`; L2 and L3 store it as
+  # a plain string.
+  defp href(%{"href" => h}) when is_binary(h), do: h
+  defp href(s) when is_binary(s), do: s
+  defp href(_), do: nil
+
+  # Pulls our internal `<CATID>/<segment>` slug out of any of the URL
+  # shapes the nav uses. Returns nil for off-site URLs (Falabella) or
+  # alternate path patterns we don't crawl (`/category/...`).
+  defp slug_from_url(url) when is_binary(url) do
+    case Regex.run(~r{/tottus-cl/lista/([A-Z0-9]+)/([^/?#]+)}, url) do
+      [_, id, seg] -> "#{id}/#{seg}"
+      _ -> nil
+    end
+  end
+
+  defp slug_from_url(_), do: nil
 
   # Stage 2 — products in a leaf category
 
