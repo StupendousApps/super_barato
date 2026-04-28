@@ -85,5 +85,23 @@ defmodule SuperBarato.Crawler.ScopeTest do
       kept = Scope.filter(:lider, cats) |> Enum.map(& &1.slug)
       assert kept == ["frescos-y-lacteos", "despensa"]
     end
+
+    test "drops descendants whose flat slug doesn't share the blacklisted prefix" do
+      # Tottus: blacklist `CATG25257/San-Valentin`, expect `CATG27997/Menaje`
+      # (a child) to drop too even though their slugs share no prefix.
+      cats = [
+        %Category{chain: :tottus, slug: "CATG25257/San-Valentin", name: "x",
+                  level: 1, parent_slug: nil},
+        %Category{chain: :tottus, slug: "CATG27997/Menaje", name: "x",
+                  level: 2, parent_slug: "CATG25257/San-Valentin"},
+        %Category{chain: :tottus, slug: "CATG28001/Sub", name: "x",
+                  level: 3, parent_slug: "CATG27997/Menaje"},
+        %Category{chain: :tottus, slug: "CATG27055/Despensa", name: "x",
+                  level: 1, parent_slug: nil}
+      ]
+
+      kept = Scope.filter(:tottus, cats) |> Enum.map(& &1.slug)
+      assert kept == ["CATG27055/Despensa"]
+    end
   end
 end

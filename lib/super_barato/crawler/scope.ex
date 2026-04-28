@@ -114,11 +114,36 @@ defmodule SuperBarato.Crawler.Scope do
 
   @doc """
   Drops blacklisted categories from a list of `%Crawler.Category{}`
-  structs. Used by each chain's `discover_categories` immediately
-  before `mark_leaves/1`.
+  structs, including descendants of blacklisted categories whose own
+  slug doesn't share the blacklisted prefix. Used by each chain's
+  `discover_categories` immediately before `mark_leaves/1`.
+
+  Slug-prefix matching alone is sufficient for chains where slugs
+  encode the path (Cencosud / Lider — `hogar-jugueteria/jugueteria/...`),
+  but Tottus uses flat per-node slugs (`CATG27997/Menaje`) where the
+  hierarchy lives only in `parent_slug`. We also walk the parent chain
+  so blacklisting `CATG25257/San-Valentin` correctly drops every
+  descendant the slug-prefix would miss.
   """
   @spec filter(atom() | String.t(), [struct()]) :: [struct()]
   def filter(chain, categories) when is_list(categories) do
-    Enum.reject(categories, &blacklisted?(chain, &1.slug))
+    by_slug = Map.new(categories, &{&1.slug, &1})
+
+    Enum.reject(categories, fn cat ->
+      blacklisted?(chain, cat.slug) or ancestor_blacklisted?(chain, cat, by_slug)
+    end)
   end
+
+  defp ancestor_blacklisted?(chain, %{parent_slug: parent}, by_slug) when is_binary(parent) do
+    cond do
+      blacklisted?(chain, parent) -> true
+      true ->
+        case Map.get(by_slug, parent) do
+          nil -> false
+          ancestor -> ancestor_blacklisted?(chain, ancestor, by_slug)
+        end
+    end
+  end
+
+  defp ancestor_blacklisted?(_chain, _cat, _by_slug), do: false
 end
