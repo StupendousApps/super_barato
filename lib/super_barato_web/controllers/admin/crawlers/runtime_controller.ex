@@ -12,8 +12,23 @@ defmodule SuperBaratoWeb.Admin.RuntimeController do
     |> assign(:top_nav, :crawlers)
     |> assign(:sub_nav, :runtime)
     |> assign(:snapshots, Status.all())
+    |> assign(:crawler_enabled, Crawler.enabled?())
     |> assign(:page_title, "Crawlers · Live")
     |> render(:index)
+  end
+
+  @doc """
+  Flip the global enabled flag. When off, all chains' cron-driven
+  schedules skip without firing — already-queued tasks keep running
+  but no new batches start. Manual triggers (the per-row buttons)
+  always work regardless.
+  """
+  def toggle(conn, _params) do
+    new_state = Crawler.set_enabled(not Crawler.enabled?())
+
+    conn
+    |> put_flash(:info, "Crawler operation #{if new_state, do: "enabled", else: "paused"}.")
+    |> redirect(to: ~p"/crawlers/live")
   end
 
   @kinds ~w(discover_categories discover_products refresh_listings)

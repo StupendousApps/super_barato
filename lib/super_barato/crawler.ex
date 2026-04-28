@@ -29,6 +29,27 @@ defmodule SuperBarato.Crawler do
 
   def known_chains, do: @chain_order
 
+  @enabled_key {__MODULE__, :enabled}
+
+  @doc """
+  Runtime kill-switch for automated crawler activity. When `false`,
+  the per-chain Cron skips firing scheduled producers — already-queued
+  tasks keep running, but no new batches start.
+
+  Manual triggers from `/crawlers/live` (the per-row buttons) ignore
+  this flag — when an operator clicks a button they want it to fire.
+
+  The flag lives in `:persistent_term`, so reads are O(1) and survive
+  no DB hit. Resets to `true` on application restart unless the
+  operator flips it again.
+  """
+  def enabled?, do: :persistent_term.get(@enabled_key, true)
+
+  def set_enabled(bool) when is_boolean(bool) do
+    :persistent_term.put(@enabled_key, bool)
+    bool
+  end
+
   @doc """
   Manually fire a discovery run for `chain` from outside the schedule
   (admin UI button, IEx, etc.). Returns `:ok` once the work is queued

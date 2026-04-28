@@ -89,11 +89,15 @@ defmodule SuperBarato.Crawler.Chain.Cron do
   def handle_info({:fire, entry, epoch}, state) do
     {:cadence, _, {m, f, a}} = normalize(entry)
 
-    Logger.info("[#{state.chain}] cron firing #{inspect({m, f})}")
+    if SuperBarato.Crawler.enabled?() do
+      Logger.info("[#{state.chain}] cron firing #{inspect({m, f})}")
 
-    Task.Supervisor.start_child(state.task_sup, fn ->
-      apply(m, f, a)
-    end)
+      Task.Supervisor.start_child(state.task_sup, fn ->
+        apply(m, f, a)
+      end)
+    else
+      Logger.info("[#{state.chain}] cron skipped (crawler disabled): #{inspect({m, f})}")
+    end
 
     schedule_next(entry, epoch)
     {:noreply, state}

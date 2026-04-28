@@ -49,6 +49,7 @@ defmodule SuperBaratoWeb.Router do
     get "/crawlers", ScheduleController, :index, as: :crawlers_root
     resources "/crawlers/schedules", ScheduleController, except: [:show]
     get "/crawlers/live", RuntimeController, :index
+    post "/crawlers/live/toggle", RuntimeController, :toggle
     # `flush` must come before the catch-all `:kind` route — Phoenix
     # matches first-wins, and otherwise the trigger handler eats every
     # POST and reports "Unknown kind: flush".
