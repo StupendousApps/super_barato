@@ -68,28 +68,28 @@ defmodule SuperBarato.Linker.Worker do
         :skip
 
       %ChainListing{} = listing ->
-        case Linker.canonical_key_for_listing(listing) do
-          key when is_binary(key) ->
-            seed = %{name: listing.name, brand: listing.brand, image_url: listing.image_url}
-            {_action, product} = Linker.find_or_create_product_for_ean(key, seed)
+        case Linker.identifiers_for_listing(listing) do
+          [] ->
+            # No usable identifier at all (no EAN, no chain_sku) —
+            # nothing safe to anchor a Product on. Leave unlinked;
+            # admin can wire it up manually.
+            :skip
 
-            Linker.link(product.id, listing.id,
-              source: Linker.source_ean_canonical(),
-              confidence: 1.0,
-              linked_at: now()
-            )
+          _ids ->
+            {_action, product, source} = Linker.find_or_create_product_for_listing(listing)
 
-          nil ->
-            {_action, product} = Linker.find_or_create_eanless_product_for_listing(listing)
-
-            Linker.link(product.id, listing.id,
-              source: Linker.source_single_chain(),
-              confidence: 0.5,
+            Linker.set_listing_link(product.id, listing.id,
+              source: source,
+              confidence: confidence_for(source),
               linked_at: now()
             )
         end
     end
   end
+
+  defp confidence_for("ean_canonical"), do: 1.0
+  defp confidence_for("single_chain"), do: 0.5
+  defp confidence_for(_), do: nil
 
   defp now, do: DateTime.utc_now() |> DateTime.truncate(:second)
 end

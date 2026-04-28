@@ -2,7 +2,7 @@ defmodule SuperBarato.LinkerTest do
   use SuperBarato.DataCase, async: false
 
   alias SuperBarato.{Catalog, Linker, Repo}
-  alias SuperBarato.Catalog.{ChainListing, Product, ProductEan}
+  alias SuperBarato.Catalog.{ChainListing, Product, ProductIdentifier}
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Linker.ProductListing
 
@@ -44,14 +44,20 @@ defmodule SuperBarato.LinkerTest do
       assert Linker.delete_if_orphan(999_999_999) == :kept
     end
 
-    test "cascades through product_eans" do
+    test "cascades through product_identifiers" do
       p = insert_product!()
 
       {:ok, _} =
-        %ProductEan{} |> ProductEan.changeset(%{product_id: p.id, ean: "1234567890123"}) |> Repo.insert()
+        %ProductIdentifier{}
+        |> ProductIdentifier.changeset(%{
+          product_id: p.id,
+          kind: "ean_13",
+          value: "1234567890123"
+        })
+        |> Repo.insert()
 
       assert Linker.delete_if_orphan(p.id) == :deleted
-      refute Repo.get_by(ProductEan, ean: "1234567890123")
+      refute Repo.get_by(ProductIdentifier, kind: "ean_13", value: "1234567890123")
     end
   end
 

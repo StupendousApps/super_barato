@@ -18,7 +18,8 @@ defmodule SuperBarato.Linker do
     * `"single_chain"` — listing has no usable EAN (Tottus's loose
       meat, produce sold by weight, anything where the chain doesn't
       expose a barcode). Each such listing gets a placeholder Product
-      with no `ProductEan` rows; admin or a future fuzzy pass can
+      with only the per-chain `<chain>_sku` identifier; admin or a
+      future fuzzy pass can
       merge these into canonical Products via `merge_products/2`.
     * `"admin"` — a human curator linked the pair through the admin
       UI (`Linker.link_admin/2`). High confidence by definition;
@@ -32,12 +33,10 @@ defmodule SuperBarato.Linker do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{ChainListing, Product, ProductEan}
-  alias SuperBarato.Linker.ProductListing
-  alias SuperBarato.Repo
-
   alias SuperBarato.Catalog
-  alias SuperBarato.Linker.Identity
+  alias SuperBarato.Catalog.{ChainListing, Product, ProductIdentifier}
+  alias SuperBarato.Linker.{Identity, ProductListing}
+  alias SuperBarato.Repo
 
   @source_ean_canonical "ean_canonical"
   @source_single_chain "single_chain"
@@ -49,90 +48,157 @@ defmodule SuperBarato.Linker do
   def source_admin, do: @source_admin
 
   @doc """
-  Find-or-create a Product anchored on a canonicalized EAN. Returns
-  `{:created | :existed, %Product{}}`. Used by both the streaming
-  Worker (one listing at a time) and the batch Backfill.
+  Derive the typed identifiers a listing brings into the lookup
+  table, ordered by priority: GS1 EANs first (cross-chain), then the
+  per-chain SKU. Anything that doesn't canonicalize / is missing is
+  silently dropped. Each tuple is `{kind, value}`.
 
-  Seed fields (`name`, `brand`, `image_url`) are only used when a
-  brand-new Product is being inserted — admin can curate later.
+  Priority matters: when looking up an existing Product we want to
+  match on the **strongest** identifier first so a single-chain
+  placeholder can be folded into the canonical EAN-keyed Product
+  the moment the listing acquires an EAN.
   """
-  def find_or_create_product_for_ean(ean, seed) when is_binary(ean) do
-    case Catalog.get_product_by_ean(ean) do
-      %Product{} = p ->
-        {:existed, p}
+  @spec identifiers_for_listing(ChainListing.t()) :: [{String.t(), String.t()}]
+  def identifiers_for_listing(%ChainListing{} = l) do
+    ean_id =
+      cond do
+        e = Identity.canonicalize_gtin13(l.ean) -> [{"ean_13", e}]
+        e = Identity.canonicalize_ean8(l.ean) -> [{"ean_8", e}]
+        true -> []
+      end
 
-      nil ->
-        attrs = %{
-          canonical_name: Map.get(seed, :name) || Map.get(seed, "name") || "(unnamed)",
-          brand: Map.get(seed, :brand) || Map.get(seed, "brand"),
-          image_url: Map.get(seed, :image_url) || Map.get(seed, "image_url")
-        }
+    sku_id =
+      if is_binary(l.chain_sku) and l.chain_sku != "" and is_binary(l.chain) do
+        [{"#{l.chain}_sku", l.chain_sku}]
+      else
+        []
+      end
 
-        Repo.transaction(fn ->
-          {:ok, product} =
-            %Product{} |> Product.changeset(attrs) |> Repo.insert()
+    ean_id ++ sku_id
+  end
 
-          {:ok, _ean_row} =
-            %ProductEan{}
-            |> ProductEan.changeset(%{product_id: product.id, ean: ean})
-            |> Repo.insert()
+  def identifiers_for_listing(_), do: []
 
-          product
-        end)
-        |> case do
-          {:ok, p} -> {:created, p}
+  @doc """
+  Find-or-create a Product for the given listing's identifiers.
+  Returns `{:created | :existed, %Product{}, source_tag}` where
+  `source_tag` is `"ean_canonical"` if the match/creation was anchored
+  on a GS1 EAN, or `"single_chain"` if only a per-chain SKU was
+  available.
+
+  Walks `identifiers_for_listing/1` in priority order:
+
+    1. If any identifier already exists in `product_identifiers`, use
+       that Product. Attach every other identifier the listing brings
+       (idempotent insert-on-conflict — multiple Products with the
+       same identifier is impossible by the unique index, but two
+       listings can independently bring the same identifier without
+       conflict).
+    2. Otherwise insert a new Product seeded from the listing and
+       attach all identifiers in one go.
+  """
+  def find_or_create_product_for_listing(%ChainListing{} = listing) do
+    ids = identifiers_for_listing(listing)
+    source = source_for(ids)
+
+    {action, product} =
+      case Enum.find_value(ids, fn {k, v} -> Catalog.get_product_by_identifier(k, v) end) do
+        %Product{} = p ->
+          attach_missing_identifiers(p, ids)
+          {:existed, p}
+
+        nil ->
+          {:created, create_product_with_identifiers(listing, ids)}
+      end
+
+    {action, product, source}
+  end
+
+  defp source_for([{"ean_13", _} | _]), do: @source_ean_canonical
+  defp source_for([{"ean_8", _} | _]), do: @source_ean_canonical
+  defp source_for(_), do: @source_single_chain
+
+  defp create_product_with_identifiers(%ChainListing{} = listing, ids) do
+    attrs = %{
+      canonical_name: listing.name || "(unnamed)",
+      brand: listing.brand,
+      image_url: listing.image_url
+    }
+
+    Repo.transaction(fn ->
+      {:ok, product} = %Product{} |> Product.changeset(attrs) |> Repo.insert()
+
+      Enum.each(ids, fn {k, v} ->
+        %ProductIdentifier{}
+        |> ProductIdentifier.changeset(%{product_id: product.id, kind: k, value: v})
+        |> Repo.insert!()
+      end)
+
+      product
+    end)
+    |> case do
+      {:ok, p} -> p
+    end
+  end
+
+  defp attach_missing_identifiers(%Product{} = p, ids) do
+    Enum.each(ids, fn {k, v} ->
+      case Catalog.get_product_by_identifier(k, v) do
+        nil ->
+          %ProductIdentifier{}
+          |> ProductIdentifier.changeset(%{product_id: p.id, kind: k, value: v})
+          |> Repo.insert(
+            on_conflict: :nothing,
+            conflict_target: [:kind, :value]
+          )
+
+        _ ->
+          :already_attached
+      end
+    end)
+  end
+
+  @doc """
+  Atomically set the Product link for a listing. Replaces any
+  pre-existing `product_listings` rows for the listing (a listing
+  belongs to **at most one** Product), inserts/upserts the new one,
+  and orphan-cleans previously-linked Products that lose their last
+  listing.
+
+  Idempotent — re-setting to the same Product is a no-op apart from
+  refreshing `source`/`confidence`/`linked_at`.
+
+  This is the only safe writer for an automatically-derived link;
+  use `link/3` only when you genuinely want multiple-link semantics
+  (admin draft scoring, etc.).
+  """
+  def set_listing_link(product_id, chain_listing_id, opts \\ [])
+      when is_integer(product_id) and is_integer(chain_listing_id) do
+    Repo.transaction(fn ->
+      orphan_candidates =
+        from(pl in ProductListing,
+          where:
+            pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id,
+          select: pl.product_id
+        )
+        |> Repo.all()
+        |> Enum.uniq()
+
+      from(pl in ProductListing,
+        where:
+          pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id
+      )
+      |> Repo.delete_all()
+
+      result =
+        case link(product_id, chain_listing_id, opts) do
+          {:ok, row} -> row
+          {:error, cs} -> Repo.rollback(cs)
         end
-    end
-  end
 
-  @doc """
-  Canonicalizes a listing's `ean` and returns the matching key, or
-  `nil` if no canonical form fits. GTIN-13 is preferred over EAN-8;
-  the latter is used verbatim when present.
-  """
-  def canonical_key_for_listing(%ChainListing{ean: ean}),
-    do: Identity.canonicalize_gtin13(ean) || Identity.canonicalize_ean8(ean)
-
-  def canonical_key_for_listing(_), do: nil
-
-  @doc """
-  Find-or-create a placeholder Product for a listing that has no
-  usable EAN. Returns `{:created | :existed, %Product{}}`. Idempotent:
-  if the listing already has a Product via `product_listings`, that
-  one is reused; otherwise a fresh Product (with **no** ProductEan
-  rows) is inserted and seeded from the listing's display fields.
-
-  Used for chains that don't expose barcodes for some product classes
-  (Tottus's loose deli, produce-by-weight). These Products are
-  single-chain by definition; admins or a future fuzzy-match pass
-  can merge them into canonical EAN-keyed Products via
-  `merge_products/2`.
-  """
-  def find_or_create_eanless_product_for_listing(%ChainListing{} = listing) do
-    case existing_product_for_listing(listing.id) do
-      %Product{} = p ->
-        {:existed, p}
-
-      nil ->
-        attrs = %{
-          canonical_name: listing.name || "(unnamed)",
-          brand: listing.brand,
-          image_url: listing.image_url
-        }
-
-        {:ok, product} = %Product{} |> Product.changeset(attrs) |> Repo.insert()
-        {:created, product}
-    end
-  end
-
-  defp existing_product_for_listing(chain_listing_id) do
-    from(p in Product,
-      join: pl in ProductListing,
-      on: pl.product_id == p.id,
-      where: pl.chain_listing_id == ^chain_listing_id,
-      limit: 1
-    )
-    |> Repo.one()
+      Enum.each(orphan_candidates, &delete_if_orphan/1)
+      result
+    end)
   end
 
   @doc """
@@ -170,39 +236,19 @@ defmodule SuperBarato.Linker do
   hard-deleted so it doesn't pollute the products list.
   """
   def link_admin(product_id, chain_listing_id) do
-    Repo.transaction(fn ->
-      orphan_candidates =
-        from(pl in ProductListing,
-          where:
-            pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id,
-          select: pl.product_id
-        )
-        |> Repo.all()
-        |> Enum.uniq()
-
-      from(pl in ProductListing,
-        where:
-          pl.chain_listing_id == ^chain_listing_id and pl.product_id != ^product_id
-      )
-      |> Repo.delete_all()
-
-      result =
-        case link(product_id, chain_listing_id, source: @source_admin, confidence: 1.0) do
-          {:ok, row} -> row
-          {:error, cs} -> Repo.rollback(cs)
-        end
-
-      Enum.each(orphan_candidates, &delete_if_orphan/1)
-      result
-    end)
+    set_listing_link(product_id, chain_listing_id,
+      source: @source_admin,
+      confidence: 1.0
+    )
   end
 
   @doc """
-  Merge `source_id` into `target_id`: reattach every `product_eans`
-  row + `product_listings` row from source to target, then delete
-  the source product (cascade clears anything left). Idempotent on
-  collisions: if both products already share a chain_listing, the
-  source's link is dropped (target's is the surviving truth).
+  Merge `source_id` into `target_id`: reattach every
+  `product_identifiers` row + `product_listings` row from source to
+  target, then delete the source product (cascade clears anything
+  left). Idempotent on collisions: if both products already share a
+  `(kind, value)` identifier or a chain_listing, the source's row is
+  dropped (target's is the surviving truth).
   """
   def merge_products(target_id, source_id)
       when is_integer(target_id) and is_integer(source_id) and target_id != source_id do
@@ -210,9 +256,26 @@ defmodule SuperBarato.Linker do
       target = Repo.get!(Product, target_id)
       source = Repo.get!(Product, source_id)
 
-      # Reparent EANs.
-      from(pe in ProductEan, where: pe.product_id == ^source.id)
-      |> Repo.update_all(set: [product_id: target.id])
+      # Reparent identifiers, dropping any source row whose (kind,
+      # value) is already on target (the unique index would otherwise
+      # block the update).
+      target_identifier_keys =
+        from(pi in ProductIdentifier,
+          where: pi.product_id == ^target.id,
+          select: {pi.kind, pi.value}
+        )
+        |> Repo.all()
+        |> MapSet.new()
+
+      from(pi in ProductIdentifier, where: pi.product_id == ^source.id)
+      |> Repo.all()
+      |> Enum.each(fn pi ->
+        if MapSet.member?(target_identifier_keys, {pi.kind, pi.value}) do
+          Repo.delete!(pi)
+        else
+          pi |> Ecto.Changeset.change(product_id: target.id) |> Repo.update!()
+        end
+      end)
 
       # Reparent product_listings, preferring target's existing row when
       # both products share a chain_listing.
@@ -242,7 +305,7 @@ defmodule SuperBarato.Linker do
   @doc """
   Remove the link between a product and a chain_listing. If the
   product is left with zero listings, it's hard-deleted (cascades
-  through `product_eans`).
+  through `product_identifiers`).
   """
   def unlink(product_id, chain_listing_id) do
     Repo.transaction(fn ->
@@ -267,7 +330,7 @@ defmodule SuperBarato.Linker do
 
   @doc """
   Delete `product_id` if no `product_listings` rows reference it.
-  Returns `:deleted` or `:kept`. Cascades through `product_eans`
+  Returns `:deleted` or `:kept`. Cascades through `product_identifiers`
   via the FK `on_delete: :delete_all`.
   """
   def delete_if_orphan(product_id) when is_integer(product_id) or is_binary(product_id) do

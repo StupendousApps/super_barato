@@ -131,18 +131,22 @@ defmodule SuperBarato.Crawler.Chain.Results do
   # Single point that:
   #   1. Upserts the chain_listing.
   #   2. Appends a price observation when the row carries a price.
-  #   3. Notifies the Linker on inserts (not updates) so it can
-  #      attach this listing to a Product. Updates don't fire — the
-  #      link, if any, was decided when the row was first inserted;
-  #      EAN drift handling is a separate concern.
+  #   3. Notifies the Linker on every observation. The linker's
+  #      `set_listing_link/3` is idempotent (no-op when nothing
+  #      changed) but must re-run on updates because a listing may
+  #      acquire / change its EAN over time — Tottus listings start
+  #      with `ean: nil` from the search endpoint and gain one only
+  #      when the PDP refresh fires. The linker then folds the
+  #      single-chain placeholder into the canonical EAN-keyed Product.
   defp persist_listing(listing) do
     case Catalog.upsert_listing(listing) do
       {:ok, :inserted, %{id: id}} ->
         log_price(listing)
         Linker.Worker.link_listing(id)
 
-      {:ok, :updated, _row} ->
+      {:ok, :updated, %{id: id}} ->
         log_price(listing)
+        Linker.Worker.link_listing(id)
 
       {:error, cs} ->
         Logger.warning("listing upsert failed: #{inspect(cs.errors)}")

@@ -2,18 +2,19 @@ defmodule SuperBarato.Catalog.Product do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias SuperBarato.Catalog.ProductEan
+  alias SuperBarato.Catalog.ProductIdentifier
 
   schema "products" do
     field :canonical_name, :string
     field :brand, :string
     field :image_url, :string
 
-    # Many GS1-assigned GTINs may resolve to the same conceptual
-    # product — e.g. Old Spice Pure Sport 50g exists with both a
-    # Mexican (`750…`) and a US (`002…`) GTIN. The linker indexes on
-    # the EAN side; the product is the conceptual identity.
-    has_many :product_eans, ProductEan
+    # Typed identifiers anchoring this Product. A single Product can
+    # carry many — cross-country GTIN dupes (`ean_13`/`ean_8`), and
+    # any number of per-chain SKUs (`tottus_sku`, `lider_sku`, …) that
+    # accumulate as listings observe the product over time. Lookup is
+    # via `(kind, value)`, unique-indexed; see Catalog.ProductIdentifier.
+    has_many :product_identifiers, ProductIdentifier
 
     # No direct association to chain_listings — the link lives in
     # `product_listings`, owned by SuperBarato.Linker. Use

@@ -12,7 +12,7 @@ defmodule SuperBarato.Catalog do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{Category, ChainListing, Product, ProductEan}
+  alias SuperBarato.Catalog.{Category, ChainListing, Product, ProductIdentifier}
   alias SuperBarato.Search.Q
   alias SuperBarato.Crawler.Category, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
@@ -378,7 +378,8 @@ defmodule SuperBarato.Catalog do
   `list_listings_page/1`.
 
   Options: `:q` (LIKE on canonical_name / brand), `:ean` (prefix
-  match — joins `product_eans`), `:sort`, `:page`, `:per_page`.
+  match — joins `product_identifiers` on EAN kinds), `:sort`,
+  `:page`, `:per_page`.
   """
   def list_products_page(opts \\ []) do
     page = max(1, opts[:page] || 1)
@@ -409,8 +410,9 @@ defmodule SuperBarato.Catalog do
 
   defp apply_product_q_filter(query, q), do: Q.filter(query, q, [:canonical_name, :brand])
 
-  # Product-side EAN filter — join product_eans and prefix-match.
-  # Distinct so a multi-EAN product isn't returned twice.
+  # Product-side EAN filter — join product_identifiers and prefix-match
+  # against EAN-kind rows. Distinct so a multi-EAN product isn't
+  # returned twice.
   defp apply_product_ean_filter(query, nil), do: query
   defp apply_product_ean_filter(query, ""), do: query
 
@@ -418,27 +420,38 @@ defmodule SuperBarato.Catalog do
     like = String.replace(ean, "%", "\\%") <> "%"
 
     from p in query,
-      join: pe in SuperBarato.Catalog.ProductEan,
-      on: pe.product_id == p.id,
-      where: like(pe.ean, ^like),
+      join: pi in ProductIdentifier,
+      on: pi.product_id == p.id,
+      where: pi.kind in ["ean_13", "ean_8"] and like(pi.value, ^like),
       distinct: true
   end
 
-  @doc "Look up the Product anchored on `ean` (via `product_eans`)."
-  def get_product_by_ean(ean) when is_binary(ean) do
-    case Repo.get_by(ProductEan, ean: ean) do
+  @doc """
+  Look up the Product anchored on `(kind, value)` in `product_identifiers`.
+  Used by the linker to find-or-create.
+  """
+  def get_product_by_identifier(kind, value) when is_binary(kind) and is_binary(value) do
+    case Repo.get_by(ProductIdentifier, kind: kind, value: value) do
       nil -> nil
-      %ProductEan{product_id: pid} -> Repo.get(Product, pid)
+      %ProductIdentifier{product_id: pid} -> Repo.get(Product, pid)
     end
+  end
+
+  @doc """
+  Look up the Product anchored on a GS1 EAN (GTIN-13 or EAN-8).
+  Convenience over `get_product_by_identifier/2` — checks both kinds.
+  """
+  def get_product_by_ean(ean) when is_binary(ean) do
+    get_product_by_identifier("ean_13", ean) || get_product_by_identifier("ean_8", ean)
   end
 
   @doc "Returns every EAN attached to `product_id`, oldest-first."
   def eans_for_product(product_id) do
     Repo.all(
-      from pe in ProductEan,
-        where: pe.product_id == ^product_id,
-        order_by: pe.inserted_at,
-        select: pe.ean
+      from pi in ProductIdentifier,
+        where: pi.product_id == ^product_id and pi.kind in ["ean_13", "ean_8"],
+        order_by: pi.inserted_at,
+        select: pi.value
     )
   end
 
@@ -448,15 +461,28 @@ defmodule SuperBarato.Catalog do
   cell in one query.
   """
   def eans_by_product_ids(product_ids) when is_list(product_ids) do
-    from(pe in ProductEan,
-      where: pe.product_id in ^product_ids,
-      order_by: pe.inserted_at,
-      select: {pe.product_id, pe.ean}
+    from(pi in ProductIdentifier,
+      where: pi.product_id in ^product_ids and pi.kind in ["ean_13", "ean_8"],
+      order_by: pi.inserted_at,
+      select: {pi.product_id, pi.value}
     )
     |> Repo.all()
     |> Enum.reduce(%{}, fn {pid, ean}, acc ->
       Map.update(acc, pid, [ean], &(&1 ++ [ean]))
     end)
+  end
+
+  @doc """
+  Returns every typed identifier attached to `product_id`,
+  oldest-first as `[{kind, value}, ...]`.
+  """
+  def identifiers_for_product(product_id) do
+    Repo.all(
+      from pi in ProductIdentifier,
+        where: pi.product_id == ^product_id,
+        order_by: pi.inserted_at,
+        select: {pi.kind, pi.value}
+    )
   end
 
   defp apply_product_sort(query, "-" <> field), do: apply_product_sort_dir(query, field, :desc)
