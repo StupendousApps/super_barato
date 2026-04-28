@@ -73,7 +73,7 @@ defmodule SuperBarato.Crawler.Tottus do
     with {:ok, html} <- fetch_html(@home_url),
          {:ok, data} <- extract_next_data(html),
          {:ok, cats} <- categories_from_next_data(data) do
-      {:ok, cats |> Scope.filter(@chain) |> mark_leaves()}
+      {:ok, cats |> then(&Scope.filter(@chain, &1)) |> mark_leaves()}
     end
   end
 
