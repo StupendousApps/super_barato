@@ -109,10 +109,16 @@ defmodule SuperBarato.Crawler.Tottus do
         []
 
       l1 ->
+        # `slug_from_url/1` drops query strings, so menu items like
+        # "Marcas Propias" → `…/lista/CATG27055/Despensa?facetSelected=…`
+        # collapse onto their parent's slug. Those aren't real
+        # subcategories — they're faceted views — and would create a
+        # `slug == parent_slug` self-cycle. Skip them at construction.
         l2s =
           for sub <- node["second_level_categories"] || [],
               cat = build_category(name(sub), href(sub["item_url"]), l1.slug, 2),
               !is_nil(cat),
+              cat.slug != l1.slug,
               do: {sub, cat}
 
         l3s =
@@ -120,6 +126,8 @@ defmodule SuperBarato.Crawler.Tottus do
               third <- sub["third_level_categories"] || [],
               cat = build_category(name(third), href(third["item_url"]), l2.slug, 3),
               !is_nil(cat),
+              cat.slug != l2.slug,
+              cat.slug != l1.slug,
               do: cat
 
         [l1 | Enum.map(l2s, fn {_, c} -> c end)] ++ l3s

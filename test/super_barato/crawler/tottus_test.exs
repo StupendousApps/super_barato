@@ -52,6 +52,38 @@ defmodule SuperBarato.Crawler.TottusTest do
     end
   end
 
+  # The v2 fixture is a fresh capture taken after we hit a production
+  # hang: the menu's "Marcas Propias" L2/L3 entries used filter URLs
+  # (`?facetSelected=…`) that, after `slug_from_url/1` strips the
+  # query string, collapse onto the parent's slug. That produced
+  # `slug == parent_slug` self-cycles which Scope.filter's parent
+  # walk infinite-looped on. Construction now skips those entries.
+  describe "categories_from_next_data/1 (home_tottus_v2 — facet-link case)" do
+    setup do
+      html = Fixtures.read!(:tottus, "home_tottus_v2.html")
+      {:ok, data} = Tottus.extract_next_data(html)
+      {:ok, cats} = Tottus.categories_from_next_data(data)
+      {:ok, cats: cats}
+    end
+
+    test "no category is its own parent", %{cats: cats} do
+      self_parents = Enum.filter(cats, &(&1.slug == &1.parent_slug))
+      assert self_parents == [], "expected no self-parents, got #{length(self_parents)}"
+    end
+
+    test "Scope.filter completes quickly (no parent-walk loop)", %{cats: cats} do
+      task = Task.async(fn -> SuperBarato.Crawler.Scope.filter(:tottus, cats) end)
+
+      filtered =
+        case Task.yield(task, 1_000) || Task.shutdown(task, :brutal_kill) do
+          {:ok, result} -> result
+          nil -> flunk("Scope.filter did not finish within 1s — looped on parent chain")
+        end
+
+      assert length(filtered) > 500
+    end
+  end
+
   describe "parse_search_from_next_data/2 (Carnes fixture)" do
     setup do
       html = Fixtures.read!(:tottus, "category_carnes.html")
