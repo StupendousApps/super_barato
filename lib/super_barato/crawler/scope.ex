@@ -43,7 +43,12 @@ defmodule SuperBarato.Crawler.Scope do
     "unimarc" => ~w(
       hogar
     ),
-    "tottus" => ~w(),
+    "tottus" => ~w(
+      CATG29085/Ofertas
+      CATG24817/Black-Week
+      CATG25257/San-Valentin
+      CATG27086/Celebraciones
+    ),
     "acuenta" => ~w(
       hogar-entretencion-y-tecnologia
     )
