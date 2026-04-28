@@ -280,13 +280,14 @@ defmodule SuperBarato.Crawler.Tottus do
       %{} ->
         variant = List.first(pd["variants"] || []) || %{}
         {regular, promo} = parse_prices(variant["prices"] || [])
-        identifiers = identifiers_from_pdp(pd)
+        ean = ean_from_variant(variant)
+        identifiers = identifiers_from_pdp(pd, ean)
 
         listing = %Listing{
           chain: @chain,
           chain_sku: to_string_if_present(pd["id"]),
           chain_product_id: to_string_if_present(pd["primaryVariantId"]),
-          ean: nil,
+          ean: ean,
           identifiers_key: Identity.encode(identifiers),
           raw: %{"productData" => pd},
           name: pd["name"],
@@ -303,6 +304,22 @@ defmodule SuperBarato.Crawler.Tottus do
     end
   end
 
+  # Tottus's variant carries `okayToShopBarcodes` — usually the real
+  # GTIN-13 for packaged goods, but for loose-cut deli / produce it's
+  # an internal shop code (5 digits). Validate as GTIN-13 / EAN-8
+  # before treating as an EAN; otherwise leave nil.
+  @doc false
+  def ean_from_variant(%{"okayToShopBarcodes" => list}) when is_list(list) do
+    list
+    |> Enum.find(fn s ->
+      is_binary(s) and
+        (SuperBarato.Linker.Identity.canonicalize_gtin13(s) ||
+           SuperBarato.Linker.Identity.canonicalize_ean8(s))
+    end)
+  end
+
+  def ean_from_variant(_), do: nil
+
   defp identifiers_from_search_item(item) when is_map(item) do
     %{
       "productId" => item["productId"],
@@ -312,10 +329,11 @@ defmodule SuperBarato.Crawler.Tottus do
     |> Map.new()
   end
 
-  defp identifiers_from_pdp(pd) when is_map(pd) do
+  defp identifiers_from_pdp(pd, ean) when is_map(pd) do
     %{
       "productId" => pd["id"],
-      "skuId" => pd["primaryVariantId"]
+      "skuId" => pd["primaryVariantId"],
+      "ean" => ean
     }
     |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
     |> Map.new()

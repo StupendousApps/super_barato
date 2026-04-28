@@ -190,8 +190,37 @@ defmodule SuperBarato.Crawler.TottusTest do
       assert l.brand == "MARVEST"
       assert l.regular_price == 11_990
       assert is_nil(l.promo_price)
-      assert is_nil(l.ean)
+      # Tottus PDPs carry GTIN-13s on `variants[0].okayToShopBarcodes`;
+      # we only accept values that pass the GTIN-13 / EAN-8 check digit.
+      assert l.ean == "7804604862605"
       assert String.starts_with?(l.pdp_url, "https://www.tottus.cl/tottus-cl/articulo/")
+    end
+  end
+
+  describe "ean_from_variant/1" do
+    test "accepts a valid GTIN-13" do
+      assert Tottus.ean_from_variant(%{"okayToShopBarcodes" => ["7804604862605"]}) ==
+               "7804604862605"
+    end
+
+    test "rejects too-short internal codes (deli / produce)" do
+      assert Tottus.ean_from_variant(%{"okayToShopBarcodes" => ["13526"]}) == nil
+    end
+
+    test "rejects values that fail the GTIN check digit" do
+      # Last digit changed from 5 → 4
+      assert Tottus.ean_from_variant(%{"okayToShopBarcodes" => ["7804604862604"]}) == nil
+    end
+
+    test "picks the first valid value when the list mixes valid + junk" do
+      assert Tottus.ean_from_variant(%{
+               "okayToShopBarcodes" => ["13526", "7804604862605"]
+             }) == "7804604862605"
+    end
+
+    test "missing field returns nil" do
+      assert Tottus.ean_from_variant(%{}) == nil
+      assert Tottus.ean_from_variant(%{"okayToShopBarcodes" => []}) == nil
     end
   end
 
