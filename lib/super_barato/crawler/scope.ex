@@ -134,16 +134,27 @@ defmodule SuperBarato.Crawler.Scope do
     end)
   end
 
-  defp ancestor_blacklisted?(chain, %{parent_slug: parent}, by_slug) when is_binary(parent) do
+  defp ancestor_blacklisted?(chain, cat, by_slug),
+    do: ancestor_blacklisted?(chain, cat, by_slug, MapSet.new())
+
+  defp ancestor_blacklisted?(chain, %{parent_slug: parent}, by_slug, seen)
+       when is_binary(parent) do
     cond do
-      blacklisted?(chain, parent) -> true
+      MapSet.member?(seen, parent) ->
+        # Defensive cycle break — shouldn't happen with home-menu data
+        # but a malformed parent_slug chain would otherwise loop.
+        false
+
+      blacklisted?(chain, parent) ->
+        true
+
       true ->
         case Map.get(by_slug, parent) do
           nil -> false
-          ancestor -> ancestor_blacklisted?(chain, ancestor, by_slug)
+          ancestor -> ancestor_blacklisted?(chain, ancestor, by_slug, MapSet.put(seen, parent))
         end
     end
   end
 
-  defp ancestor_blacklisted?(_chain, _cat, _by_slug), do: false
+  defp ancestor_blacklisted?(_chain, _cat, _by_slug, _seen), do: false
 end
