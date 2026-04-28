@@ -51,6 +51,12 @@ env:
   secret:
     - SECRET_KEY_BASE
     - SENDGRID_API_KEY
+    # Per-chain HTTP egress proxy. Tottus's prod IP is banned at
+    # Cloudflare's edge, so we route those requests through a
+    # Chilean residential connection (Tailscale → home iMac running
+    # tinyproxy). Other chains stay direct unless explicitly proxied
+    # via their own *_PROXY_URL env vars (LIDER_PROXY_URL, etc.).
+    - TOTTUS_PROXY_URL
   clear:
     PHX_HOST: superbarato.cl
     MAIL_FROM_NAME: "Super Barato (cl)"

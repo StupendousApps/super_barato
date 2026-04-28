@@ -58,6 +58,26 @@ if config_env() == :prod do
     config :super_barato, SuperBarato.Crawler, chains_enabled: true
   end
 
+  # Per-chain HTTP proxy. Currently used to route Tottus through a
+  # Chilean residential IP (the prod IP gets banned at Cloudflare's
+  # edge). Format: `http://user:pass@host:port` or `socks5://...`.
+  # Other chains stay direct unless their env var is set.
+  chain_proxies =
+    [
+      {:tottus, System.get_env("TOTTUS_PROXY_URL")},
+      {:lider, System.get_env("LIDER_PROXY_URL")},
+      {:jumbo, System.get_env("JUMBO_PROXY_URL")},
+      {:santa_isabel, System.get_env("SANTA_ISABEL_PROXY_URL")},
+      {:unimarc, System.get_env("UNIMARC_PROXY_URL")},
+      {:acuenta, System.get_env("ACUENTA_PROXY_URL")}
+    ]
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    |> Map.new()
+
+  if map_size(chain_proxies) > 0 do
+    config :super_barato, :chain_proxies, chain_proxies
+  end
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

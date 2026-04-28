@@ -70,12 +70,13 @@ defmodule SuperBarato.Crawler.Http do
     body = Keyword.get(opts, :body)
     follow = Keyword.get(opts, :follow_redirects, true)
     timeout = Keyword.get(opts, :timeout_ms, @default_timeout_ms)
+    proxy_url = Keyword.get(opts, :proxy_url) || chain_proxy_url(chain)
     binary = binary_for_profile(profile)
 
     headers_file =
       Path.join(System.tmp_dir!(), "sb_curl_#{System.unique_integer([:positive])}.hdr")
 
-    args = build_args(method, url, headers, body, follow, timeout, headers_file)
+    args = build_args(method, url, headers, body, follow, timeout, headers_file, proxy_url)
 
     try do
       case System.cmd(binary, args, stderr_to_stdout: false) do
@@ -172,7 +173,7 @@ defmodule SuperBarato.Crawler.Http do
     Application.get_env(:super_barato, :curl_impersonate_profile, @default_profile)
   end
 
-  defp build_args(method, url, headers, body, follow, timeout_ms, headers_file) do
+  defp build_args(method, url, headers, body, follow, timeout_ms, headers_file, proxy_url) do
     header_args = Enum.flat_map(headers, fn {k, v} -> ["-H", "#{k}: #{v}"] end)
 
     method_args =
@@ -193,11 +194,33 @@ defmodule SuperBarato.Crawler.Http do
       headers_file
     ]
 
+    proxy_args =
+      case proxy_url do
+        nil -> []
+        "" -> []
+        url -> ["--proxy", url]
+      end
+
     base
     |> then(&if follow, do: &1 ++ ["-L"], else: &1)
+    |> Kernel.++(proxy_args)
     |> Kernel.++(method_args)
     |> Kernel.++(header_args)
     |> Kernel.++([url])
+  end
+
+  # Per-chain proxy URL, populated from `:chain_proxies` config at
+  # boot. The map is `%{chain_atom => "http://user:pass@host:port"}`
+  # — empty by default, prod populates Tottus from `TOTTUS_PROXY_URL`
+  # so its requests egress through a CL residential IP. Other chains
+  # stay direct (no proxy = nil = no `--proxy` flag).
+  defp chain_proxy_url(nil), do: nil
+
+  defp chain_proxy_url(chain) when is_atom(chain) do
+    case Application.get_env(:super_barato, :chain_proxies, %{}) do
+      %{} = m -> Map.get(m, chain)
+      _ -> nil
+    end
   end
 
   # `-D` writes every response block when following redirects. Keep only the
