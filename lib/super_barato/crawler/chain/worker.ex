@@ -81,10 +81,20 @@ defmodule SuperBarato.Crawler.Chain.Worker do
   end
 
   # Dispatch to adapter, route the result.
+  #
+  # We log the task at :debug on entry and at :info / :warning when it
+  # finishes. A discovery task can keep the worker busy for minutes
+  # (synchronous BFS over a chain's category tree); without these
+  # bookends a hung worker is invisible — successful tasks would
+  # otherwise emit nothing.
   defp dispatch(task, state) do
+    started_at = now()
+    Logger.debug("[#{state.chain}] task start #{format_task_for_log(task)}")
+
     case safe_handle_task(state.adapter, task) do
       {:ok, payload} ->
         Results.record(state.chain, task, payload)
+        log_task_done(state, task, payload, now() - started_at)
         %{state | last_call_at: now(), consecutive_blocks: 0}
 
       :blocked ->
@@ -93,9 +103,25 @@ defmodule SuperBarato.Crawler.Chain.Worker do
         %{state | last_call_at: now()}
 
       {:error, reason} ->
-        log_task_error(state, task, reason)
+        log_task_error(state, task, reason, now() - started_at)
         %{state | last_call_at: now(), consecutive_blocks: 0}
     end
+  end
+
+  # One-line summary so `bin/kamal logs` shows progress for long-running
+  # tasks. Payload size is the most useful signal — empty results are a
+  # clear "something is wrong" hint without paging through the body.
+  defp log_task_done(state, task, payload, elapsed_ms) do
+    size =
+      case payload do
+        l when is_list(l) -> length(l)
+        nil -> 0
+        _ -> 1
+      end
+
+    Logger.info(
+      "[#{state.chain}] task ok n=#{size} t=#{elapsed_ms}ms #{format_task_for_log(task)}"
+    )
   end
 
   # `:stale_pdp` (Product JSON-LD has nil name) and HTTP 410 (Cencosud
@@ -103,9 +129,9 @@ defmodule SuperBarato.Crawler.Chain.Worker do
   # percent of every full pass. They're noise at :warning level. Real
   # surprises (transport errors, unexpected statuses, parser bugs)
   # stay at :warning so they're still findable in `bin/kamal logs`.
-  defp log_task_error(state, task, reason) do
+  defp log_task_error(state, task, reason, elapsed_ms) do
     suffix = format_task_for_log(task)
-    line = "[#{state.chain}] task failed: #{inspect(reason)} #{suffix}"
+    line = "[#{state.chain}] task failed: #{inspect(reason)} t=#{elapsed_ms}ms #{suffix}"
 
     if expected_drift?(reason) do
       Logger.debug(line)
