@@ -454,7 +454,11 @@ defmodule SuperBarato.Crawler.Probe do
         |> where(
           [l],
           l.chain == ^chain_str and l.active == true and not is_nil(l.pdp_url) and
-            like(l.category_path, ^pattern)
+            fragment(
+              "EXISTS (SELECT 1 FROM json_each(?) WHERE value LIKE ?)",
+              l.category_paths,
+              ^pattern
+            )
         )
         |> order_by([l], asc: l.id)
         |> limit(1)

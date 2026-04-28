@@ -68,14 +68,21 @@ defmodule SuperBarato.Linker.Worker do
         :skip
 
       %ChainListing{} = listing ->
-        case Linker.identifiers_for_listing(listing) do
-          [] ->
-            # No usable identifier at all (no EAN, no chain_sku) —
-            # nothing safe to anchor a Product on. Leave unlinked;
-            # admin can wire it up manually.
+        cond do
+          is_nil(listing.current_regular_price) or listing.current_regular_price <= 0 ->
+            # No price observed yet → no Product. The listing exists
+            # in chain_listings (we keep its existence as a discovery
+            # signal) but the catalog only carries Products that
+            # represent something a shopper can actually compare. When
+            # a price arrives later, the upsert re-fires the linker.
             :skip
 
-          _ids ->
+          Linker.identifiers_for_listing(listing) == [] ->
+            # No usable identifier at all (no EAN, no chain_sku) —
+            # nothing safe to anchor a Product on. Leave unlinked.
+            :skip
+
+          true ->
             # Atomic find-or-create + link. Wrapping both in one
             # transaction means a `set_listing_link` failure (FK
             # violation, exception inside `link/3`) rolls back the

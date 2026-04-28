@@ -12,9 +12,9 @@ defmodule SuperBarato.Linker do
   Every `product_listings` row carries a `source` tag describing how
   the link was created. Canonical values:
 
-    * `"ean_canonical"` — `Linker.Backfill` matched the listing's
-      canonicalized GTIN-13 against a Product's `ean`. High
-      confidence; produced in bulk.
+    * `"ean_canonical"` — the listing's canonicalized GTIN-13 / EAN-8
+      matched a Product's identifier in `product_identifiers`. High
+      confidence; produced live by `Linker.Worker`.
     * `"single_chain"` — listing has no usable EAN (Tottus's loose
       meat, produce sold by weight, anything where the chain doesn't
       expose a barcode). Each such listing gets a placeholder Product

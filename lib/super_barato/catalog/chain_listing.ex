@@ -22,7 +22,12 @@ defmodule SuperBarato.Catalog.ChainListing do
     field :name, :string
     field :brand, :string
     field :image_url, :string
-    field :category_path, :string
+    # Every category surface where this listing has been observed.
+    # Stored as JSON-encoded text; one slug per surface, deduplicated
+    # on upsert. A single product can show up under multiple paths
+    # (Tottus's "Marcas Tottus" umbrella parallel to the regular
+    # aisles, Jumbo's "experiencias-jumbo" mirror, …).
+    field :category_paths, {:array, :string}, default: []
     field :pdp_url, :string
 
     # Everything else the chain sent — descriptions, ratings, the
@@ -45,7 +50,7 @@ defmodule SuperBarato.Catalog.ChainListing do
   @discovery_fields ~w(
     chain chain_sku chain_product_id
     identifiers_key
-    ean name brand image_url category_path pdp_url
+    ean name brand image_url category_paths pdp_url
     raw
     current_regular_price current_promo_price current_promotions
     last_discovered_at last_priced_at first_seen_at active

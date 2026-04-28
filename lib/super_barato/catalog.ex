@@ -96,8 +96,9 @@ defmodule SuperBarato.Catalog do
   """
   def upsert_listing(%Listing{} = listing) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
+    incoming_paths = listing_incoming_paths(listing)
 
-    attrs = %{
+    base_attrs = %{
       chain: to_string(listing.chain),
       chain_sku: listing.chain_sku,
       chain_product_id: listing.chain_product_id,
@@ -107,7 +108,6 @@ defmodule SuperBarato.Catalog do
       brand: listing.brand,
       image_url: listing.image_url,
       pdp_url: listing.pdp_url,
-      category_path: listing.category_path,
       raw: listing.raw || %{},
       current_regular_price: listing.regular_price,
       current_promo_price: listing.promo_price,
@@ -118,42 +118,80 @@ defmodule SuperBarato.Catalog do
       active: true
     }
 
-    result =
-      %ChainListing{}
-      |> ChainListing.discovery_changeset(attrs)
-      |> Repo.insert(
-        on_conflict:
-          {:replace,
-           [
-             :chain_product_id,
-             :ean,
-             :name,
-             :brand,
-             :image_url,
-             :category_path,
-             :pdp_url,
-             :raw,
-             :current_regular_price,
-             :current_promo_price,
-             :current_promotions,
-             :last_discovered_at,
-             :last_priced_at,
-             :active,
-             :updated_at
-           ]},
-        # Identity is `(chain, identifiers_key)` — see migration
-        # 20260426222000_chain_listings_identifiers_and_raw. The
-        # parser writes `identifiers_key` via `Linker.Identity.encode/1`
-        # over the id-shaped fields it pulled from `raw`; any change
-        # to that set produces a different key and a fresh row.
-        conflict_target: [:chain, :identifiers_key],
-        returning: true
-      )
+    # `category_paths` accumulates surfaces — set to `incoming_paths`
+    # on insert, merged with the existing array on conflict-update.
+    # The REPLACE form below can't express a per-row union, so we
+    # wrap insert + path-merge in a single transaction. SQLite WAL
+    # serializes writers within a chain so the read-then-write is
+    # safe in our single-Worker-per-chain pipeline.
+    Repo.transaction(fn ->
+      attrs = Map.put(base_attrs, :category_paths, incoming_paths)
 
-    case result do
-      {:ok, row} -> {:ok, upsert_action(row), row}
+      result =
+        %ChainListing{}
+        |> ChainListing.discovery_changeset(attrs)
+        |> Repo.insert(
+          on_conflict:
+            {:replace,
+             [
+               :chain_product_id,
+               :ean,
+               :name,
+               :brand,
+               :image_url,
+               :pdp_url,
+               :raw,
+               :current_regular_price,
+               :current_promo_price,
+               :current_promotions,
+               :last_discovered_at,
+               :last_priced_at,
+               :active,
+               :updated_at
+             ]},
+          # Identity is `(chain, identifiers_key)`. `category_paths`
+          # is intentionally NOT in the replace list — the merge
+          # happens below.
+          conflict_target: [:chain, :identifiers_key],
+          returning: true
+        )
+
+      case result do
+        {:ok, row} ->
+          merged = merge_category_paths(row.category_paths, incoming_paths)
+          row =
+            if merged == row.category_paths do
+              row
+            else
+              {:ok, updated} =
+                row
+                |> Ecto.Changeset.change(category_paths: merged)
+                |> Repo.update()
+
+              updated
+            end
+
+          {upsert_action(row), row}
+
+        {:error, cs} ->
+          Repo.rollback(cs)
+      end
+    end)
+    |> case do
+      {:ok, {action, row}} -> {:ok, action, row}
       {:error, _} = err -> err
     end
+  end
+
+  defp listing_incoming_paths(%Listing{category_path: nil}), do: []
+  defp listing_incoming_paths(%Listing{category_path: ""}), do: []
+  defp listing_incoming_paths(%Listing{category_path: p}) when is_binary(p), do: [p]
+
+  defp merge_category_paths(nil, incoming), do: incoming
+  defp merge_category_paths(existing, []) when is_list(existing), do: existing
+
+  defp merge_category_paths(existing, incoming) when is_list(existing) and is_list(incoming) do
+    Enum.uniq(existing ++ incoming)
   end
 
   # Did the upsert insert or update? Ecto's on_conflict is opaque to
@@ -287,17 +325,26 @@ defmodule SuperBarato.Catalog do
     where(query, [l], like(l.ean, ^like))
   end
 
-  # `category_path` is the chain-scoped slug stored on each listing.
-  # The filter accepts either an exact slug or any descendant — passing
-  # the L1 slug `CATG27055/Despensa` matches every listing whose
-  # category lives under it. Trailing-slash escape so we don't match
-  # `CATG27055/Despensa-Otra` accidentally.
+  # `category_paths` is the JSON array of surfaces this listing has
+  # been discovered through. Filter accepts either an exact slug or
+  # any descendant — passing the L1 slug `CATG27055/Despensa` matches
+  # every listing one of whose paths lives under it.
   defp apply_category_filter(query, nil), do: query
   defp apply_category_filter(query, ""), do: query
 
   defp apply_category_filter(query, slug) when is_binary(slug) do
     like = String.replace(slug, "%", "\\%") <> "/%"
-    where(query, [l], l.category_path == ^slug or like(l.category_path, ^like))
+
+    where(
+      query,
+      [l],
+      fragment(
+        "EXISTS (SELECT 1 FROM json_each(?) WHERE value = ? OR value LIKE ?)",
+        l.category_paths,
+        ^slug,
+        ^like
+      )
+    )
   end
 
   defp apply_sort(query, "-" <> field), do: apply_sort_dir(query, field, :desc)
