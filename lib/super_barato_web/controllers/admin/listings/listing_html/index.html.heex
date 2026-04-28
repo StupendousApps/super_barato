@@ -17,6 +17,14 @@
         placeholder="Prefix, e.g. 78025"
       />
       <.input
+        :if={@active_chain && @category_options != []}
+        name="category"
+        type="select"
+        value={@filters.category}
+        label="Category"
+        options={@category_options}
+      />
+      <.input
         name="per_page"
         type="select"
         value={@filters.per_page}

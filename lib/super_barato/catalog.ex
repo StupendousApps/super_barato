@@ -242,6 +242,7 @@ defmodule SuperBarato.Catalog do
       |> apply_chain_filter(opts[:chain])
       |> apply_q_filter(opts[:q])
       |> apply_ean_filter(opts[:ean])
+      |> apply_category_filter(opts[:category])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -286,6 +287,19 @@ defmodule SuperBarato.Catalog do
     where(query, [l], like(l.ean, ^like))
   end
 
+  # `category_path` is the chain-scoped slug stored on each listing.
+  # The filter accepts either an exact slug or any descendant — passing
+  # the L1 slug `CATG27055/Despensa` matches every listing whose
+  # category lives under it. Trailing-slash escape so we don't match
+  # `CATG27055/Despensa-Otra` accidentally.
+  defp apply_category_filter(query, nil), do: query
+  defp apply_category_filter(query, ""), do: query
+
+  defp apply_category_filter(query, slug) when is_binary(slug) do
+    like = String.replace(slug, "%", "\\%") <> "/%"
+    where(query, [l], l.category_path == ^slug or like(l.category_path, ^like))
+  end
+
   defp apply_sort(query, "-" <> field), do: apply_sort_dir(query, field, :desc)
   defp apply_sort(query, field), do: apply_sort_dir(query, field, :asc)
 
@@ -303,6 +317,47 @@ defmodule SuperBarato.Catalog do
     "level" => :level,
     "last_seen_at" => :last_seen_at
   }
+
+  @doc """
+  Flat list of every category for a chain, returned as
+  `[{slug, "Parent / Child / Grandchild"}, ...]` and sorted by the
+  full ancestry-chain label. Ready for a `<select>` dropdown.
+  """
+  def categories_for_chain(nil), do: []
+  def categories_for_chain(""), do: []
+
+  def categories_for_chain(chain) when is_binary(chain) or is_atom(chain) do
+    chain_str = if is_atom(chain), do: Atom.to_string(chain), else: chain
+
+    cats =
+      Repo.all(
+        from c in Category,
+          where: c.chain == ^chain_str,
+          select: %{slug: c.slug, name: c.name, parent_slug: c.parent_slug}
+      )
+
+    by_slug = Map.new(cats, &{&1.slug, &1})
+
+    cats
+    |> Enum.map(fn cat -> {cat.slug, ancestry_label(cat, by_slug)} end)
+    |> Enum.sort_by(fn {_slug, label} -> String.downcase(label) end)
+  end
+
+  # Walks `parent_slug` to compose `Root / … / Leaf`. Stops on a nil
+  # parent or a missing entry (e.g. orphaned subtree).
+  defp ancestry_label(cat, by_slug, seen \\ MapSet.new()) do
+    cond do
+      MapSet.member?(seen, cat.slug) ->
+        cat.name
+
+      is_binary(cat.parent_slug) and Map.has_key?(by_slug, cat.parent_slug) ->
+        parent = Map.fetch!(by_slug, cat.parent_slug)
+        ancestry_label(parent, by_slug, MapSet.put(seen, cat.slug)) <> " / " <> cat.name
+
+      true ->
+        cat.name
+    end
+  end
 
   @doc """
   Paginated categories for the admin table. Same result shape as

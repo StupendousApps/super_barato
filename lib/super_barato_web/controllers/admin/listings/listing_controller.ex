@@ -13,6 +13,7 @@ defmodule SuperBaratoWeb.Admin.ListingController do
     chain = parse_chain(params["chain"])
     q = params["q"] || ""
     ean = params["ean"] || ""
+    category = params["category"] || ""
     sort = params["sort"] || "-last_priced_at"
     page = parse_int(params["page"], 1)
     per_page = parse_int(params["per_page"], 25)
@@ -22,6 +23,7 @@ defmodule SuperBaratoWeb.Admin.ListingController do
         chain: chain,
         q: q,
         ean: ean,
+        category: category,
         sort: sort,
         page: page,
         per_page: per_page
@@ -42,8 +44,21 @@ defmodule SuperBaratoWeb.Admin.ListingController do
       chain: params["chain"] || "",
       q: q,
       ean: ean,
+      category: category,
       per_page: params["per_page"] || ""
     }
+
+    # Category dropdown: only populated when a chain is active —
+    # categories are chain-scoped and the cross-chain "All" view
+    # would mix slug spaces.
+    category_options =
+      if chain do
+        [{"All categories", ""} | Enum.map(Catalog.categories_for_chain(chain), fn {slug, label} ->
+          {label, slug}
+        end)]
+      else
+        []
+      end
 
     conn
     |> assign(:top_nav, :listings)
@@ -53,6 +68,7 @@ defmodule SuperBaratoWeb.Admin.ListingController do
     |> assign(:eans_by_product_id, eans_by_product_id)
     |> assign(:chains_by_product_id, chains_by_product_id)
     |> assign(:filters, filters)
+    |> assign(:category_options, category_options)
     |> assign(:sort, sort)
     |> assign(:page_title, "Listings")
     |> render(:index)
