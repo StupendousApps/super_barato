@@ -265,9 +265,22 @@ defmodule SuperBarato.Crawler.Tottus do
     with {:ok, html} <- fetch_html(url),
          {:ok, data} <- extract_next_data(html),
          {:ok, listing} <- parse_pdp_from_next_data(data) do
-      {:ok, listing}
+      # If `okayToShopBarcodes` was empty/invalid, try the
+      # `<div id="OKTS_div" data-ean="…">` fallback in the raw HTML.
+      {:ok, augment_ean_from_html(listing, html)}
     end
   end
+
+  defp augment_ean_from_html(%Listing{ean: ean} = l, _html) when is_binary(ean), do: l
+
+  defp augment_ean_from_html(%Listing{} = l, html) do
+    case ean_from_html(html) do
+      nil -> l
+      ean -> %{l | ean: ean}
+    end
+  end
+
+  defp augment_ean_from_html(other, _html), do: other
 
   @doc false
   def parse_pdp_from_next_data(data) do
@@ -311,14 +324,30 @@ defmodule SuperBarato.Crawler.Tottus do
   @doc false
   def ean_from_variant(%{"okayToShopBarcodes" => list}) when is_list(list) do
     list
-    |> Enum.find(fn s ->
-      is_binary(s) and
-        (SuperBarato.Linker.Identity.canonicalize_gtin13(s) ||
-           SuperBarato.Linker.Identity.canonicalize_ean8(s))
-    end)
+    |> Enum.find(fn s -> is_binary(s) and valid_ean?(s) end)
   end
 
   def ean_from_variant(_), do: nil
+
+  # Fallback EAN source: every PDP embeds `data-ean="<gtin>"` in the
+  # rendered HTML (on the OKTS_div div, but the attribute is unique
+  # enough that we just match anywhere). Same value as
+  # `okayToShopBarcodes[0]` when both exist, but this one survives
+  # even when `__NEXT_DATA__.productData` is empty.
+  @doc false
+  def ean_from_html(html) when is_binary(html) do
+    case Regex.run(~r/data-ean="(\d+)"/, html) do
+      [_, ean] -> if valid_ean?(ean), do: ean, else: nil
+      _ -> nil
+    end
+  end
+
+  def ean_from_html(_), do: nil
+
+  defp valid_ean?(s) when is_binary(s) do
+    !!(SuperBarato.Linker.Identity.canonicalize_gtin13(s) ||
+         SuperBarato.Linker.Identity.canonicalize_ean8(s))
+  end
 
   defp identifiers_from_search_item(item) when is_map(item) do
     %{

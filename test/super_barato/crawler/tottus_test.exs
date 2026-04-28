@@ -224,6 +224,48 @@ defmodule SuperBarato.Crawler.TottusTest do
     end
   end
 
+  describe "ean_from_html/1 (data-ean attribute fallback)" do
+    test "extracts a valid GTIN-13 from the rendered HTML" do
+      html = ~s(<div id="OKTS_div" data-ean="7801620350185"></div>)
+      assert Tottus.ean_from_html(html) == "7801620350185"
+    end
+
+    test "rejects values that don't pass the check digit" do
+      # Last digit changed
+      html = ~s(<span data-ean="7801620350184"></span>)
+      assert Tottus.ean_from_html(html) == nil
+    end
+
+    test "ignores HTML without a data-ean attribute" do
+      assert Tottus.ean_from_html("<html><body>nothing</body></html>") == nil
+    end
+  end
+
+  describe "real PDP fixtures — extracted EAN per category" do
+    @cases [
+      {"pdp_arroz.html", "7804608222474"},
+      {"pdp_ketchup.html", "7805000322502"},
+      {"pdp_cerveza.html", "7802100506511"},
+      {"pdp_belleza.html", "7500435158015"},
+      {"pdp_costillas.html", "7804604862605"}
+    ]
+
+    for {fixture, ean} <- @cases do
+      test "#{fixture} → #{ean}" do
+        html = Fixtures.read!(:tottus, unquote(fixture))
+        # `data-ean` attribute is the cheaper / more resilient source
+        assert Tottus.ean_from_html(html) == unquote(ean)
+
+        # And the parser produces a fully-populated listing
+        {:ok, data} = Tottus.extract_next_data(html)
+        {:ok, l} = Tottus.parse_pdp_from_next_data(data)
+        assert %Listing{chain: :tottus} = l
+        assert l.ean == unquote(ean)
+        assert is_binary(l.name) and l.name != ""
+      end
+    end
+  end
+
   describe "adapter basics" do
     test "id/0 returns :tottus" do
       assert Tottus.id() == :tottus
