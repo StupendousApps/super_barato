@@ -140,13 +140,15 @@ defmodule SuperBarato.Crawler.Chain.Results do
   #      single-chain placeholder into the canonical EAN-keyed Product.
   defp persist_listing(listing) do
     case Catalog.upsert_listing(listing) do
-      {:ok, :inserted, %{id: id}} ->
+      {:ok, action, %{id: id}} when action in [:upserted, :updated] ->
         log_price(listing)
         Linker.Worker.link_listing(id)
 
-      {:ok, :updated, %{id: id}} ->
-        log_price(listing)
-        Linker.Worker.link_listing(id)
+      {:ok, :skipped, _} ->
+        # No price on the parsed listing AND no existing row to flip —
+        # Catalog refused. Nothing to log, nothing to link. A future
+        # refresh that observes a price will create the row cleanly.
+        :ok
 
       {:error, cs} ->
         Logger.warning("listing upsert failed: #{inspect(cs.errors)}")

@@ -95,10 +95,80 @@ defmodule SuperBarato.Catalog do
   fields with whatever the adapter returned.
   """
   def upsert_listing(%Listing{} = listing) do
+    if is_integer(listing.regular_price) and listing.regular_price > 0 do
+      # Hot path — most refreshes have a price. Single INSERT…ON
+      # CONFLICT statement; no SELECT needed. The category_paths
+      # merge happens inline via SQLite's `json_each`.
+      do_priced_upsert(listing)
+    else
+      # Cold path — refresh observed no price. Update only if the row
+      # already exists; refuse to create a no-price row from scratch.
+      # The SELECT is necessary here because we need to differentiate
+      # "exists → mark unavailable" from "doesn't exist → skip", and
+      # ON CONFLICT can't express that without inserting first.
+      case existing_listing(listing) do
+        nil -> {:ok, :skipped, nil}
+        %ChainListing{} = row -> mark_unavailable(row, listing)
+      end
+    end
+  end
+
+  # `identifiers_key` is required at validation time but the upsert's
+  # existence lookup runs before changeset casting, so a malformed
+  # caller (nil chain or nil key) shouldn't trigger Ecto's "comparison
+  # with nil is forbidden" warning. Treat nil as "no existing row";
+  # the changeset will fail loudly later.
+  defp existing_listing(%Listing{chain: nil}), do: nil
+  defp existing_listing(%Listing{identifiers_key: nil}), do: nil
+
+  defp existing_listing(%Listing{} = listing) do
+    Repo.get_by(ChainListing,
+      chain: to_string(listing.chain),
+      identifiers_key: listing.identifiers_key
+    )
+  end
+
+  defp mark_unavailable(%ChainListing{} = row, %Listing{} = incoming) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    incoming_paths = listing_incoming_paths(incoming)
+    merged_paths = merge_category_paths(row.category_paths, incoming_paths)
+
+    # Update everything except the price columns and `last_priced_at`.
+    # The shopper-facing price stays at its last-known value;
+    # `has_price` is the signal that the chain isn't currently offering it.
+    attrs =
+      %{
+        chain_product_id: incoming.chain_product_id,
+        ean: incoming.ean,
+        name: incoming.name,
+        brand: incoming.brand,
+        image_url: incoming.image_url,
+        pdp_url: incoming.pdp_url,
+        raw: incoming.raw || %{},
+        category_paths: merged_paths,
+        last_discovered_at: now,
+        active: true,
+        has_price: false
+      }
+
+    {:ok, updated} =
+      row
+      |> Ecto.Changeset.change(attrs)
+      |> Repo.update()
+
+    {:ok, :updated, updated}
+  end
+
+  # Single-statement INSERT…ON CONFLICT. The on_conflict :replace
+  # list rewrites every field except `category_paths`, which is
+  # merged inline below via a SQL fragment so we never lose surfaces
+  # the row was previously discovered through.
+  defp do_priced_upsert(%Listing{} = listing) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
     incoming_paths = listing_incoming_paths(listing)
 
-    base_attrs = %{
+    attrs = %{
       chain: to_string(listing.chain),
       chain_sku: listing.chain_sku,
       chain_product_id: listing.chain_product_id,
@@ -109,76 +179,66 @@ defmodule SuperBarato.Catalog do
       image_url: listing.image_url,
       pdp_url: listing.pdp_url,
       raw: listing.raw || %{},
+      category_paths: incoming_paths,
       current_regular_price: listing.regular_price,
       current_promo_price: listing.promo_price,
       current_promotions: listing.promotions || %{},
       first_seen_at: now,
       last_discovered_at: now,
       last_priced_at: now,
-      active: true
+      active: true,
+      has_price: true
     }
 
-    # `category_paths` accumulates surfaces — set to `incoming_paths`
-    # on insert, merged with the existing array on conflict-update.
-    # The REPLACE form below can't express a per-row union, so we
-    # wrap insert + path-merge in a single transaction. SQLite WAL
-    # serializes writers within a chain so the read-then-write is
-    # safe in our single-Worker-per-chain pipeline.
-    Repo.transaction(fn ->
-      attrs = Map.put(base_attrs, :category_paths, incoming_paths)
+    # SQLite expression that unions the existing row's category_paths
+    # with the inserted candidate's, dedupes, and returns a JSON
+    # array. Runs inside the conflict-update so it can see both
+    # `chain_listings.<col>` (existing) and `excluded.<col>`
+    # (incoming).
+    on_conflict =
+      from(c in ChainListing,
+        update: [
+          set: [
+            chain_product_id: fragment("excluded.chain_product_id"),
+            ean: fragment("excluded.ean"),
+            name: fragment("excluded.name"),
+            brand: fragment("excluded.brand"),
+            image_url: fragment("excluded.image_url"),
+            pdp_url: fragment("excluded.pdp_url"),
+            raw: fragment("excluded.raw"),
+            current_regular_price: fragment("excluded.current_regular_price"),
+            current_promo_price: fragment("excluded.current_promo_price"),
+            current_promotions: fragment("excluded.current_promotions"),
+            last_discovered_at: fragment("excluded.last_discovered_at"),
+            last_priced_at: fragment("excluded.last_priced_at"),
+            active: fragment("excluded.active"),
+            has_price: fragment("excluded.has_price"),
+            updated_at: fragment("excluded.updated_at"),
+            # `category_paths` (unqualified) refers to the existing
+            # row's value in SQLite's ON CONFLICT context;
+            # `excluded.category_paths` is the incoming candidate.
+            # Wrapped in COALESCE to handle the no-existing-paths
+            # case (NULL → empty JSON array for json_each).
+            category_paths:
+              fragment("""
+              (SELECT json_group_array(value) FROM (
+                SELECT value FROM json_each(COALESCE(category_paths, '[]'))
+                UNION
+                SELECT value FROM json_each(COALESCE(excluded.category_paths, '[]'))
+              ))
+              """)
+          ]
+        ]
+      )
 
-      result =
-        %ChainListing{}
-        |> ChainListing.discovery_changeset(attrs)
-        |> Repo.insert(
-          on_conflict:
-            {:replace,
-             [
-               :chain_product_id,
-               :ean,
-               :name,
-               :brand,
-               :image_url,
-               :pdp_url,
-               :raw,
-               :current_regular_price,
-               :current_promo_price,
-               :current_promotions,
-               :last_discovered_at,
-               :last_priced_at,
-               :active,
-               :updated_at
-             ]},
-          # Identity is `(chain, identifiers_key)`. `category_paths`
-          # is intentionally NOT in the replace list — the merge
-          # happens below.
-          conflict_target: [:chain, :identifiers_key],
-          returning: true
-        )
-
-      case result do
-        {:ok, row} ->
-          merged = merge_category_paths(row.category_paths, incoming_paths)
-          row =
-            if merged == row.category_paths do
-              row
-            else
-              {:ok, updated} =
-                row
-                |> Ecto.Changeset.change(category_paths: merged)
-                |> Repo.update()
-
-              updated
-            end
-
-          {upsert_action(row), row}
-
-        {:error, cs} ->
-          Repo.rollback(cs)
-      end
-    end)
-    |> case do
-      {:ok, {action, row}} -> {:ok, action, row}
+    case %ChainListing{}
+         |> ChainListing.discovery_changeset(attrs)
+         |> Repo.insert(
+           on_conflict: on_conflict,
+           conflict_target: [:chain, :identifiers_key],
+           returning: true
+         ) do
+      {:ok, row} -> {:ok, :upserted, row}
       {:error, _} = err -> err
     end
   end
@@ -193,15 +253,6 @@ defmodule SuperBarato.Catalog do
   defp merge_category_paths(existing, incoming) when is_list(existing) and is_list(incoming) do
     Enum.uniq(existing ++ incoming)
   end
-
-  # Did the upsert insert or update? Ecto's on_conflict is opaque to
-  # this, so we infer from the returned row: on insert, both timestamps
-  # are set to the same `now`; on conflict-update, `inserted_at` is
-  # preserved from the original row and only `updated_at` advances.
-  # The DateTime equality is exact at second resolution, so this is
-  # robust as long as `now` is truncated the same way for both fields.
-  defp upsert_action(%ChainListing{inserted_at: t, updated_at: t}), do: :inserted
-  defp upsert_action(%ChainListing{}), do: :updated
 
   @doc """
   Refreshes a listing's current price columns. Price history is

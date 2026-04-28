@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.Chain.ResultsTest do
   use SuperBarato.DataCase, async: false
 
-  alias SuperBarato.{Catalog, PriceLog}
+  alias SuperBarato.{Catalog, PriceLog, Repo}
   alias SuperBarato.Catalog.ChainListing
   alias SuperBarato.Crawler.Category, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
@@ -112,10 +112,9 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
       [{_, 2490, 1990}] = PriceLog.read(chain, "sku-2")
     end
 
-    test "listings without a chain_sku or regular_price are skipped for the log",
+    test "listings without a regular_price aren't persisted at all",
          %{chain: chain} do
       listings = [
-        # No price — upsert happens but no log line.
         %Listing{
           chain: chain,
           chain_sku: "sku-noprice",
@@ -134,7 +133,41 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
 
       flush_results(chain)
 
+      # No row in chain_listings — Catalog refused to insert.
+      refute Repo.get_by(ChainListing, identifiers_key: "sku=sku-noprice")
+      # And no price log line.
       assert PriceLog.read(chain, "sku-noprice") == []
+    end
+
+    test "an existing priced row whose refresh has no price flips has_price=false but keeps last-known",
+         %{chain: chain} do
+      first = [
+        %Listing{
+          chain: chain,
+          chain_sku: "sku-flip",
+          identifiers_key: "sku=sku-flip",
+          name: "Original",
+          regular_price: 1990
+        }
+      ]
+
+      :ok = Results.record(chain, {:discover_products, %{chain: chain, slug: "x"}}, first)
+      flush_results(chain)
+
+      row = Repo.get_by!(ChainListing, identifiers_key: "sku=sku-flip")
+      assert row.has_price == true
+      assert row.current_regular_price == 1990
+
+      # Second discovery: same SKU, no price. Should update row but
+      # preserve the price columns and flip the has_price signal.
+      second = [%{first |> List.first() | regular_price: nil, name: "Refreshed"}]
+      :ok = Results.record(chain, {:discover_products, %{chain: chain, slug: "x"}}, second)
+      flush_results(chain)
+
+      row = Repo.get_by!(ChainListing, identifiers_key: "sku=sku-flip")
+      assert row.has_price == false
+      assert row.current_regular_price == 1990
+      assert row.name == "Refreshed"
     end
   end
 

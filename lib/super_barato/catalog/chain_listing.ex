@@ -39,6 +39,13 @@ defmodule SuperBarato.Catalog.ChainListing do
     field :current_promo_price, :integer
     field :current_promotions, :map, default: %{}
 
+    # `has_price` is the "is the chain showing this for sale right now"
+    # signal. False means the last refresh observed the PDP without a
+    # price; the row keeps its previous `current_regular_price` as a
+    # last-known reference for the UI. New rows always come in with
+    # `has_price: true` (the upsert refuses to insert without a price).
+    field :has_price, :boolean, default: true
+
     field :first_seen_at, :utc_datetime
     field :last_discovered_at, :utc_datetime
     field :last_priced_at, :utc_datetime
@@ -53,7 +60,7 @@ defmodule SuperBarato.Catalog.ChainListing do
     ean name brand image_url category_paths pdp_url
     raw
     current_regular_price current_promo_price current_promotions
-    last_discovered_at last_priced_at first_seen_at active
+    last_discovered_at last_priced_at first_seen_at active has_price
   )a
 
   def discovery_changeset(listing, attrs) do

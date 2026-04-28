@@ -69,12 +69,13 @@ defmodule SuperBarato.Linker.Worker do
 
       %ChainListing{} = listing ->
         cond do
+          # `Catalog.upsert_listing/1` already refuses to insert
+          # rows without a price, so a no-price listing here means
+          # one of: a stale row from before that rule landed, an
+          # admin-edited row, or a code path that bypasses the
+          # catalog. Defense in depth — skip rather than anchor a
+          # Product that wouldn't pass the catalog's invariants.
           is_nil(listing.current_regular_price) or listing.current_regular_price <= 0 ->
-            # No price observed yet → no Product. The listing exists
-            # in chain_listings (we keep its existence as a discovery
-            # signal) but the catalog only carries Products that
-            # represent something a shopper can actually compare. When
-            # a price arrives later, the upsert re-fires the linker.
             :skip
 
           Linker.identifiers_for_listing(listing) == [] ->
