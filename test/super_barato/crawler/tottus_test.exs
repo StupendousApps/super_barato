@@ -6,7 +6,7 @@ defmodule SuperBarato.Crawler.TottusTest do
 
   describe "extract_next_data/1" do
     test "pulls __NEXT_DATA__ out of a Tottus HTML page" do
-      html = Fixtures.read!(:tottus, "category_carnes.html")
+      html = Fixtures.read!(:tottus, "listing_carnes.html")
       assert {:ok, %{"props" => _}} = Tottus.extract_next_data(html)
     end
 
@@ -84,9 +84,9 @@ defmodule SuperBarato.Crawler.TottusTest do
     end
   end
 
-  describe "parse_search_from_next_data/2 (Carnes fixture)" do
+  describe "parse_search_from_next_data/2 (Carnes listing fixture)" do
     setup do
-      html = Fixtures.read!(:tottus, "category_carnes.html")
+      html = Fixtures.read!(:tottus, "listing_carnes.html")
       {:ok, data} = Tottus.extract_next_data(html)
       {:ok, listings, total} = Tottus.parse_search_from_next_data(data, "CATG27069/Carnes")
       {:ok, listings: listings, total: total}
@@ -96,7 +96,7 @@ defmodule SuperBarato.Crawler.TottusTest do
       assert is_integer(total) and total > 0
     end
 
-    test "returns Listing structs tagged :tottus", %{listings: listings} do
+    test "returns Listing structs tagged :tottus, with full first page", %{listings: listings} do
       assert length(listings) == 48
       assert Enum.all?(listings, &match?(%Listing{chain: :tottus}, &1))
     end
@@ -118,14 +118,18 @@ defmodule SuperBarato.Crawler.TottusTest do
       assert Enum.any?(listings, &(is_integer(&1.regular_price) and &1.regular_price > 0))
     end
 
-    test "ean is always nil (Tottus doesn't expose barcode data)", %{listings: listings} do
+    test "ean is nil at the search-listing level (no barcode in /lista/ JSON)",
+         %{listings: listings} do
+      # Tottus's listing endpoint never carries a barcode — only the
+      # PDP does. A second pass through `fetch_single/1` is needed to
+      # populate `ean`. See `parse_pdp_from_next_data/1` tests.
       assert Enum.all?(listings, &is_nil(&1.ean))
     end
   end
 
-  describe "parse_search_from_next_data/2 (Cervezas fixture, with promos)" do
+  describe "parse_search_from_next_data/2 (Cervezas listing fixture, with promos)" do
     test "promo products have regular > promo" do
-      html = Fixtures.read!(:tottus, "category_cervezas.html")
+      html = Fixtures.read!(:tottus, "listing_cervezas.html")
       {:ok, data} = Tottus.extract_next_data(html)
       {:ok, listings, _total} = Tottus.parse_search_from_next_data(data, "CATG27083/Cervezas")
 
@@ -137,6 +141,36 @@ defmodule SuperBarato.Crawler.TottusTest do
         assert is_integer(l.promo_price)
         assert l.promo_price < l.regular_price
       end)
+    end
+  end
+
+  describe "real listing fixtures — basic shape across categories" do
+    @listing_cases [
+      {"listing_arroz.html", "CATG27292/Arroz"},
+      {"listing_cervezas.html", "CATG27083/Cervezas"},
+      {"listing_carnes.html", "CATG27069/Carnes"},
+      {"listing_ketchup.html", "CATG27322/Ketchup"},
+      {"listing_belleza.html", "CATG27076/Belleza"}
+    ]
+
+    for {fixture, slug} <- @listing_cases do
+      test "#{fixture} parses with non-empty results and propagates slug" do
+        html = Fixtures.read!(:tottus, unquote(fixture))
+        {:ok, data} = Tottus.extract_next_data(html)
+        {:ok, listings, total} = Tottus.parse_search_from_next_data(data, unquote(slug))
+
+        assert is_integer(total) and total > 0
+        assert listings != []
+
+        Enum.each(listings, fn l ->
+          assert %Listing{chain: :tottus} = l
+          assert is_binary(l.chain_sku) and l.chain_sku != ""
+          assert is_binary(l.name) and l.name != ""
+          assert l.category_path == unquote(slug)
+          # Confirms our note: search results never carry a barcode.
+          assert is_nil(l.ean)
+        end)
+      end
     end
   end
 
