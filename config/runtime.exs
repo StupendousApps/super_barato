@@ -28,9 +28,17 @@ if config_env() == :prod do
       Example: /data/super_barato.db
       """
 
+  # Six chains' Results workers each hit the DB on every listing,
+  # plus the streaming Linker.Worker opens its own transaction per
+  # link. With pool_size=5 we hit `:queue_timeout` immediately when
+  # all chains are crawling. SQLite WAL handles writers single-file
+  # via `busy_timeout` anyway, so the connection pool here is mostly
+  # about queue depth, not parallelism.
   config :super_barato, SuperBarato.Repo,
     database: database_path,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5"),
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "20"),
+    queue_target: 1_000,
+    queue_interval: 5_000,
     journal_mode: :wal,
     busy_timeout: 5_000
 
