@@ -23,7 +23,8 @@ defmodule SuperBarato.Crawler.Scope do
   @blacklists %{
     "jumbo" => ~w(
       hogar-jugueteria-y-libreria
-      hogar
+      hogar/tendido-planchado-y-lavado
+      mi-bebe/vestuario-bebe
     ),
     "santa_isabel" => ~w(
       hogar
