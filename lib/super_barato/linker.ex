@@ -31,12 +31,62 @@ defmodule SuperBarato.Linker do
   alias SuperBarato.Linker.ProductListing
   alias SuperBarato.Repo
 
+  alias SuperBarato.Catalog
+  alias SuperBarato.Linker.Identity
+
   @source_ean_canonical "ean_canonical"
   @source_admin "admin"
 
   @doc "Canonical source-tag constants. See module docs."
   def source_ean_canonical, do: @source_ean_canonical
   def source_admin, do: @source_admin
+
+  @doc """
+  Find-or-create a Product anchored on a canonicalized EAN. Returns
+  `{:created | :existed, %Product{}}`. Used by both the streaming
+  Worker (one listing at a time) and the batch Backfill.
+
+  Seed fields (`name`, `brand`, `image_url`) are only used when a
+  brand-new Product is being inserted — admin can curate later.
+  """
+  def find_or_create_product_for_ean(ean, seed) when is_binary(ean) do
+    case Catalog.get_product_by_ean(ean) do
+      %Product{} = p ->
+        {:existed, p}
+
+      nil ->
+        attrs = %{
+          canonical_name: Map.get(seed, :name) || Map.get(seed, "name") || "(unnamed)",
+          brand: Map.get(seed, :brand) || Map.get(seed, "brand"),
+          image_url: Map.get(seed, :image_url) || Map.get(seed, "image_url")
+        }
+
+        Repo.transaction(fn ->
+          {:ok, product} =
+            %Product{} |> Product.changeset(attrs) |> Repo.insert()
+
+          {:ok, _ean_row} =
+            %ProductEan{}
+            |> ProductEan.changeset(%{product_id: product.id, ean: ean})
+            |> Repo.insert()
+
+          product
+        end)
+        |> case do
+          {:ok, p} -> {:created, p}
+        end
+    end
+  end
+
+  @doc """
+  Canonicalizes a listing's `ean` and returns the matching key, or
+  `nil` if no canonical form fits. GTIN-13 is preferred over EAN-8;
+  the latter is used verbatim when present.
+  """
+  def canonical_key_for_listing(%ChainListing{ean: ean}),
+    do: Identity.canonicalize_gtin13(ean) || Identity.canonicalize_ean8(ean)
+
+  def canonical_key_for_listing(_), do: nil
 
   @doc """
   Link a product to a chain_listing. Idempotent — re-linking the same

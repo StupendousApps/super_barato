@@ -1,23 +1,27 @@
 defmodule SuperBarato.Linker.Worker do
   @moduledoc """
   Single-process consumer of "a new chain_listing was inserted"
-  signals from the crawler. The owner of all auto-link decisions:
-  given a freshly inserted listing, decides whether it matches an
-  existing `Catalog.Product` (today by EAN; later layered with
-  brand+name fuzzy and any manual overrides), creates a Product if
-  no match exists, and writes the `product_listings` row via
+  signals from the crawler. Given a freshly inserted listing, it
+  canonicalizes the EAN, finds-or-creates the matching
+  `Catalog.Product`, and writes the `product_listings` row via
   `SuperBarato.Linker.link/3`.
 
   Casts only — fire-and-forget from the crawler's `Chain.Results`.
-  Inflight cast queue serializes link writes so concurrent inserts
-  for the same EAN can't race two new Product rows.
+  Serializing through one process means two near-simultaneous
+  listings for the same EAN can't race two `Product` inserts past
+  the unique index.
 
-  Stub for now: `link_listing/1` casts to the worker, `handle_cast`
-  logs and returns. Real matching arrives in a follow-up commit.
+  Listings whose `ean` doesn't canonicalize (nil, malformed, granel
+  with no barcode) are silently skipped — `Linker.Backfill` periodically
+  retries with a wider net (and admins can link the long tail manually).
   """
 
   use GenServer
   require Logger
+
+  alias SuperBarato.Catalog.ChainListing
+  alias SuperBarato.Linker
+  alias SuperBarato.Repo
 
   ## Public API
 
@@ -43,7 +47,31 @@ defmodule SuperBarato.Linker.Worker do
 
   @impl true
   def handle_cast({:link, chain_listing_id}, state) do
-    Logger.debug("linker: received chain_listing_id=#{chain_listing_id} (no-op stub)")
+    try do
+      link_one(chain_listing_id)
+    rescue
+      err ->
+        Logger.warning(
+          "linker: failed for chain_listing_id=#{chain_listing_id}: #{inspect(err)}"
+        )
+    end
+
     {:noreply, state}
+  end
+
+  defp link_one(id) do
+    with %ChainListing{} = listing <- Repo.get(ChainListing, id),
+         key when is_binary(key) <- Linker.canonical_key_for_listing(listing) do
+      seed = %{name: listing.name, brand: listing.brand, image_url: listing.image_url}
+      {_action, product} = Linker.find_or_create_product_for_ean(key, seed)
+
+      Linker.link(product.id, listing.id,
+        source: Linker.source_ean_canonical(),
+        confidence: 1.0,
+        linked_at: DateTime.utc_now() |> DateTime.truncate(:second)
+      )
+    else
+      _ -> :skip
+    end
   end
 end

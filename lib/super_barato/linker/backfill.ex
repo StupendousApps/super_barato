@@ -17,8 +17,7 @@ defmodule SuperBarato.Linker.Backfill do
   import Ecto.Query
   require Logger
 
-  alias SuperBarato.Catalog
-  alias SuperBarato.Catalog.{ChainListing, Product, ProductEan}
+  alias SuperBarato.Catalog.ChainListing
   alias SuperBarato.Linker
   alias SuperBarato.Linker.Identity
   alias SuperBarato.Repo
@@ -82,7 +81,7 @@ defmodule SuperBarato.Linker.Backfill do
         # a placeholder Product the admin can curate.
         seed = List.first(listings)
 
-        {action, product} = upsert_product_by_ean(key, seed)
+        {action, product} = Linker.find_or_create_product_for_ean(key, seed)
 
         new_links =
           Enum.reduce(listings, 0, fn entry, n ->
@@ -113,38 +112,5 @@ defmodule SuperBarato.Linker.Backfill do
 
     if log?, do: Logger.info("linker backfill: done #{inspect(result)}")
     result
-  end
-
-  # Find-or-create a Product anchored on `ean` via `product_eans`.
-  # Returns `{:created | :existed, %Product{}}`. New products always
-  # land with exactly one ProductEan; admin merges later if multiple
-  # EANs turn out to be the same physical product.
-  defp upsert_product_by_ean(ean, seed) do
-    case Catalog.get_product_by_ean(ean) do
-      %Product{} = p ->
-        {:existed, p}
-
-      nil ->
-        attrs = %{
-          canonical_name: seed.name || "(unnamed)",
-          brand: seed.brand,
-          image_url: seed.image_url
-        }
-
-        Repo.transaction(fn ->
-          {:ok, product} =
-            %Product{} |> Product.changeset(attrs) |> Repo.insert()
-
-          {:ok, _ean_row} =
-            %ProductEan{}
-            |> ProductEan.changeset(%{product_id: product.id, ean: ean})
-            |> Repo.insert()
-
-          product
-        end)
-        |> case do
-          {:ok, p} -> {:created, p}
-        end
-    end
   end
 end
