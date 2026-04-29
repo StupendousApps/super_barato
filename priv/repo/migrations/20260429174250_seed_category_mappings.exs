@@ -14,7 +14,7 @@ defmodule SuperBarato.Repo.Migrations.SeedCategoryMappings do
   # via `INSERT OR IGNORE` (the unique index on chain_category_id
   # enforces "at most one app_subcategory per chain_category").
 
-  @yaml_path "priv/repo/seeds/categories.yaml"
+  @yaml_path "priv/repo/source/categories.yaml"
 
   def up do
     mappings = parse_yaml(@yaml_path)

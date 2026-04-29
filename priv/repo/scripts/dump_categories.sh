@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Dump every chain's categories into priv/repo/seeds/categories/<chain>.txt.
+# Dump every chain's categories into priv/repo/scripts/categories/<chain>.txt.
 # Driven by dump_categories.sql with :chain bound per iteration. After
 # sqlite emits its blocks, a perl post-pass stamps each block's status
 # line with an entry-id — the first 8 hex chars of md5(chain|slug) —
@@ -11,8 +11,8 @@ set -euo pipefail
 cd "$(dirname "$0")/../../.."
 
 DB="${DB:-priv/data/super_barato_dev.db}"
-OUT="priv/repo/seeds/categories"
-SQL="priv/repo/seeds/dump_categories.sql"
+OUT="priv/repo/scripts/categories"
+SQL="priv/repo/scripts/dump_categories.sql"
 
 mkdir -p "$OUT"
 

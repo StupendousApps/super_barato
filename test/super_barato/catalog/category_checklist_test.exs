@@ -80,7 +80,7 @@ defmodule SuperBarato.Catalog.CategoryChecklistTest do
   end
 
   test "round-trips against a real seed file" do
-    path = Path.join([File.cwd!(), "priv/repo/seeds/categories/lider.txt"])
+    path = Path.join([File.cwd!(), "priv/repo/scripts/categories/lider.txt"])
     entries = CategoryChecklist.parse_file(path)
     assert length(entries) > 0
     assert Enum.all?(entries, &(&1.status in [:unchecked, :no_match, :no_mapping, :mapped]))

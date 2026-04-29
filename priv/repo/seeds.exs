@@ -1,42 +1,21 @@
-# Script for populating the database. Run with:
+# Top-level seed orchestrator. Runs each seed script in dependency
+# order — chain_categories before app_chain_mappings, etc. Each
+# script is idempotent, so re-running this file is safe.
 #
-#     mix run priv/repo/seeds.exs
+#   mix run priv/repo/seeds.exs
 #
-# Idempotent — safe to re-run.
+# To re-run a single piece, invoke its file directly:
+#
+#   mix run priv/repo/seed_chain_categories.exs
 
-alias SuperBarato.Repo
-alias SuperBarato.Accounts.User
+scripts = [
+  "seed_admin.exs",
+  "seed_chain_categories.exs",
+  "seed_app_categories.exs",
+  "seed_app_chain_mappings.exs"
+]
 
-email = "francisco.ceruti@gmail.com"
-password = "1234"
-
-# Bypass User.password_changeset (which enforces min 12 chars) —
-# seed-only shortcut for dev. Never use a 4-char password in prod.
-user =
-  case Repo.get_by(User, email: email) do
-    nil ->
-      %User{
-        email: email,
-        hashed_password: Bcrypt.hash_pwd_salt(password),
-        role: :superadmin,
-        confirmed_at: DateTime.utc_now(:second)
-      }
-      |> Repo.insert!()
-
-    existing ->
-      existing
-      |> Ecto.Changeset.change(%{
-        hashed_password: Bcrypt.hash_pwd_salt(password),
-        role: :superadmin,
-        confirmed_at: existing.confirmed_at || DateTime.utc_now(:second)
-      })
-      |> Repo.update!()
-  end
-
-IO.puts("Seeded superadmin: #{user.email} (role=#{user.role})")
-
-# Crawler schedules — one row per (chain, kind) described in
-# config/config.exs. Only inserts missing rows, so edits from the
-# admin UI aren't clobbered on re-seed.
-n = SuperBarato.Crawler.Schedules.seed_from_config()
-IO.puts("Seeded crawler schedules (#{n} config entries processed)")
+Enum.each(scripts, fn name ->
+  IO.puts("\n== #{name} ==")
+  Code.eval_file(Path.expand(name, __DIR__))
+end)

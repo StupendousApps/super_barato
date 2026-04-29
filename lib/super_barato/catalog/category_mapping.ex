@@ -2,7 +2,7 @@ defmodule SuperBarato.Catalog.CategoryMapping do
   @moduledoc """
   Links a `ChainCategory` to a unified `AppSubcategory`. Source of
   truth lives in the per-chain checklist files
-  (`priv/repo/seeds/categories/<chain>.txt`) and gets imported into
+  (`priv/repo/scripts/categories/<chain>.txt`) and gets imported into
   this table once a chain's triage is complete.
   """
 

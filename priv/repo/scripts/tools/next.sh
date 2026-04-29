@@ -17,19 +17,19 @@ set -euo pipefail
 cd "$(dirname "$0")/../../../.."
 
 db="priv/data/super_barato_dev.db"
-samples_sql="priv/repo/seeds/sample_listings.sql"
-tools_dir="priv/repo/seeds/tools"
+samples_sql="priv/repo/scripts/sample_listings.sql"
+tools_dir="priv/repo/scripts/tools"
 
 # Resolve which chain + entry to show. With an argument, pin to that
 # chain (its first [ ] block, which is its highest-count since the
 # file is sorted count-desc). Without one, ask every
-# priv/repo/seeds/categories/*.txt for its top [ ], then sort across
+# priv/repo/scripts/categories/*.txt for its top [ ], then sort across
 # them by count and pick the global max.
 if [ "$#" -ge 1 ]; then
   candidates=("$1")
 else
   candidates=()
-  for f in priv/repo/seeds/categories/*.txt; do
+  for f in priv/repo/scripts/categories/*.txt; do
     candidates+=("$(basename "$f" .txt)")
   done
 fi
@@ -37,7 +37,7 @@ fi
 # Per-chain max → tab-separated `<count>\t<chain>` list.
 per_chain=$(
   for c in "${candidates[@]}"; do
-    f="priv/repo/seeds/categories/$c.txt"
+    f="priv/repo/scripts/categories/$c.txt"
     [ -s "$f" ] || continue
     b=$(grep -A 2 -m 1 -E '^[0-9a-f]{8} \[ \]$' "$f" || true)
     [ -n "$b" ] || continue
@@ -51,7 +51,7 @@ block=""
 
 if [ -n "$per_chain" ]; then
   chain=$(printf '%s\n' "$per_chain" | sort -t$'\t' -k1,1 -rn | head -1 | cut -f2)
-  block=$(grep -A 2 -m 1 -E '^[0-9a-f]{8} \[ \]$' "priv/repo/seeds/categories/$chain.txt")
+  block=$(grep -A 2 -m 1 -E '^[0-9a-f]{8} \[ \]$' "priv/repo/scripts/categories/$chain.txt")
 fi
 
 if [ -z "$chain" ]; then
@@ -63,7 +63,7 @@ if [ -z "$chain" ]; then
   exit 0
 fi
 
-file="priv/repo/seeds/categories/$chain.txt"
+file="priv/repo/scripts/categories/$chain.txt"
 
 path=$(printf '%s\n' "$block" | awk 'NR==2 { sub(/^ *[0-9]+ +/, ""); print }')
 slug=$(printf '%s\n' "$block" | awk 'NR==3 { print }')

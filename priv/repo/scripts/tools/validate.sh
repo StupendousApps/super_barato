@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Validate every [x] in priv/repo/seeds/categories/*.txt — confirm
-# each `[x] <id>` references a real id in priv/repo/seeds/categories.jsonl.
+# Validate every [x] in priv/repo/scripts/categories/*.txt — confirm
+# each `[x] <id>` references a real id in priv/repo/source/categories.jsonl.
 # Exits 1 on the first mismatch (so this can hook into CI later).
 #
 #   tools/validate.sh
@@ -8,8 +8,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/../../../.."
 
-DIR="priv/repo/seeds/categories"
-JSONL="priv/repo/seeds/categories.jsonl"
+DIR="priv/repo/scripts/categories"
+JSONL="priv/repo/source/categories.jsonl"
 
 valid_ids=$(jq -r 'select(.kind == "subcategory") | .id' "$JSONL" | sort -u)
 

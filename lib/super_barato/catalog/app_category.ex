@@ -1,7 +1,7 @@
 defmodule SuperBarato.Catalog.AppCategory do
   @moduledoc """
   Top-level node of the unified, app-wide taxonomy seeded from
-  `priv/repo/seeds/categories.yaml`. Independent of any chain —
+  `priv/repo/source/categories.yaml`. Independent of any chain —
   `ChainCategory` rows from the six chains are mapped onto these
   via the checklist files.
   """

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Rewrite the status of one entry in priv/repo/seeds/categories/<chain>.txt.
+# Rewrite the status of one entry in priv/repo/scripts/categories/<chain>.txt.
 # Located by its entry-id (8 hex chars, the first token on the entry's
 # status line). Status arg is one of:
 #
@@ -21,7 +21,7 @@ chain=${1:?"usage: $0 <chain> <entry-id> <id|-|N|_>"}
 entry_id=${2:?"usage: $0 <chain> <entry-id> <id|-|N|_>"}
 status=${3:?"usage: $0 <chain> <entry-id> <id|-|N|_>"}
 
-file="priv/repo/seeds/categories/$chain.txt"
+file="priv/repo/scripts/categories/$chain.txt"
 
 [ -f "$file" ] || { echo "no such checklist: $file" >&2; exit 1; }
 

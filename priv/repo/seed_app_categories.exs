@@ -1,9 +1,9 @@
 # Seed app_categories + app_subcategories from
-# priv/repo/seeds/categories.yaml. Idempotent: re-running upserts by
+# priv/repo/source/categories.yaml. Idempotent: re-running upserts by
 # slug, refreshing position from the YAML order.
 #
-# Run with:
-#   mix run priv/repo/seeds/seed_app_categories.exs
+# Run as part of the seeds.exs orchestrator (preferred) or directly:
+#   mix run priv/repo/seeds/app_categories.exs
 
 alias SuperBarato.Catalog.{AppCategory, AppSubcategory}
 alias SuperBarato.Repo
@@ -55,7 +55,7 @@ parse_yaml = fn path ->
   if current, do: cats ++ [current], else: cats
 end
 
-yaml_path = Path.expand("categories.yaml", __DIR__)
+yaml_path = Path.expand("source/categories.yaml", __DIR__)
 categories = parse_yaml.(yaml_path)
 now = DateTime.utc_now() |> DateTime.truncate(:second)
 

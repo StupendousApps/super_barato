@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AND-grep priv/repo/seeds/categories.jsonl by keyword, format output.
+# AND-grep priv/repo/source/categories.jsonl by keyword, format output.
 #
 #   tools/search.sh yogur            # one keyword
 #   tools/search.sh leche soya       # AND across both
@@ -11,7 +11,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/../../../.."
 
-JSONL="priv/repo/seeds/categories.jsonl"
+JSONL="priv/repo/source/categories.jsonl"
 
 if [ "$#" -lt 1 ]; then
   echo "usage: $0 <keyword> [<keyword>...]" >&2

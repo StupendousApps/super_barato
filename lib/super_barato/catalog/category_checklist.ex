@@ -1,7 +1,7 @@
 defmodule SuperBarato.Catalog.CategoryChecklist do
   @moduledoc """
   Parser for the per-chain category checklist files at
-  `priv/repo/seeds/categories/<chain>.txt`.
+  `priv/repo/scripts/categories/<chain>.txt`.
 
   Each entry is three lines, separated by a blank line:
 

@@ -42,7 +42,7 @@ The other four (lider, tottus, unimarc, acuenta) work today —
 ## Tools
 
 All tools live in this directory as `*.exs` scripts run via
-`mix run priv/repo/seeds/<name>.exs <args>`. They share
+`mix run priv/repo/scripts/<name>.exs <args>`. They share
 `SuperBarato.Catalog.CategoryChecklist` for parsing/serializing and
 read the unified taxonomy straight from the `app_categories` /
 `app_subcategories` tables.
@@ -53,23 +53,23 @@ mutates them, it also regenerates the `chains:` blocks in
 
 ### `progress.exs`
 
-    mix run priv/repo/seeds/progress.exs
+    mix run priv/repo/scripts/tools/progress.sh
 
 Per chain, counts `[ ]` / `[x]` / `[-]` / `[N]` plus an `ALL` row and
 a `% done`. Quick "how far am I" check.
 
 ### `validate.exs`
 
-    mix run priv/repo/seeds/validate.exs
+    mix run priv/repo/scripts/tools/validate.sh
 
 For each `[x]: {category, subcategory}`, confirms the pair exists in
 the DB. Exits 1 on the first mismatch (so it can hook into CI later).
 
 ### `suggest.exs`
 
-    mix run priv/repo/seeds/suggest.exs              # writes
-    mix run priv/repo/seeds/suggest.exs --dry-run    # preview
-    mix run priv/repo/seeds/suggest.exs -t 0.95      # tighter
+    mix run priv/repo/scripts/suggest.exs              # writes
+    mix run priv/repo/scripts/suggest.exs --dry-run    # preview
+    mix run priv/repo/scripts/suggest.exs -t 0.95      # tighter
 
 For each `[ ]` entry, picks the AppSubcategory with the highest Jaro
 distance to the entry's leaf name. Above threshold → rewrite to
@@ -79,7 +79,7 @@ the same flag.
 
 ### `bulk_tag.exs`
 
-    mix run priv/repo/seeds/bulk_tag.exs <chain> \
+    mix run priv/repo/scripts/bulk_tag.exs <chain> \
       --path-contains "Yoghurt" \
       --to lacteos-y-refrigerados/yoghurt
 
@@ -89,7 +89,7 @@ insensitive substring) and rewrites them all to `--to`'s
 
 ### `sync_yaml.exs`
 
-    mix run priv/repo/seeds/sync_yaml.exs
+    mix run priv/repo/scripts/sync_yaml.exs
 
 Walks every checklist file, regroups `[x]` entries by `(category,
 subcategory)`, and rewrites the `chains:` blocks in
@@ -100,7 +100,7 @@ this automatically after writing; run by hand whenever you edit a
 
 ### `review.exs`
 
-    mix run priv/repo/seeds/review.exs <chain> <slug>
+    mix run priv/repo/scripts/review.exs <chain> <slug>
 
 For one chain category prints:
 

@@ -18,7 +18,7 @@
 --   sqlite3 priv/data/super_barato_dev.db \
 --     -cmd ".parameter set :chain 'tottus'" \
 --     -cmd ".parameter set :slug  'CATG27179/Leches'" \
---     < priv/repo/seeds/sample_listings.sql
+--     < priv/repo/scripts/sample_listings.sql
 
 WITH bucket AS (
   SELECT cl.id AS listing_id

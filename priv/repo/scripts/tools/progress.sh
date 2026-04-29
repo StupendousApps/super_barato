@@ -7,7 +7,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/../../../.."
 
-DIR="priv/repo/seeds/categories"
+DIR="priv/repo/scripts/categories"
 chains=(jumbo santa_isabel lider tottus unimarc acuenta)
 
 printf '%-14s %5s %5s %5s %5s %5s %6s\n' chain total '[ ]' '[x]' '[-]' '[N]' done

@@ -18,7 +18,7 @@
 --
 -- Run with:
 --   sqlite3 -separator $'\t' priv/data/super_barato_dev.db \
---     < priv/repo/seeds/jumbo_breadcrumb_map.sql
+--     < priv/repo/scripts/jumbo_breadcrumb_map.sql
 
 WITH RECURSIVE
   -- Walk parent_slug to build the full name path for every jumbo

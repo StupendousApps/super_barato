@@ -1,7 +1,7 @@
-# Rebuild priv/repo/seeds/categories.yaml + categories.jsonl from
+# Rebuild priv/repo/source/categories.yaml + categories.jsonl from
 # the .txt checklists.
 #
-#   mix run priv/repo/seeds/sync_yaml.exs
+#   mix run priv/repo/scripts/sync_yaml.exs
 #
 # Three things happen:
 #   1. Compute an `id` (8-char sha256 prefix of name) for every
@@ -9,7 +9,7 @@
 #   2. Regenerate the `chains:` blocks under each subcategory from
 #      the per-chain checklists. Subcategories with no mappings yet
 #      are written without a `chains:` key.
-#   3. Emit a flattened priv/repo/seeds/categories.jsonl with one
+#   3. Emit a flattened priv/repo/source/categories.jsonl with one
 #      record per category and one per subcategory, suitable for
 #      grep / fzf during triage.
 #
@@ -19,8 +19,8 @@
 alias SuperBarato.Catalog.CategoryChecklist
 
 dir = Path.expand("categories", __DIR__)
-yaml_path = Path.expand("categories.yaml", __DIR__)
-jsonl_path = Path.expand("categories.jsonl", __DIR__)
+yaml_path = Path.expand("../source/categories.yaml", __DIR__)
+jsonl_path = Path.expand("../source/categories.jsonl", __DIR__)
 chains = ~w(jumbo santa_isabel lider tottus unimarc acuenta)
 
 # Stable 8-char id derived from the node's full ancestry path
