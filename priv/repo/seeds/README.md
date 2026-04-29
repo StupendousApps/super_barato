@@ -39,50 +39,60 @@ re-run `dump_categories.sh` and these two chains will populate.
 The other four (lider, tottus, unimarc, acuenta) work today —
 5,936 entries combined.
 
-## Tools to build (in this order)
+## Tools
 
-All tools should live in this directory as `*.exs` scripts run via
+All tools live in this directory as `*.exs` scripts run via
 `mix run priv/repo/seeds/<name>.exs <args>`. They share
 `SuperBarato.Catalog.CategoryChecklist` for parsing/serializing and
-should hand-parse `categories.yaml` (no yaml dep needed for the
-shape we use).
+read the unified taxonomy straight from the `app_categories` /
+`app_subcategories` tables.
 
-### 1. `progress.exs` — dashboard
+### `progress.exs`
 
-Per chain, count `[ ]` / `[-]` / `[N]` / `[x]` and total. One-line
-output per chain, plus an aggregate. Quick "how far am I" check.
+    mix run priv/repo/seeds/progress.exs
 
-### 2. `validate.exs` — referential integrity
+Per chain, counts `[ ]` / `[x]` / `[-]` / `[N]` plus an `ALL` row and
+a `% done`. Quick "how far am I" check.
 
-Walk every checklist file. For each `[x]: {category, subcategory}`,
-confirm the pair exists in `categories.yaml`. Print mismatches with
-file + entry slug. Should run as part of `mix test` or a precommit
-hook eventually.
+### `validate.exs`
 
-### 3. `suggest.exs` — name-similarity auto-mapper
+    mix run priv/repo/seeds/validate.exs
 
-For each `[ ]` entry, find the best-matching unified subcategory by
-name similarity (Jaro distance against the chain category's leaf
-name vs. the unified subcategory name). When confidence is very high
-(exact match or above a threshold), rewrite `[ ]` →
-`[x]: {category, subcategory}`. Otherwise leave alone. Idempotent:
-running twice should be a no-op once everything obvious is tagged.
+For each `[x]: {category, subcategory}`, confirms the pair exists in
+the DB. Exits 1 on the first mismatch (so it can hook into CI later).
 
-### 4. `bulk_tag.exs` — sweep by pattern
+### `suggest.exs`
 
-CLI: `mix run priv/repo/seeds/bulk_tag.exs <chain> --path-contains
-"Yoghurt" --to lacteos-y-refrigerados/yoghurt`. Rewrites every
-matching `[ ]` entry to the supplied `(category, subcategory)`. Used
-for obvious patterns the auto-suggester missed.
+    mix run priv/repo/seeds/suggest.exs              # writes
+    mix run priv/repo/seeds/suggest.exs --dry-run    # preview
+    mix run priv/repo/seeds/suggest.exs -t 0.95      # tighter
 
-### 5. `review.exs` — side-by-side viewer
+For each `[ ]` entry, picks the AppSubcategory with the highest Jaro
+distance to the entry's leaf name. Above threshold → rewrite to
+`[x]`. Idempotent — running twice is a no-op once everything obvious
+is tagged. Default threshold `0.92`; tighten with `-t` / loosen on
+the same flag.
 
-CLI: `mix run priv/repo/seeds/review.exs <chain> <slug>`. Prints:
+### `bulk_tag.exs`
 
-- the category's path + count
-- 7 random sample listings (use `sample_listings.sql` or compose in
-  Elixir)
-- top-3 unified-subcategory candidates ranked by Jaro similarity
+    mix run priv/repo/seeds/bulk_tag.exs <chain> \
+      --path-contains "Yoghurt" \
+      --to lacteos-y-refrigerados/yoghurt
+
+Sweeps `[ ]` entries whose path matches `--path-contains` (case-
+insensitive substring) and rewrites them all to `--to`'s
+`<category-slug>/<subcategory-slug>`. Add `--dry-run` to preview.
+
+### `review.exs`
+
+    mix run priv/repo/seeds/review.exs <chain> <slug>
+
+For one chain category prints:
+
+- ancestry path + listing count,
+- 7 random sample listings,
+- top-5 unified-subcategory candidates (Jaro ranked),
+- a paste-ready `[x]: {...}` snippet for the top match.
 
 Use to break ties on borderline cells without context-switching
 between SQL, the YAML, and the checklist file.
