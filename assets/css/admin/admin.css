@@ -3,6 +3,21 @@
    --font-size-*, etc.) so it stays consistent if the host theme
    changes. */
 
+/* Pin the chain favicon — the upstream `.data-table td img.chain-favicon`
+   rule sets 18×18, but neighbouring rules (`.data-table td img` with
+   width:auto / max-height:2rem) and table auto-layout can still squash
+   it when the row is dense or a sibling column is content-heavy. The
+   shorthand here uses !important so the badge keeps its square shape
+   regardless of cascade or container context. */
+.chain-favicon {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: contain !important;
+    flex-shrink: 0;
+}
+
 /* Stacked cell — small dim line below the primary value. Used for
    "sku · brand" under product names, "last seen" under counters, and
    any other compact "main + secondary" pair in admin tables. */
@@ -26,6 +41,57 @@
     color: var(--text-color-3, #888);
     text-decoration: line-through;
     margin-top: 2px;
+}
+
+/* Full-width page content — opt-in escape hatch for pages that want
+   to break out of the admin-container's 80rem max-width. The negative
+   horizontal margins shift the wrapper to the viewport edges; the
+   container's vertical margins and inner flex/gap are inherited from
+   the surrounding `.admin-container`. */
+.admin-page--full {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 0 var(--spacing-xl);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+body:has(.admin-page--full) {
+    overflow-x: clip;
+}
+
+/* App-categories listings preview (column 4). Two-column row: a fixed
+   48×48 thumbnail on the left and a flex body on the right. The body
+   stacks the product name (internal link) over a dim secondary line
+   carrying brand · price · PDP host. The mapping-listing div is *not*
+   a `.data-table td`, so the upstream `.data-table__thumb` rule
+   doesn't reach this thumb — we ship our own scoped style. */
+.mapping-listing {
+    display: flex;
+    gap: var(--spacing-sm, 0.5rem);
+    align-items: flex-start;
+    padding: var(--spacing-sm, 0.5rem) 0;
+}
+
+.mapping-listing + .mapping-listing {
+    border-top: 1px solid var(--border-color, #eee);
+}
+
+.mapping-listing__thumb {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    object-fit: contain;
+    background: #fff;
+    border-radius: var(--radius-sm, 4px);
+}
+
+.mapping-listing__body {
+    flex: 1;
+    min-width: 0;
 }
 
 /* Drag-and-drop row reorder (see assets/js/sortable.js). */

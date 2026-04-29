@@ -3,8 +3,18 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{AppCategory, AppSubcategory, CategoryMapping, ChainCategory}
+  alias SuperBarato.Catalog.{
+    AppCategory,
+    AppSubcategory,
+    CategoryMapping,
+    ChainCategory,
+    ChainListing,
+    ChainListingCategory
+  }
+
   alias SuperBarato.Repo
+
+  @listings_per_mapping 25
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
   plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
@@ -32,6 +42,12 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
         else: %{}
 
     mappings = if selected_sub, do: list_mappings(selected_sub.id), else: []
+    selected_mapping = lookup_mapping(mappings, params["mapping"])
+
+    listings =
+      if selected_mapping,
+        do: sample_listings(selected_mapping.chain_category_id, @listings_per_mapping),
+        else: []
 
     conn
     |> assign(:top_nav, :app_categories)
@@ -43,6 +59,8 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
     |> assign(:mapping_counts_by_sub, mapping_counts_by_sub)
     |> assign(:selected_sub, selected_sub)
     |> assign(:mappings, mappings)
+    |> assign(:selected_mapping, selected_mapping)
+    |> assign(:listings, listings)
     |> assign(:cat_sort, cat_sort)
     |> assign(:sub_sort, sub_sort)
     |> render(:index)
@@ -58,6 +76,19 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
 
   defp lookup_subcategory(%AppCategory{id: id}, slug),
     do: Repo.get_by(AppSubcategory, app_category_id: id, slug: slug)
+
+  # The `mapping=<id>` query param is the chain_category_id (stable + already
+  # unique across the mapping list). Resolved against the in-memory list of
+  # mappings so we don't need a second DB roundtrip.
+  defp lookup_mapping(_mappings, nil), do: nil
+  defp lookup_mapping(_mappings, ""), do: nil
+
+  defp lookup_mapping(mappings, raw) when is_binary(raw) do
+    case Integer.parse(raw) do
+      {id, _} -> Enum.find(mappings, &(&1.chain_category_id == id))
+      :error -> nil
+    end
+  end
 
   defp parse_sort(nil), do: "position"
   defp parse_sort("name"), do: "name"
@@ -109,7 +140,39 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
         on: c.id == m.chain_category_id,
         where: m.app_subcategory_id == ^sub_id,
         order_by: [asc: c.chain, asc: c.name],
-        select: %{id: m.id, chain: c.chain, name: c.name, slug: c.slug}
+        select: %{
+          id: m.id,
+          chain_category_id: c.id,
+          chain: c.chain,
+          name: c.name,
+          slug: c.slug
+        }
+    )
+  end
+
+  # Random sample of active, priced listings tagged with `chain_category_id`.
+  # Only `has_price = true` rows surface — the no-price ones aren't useful
+  # as a representative product preview.
+  defp sample_listings(chain_category_id, limit) do
+    Repo.all(
+      from l in ChainListing,
+        join: clc in ChainListingCategory,
+        on: clc.chain_listing_id == l.id,
+        where:
+          clc.chain_category_id == ^chain_category_id and
+            l.active == true and
+            l.has_price == true,
+        order_by: fragment("RANDOM()"),
+        limit: ^limit,
+        select: %{
+          id: l.id,
+          name: l.name,
+          brand: l.brand,
+          image_url: l.image_url,
+          pdp_url: l.pdp_url,
+          current_regular_price: l.current_regular_price,
+          current_promo_price: l.current_promo_price
+        }
     )
   end
 

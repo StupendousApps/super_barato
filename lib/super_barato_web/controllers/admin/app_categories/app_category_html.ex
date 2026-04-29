@@ -5,6 +5,38 @@ defmodule SuperBaratoWeb.Admin.AppCategoryHTML do
 
   embed_templates "app_category_html/*"
 
+  @doc "CLP integer formatted with thousands separators."
+  def format_clp(nil), do: "—"
+
+  def format_clp(n) when is_integer(n) do
+    "$" <>
+      (n
+       |> Integer.to_string()
+       |> String.reverse()
+       |> String.graphemes()
+       |> Enum.chunk_every(3)
+       |> Enum.map(&Enum.join/1)
+       |> Enum.join(".")
+       |> String.reverse())
+  end
+
+  @doc "Effective sale price — promo if it's a real discount, otherwise regular."
+  def effective_price(%{current_promo_price: p, current_regular_price: r})
+      when is_integer(p) and is_integer(r) and p < r,
+      do: p
+
+  def effective_price(%{current_regular_price: r}), do: r
+
+  @doc "Display host for a PDP URL — strips `www.`."
+  def pdp_host(url) when is_binary(url) do
+    case URI.parse(url) do
+      %URI{host: nil} -> url
+      %URI{host: host} -> String.replace_prefix(host, "www.", "")
+    end
+  end
+
+  def pdp_host(_), do: nil
+
   @doc """
   Indicator direction for a column header. `field` is the bare sort
   key (e.g. `"name"`); `current` is the active sort key, optionally
@@ -41,6 +73,16 @@ defmodule SuperBaratoWeb.Admin.AppCategoryHTML do
     extras
     |> Map.put("category", category_slug)
     |> Map.put("subcategory", subcategory_slug)
+    |> Map.delete("mapping")
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    |> Map.new()
+  end
+
+  def drill_to_mapping(category_slug, subcategory_slug, chain_category_id, extras) do
+    extras
+    |> Map.put("category", category_slug)
+    |> Map.put("subcategory", subcategory_slug)
+    |> Map.put("mapping", to_string(chain_category_id))
     |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
     |> Map.new()
   end
