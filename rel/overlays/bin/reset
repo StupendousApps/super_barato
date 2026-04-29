@@ -25,6 +25,10 @@ echo ">> migrating"
 ./super_barato eval 'SuperBarato.Release.migrate()'
 
 echo ">> seeding"
-./super_barato eval 'Code.eval_file(Application.app_dir(:super_barato, "priv/repo/seeds.exs"))'
+# `bin/super_barato eval` only loads code — the supervision tree (and
+# therefore SuperBarato.Repo) isn't started. Wrap the seed eval in
+# Ecto.Migrator.with_repo/2 so the repo's started for the duration
+# (same pattern Release.migrate/0 uses) and stopped cleanly after.
+./super_barato eval '{:ok, _, _} = Ecto.Migrator.with_repo(SuperBarato.Repo, fn _ -> Code.eval_file(Application.app_dir(:super_barato, "priv/repo/seeds.exs")) end)'
 
 echo ">> done"
