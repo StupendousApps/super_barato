@@ -118,6 +118,7 @@
         type="select"
         value={@search_filters.per_page}
         label="Per page"
+        width={:sm}
         options={[{"50", ""}, {"25", "25"}, {"100", "100"}, {"200", "200"}]}
       />
       <:actions>
@@ -125,8 +126,9 @@
         <.button
           href={~p"/products/#{@product.id}?#{[mode: @search_filters.mode]}"}
           variant={:subtle}
+          aria-label="Reset"
         >
-          Reset
+          <.sfsymbol name="repeat" />
         </.button>
       </:actions>
     </.filters>
