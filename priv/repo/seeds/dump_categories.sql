@@ -5,9 +5,12 @@
 -- categories that actually hold products.
 --
 -- Output (three lines per category, blank line between):
---   [ ]
+--   <entry-id> [ ]
 --   <count padded-left to 4>  <ancestry-path>
 --   <slug>
+--
+-- The entry-id is the first 8 hex chars of md5(<chain>|<slug>),
+-- stamped by dump_categories.sh after sqlite emits its rows.
 --
 -- Run with:
 --   sqlite3 priv/data/super_barato_dev.db < tmp/dump_categories.sql

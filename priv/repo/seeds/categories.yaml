@@ -132,9 +132,6 @@
       slug: vinos
       id: 8134061f
       keywords: ["vino tinto", "vino blanco", "rosado", "vino rose"]
-      chains:
-        jumbo:
-          - licores-bebidas-y-aguas/vinos/vinos-tintos
     - name: Espumantes
       slug: espumantes
       id: 99cbf6fb

@@ -1,972 +1,972 @@
-[ ]
+b3303d49 [ ]
   73  Mundo bebé / Pañales y Toallas Húmedas / Pañales
 mundo-bebe/09/panales-y-toallas-humedas/0903/panales/090301
 
-[ ]
+4c34395e [ ]
   73  Perfumería y Cuidado Personal / Cuidado Capilar / Shampoo
 perfumeria-y-cuidado-personal/12/cuidado-capilar/1201/shampoo/120101
 
-[ ]
+2f09c9e3 [ ]
   61  El Bar / Vinos / Vinos Tintos
 el-bar/80/vinos/8002/vinos-tintos/800201
 
-[ ]
+6fb5f058 [ ]
   60  Frescos y Lácteos / Yoghurt / Batidos
 frescos-y-lacteos/07/yoghurt/0708/batidos/070801
 
-[ ]
+bd047861 [ ]
   60  Perfumería y Cuidado Personal / Belleza y Coloración / Coloración
 perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202/coloracion/120201
 
-[ ]
+1fad2d02 [ ]
   59  Perfumería y Cuidado Personal / Cuidado Capilar / Acondicionador
 perfumeria-y-cuidado-personal/12/cuidado-capilar/1201/acondicionador/120102
 
-[ ]
+249693ba [ ]
   54  Desayuno y Dulces / Cereales, Avenas y Barras / Cereales
 desayuno-y-dulces/44/cereales-avenas-y-barras/4403/cereales/440301
 
-[ ]
+c03ef663 [ ]
   53  Marcas Propias / Haus
 marcas-propias/20/haus/2008
 
-[ ]
+7466a1d6 [ ]
   45  Perfumería y Cuidado Personal / Cuidado Femenino / Protección Femenina
 perfumeria-y-cuidado-personal/12/cuidado-femenino/1207/proteccion-femenina/120702
 
-[ ]
+0252a982 [ ]
   45  Perfumería y Cuidado Personal / Cuidado Masculino / Desodorantes
 perfumeria-y-cuidado-personal/12/cuidado-masculino/1206/desodorantes/120601
 
-[ ]
+69d711d9 [ ]
   44  Perfumería y Cuidado Personal / Cuidado Bucal / Cepillos y Pasta Dental Adultos
 perfumeria-y-cuidado-personal/12/cuidado-bucal/1204/cepillos-y-pasta-dental-adultos/120401
 
-[ ]
+5cb84cf3 [ ]
   43  Despensa / Conservas / Frutas en Conserva
 despensa/05/conservas/0506/frutas-en-conserva/050601
 
-[ ]
+15d8f08f [ ]
   43  Despensa / Sopas, Cremas e Instantáneos / Sopas y Cremas
 despensa/05/sopas-cremas-e-instantaneos/0520/sopas-y-cremas/052002
 
-[ ]
+afcc57e2 [ ]
   42  Despensa / Fideos, Pastas y Salsas / Pastas y fideos
 despensa/05/fideos-pastas-y-salsas/0516/pastas-y-fideos/051601
 
-[ ]
+6f1dd8be [ ]
   42  Despensa / Sal y Condimentos / Bases y caldos
 despensa/05/sal-y-condimentos/0518/bases-y-caldos/051803
 
-[ ]
+dffb2ed0 [ ]
   41  Desayuno y Dulces / Chocolates y Dulces / Chocolates en barra
 desayuno-y-dulces/44/chocolates-y-dulces/4404/chocolates-en-barra/440401
 
-[ ]
+75e38e34 [ ]
   41  Perfumería y Cuidado Personal / Higiene y Cuidado Personal / Jabón Líquido
 perfumeria-y-cuidado-personal/12/higiene-y-cuidado-personal/1205/jabon-liquido/120501
 
-[ ]
+ca2cae31 [ ]
   39  Carnes / Pollo
 carnes/03/pollo/0304
 
-[ ]
+7fbfb9de [ ]
   38  Despensa / Repostería / Gelatinas y Flanes
 despensa/05/reposteria/0517/gelatinas-y-flanes/051701
 
-[ ]
+c16f12b6 [ ]
   37  Carnes / Salchichas y Parrilleros
 carnes/03/salchichas-y-parrilleros/0307
 
-[ ]
+132a1987 [ ]
   37  Despensa / Fideos, Pastas y Salsas / Salsas para pastas
 despensa/05/fideos-pastas-y-salsas/0516/salsas-para-pastas/051603
 
-[ ]
+319f7416 [ ]
   36  Congelados / Helados y Postres
 congelados/04/helados-y-postres/0402
 
-[ ]
+ebc187bd [ ]
   36  Desayuno y Dulces / Manjar, Miel y Mermeladas / Mermeladas y membrillos
 desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/mermeladas-y-membrillos/440602
 
-[ ]
+c325f1dd [ ]
   33  Bebidas y Snacks / Bebidas / Bebidas desechables regulares
 bebidas-y-snacks/02/bebidas/0202/bebidas-desechables-regulares/020201
 
-[ ]
+4caf45e4 [ ]
   33  Frescos y Lácteos / Quesos y Quesillos / Quesos
 frescos-y-lacteos/07/quesos-y-quesillos/0707/quesos/070701
 
-[ ]
+3dea8615 [ ]
   32  Aseo y limpieza / Baño y Cocina / Limpiador Baño
 aseo-y-limpieza/11/bano-y-cocina/1107/limpiador-bano/110704
 
-[ ]
+7df5901c [ ]
   32  Aseo y limpieza / Desinfección / Cloro
 aseo-y-limpieza/11/desinfeccion/1104/cloro/110401
 
-[ ]
+8c9e8ec5 [ ]
   32  Frescos y Lácteos / Fiambrería / Jamones y Mortadelas
 frescos-y-lacteos/07/fiambreria/0701/jamones-y-mortadelas/070103
 
-[ ]
+ca4a795e [ ]
   31  Aseo y limpieza / Bolsas de basura y Envoltorios
 aseo-y-limpieza/11/bolsas-de-basura-y-envoltorios/1103
 
-[ ]
+e47cb129 [ ]
   31  Despensa / Conservas / Pescados y Mariscos en Conserva
 despensa/05/conservas/0506/pescados-y-mariscos-en-conserva/050603
 
-[ ]
+9f5eb92a [ ]
   31  Despensa / Sal y Condimentos / Condimentos
 despensa/05/sal-y-condimentos/0518/condimentos/051802
 
-[ ]
+4354ae11 [ ]
   31  Frescos y Lácteos / Yoghurt / Proteína y Probióticos
 frescos-y-lacteos/07/yoghurt/0708/proteina-y-probioticos/070802
 
-[ ]
+fb15c8f5 [ ]
   30  Frutas y Verduras / Verduras
 frutas-y-verduras/06/verduras/0602
 
-[ ]
+9dd1c64b [ ]
   30  Panadería y Pastelería / Panadería / Panadería envasada
 panaderia-y-pasteleria/10/panaderia/1001/panaderia-envasada/100102
 
-[ ]
+8d4ff22d [ ]
   29  Despensa / Conservas / Verduras en Conserva
 despensa/05/conservas/0506/verduras-en-conserva/050602
 
-[ ]
+81bcfe99 [ ]
   28  Bebidas y Snacks / Jugos / Jugos en Polvo
 bebidas-y-snacks/02/jugos/0205/jugos-en-polvo/020503
 
-[ ]
+3e6820ed [ ]
   28  Bebidas y Snacks / Jugos / Jugos Líquidos
 bebidas-y-snacks/02/jugos/0205/jugos-liquidos/020501
 
-[ ]
+0095fb26 [ ]
   28  Perfumería y Cuidado Personal / Cuidado Capilar / Mascarillas y Cremas de Peinar
 perfumeria-y-cuidado-personal/12/cuidado-capilar/1201/mascarillas-y-cremas-de-peinar/120103
 
-[ ]
+8a579342 [ ]
   27  Desayuno y Dulces / Café, Té y Hierbas / Té Negro
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/te-negro/440106
 
-[ ]
+bfbe68fc [ ]
   26  Desayuno y Dulces / Galletas y Colaciones / Galletas Dulces
 desayuno-y-dulces/44/galletas-y-colaciones/4405/galletas-dulces/440501
 
-[ ]
+3f5e139b [ ]
   25  Aseo y limpieza / Detergentes y Suavizantes / Detergente Líquido
 aseo-y-limpieza/11/detergentes-y-suavizantes/1105/detergente-liquido/110501
 
-[ ]
+9c80f860 [ ]
   25  Bebidas y Snacks / Snacks y Galletas Saladas / Papas Fritas y Vegetales
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/papas-fritas-y-vegetales/020801
 
-[ ]
+9708ed7f [ ]
   25  Carnes / Cerdo
 carnes/03/cerdo/0302
 
-[ ]
+b58df813 [ ]
   25  Marcas Propias / Autodrive
 marcas-propias/20/autodrive/2013
 
-[ ]
+ef9bbce7 [ ]
   24  Aseo y limpieza / Baño y Cocina / Lavaloza
 aseo-y-limpieza/11/bano-y-cocina/1107/lavaloza/110701
 
-[ ]
+b230559e [ ]
   24  Bebidas y Snacks / Snacks y Galletas Saladas / Ramitas, Sufles, y más
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/ramitas-sufles-y-mas/020804
 
-[ ]
+3d9eb377 [ ]
   24  Carnes / Vacuno
 carnes/03/vacuno/0305
 
-[ ]
+b2a383ba [ ]
   23  Aseo y limpieza / Detergentes y Suavizantes / Detergente en Polvo
 aseo-y-limpieza/11/detergentes-y-suavizantes/1105/detergente-en-polvo/110502
 
-[ ]
+6f68b2b6 [ ]
   23  Mascotas / Perros / Alimento húmedo y snacks
 mascotas/88/perros/8801/alimento-humedo-y-snacks/880102
 
-[ ]
+48574999 [ ]
   22  Aseo y limpieza / Artículos de limpieza / Esponjas y guantes
 aseo-y-limpieza/11/articulos-de-limpieza/1102/esponjas-y-guantes/110202
 
-[ ]
+f0ea4017 [ ]
   22  Desayuno y Dulces / Chocolates y Dulces / Bombones y Otros
 desayuno-y-dulces/44/chocolates-y-dulces/4404/bombones-y-otros/440402
 
-[ ]
+f54d712c [ ]
   22  Despensa / Harinas y Polvos / Harinas Blancas
 despensa/05/harinas-y-polvos/0512/harinas-blancas/051201
 
-[ ]
+bff1c654 [ ]
   22  El Bar / Cervezas / Premium
 el-bar/80/cervezas/8001/premium/800105
 
-[ ]
+390330b0 [ ]
   21  Aseo y limpieza / Detergentes y Suavizantes / Quitamanchas y Cloro Ropa
 aseo-y-limpieza/11/detergentes-y-suavizantes/1105/quitamanchas-y-cloro-ropa/110505
 
-[ ]
+cfda84c4 [ ]
   21  Congelados / Hamburguesas y churrascos
 congelados/04/hamburguesas-y-churrascos/0409
 
-[ ]
+0d6bacf4 [ ]
   21  Desayuno y Dulces / Café, Té y Hierbas / Café Instantáneo
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/cafe-instantaneo/440101
 
-[ ]
+2d97036f [ ]
   21  Mundo bebé / Alimento y formulas bebé / Colados y Picados
 mundo-bebe/09/alimento-y-formulas-bebe/0902/colados-y-picados/090202
 
-[ ]
+905cf119 [ ]
   20  Aseo y limpieza / Pisos y Muebles / Cera y Virutilla
 aseo-y-limpieza/11/pisos-y-muebles/1108/cera-y-virutilla/110802
 
-[ ]
+56140aac [ ]
   20  Despensa / Repostería / Decoración y coberturas
 despensa/05/reposteria/0517/decoracion-y-coberturas/051703
 
-[ ]
+4b1661d1 [ ]
   20  Mundo bebé / Higiene y perfumería bebé / Shampoo y Acondicionador
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/shampoo-y-acondicionador/090401
 
-[ ]
+cd8d789a [ ]
   19  Bebidas y Snacks / Bebidas / Bebidas individuales
 bebidas-y-snacks/02/bebidas/0202/bebidas-individuales/020204
 
-[ ]
+9aea62bc [ ]
   19  Bebidas y Snacks / Bebidas / Bebidas retornables
 bebidas-y-snacks/02/bebidas/0202/bebidas-retornables/020203
 
-[ ]
+ec276cbc [ ]
   19  Bebidas y Snacks / Snacks y Galletas Saladas / Frutos Secos
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/frutos-secos/020806
 
-[ ]
+47c0da0d [ ]
   19  Desayuno y Dulces / Café, Té y Hierbas / Hierbas, Infusiones y Mate
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/hierbas-infusiones-y-mate/440108
 
-[ ]
+f5727fa9 [ ]
   19  Despensa / Aceites y Vinagres / Vinagres y Sucedáneos
 despensa/05/aceites-y-vinagres/0501/vinagres-y-sucedaneos/050103
 
-[ ]
+2cdb4f5f [ ]
   19  El Bar / Vinos / Vinos Blancos
 el-bar/80/vinos/8002/vinos-blancos/800202
 
-[ ]
+cccc09f4 [ ]
   19  Frescos y Lácteos / Huevos y Mantequillas / Margarinas
 frescos-y-lacteos/07/huevos-y-mantequillas/0702/margarinas/070203
 
-[ ]
+d3933ab9 [ ]
   19  Frescos y Lácteos / Leches y Cremas / Leche en Polvo
 frescos-y-lacteos/07/leches-y-cremas/0703/leche-en-polvo/070302
 
-[ ]
+d919511e [ ]
   19  Frescos y Lácteos / Leches y Cremas / Leches Blancas
 frescos-y-lacteos/07/leches-y-cremas/0703/leches-blancas/070301
 
-[ ]
+0cd4eb61 [ ]
   19  Frescos y Lácteos / Postres / Jaleas y Compotas
 frescos-y-lacteos/07/postres/0706/jaleas-y-compotas/070602
 
-[ ]
+4afe2fac [ ]
   19  Frescos y Lácteos / Postres / Otros Postres
 frescos-y-lacteos/07/postres/0706/otros-postres/070603
 
-[ ]
+9d86761d [ ]
   18  Desayuno y Dulces / Chocolates y Dulces / Caramelos y Calugas
 desayuno-y-dulces/44/chocolates-y-dulces/4404/caramelos-y-calugas/440403
 
-[ ]
+f423ae2b [ ]
   18  Despensa / Arroz, Legumbres y Semillas / Arroz
 despensa/05/arroz-legumbres-y-semillas/0502/arroz/050201
 
-[ ]
+07c97a11 [ ]
   18  Despensa / Azúcar y Endulzantes / Azúcar
 despensa/05/azucar-y-endulzantes/0503/azucar/050301
 
-[ ]
+0ce2fd9f [ ]
   18  Perfumería y Cuidado Personal / Cuidado Facial y Corporal / Cremas Corporales
 perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210/cremas-corporales/121004
 
-[ ]
+42ff840c [ ]
   17  Aseo y limpieza / Detergentes y Suavizantes / Suavizante
 aseo-y-limpieza/11/detergentes-y-suavizantes/1105/suavizante/110503
 
-[ ]
+fcf23f95 [ ]
   17  Mundo bebé / Pañales y Toallas Húmedas / Toallitas Húmedas
 mundo-bebe/09/panales-y-toallas-humedas/0903/toallitas-humedas/090302
 
-[ ]
+e28edd4a [ ]
   17  Perfumería y Cuidado Personal / Belleza y Coloración / Cosméticos y Cosmetiqueros
 perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202/cosmeticos-y-cosmetiqueros/120203
 
-[ ]
+0eba05b5 [ ]
   16  Aseo y limpieza / Pisos y Muebles / Limpiadores de Piso
 aseo-y-limpieza/11/pisos-y-muebles/1108/limpiadores-de-piso/110801
 
-[ ]
+61f6030d [ ]
   16  Bebidas y Snacks / Aguas / Aguas Minerales y Purificadas
 bebidas-y-snacks/02/aguas/0201/aguas-minerales-y-purificadas/020101
 
-[ ]
+d715b76c [ ]
   16  Despensa / Arroz, Legumbres y Semillas / Porotos y Lentejas
 despensa/05/arroz-legumbres-y-semillas/0502/porotos-y-lentejas/050203
 
-[ ]
+bd141eed [ ]
   16  Despensa / Harinas y Polvos / Polvos, Levaduras y Otros
 despensa/05/harinas-y-polvos/0512/polvos-levaduras-y-otros/051204
 
-[ ]
+53424256 [ ]
   16  Frutas y Verduras / Frutas
 frutas-y-verduras/06/frutas/0601
 
-[ ]
+8bf3130d [ ]
   16  Perfumería y Cuidado Personal / Cuidado Masculino / Afeitado Máquinas
 perfumeria-y-cuidado-personal/12/cuidado-masculino/1206/afeitado-maquinas/120602
 
-[ ]
+0f1c0616 [ ]
   16  Precios que no se tocan / Chocolates, dulces y galletas
 precios-que-no-se-tocan/55/chocolates-dulces-y-galletas/5504
 
-[ ]
+0a4f1ba3 [ ]
   15  Aseo y limpieza / Desodorantes Ambientales
 aseo-y-limpieza/11/desodorantes-ambientales/1101
 
-[ ]
+8a3023cf [ ]
   15  Bebidas y Snacks / Bebidas / Bebidas desechables zero y sin azúcar
 bebidas-y-snacks/02/bebidas/0202/bebidas-desechables-zero-y-sin-azucar/020202
 
-[ ]
+74cc3620 [ ]
   15  Congelados / Verduras y Frutas Congeladas
 congelados/04/verduras-y-frutas-congeladas/0403
 
-[ ]
+7ca352bb [ ]
   15  Desayuno y Dulces / Galletas y Colaciones / Integrales, Arroz y Otros
 desayuno-y-dulces/44/galletas-y-colaciones/4405/integrales-arroz-y-otros/440507
 
-[ ]
+a0cdf18f [ ]
   15  Despensa / Azúcar y Endulzantes / Endulzantes
 despensa/05/azucar-y-endulzantes/0503/endulzantes/050302
 
-[ ]
+02552cc2 [ ]
   15  El Bar / Destilados / Pisco
 el-bar/80/destilados/8003/pisco/800301
 
-[ ]
+86a21f88 [ ]
   15  Frescos y Lácteos / Leches y Cremas / Leches Individuales
 frescos-y-lacteos/07/leches-y-cremas/0703/leches-individuales/070303
 
-[ ]
+21aa2e73 [ ]
   15  Panadería y Pastelería / Pastelería / Queques y otros
 panaderia-y-pasteleria/10/pasteleria/1002/queques-y-otros/100202
 
-[ ]
+9e412c7d [ ]
   15  Perfumería y Cuidado Personal / Cuidado Adulto Mayor / Pañales y Protectores de Cama
 perfumeria-y-cuidado-personal/12/cuidado-adulto-mayor/1203/panales-y-protectores-de-cama/120301
 
-[ ]
+7e84b141 [ ]
   14  Aseo y limpieza / Papeles / Papel Higiénico
 aseo-y-limpieza/11/papeles/1113/papel-higienico/111301
 
-[ ]
+bd5a3213 [ ]
   14  Carnes / Pescados y Mariscos
 carnes/03/pescados-y-mariscos/0303
 
-[ ]
+97f40c4a [ ]
   14  El Bar / Cervezas / Tradicionales
 el-bar/80/cervezas/8001/tradicionales/800102
 
-[ ]
+14632049 [ ]
   14  Frescos y Lácteos / Huevos y Mantequillas / Mantequillas
 frescos-y-lacteos/07/huevos-y-mantequillas/0702/mantequillas/070202
 
-[ ]
+f0533522 [ ]
   14  Frescos y Lácteos / Leches y Cremas / Cremas
 frescos-y-lacteos/07/leches-y-cremas/0703/cremas/070308
 
-[ ]
+2ef65f76 [ ]
   13  Desayuno y Dulces / Chocolates y Dulces / Gomitas y Masticables
 desayuno-y-dulces/44/chocolates-y-dulces/4404/gomitas-y-masticables/440404
 
-[ ]
+368db465 [ ]
   13  Despensa / Repostería / Salsas para postres y esencias
 despensa/05/reposteria/0517/salsas-para-postres-y-esencias/051704
 
-[ ]
+b2c85101 [ ]
   13  Despensa / Sal y Condimentos / Sal
 despensa/05/sal-y-condimentos/0518/sal/051801
 
-[ ]
+7154b7cf [ ]
   13  El Bar / Coctel / Licores y Spritz
 el-bar/80/coctel/8005/licores-y-spritz/800503
 
-[ ]
+6144c928 [ ]
   13  Perfumería y Cuidado Personal / Cuidado Femenino / Depilación
 perfumeria-y-cuidado-personal/12/cuidado-femenino/1207/depilacion/120704
 
-[ ]
+58f57041 [ ]
   13  Precios que no se tocan / Colaciones
 precios-que-no-se-tocan/55/colaciones/5505
 
-[ ]
+2f37ce8c [ ]
   12  Aseo y limpieza / Insecticidas y Plaguicidas
 aseo-y-limpieza/11/insecticidas-y-plaguicidas/1112
 
-[ ]
+a062d250 [ ]
   12  Desayuno y Dulces / Café, Té y Hierbas / Café Saborizados y Cremas
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/cafe-saborizados-y-cremas/440105
 
-[ ]
+354a80b0 [ ]
   12  Desayuno y Dulces / Galletas y Colaciones / Galletones y Alfajores
 desayuno-y-dulces/44/galletas-y-colaciones/4405/galletones-y-alfajores/440505
 
-[ ]
+64b94fba [ ]
   12  Desayuno y Dulces / Manjar, Miel y Mermeladas / Manjar y dulce de leche
 desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/manjar-y-dulce-de-leche/440601
 
-[ ]
+08530967 [ ]
   12  Despensa / Harinas y Polvos / Harina de Maíz, Sémola y Polenta
 despensa/05/harinas-y-polvos/0512/harina-de-maiz-semola-y-polenta/051203
 
-[ ]
+020653b1 [ ]
   12  Frescos y Lácteos / Leches y Cremas / Leches Saborizadas
 frescos-y-lacteos/07/leches-y-cremas/0703/leches-saborizadas/070304
 
-[ ]
+0dd904fd [ ]
   12  Mascotas / Perros / Alimento seco
 mascotas/88/perros/8801/alimento-seco/880101
 
-[ ]
+8ccd6311 [ ]
   12  Perfumería y Cuidado Personal / Higiene y Cuidado Personal / Jabón en Barra
 perfumeria-y-cuidado-personal/12/higiene-y-cuidado-personal/1205/jabon-en-barra/120502
 
-[ ]
+c4185f62 [ ]
   11  Aseo y limpieza / Artículos de limpieza / Paños, traperos y mopas
 aseo-y-limpieza/11/articulos-de-limpieza/1102/panos-traperos-y-mopas/110201
 
-[ ]
+8088f3a7 [ ]
   11  Bebidas y Snacks / Energéticas e Isotónicas / Energéticas 
 bebidas-y-snacks/02/energeticas-e-isotonicas/0209/energeticas/020901
 
-[ ]
+2425a84a [ ]
   11  Despensa / Repostería / Horneables y Premezclas
 despensa/05/reposteria/0517/horneables-y-premezclas/051702
 
-[ ]
+8cb1246e [ ]
   11  Despensa / Salsas y Aderezos / Mayonesas
 despensa/05/salsas-y-aderezos/0519/mayonesas/051901
 
-[ ]
+3c34a97b [ ]
   11  El Bar / Coctel / Sour
 el-bar/80/coctel/8005/sour/800504
 
-[ ]
+036e3142 [ ]
   11  Frescos y Lácteos / Fiambrería / Patés
 frescos-y-lacteos/07/fiambreria/0701/pates/070101
 
-[ ]
+0c351a80 [ ]
   11  Frescos y Lácteos / Fiambrería / Salames, Tocinos y Arrollados
 frescos-y-lacteos/07/fiambreria/0701/salames-tocinos-y-arrollados/070104
 
-[ ]
+30d0c515 [ ]
   11  Frescos y Lácteos / Leches y Cremas / Saborizantes para Leche
 frescos-y-lacteos/07/leches-y-cremas/0703/saborizantes-para-leche/070305
 
-[ ]
+93ff59a2 [ ]
   11  Perfumería y Cuidado Personal / Cuidado Bucal / Enjuague Bucal
 perfumeria-y-cuidado-personal/12/cuidado-bucal/1204/enjuague-bucal/120403
 
-[ ]
+3e54db15 [ ]
   10  Despensa / Aceites y Vinagres / Aceites Vegetales
 despensa/05/aceites-y-vinagres/0501/aceites-vegetales/050101
 
-[ ]
+8cf74d3c [ ]
   10  Mascotas / Gatos / Alimento húmedo y snacks
 mascotas/88/gatos/8802/alimento-humedo-y-snacks/880105
 
-[ ]
+1364ea62 [ ]
   10  Mascotas / Gatos / Alimento seco
 mascotas/88/gatos/8802/alimento-seco/880104
 
-[ ]
+c5332f88 [ ]
   10  Mundo bebé / Alimento y formulas bebé / Cereales y Snacks
 mundo-bebe/09/alimento-y-formulas-bebe/0902/cereales-y-snacks/090203
 
-[ ]
+1add1fc0 [ ]
   10  Panadería y Pastelería / Pastelería / Tortas y Pasteles
 panaderia-y-pasteleria/10/pasteleria/1002/tortas-y-pasteles/100201
 
-[ ]
+b313c47f [ ]
   10  Panadería y Pastelería / Tortillas y masas
 panaderia-y-pasteleria/10/tortillas-y-masas/1004
 
-[ ]
+621c0f9c [ ]
    9  Aseo y limpieza / Papeles / Toallas de Papel
 aseo-y-limpieza/11/papeles/1113/toallas-de-papel/111302
 
-[ ]
+07e5036e [ ]
    9  Bebidas y Snacks / Aguas / Aguas Saborizadas
 bebidas-y-snacks/02/aguas/0201/aguas-saborizadas/020102
 
-[ ]
+3c487e09 [ ]
    9  Bebidas y Snacks / Energéticas e Isotónicas / Isotónicas y Sueros
 bebidas-y-snacks/02/energeticas-e-isotonicas/0209/isotonicas-y-sueros/020902
 
-[ ]
+cc042cc3 [ ]
    9  Desayuno y Dulces / Cereales, Avenas y Barras / Avena y Granola
 desayuno-y-dulces/44/cereales-avenas-y-barras/4403/avena-y-granola/440304
 
-[ ]
+712379a6 [ ]
    9  Desayuno y Dulces / Cereales, Avenas y Barras / Barras de Cereal
 desayuno-y-dulces/44/cereales-avenas-y-barras/4403/barras-de-cereal/440303
 
-[ ]
+ce571b22 [ ]
    9  Despensa / Salsas y Aderezos / Otras Salsas
 despensa/05/salsas-y-aderezos/0519/otras-salsas/051905
 
-[ ]
+b2c8cd7f [ ]
    9  Frescos y Lácteos / Platos Preparados / Otros Platos Preparados
 frescos-y-lacteos/07/platos-preparados/0709/otros-platos-preparados/070902
 
-[ ]
+25e411bb [ ]
    9  Frescos y Lácteos / Quesos y Quesillos / Quesillos y Quesos Frescos
 frescos-y-lacteos/07/quesos-y-quesillos/0707/quesillos-y-quesos-frescos/070702
 
-[ ]
+e2129728 [ ]
    9  Precios que no se tocan / Despensa / Pastas y salsas
 precios-que-no-se-tocan/55/despensa/5508/pastas-y-salsas/550803
 
-[ ]
+e3b8c830 [ ]
    8  Aseo y limpieza / Baño y Cocina / Limpiador Cocina
 aseo-y-limpieza/11/bano-y-cocina/1107/limpiador-cocina/110702
 
-[ ]
+55a259a7 [ ]
    8  Aseo y limpieza / Cuidado Calzado
 aseo-y-limpieza/11/cuidado-calzado/1110
 
-[ ]
+94884292 [ ]
    8  Bebidas y Snacks / Siempre Útil / Pilas
 bebidas-y-snacks/02/siempre-util/0207/pilas/020707
 
-[ ]
+71782e1c [ ]
    8  Bebidas y Snacks / Snacks y Galletas Saladas / Aceitunas, Pepinillos y Encurtidos
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/aceitunas-pepinillos-y-encurtidos/020808
 
-[ ]
+269c22cf [ ]
    8  Desayuno y Dulces / Galletas y Colaciones / Galletas colación
 desayuno-y-dulces/44/galletas-y-colaciones/4405/galletas-colacion/440504
 
-[ ]
+b9ee52f4 [ ]
    8  Desayuno y Dulces / Manjar, Miel y Mermeladas / Cremas dulces
 desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/cremas-dulces/440604
 
-[ ]
+66305042 [ ]
    8  Despensa / Arroz, Legumbres y Semillas / Semillas y Cereales
 despensa/05/arroz-legumbres-y-semillas/0502/semillas-y-cereales/050205
 
-[ ]
+f2b8d63e [ ]
    8  Despensa / Fideos, Pastas y Salsas / Lasañas y rellenos
 despensa/05/fideos-pastas-y-salsas/0516/lasanas-y-rellenos/051602
 
-[ ]
+a07408c7 [ ]
    8  Despensa / Salsas y Aderezos / Ketchup
 despensa/05/salsas-y-aderezos/0519/ketchup/051902
 
-[ ]
+2fa3ab54 [ ]
    8  El Bar / Cigarrillos
 el-bar/80/cigarrillos/8007
 
-[ ]
+1f33e70a [ ]
    8  Frescos y Lácteos / Leches y Cremas / Leches Condensadas y Evaporadas
 frescos-y-lacteos/07/leches-y-cremas/0703/leches-condensadas-y-evaporadas/070309
 
-[ ]
+ba56e8fe [ ]
    8  Frescos y Lácteos / Yoghurt / Infantiles
 frescos-y-lacteos/07/yoghurt/0708/infantiles/070803
 
-[ ]
+648fa342 [ ]
    8  Perfumería y Cuidado Personal / Cuidado Facial y Corporal / Limpieza y Desmaquillantes
 perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210/limpieza-y-desmaquillantes/121003
 
-[ ]
+6928246a [ ]
    8  Perfumería y Cuidado Personal / Otros Perfumería
 perfumeria-y-cuidado-personal/12/otros-perfumeria/1208
 
-[ ]
+87783d7e [ ]
    7  Aseo y limpieza / Baño y Cocina / Limpiador Multiuso
 aseo-y-limpieza/11/bano-y-cocina/1107/limpiador-multiuso/110705
 
-[ ]
+4078c647 [ ]
    7  Aseo y limpieza / Desinfección / Toallas Húmedas
 aseo-y-limpieza/11/desinfeccion/1104/toallas-humedas/110402
 
-[ ]
+7f14ef36 [ ]
    7  Aseo y limpieza / Pisos y Muebles / Lustramuebles
 aseo-y-limpieza/11/pisos-y-muebles/1108/lustramuebles/110803
 
-[ ]
+bad99207 [ ]
    7  Bebidas y Snacks / Snacks y Galletas Saladas / Galletas Saladas
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/galletas-saladas/020805
 
-[ ]
+183f95d4 [ ]
    7  Bebidas y Snacks / Snacks y Galletas Saladas / Tortillas
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/tortillas/020802
 
-[ ]
+e311a5a1 [ ]
    7  Desayuno y Dulces / Café, Té y Hierbas / Té Verde y Saborizados
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/te-verde-y-saborizados/440107
 
-[ ]
+9b62b9d2 [ ]
    7  Desayuno y Dulces / Chocolates y Dulces / Malvas, Marshmallows y Merenguitos
 desayuno-y-dulces/44/chocolates-y-dulces/4404/malvas-marshmallows-y-merenguitos/440406
 
-[ ]
+0a2fcb7e [ ]
    7  Despensa / Sopas, Cremas e Instantáneos / Comidas instantáneas
 despensa/05/sopas-cremas-e-instantaneos/0520/comidas-instantaneas/052003
 
-[ ]
+926be368 [ ]
    7  El Bar / Coctel / Tragos Preparados y Vermouth
 el-bar/80/coctel/8005/tragos-preparados-y-vermouth/800505
 
-[ ]
+115869f8 [ ]
    7  El Bar / Destilados / Tequila y Ron
 el-bar/80/destilados/8003/tequila-y-ron/800304
 
-[ ]
+4951a326 [ ]
    7  Luka, dos y tres lukas / Bodegazo a $1.000 / Desayuno y colaciones a $1000
 luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/desayuno-y-colaciones-a-1000/600105
 
-[ ]
+fdabbc15 [ ]
    7  Luka, dos y tres lukas / Bodegazo a $2.000 / Desayuno y colaciones a $2000
 luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/desayuno-y-colaciones-a-2000/600205
 
-[ ]
+73044556 [ ]
    7  Marcas Propias / Great Value
 marcas-propias/20/great-value/2004
 
-[ ]
+81bc8ba1 [ ]
    7  Mundo bebé / Alimento y formulas bebé / Leches y Fórmulas
 mundo-bebe/09/alimento-y-formulas-bebe/0902/leches-y-formulas/090201
 
-[ ]
+e6274d05 [ ]
    7  Panadería y Pastelería / Panadería / Panadería granel
 panaderia-y-pasteleria/10/panaderia/1001/panaderia-granel/100101
 
-[ ]
+23c3fbee [ ]
    6  Aseo y limpieza / Desinfección / Desinfectante en aerosol
 aseo-y-limpieza/11/desinfeccion/1104/desinfectante-en-aerosol/110403
 
-[ ]
+d4290584 [ ]
    6  Aseo y limpieza / Fósforos
 aseo-y-limpieza/11/fosforos/1106
 
-[ ]
+3419080b [ ]
    6  Aseo y limpieza / Papeles / Servilletas
 aseo-y-limpieza/11/papeles/1113/servilletas/111303
 
-[ ]
+49199ff9 [ ]
    6  Despensa / Aceites y Vinagres / Aceites de Oliva
 despensa/05/aceites-y-vinagres/0501/aceites-de-oliva/050102
 
-[ ]
+7ea8f8ac [ ]
    6  Despensa / Salsas y Aderezos / Mostazas
 despensa/05/salsas-y-aderezos/0519/mostazas/051903
 
-[ ]
+899e661b [ ]
    6  El Bar / Destilados / Gin y Vodka
 el-bar/80/destilados/8003/gin-y-vodka/800306
 
-[ ]
+9b53f7e0 [ ]
    6  El Bar / Espumantes
 el-bar/80/espumantes/8006
 
-[ ]
+994cbdf4 [ ]
    6  Frescos y Lácteos / Huevos y Mantequillas / Huevos
 frescos-y-lacteos/07/huevos-y-mantequillas/0702/huevos/070201
 
-[ ]
+df0bb602 [ ]
    6  Frescos y Lácteos / Postres / Flan
 frescos-y-lacteos/07/postres/0706/flan/070601
 
-[ ]
+f5994b9f [ ]
    6  Frescos y Lácteos / Quesos y Quesillos / Quesos Crema
 frescos-y-lacteos/07/quesos-y-quesillos/0707/quesos-crema/070703
 
-[ ]
+ef62f549 [ ]
    6  Mundo bebé / Accesorios de alimentación bebé / Mamaderas, Chupetes y Tetinas
 mundo-bebe/09/accesorios-de-alimentacion-bebe/0901/mamaderas-chupetes-y-tetinas/090101
 
-[ ]
+6f15e573 [ ]
    6  Perfumería y Cuidado Personal / Cuidado Bucal / Cepillos y Pasta Dental Infantil
 perfumeria-y-cuidado-personal/12/cuidado-bucal/1204/cepillos-y-pasta-dental-infantil/120402
 
-[ ]
+e986b074 [ ]
    5  Bebidas y Snacks / Siempre Útil / Snack Dulce
 bebidas-y-snacks/02/siempre-util/0207/snack-dulce/020701
 
-[ ]
+ef816161 [ ]
    5  Bebidas y Snacks / Snacks y Galletas Saladas / Untable
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/untable/020807
 
-[ ]
+cdfa8cae [ ]
    5  Congelados / Nuggets y Apanados
 congelados/04/nuggets-y-apanados/0407
 
-[ ]
+262eead6 [ ]
    5  Desayuno y Dulces / Café, Té y Hierbas / Café en Grano y Molido
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/cafe-en-grano-y-molido/440102
 
-[ ]
+21fe0b55 [ ]
    5  Desayuno y Dulces / Galletas y Colaciones / Galletas de Agua y Soda
 desayuno-y-dulces/44/galletas-y-colaciones/4405/galletas-de-agua-y-soda/440503
 
-[ ]
+5c469db9 [ ]
    5  Despensa / Arroz, Legumbres y Semillas / Garbanzos y Arvejas
 despensa/05/arroz-legumbres-y-semillas/0502/garbanzos-y-arvejas/050204
 
-[ ]
+b1216c72 [ ]
    5  Despensa / Salsas y Aderezos / Salsas Picantes
 despensa/05/salsas-y-aderezos/0519/salsas-picantes/051904
 
-[ ]
+60a3852e [ ]
    5  Despensa / Sopas, Cremas e Instantáneos / Puré instantáneo
 despensa/05/sopas-cremas-e-instantaneos/0520/pure-instantaneo/052001
 
-[ ]
+9695d922 [ ]
    5  Frescos y Lácteos / Leches y Cremas / Leches Cultivadas y Bebidas Lácteas
 frescos-y-lacteos/07/leches-y-cremas/0703/leches-cultivadas-y-bebidas-lacteas/070306
 
-[ ]
+a827d21a [ ]
    5  Frescos y Lácteos / Platos Preparados / Pizzas
 frescos-y-lacteos/07/platos-preparados/0709/pizzas/070901
 
-[ ]
+cd3c483c [ ]
    5  Luka, dos y tres lukas / Bodegazo a $3.000 / Desayuno y colaciones a $3000
 luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/desayuno-y-colaciones-a-3000/600305
 
-[ ]
+37c052f9 [ ]
    5  Mundo bebé / Higiene y perfumería bebé / Colonias y Lociones
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/colonias-y-lociones/090404
 
-[ ]
+fce7d640 [ ]
    5  Perfumería y Cuidado Personal / Cuidado Adulto Mayor / Apósitos, Sabanillas y otros
 perfumeria-y-cuidado-personal/12/cuidado-adulto-mayor/1203/apositos-sabanillas-y-otros/120302
 
-[ ]
+8d4296ec [ ]
    5  Perfumería y Cuidado Personal / Cuidado Masculino / Afeitado Espumas y Gel
 perfumeria-y-cuidado-personal/12/cuidado-masculino/1206/afeitado-espumas-y-gel/120603
 
-[ ]
+69f8ede6 [ ]
    5  Perfumería y Cuidado Personal / Higiene y Cuidado Personal / Cuidado de Pies
 perfumeria-y-cuidado-personal/12/higiene-y-cuidado-personal/1205/cuidado-de-pies/120503
 
-[ ]
+a99142b0 [ ]
    4  Aseo y limpieza / Artículos de limpieza / Escobillones, escobillas y palas
 aseo-y-limpieza/11/articulos-de-limpieza/1102/escobillones-escobillas-y-palas/110203
 
-[ ]
+b61249dd [ ]
    4  Aseo y limpieza / Baño y Cocina / Limpia Vidrios
 aseo-y-limpieza/11/bano-y-cocina/1107/limpia-vidrios/110703
 
-[ ]
+2f07fefe [ ]
    4  Desayuno y Dulces / Chocolates y Dulces / Chicles y Mentitas
 desayuno-y-dulces/44/chocolates-y-dulces/4404/chicles-y-mentitas/440407
 
-[ ]
+97f6bc28 [ ]
    4  El Bar / Cervezas / Artesanales
 el-bar/80/cervezas/8001/artesanales/800101
 
-[ ]
+9499b0d1 [ ]
    4  El Bar / Coctel / Cremas, coladas y complementos
 el-bar/80/coctel/8005/cremas-coladas-y-complementos/800502
 
-[ ]
+ec412b23 [ ]
    4  El Bar / Sin Alcohol
 el-bar/80/sin-alcohol/8004
 
-[ ]
+287f34db [ ]
    4  Frescos y Lácteos / Quesos y Quesillos / Quesos Rallados
 frescos-y-lacteos/07/quesos-y-quesillos/0707/quesos-rallados/070704
 
-[ ]
+36cd2279 [ ]
    4  Mascotas / Gatos / Higiene y juguetes
 mascotas/88/gatos/8802/higiene-y-juguetes/880106
 
-[ ]
+8e084f87 [ ]
    4  Mundo bebé / Higiene y perfumería bebé / Jabón
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/jabon/090402
 
-[ ]
+47b5f178 [ ]
    4  Panadería y Pastelería / Panadería / Otros
 panaderia-y-pasteleria/10/panaderia/1001/otros/100103
 
-[ ]
+81ec7d06 [ ]
    4  Perfumería y Cuidado Personal / Belleza y Coloración / Accesorios y Complementos
 perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202/accesorios-y-complementos/120204
 
-[ ]
+370b5614 [ ]
    4  Perfumería y Cuidado Personal / Belleza y Coloración / Fijadores
 perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202/fijadores/120202
 
-[ ]
+ae756745 [ ]
    4  Perfumería y Cuidado Personal / Cuidado Facial y Corporal / Cremas Faciales
 perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210/cremas-faciales/121001
 
-[ ]
+d5a76556 [ ]
    4  Perfumería y Cuidado Personal / Salud y Primeros Auxilios
 perfumeria-y-cuidado-personal/12/salud-y-primeros-auxilios/1211
 
-[ ]
+a73b15c2 [ ]
    3  Aseo y limpieza / Detergentes y Suavizantes / Jabón para Ropa
 aseo-y-limpieza/11/detergentes-y-suavizantes/1105/jabon-para-ropa/110504
 
-[ ]
+610a2828 [ ]
    3  Desayuno y Dulces / Café, Té y Hierbas / Cápsulas de Café
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/capsulas-de-cafe/440104
 
-[ ]
+f15260fc [ ]
    3  Desayuno y Dulces / Cereales, Avenas y Barras / Cereal de trigo inflado
 desayuno-y-dulces/44/cereales-avenas-y-barras/4403/cereal-de-trigo-inflado/440302
 
-[ ]
+23a28730 [ ]
    3  Desayuno y Dulces / Galletas y Colaciones / Galletas Saladas
 desayuno-y-dulces/44/galletas-y-colaciones/4405/galletas-saladas/440502
 
-[ ]
+e832cfbd [ ]
    3  El Bar / Cervezas / Saborizadas
 el-bar/80/cervezas/8001/saborizadas/800104
 
-[ ]
+c34f4417 [ ]
    3  El Bar / Coctel / Complementos
 el-bar/80/coctel/8005/complementos/800501
 
-[ ]
+feb7b70b [ ]
    3  El Bar / Vinos / Sangria, Sidra y Vinos Individuales
 el-bar/80/vinos/8002/sangria-sidra-y-vinos-individuales/800205
 
-[ ]
+d16cd1ff [ ]
    3  Frescos y Lácteos / Huevos y Mantequillas / Mantecas y Levaduras
 frescos-y-lacteos/07/huevos-y-mantequillas/0702/mantecas-y-levaduras/070204
 
-[ ]
+5cb3210f [ ]
    3  Frescos y Lácteos / Leches y Cremas / Bebidas Vegetales
 frescos-y-lacteos/07/leches-y-cremas/0703/bebidas-vegetales/070307
 
-[ ]
+2085eaa3 [ ]
    3  Mundo bebé / Higiene y perfumería bebé / Accesorios de Baño y Cuidado
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/accesorios-de-bano-y-cuidado/090406
 
-[ ]
+d84c77ba [ ]
    3  Mundo bebé / Higiene y perfumería bebé / Talcos y Pomadas
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/talcos-y-pomadas/090405
 
-[ ]
+3c7e26b2 [ ]
    3  Perfumería y Cuidado Personal / Cuidado Facial y Corporal / Protección Solar
 perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210/proteccion-solar/121005
 
-[ ]
+c4260359 [ ]
    3  Perfumería y Cuidado Personal / Cuidado Femenino / Perfumes y Colonias
 perfumeria-y-cuidado-personal/12/cuidado-femenino/1207/perfumes-y-colonias/120703
 
-[ ]
+92b6c82f [ ]
    2  Bebidas y Snacks / Snacks y Galletas Saladas / Cabritas
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/cabritas/020803
 
-[ ]
+99012104 [ ]
    2  Congelados / Comidas Preparadas
 congelados/04/comidas-preparadas/0405
 
-[ ]
+7c7d7d16 [ ]
    2  Desayuno y Dulces / Café, Té y Hierbas / Café Descafeinado
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/cafe-descafeinado/440103
 
-[ ]
+2028de8a [ ]
    2  Desayuno y Dulces / Manjar, Miel y Mermeladas / Miel
 desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/miel/440603
 
-[ ]
+04ac080b [ ]
    2  Despensa / Arroz, Legumbres y Semillas / Arroz Preparado y Especial
 despensa/05/arroz-legumbres-y-semillas/0502/arroz-preparado-y-especial/050202
 
-[ ]
+4ef9157c [ ]
    2  Despensa / Harinas y Polvos / Harinas Integrales
 despensa/05/harinas-y-polvos/0512/harinas-integrales/051202
 
-[ ]
+75d177b1 [ ]
    2  El Bar / Destilados / Whisky
 el-bar/80/destilados/8003/whisky/800302
 
-[ ]
+0c44fc53 [ ]
    2  Mes del completo
 mes-del-completo/1200
 
-[ ]
+35b68f43 [ ]
    2  Mundo bebé / Higiene y Baño
 mundo-bebe/09/higiene-y-bano/0905
 
-[ ]
+86e6b3d2 [ ]
    2  Precios que no se tocan / La boti / Cerveza
 precios-que-no-se-tocan/55/la-boti/5510/cerveza/551001
 
-[ ]
+3f2ee5da [ ]
    1  Carnes / Pavo
 carnes/03/pavo/0306
 
-[ ]
+dfe3c849 [ ]
    1  Desayuno y Dulces / Galletas y Colaciones / Queques y bizcochos
 desayuno-y-dulces/44/galletas-y-colaciones/4405/queques-y-bizcochos/440506
 
-[ ]
+783dc71b [ ]
    1  El Bar / Vinos / Espumantes
 el-bar/80/vinos/8002/espumantes/800203
 
-[ ]
+e9cc9a35 [ ]
    1  Luka, dos y tres lukas / Bodegazo a $1.000 / Aseo y Limpieza a $1000
 luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/aseo-y-limpieza-a-1000/600102
 
-[ ]
+866c8894 [ ]
    1  Luka, dos y tres lukas / Bodegazo a $1.000 / Despensa a $1000
 luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/despensa-a-1000/600106
 
-[ ]
+6f069655 [ ]
    1  Luka, dos y tres lukas / Bodegazo a $3.000 / Aseo y Limpieza a $3000
 luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/aseo-y-limpieza-a-3000/600302
 
-[ ]
+70d84d5e [ ]
    1  Luka, dos y tres lukas / Bodegazo a $3.000 / Despensa a $3000
 luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/despensa-a-3000/600306
 
-[ ]
+65e5d69d [ ]
    1  Marcas Propias / Groven Pro
 marcas-propias/20/groven-pro/2012
 
-[ ]
+93259b6c [ ]
    1  Marcas Propias / Lider
 marcas-propias/20/lider/2002
 
-[ ]
+d00ed24b [ ]
    1  Mundo bebé / Accesorios de alimentación bebé / Lactancia
 mundo-bebe/09/accesorios-de-alimentacion-bebe/0901/lactancia/090103
 
-[ ]
+4852291f [ ]
    1  Mundo bebé / Accesorios de alimentación bebé / Sillas y Accesorios para comer
 mundo-bebe/09/accesorios-de-alimentacion-bebe/0901/sillas-y-accesorios-para-comer/090102
 
-[ ]
+49a7f0a0 [ ]
    1  Mundo bebé / Higiene y perfumería bebé / Cremas y Aceites
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/cremas-y-aceites/090403
 
-[ ]
+54140ce3 [ ]
    1  Perfumería y Cuidado Personal / Cuidado Bucal / Seda Dental
 perfumeria-y-cuidado-personal/12/cuidado-bucal/1204/seda-dental/120404
 

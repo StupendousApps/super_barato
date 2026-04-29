@@ -5,31 +5,33 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
 
   Each entry is three lines, separated by a blank line:
 
-      <status>
+      <entry-id> <status>
       <count> <ancestry-path>
       <slug>
+
+  `entry-id` is an 8-char md5 prefix of `<chain>|<slug>`, stamped by
+  `dump_categories.sh`. It anchors a row for bash-side `sed`
+  rewrites — triage tools find an entry by its id and only edit the
+  status portion.
 
   Status syntax:
 
       [ ]            unchecked
       [-]            checked, no chain category fits
       [N]            checked, no 1:1 mapping is possible
-      [x]: <id>      mapped to a unified subcategory; <id> is the
-                     8-char path-derived id from categories.jsonl
+      [x] <id>       mapped to a unified subcategory; <id> is the
+                     8-char path-derived hash from categories.jsonl
 
   An entry parses into:
 
       %{
-        status:  :unchecked | :no_match | :no_mapping | :mapped,
-        count:   non_neg_integer,
-        path:    String.t,
-        slug:    String.t,
-        mapping: nil | %{id: String.t}
+        entry_id: String.t,
+        status:   :unchecked | :no_match | :no_mapping | :mapped,
+        count:    non_neg_integer,
+        path:     String.t,
+        slug:     String.t,
+        mapping:  nil | %{id: String.t}
       }
-
-  Resolving the id back to a `(category, subcategory)` pair is the
-  consumer's job (e.g. sync_yaml.exs does the lookup against the
-  flattened JSONL when regenerating the YAML).
   """
 
   @type status :: :unchecked | :no_match | :no_mapping | :mapped
@@ -37,6 +39,7 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
   @type mapping :: %{id: String.t()}
 
   @type entry :: %{
+          entry_id: String.t(),
           status: status,
           count: non_neg_integer,
           path: String.t(),
@@ -59,16 +62,25 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
     |> Enum.join("\n")
   end
 
-  defp serialize_entry(%{status: status, count: count, path: path, slug: slug, mapping: mapping}) do
-    status_line(status, mapping) <>
+  defp serialize_entry(%{
+         entry_id: eid,
+         status: status,
+         count: count,
+         path: path,
+         slug: slug,
+         mapping: mapping
+       }) do
+    eid <>
+      " " <>
+      status_payload(status, mapping) <>
       "\n" <>
       String.pad_leading(Integer.to_string(count), 4) <> "  " <> path <> "\n" <> slug <> "\n"
   end
 
-  defp status_line(:unchecked, _), do: "[ ]"
-  defp status_line(:no_match, _), do: "[-]"
-  defp status_line(:no_mapping, _), do: "[N]"
-  defp status_line(:mapped, %{id: id}), do: "[x]: #{id}"
+  defp status_payload(:unchecked, _), do: "[ ]"
+  defp status_payload(:no_match, _), do: "[-]"
+  defp status_payload(:no_mapping, _), do: "[N]"
+  defp status_payload(:mapped, %{id: id}), do: "[x] #{id}"
 
   @spec parse(String.t()) :: [entry]
   def parse(text) do
@@ -81,10 +93,11 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
     [status_line, count_path_line, slug_line] =
       block |> String.split("\n", parts: 3) |> Enum.map(&String.trim_trailing/1)
 
-    {status, mapping} = parse_status(String.trim(status_line))
+    {entry_id, status, mapping} = parse_status(String.trim(status_line))
     {count, path} = parse_count_path(count_path_line)
 
     %{
+      entry_id: entry_id,
       status: status,
       count: count,
       path: path,
@@ -93,22 +106,34 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
     }
   end
 
-  defp parse_status("[ ]"), do: {:unchecked, nil}
-  defp parse_status("[-]"), do: {:no_match, nil}
-  defp parse_status("[N]"), do: {:no_mapping, nil}
+  defp parse_status(line) do
+    case Regex.run(~r/^([0-9a-f]{8})\s+(.+)$/, line) do
+      [_, eid, payload] ->
+        {status, mapping} = parse_payload(payload)
+        {eid, status, mapping}
 
-  defp parse_status("[x]:" <> rest) do
-    id = String.trim(rest)
+      _ ->
+        raise ArgumentError,
+              "expected `<entry-id> <status>`, got: #{inspect(line)}"
+    end
+  end
+
+  defp parse_payload("[ ]"), do: {:unchecked, nil}
+  defp parse_payload("[-]"), do: {:no_match, nil}
+  defp parse_payload("[N]"), do: {:no_mapping, nil}
+
+  defp parse_payload("[x] " <> id) do
+    id = String.trim(id)
 
     if Regex.match?(~r/^[0-9a-f]{8}$/, id) do
       {:mapped, %{id: id}}
     else
-      raise ArgumentError, "expected 8-char hex id after `[x]:`, got: #{inspect(id)}"
+      raise ArgumentError, "expected 8-char hex id after `[x]`, got: #{inspect(id)}"
     end
   end
 
-  defp parse_status(other),
-    do: raise(ArgumentError, "unrecognized checklist status: #{inspect(other)}")
+  defp parse_payload(other),
+    do: raise(ArgumentError, "unrecognized status payload: #{inspect(other)}")
 
   defp parse_count_path(line) do
     case Regex.run(~r/^\s*(\d+)\s+(.+)$/, line) do

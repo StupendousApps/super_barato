@@ -253,6 +253,14 @@ jsonl_lines =
     sub_lines =
       Enum.map(cat.subs, fn sub ->
         path = cat.name <> " / " <> sub.name
+        kws = sub[:keywords] || []
+
+        search_text =
+          [sub.name, path, sub.slug, cat.name | kws]
+          |> Enum.join(" ")
+          |> String.downcase()
+          |> :unicode.characters_to_nfd_binary()
+          |> String.replace(~r/\p{Mn}/u, "")
 
         Jason.encode!(%{
           kind: "subcategory",
@@ -260,10 +268,11 @@ jsonl_lines =
           name: sub.name,
           slug: sub.slug,
           path: path,
-          keywords: sub[:keywords] || [],
+          keywords: kws,
           category_id: cat_id,
           category_name: cat.name,
-          category_slug: cat.slug
+          category_slug: cat.slug,
+          search: search_text
         })
       end)
 
