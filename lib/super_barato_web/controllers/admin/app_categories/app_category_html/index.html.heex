@@ -3,71 +3,64 @@
 
   <.columns>
     <:column>
-      <.admin_container>
-        <.page_header title="Category" />
+      <.section_header title="Category" />
 
-        <div data-sortable data-sortable-url={~p"/app-categories/reorder"}>
-          <.table rows={@categories} empty="No categories.">
-            <:col :let={c} label="" nowrap>
-              <span class="sort-handle" data-sort-handle data-sort-id={c.id}>
+      <div data-sortable data-sortable-url={~p"/app-categories/reorder"}>
+        <.table rows={@categories} empty="No categories.">
+          <:col :let={c} label="" nowrap>
+            <span class="sort-handle" data-sort-handle data-sort-id={c.id}>
+              <.sfsymbol name="list.bullet" />
+            </span>
+          </:col>
+
+          <:col
+            :let={c}
+            label="Name"
+            sort={sort_dir("name", @cat_sort)}
+            sort_href={sort_href(~p"/app-categories", "cat_sort", "name", @cat_sort, %{})}
+          >
+            <strong :if={@selected_cat && c.id == @selected_cat.id}>{c.name}</strong>
+            <span :if={!(@selected_cat && c.id == @selected_cat.id)}>{c.name}</span>
+          </:col>
+
+          <:col :let={c} label="Subs" align={:right} nowrap>
+            {Map.get(@sub_counts, c.id, 0)}
+          </:col>
+
+          <:action :let={c}>
+            <.row_actions>
+              <.button
+                variant={:subtle}
+                size={:sm}
+                href={~p"/app-categories?#{drill_to_category(c.slug, %{"cat_sort" => @cat_sort})}"}
+                aria-label="Open"
+              >
+                <.sfsymbol name="chevron.right" />
+              </.button>
+            </.row_actions>
+          </:action>
+        </.table>
+      </div>
+    </:column>
+
+    <:column>
+      <%= if @selected_cat do %>
+        <.section_header title={"Subcategories of #{@selected_cat.name}"} />
+
+        <div
+          data-sortable
+          data-sortable-url={~p"/app-categories/subcategories/reorder"}
+        >
+          <.table rows={@subcategories} empty="No subcategories.">
+            <:col :let={s} label="" nowrap>
+              <span class="sort-handle" data-sort-handle data-sort-id={s.id}>
                 <.sfsymbol name="list.bullet" />
               </span>
             </:col>
 
             <:col
-              :let={c}
+              :let={s}
               label="Name"
-              sort={sort_dir("name", @cat_sort)}
-              sort_href={sort_href(~p"/app-categories", "cat_sort", "name", @cat_sort, %{})}
-            >
-              <strong :if={@selected_cat && c.id == @selected_cat.id}>{c.name}</strong>
-              <span :if={!(@selected_cat && c.id == @selected_cat.id)}>{c.name}</span>
-            </:col>
-
-            <:col :let={c} label="Subs" align={:right} nowrap>
-              {Map.get(@sub_counts, c.id, 0)}
-            </:col>
-
-            <:col :let={c} label="Mappings" align={:right} nowrap>
-              {Map.get(@mapping_counts_by_cat, c.id, 0)}
-            </:col>
-
-            <:action :let={c}>
-              <.row_actions>
-                <.button
-                  variant={:subtle}
-                  size={:sm}
-                  href={~p"/app-categories?#{drill_to_category(c.slug, %{"cat_sort" => @cat_sort})}"}
-                  aria-label="Open"
-                >
-                  <.sfsymbol name="chevron.right" />
-                </.button>
-              </.row_actions>
-            </:action>
-          </.table>
-        </div>
-      </.admin_container>
-    </:column>
-
-    <:column>
-      <%= if @selected_cat do %>
-        <.admin_container>
-          <.page_header title={"Subcategories of #{@selected_cat.name}"} />
-
-          <div
-            data-sortable
-            data-sortable-url={~p"/app-categories/subcategories/reorder"}
-          >
-            <.table rows={@subcategories} empty="No subcategories.">
-              <:col :let={s} label="" nowrap>
-                <span class="sort-handle" data-sort-handle data-sort-id={s.id}>
-                  <.sfsymbol name="list.bullet" />
-                </span>
-              </:col>
-
-              <:col
-                :let={s}
-                label="Name"
               sort={sort_dir("name", @sub_sort)}
               sort_href={
                 sort_href(
@@ -101,37 +94,30 @@
                 </.button>
               </.row_actions>
             </:action>
-            </.table>
-          </div>
-        </.admin_container>
+          </.table>
+        </div>
       <% else %>
-        <.admin_container>
-          <.page_header title="Subcategory" />
-          <p>Select a category to see its subcategories.</p>
-        </.admin_container>
+        <.section_header title="Subcategory" />
+        <p>Select a category to see its subcategories.</p>
       <% end %>
     </:column>
 
     <:column>
       <%= if @selected_sub do %>
-        <.admin_container>
-          <.page_header title={"Mappings of #{@selected_sub.name}"} />
+        <.section_header title={"Mappings of #{@selected_sub.name}"} />
 
-          <.table rows={@mappings} empty="No mappings yet.">
-            <:col :let={m} label="Chain" nowrap>
-              <.chain_badge chain={m.chain} />
-            </:col>
-            <:col :let={m} label="Name">{m.name}</:col>
-            <:col :let={m} label="Slug">
-              <code>{m.slug}</code>
-            </:col>
-          </.table>
-        </.admin_container>
+        <.table rows={@mappings} empty="No mappings yet.">
+          <:col :let={m} label="Chain" nowrap>
+            <.chain_badge chain={m.chain} />
+          </:col>
+          <:col :let={m} label="Name">{m.name}</:col>
+          <:col :let={m} label="Slug">
+            <code>{m.slug}</code>
+          </:col>
+        </.table>
       <% else %>
-        <.admin_container>
-          <.page_header title="Mappings" />
-          <p>Select a subcategory to see its chain-category mappings.</p>
-        </.admin_container>
+        <.section_header title="Mappings" />
+        <p>Select a subcategory to see its chain-category mappings.</p>
       <% end %>
     </:column>
   </.columns>

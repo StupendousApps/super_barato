@@ -20,7 +20,6 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
 
     categories = list_categories(cat_sort)
     sub_counts = subcategory_counts()
-    mapping_counts_by_cat = mapping_counts_by_category()
 
     subcategories =
       if selected_cat,
@@ -39,7 +38,6 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
     |> assign(:page_title, "App Categories")
     |> assign(:categories, categories)
     |> assign(:sub_counts, sub_counts)
-    |> assign(:mapping_counts_by_cat, mapping_counts_by_cat)
     |> assign(:selected_cat, selected_cat)
     |> assign(:subcategories, subcategories)
     |> assign(:mapping_counts_by_sub, mapping_counts_by_sub)
@@ -88,17 +86,6 @@ defmodule SuperBaratoWeb.Admin.AppCategoryController do
       from s in AppSubcategory,
         group_by: s.app_category_id,
         select: {s.app_category_id, count(s.id)}
-    )
-    |> Map.new()
-  end
-
-  defp mapping_counts_by_category do
-    Repo.all(
-      from m in CategoryMapping,
-        join: s in AppSubcategory,
-        on: s.id == m.app_subcategory_id,
-        group_by: s.app_category_id,
-        select: {s.app_category_id, count(m.id)}
     )
     |> Map.new()
   end
