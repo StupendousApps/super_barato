@@ -8,232 +8,345 @@
 
 - name: Frutas y Verduras
   slug: frutas-y-verduras
+  id: 0dc0e7cd
   subcategories:
     - name: Frutas
       slug: frutas
+      id: 102c9e23
     - name: Verduras
       slug: verduras
+      id: 335c7109
     - name: Frutos Secos y Semillas
       slug: frutos-secos
+      id: dadec147
     - name: Orgánicos
       slug: organicos
+      id: 5e3cd2a8
 
 - name: Carnes y Pescados
   slug: carnes-y-pescados
+  id: bf98a634
   subcategories:
     - name: Vacuno
       slug: vacuno
+      id: 195b331c
     - name: Pollo
       slug: pollo
+      id: 872d1a18
     - name: Cerdo y Cordero
       slug: cerdo-y-cordero
+      id: 1b034bad
     - name: Pavo
       slug: pavo
+      id: 42bd31f2
     - name: Pescados y Mariscos
       slug: pescados-y-mariscos
+      id: 81168507
     - name: Salchichas y Parrilleros
       slug: salchichas-y-parrilleros
+      id: 244c71cc
 
 - name: Lácteos y Refrigerados
   slug: lacteos-y-refrigerados
+  id: ba8fd61f
   subcategories:
     - name: Leches
       slug: leches
+      id: 6a62b166
     - name: Yoghurt
       slug: yoghurt
+      id: edb0d4ec
     - name: Mantequillas y Margarinas
       slug: mantequillas-margarinas
+      id: 2c7b72c2
     - name: Cremas
       slug: cremas
+      id: c99b5d7c
     - name: Postres Refrigerados
       slug: postres-refrigerados
+      id: 0c4d1a88
 
 - name: Quesos y Fiambres
   slug: quesos-y-fiambres
+  id: 6c19b66b
   subcategories:
     - name: Quesos
       slug: quesos
+      id: a0027a6c
     - name: Fiambres y Embutidos
       slug: fiambres-y-embutidos
+      id: 2894ad7f
 
 - name: Bebidas
   slug: bebidas
+  id: f63b916a
   subcategories:
     - name: Aguas
       slug: aguas
+      id: c3de7e05
     - name: Bebidas Gaseosas
       slug: bebidas-gaseosas
+      id: 5af2da9d
     - name: Jugos
       slug: jugos
+      id: e035b90e
     - name: Bebidas Vegetales
       slug: bebidas-vegetales
+      id: c6657fef
     - name: Energéticas e Isotónicas
       slug: energeticas-isotonicas
+      id: b62fdf76
     - name: Té e Infusiones Frías
       slug: te-frio
+      id: ba8719d1
 
 - name: Licores
   slug: licores
+  id: 86b11ae1
   subcategories:
     - name: Cervezas
       slug: cervezas
+      id: 038c5cc6
     - name: Vinos
       slug: vinos
+      id: 8134061f
     - name: Espumantes
       slug: espumantes
+      id: 99cbf6fb
     - name: Destilados
       slug: destilados
+      id: 7230c42c
     - name: Mixers
       slug: mixers
+      id: 61c13a39
     - name: Sin Alcohol
       slug: sin-alcohol
+      id: e92dac25
 
 - name: Despensa
   slug: despensa
+  id: 76bb6777
   subcategories:
     - name: Aceites y Aliños
       slug: aceites-y-alinos
+      id: 91204618
     - name: Aderezos y Salsas
       slug: aderezos-y-salsas
+      id: c548fb63
     - name: Arroz, Legumbres y Quinoa
       slug: arroz-y-legumbres
+      id: 806d5c3b
     - name: Fideos y Pastas
       slug: pastas
+      id: 36d2eb32
     - name: Conservas
       slug: conservas
+      id: 6370ccc4
     - name: Aceitunas, Pepinillos y Encurtidos
       slug: aceitunas-pepinillos
+      id: 6065f6dd
     - name: Huevos
       slug: huevos
+      id: 554e0af9
     - name: Azúcar y Endulzantes
       slug: azucar-y-endulzantes
+      id: 397dbebb
     - name: Harinas y Repostería
       slug: harinas-reposteria
+      id: 92f482c1
     - name: Sopas e Instantáneos
       slug: sopas-instantaneos
+      id: 8a85ef06
     - name: Cocina Internacional
       slug: cocina-internacional
+      id: b3fe075a
 
 - name: Desayuno y Dulces
   slug: desayuno-y-dulces
+  id: cf082b9d
   subcategories:
     - name: Café, Té y Hierbas
       slug: cafe-te-hierbas
+      id: 8e326ace
     - name: Cereales, Avenas y Barras
       slug: cereales-avenas
+      id: efb3292f
     - name: Galletas
       slug: galletas
+      id: aaca9df8
     - name: Chocolates y Dulces
       slug: chocolates-y-dulces
+      id: 91c64a80
     - name: Mermeladas, Miel y Manjar
       slug: mermeladas-miel-manjar
+      id: 7ff56c58
 
 - name: Snacks
   slug: snacks
+  id: cae5adda
   subcategories:
     - name: Snacks Salados
       slug: snacks-salados
+      id: 53453632
     - name: Colaciones
       slug: colaciones
+      id: 998a3a11
 
 - name: Congelados
   slug: congelados
+  id: e8ab1fdb
   subcategories:
-    - name: Platos Congelados
-      slug: platos-congelados
-    - name: Hamburguesas y Apanados
-      slug: hamburguesas-apanados
+    - name: Platos
+      slug: platos
+      id: dd6155d9
+    - name: Hamburguesas
+      slug: hamburguesas
+      id: 9c369b5d
+    - name: Apanados y Nuggets
+      slug: apanados-nuggets
+      id: 2add31ce
+    - name: Pollo
+      slug: pollo
+      id: b4fda11f
+    - name: Pescados y Mariscos
+      slug: pescados-mariscos
+      id: ef6e2589
+    - name: Frutas y Verduras
+      slug: frutas-verduras
+      id: 671737c0
+    - name: Papas y Vegetales Pre-fritos
+      slug: papas-prefritos
+      id: ba99df2f
     - name: Helados y Postres
       slug: helados-postres
+      id: 9a347127
     - name: Hielo
       slug: hielo
-    - name: Frutas y Verduras Congeladas
-      slug: frutas-verduras-congeladas
-    - name: Pescados y Mariscos Congelados
-      slug: pescados-mariscos-congelados
+      id: 6cf8f35c
+    - name: Postres
+      slug: postres
+      id: 55bc9274
 
 - name: Comidas Preparadas
   slug: comidas-preparadas
+  id: 9d226ebc
   subcategories:
     - name: Empanadas y Sándwiches
       slug: empanadas-sandwiches
+      id: 7fc13cbc
     - name: Pizzas y Pastas Frescas
       slug: pizzas-pastas-frescas
+      id: 9dd4d7e5
     - name: Platos Preparados
       slug: platos-preparados
+      id: 0a07f282
 
 - name: Panadería y Pastelería
   slug: panaderia-y-pasteleria
+  id: a5cac578
   subcategories:
     - name: Pan
       slug: pan
+      id: 12ee81b8
     - name: Masas y Tortillas
       slug: masas-tortillas
+      id: bea15380
     - name: Pastelería
       slug: pasteleria
+      id: 9a8077f0
 
 - name: Aseo y Limpieza
   slug: aseo-y-limpieza
+  id: cfa162c1
   subcategories:
     - name: Detergentes y Suavizantes
       slug: detergentes-suavizantes
+      id: f675d06f
     - name: Papeles
       slug: papeles
+      id: 064b5012
     - name: Pisos y Muebles
       slug: pisos-muebles
+      id: c430432e
     - name: Baño y Cocina
       slug: bano-cocina
+      id: a69bd951
     - name: Aromatizantes y Desodorantes Ambientales
       slug: aromatizantes
+      id: 28b7f2a6
     - name: Insecticidas y Desinfección
       slug: insecticidas-desinfeccion
+      id: 087db1a8
     - name: Bolsas y Envoltorios
       slug: bolsas-envoltorios
+      id: 368d3599
     - name: Accesorios de Limpieza
       slug: accesorios-limpieza
+      id: 79dc0e07
 
 - name: Cuidado Personal
   slug: cuidado-personal
+  id: b166cf5d
   subcategories:
     - name: Cuidado Capilar
       slug: cuidado-capilar
+      id: f1c4c7c5
     - name: Cuidado Corporal y Facial
       slug: cuidado-corporal-facial
+      id: a6d3f160
     - name: Higiene Bucal
       slug: higiene-bucal
+      id: b7195eff
     - name: Desodorantes
       slug: desodorantes
+      id: 39658c2f
     - name: Jabones
       slug: jabones
+      id: 337d2fa4
     - name: Cuidado Masculino
       slug: cuidado-masculino
+      id: 8316989a
     - name: Protección Femenina
       slug: proteccion-femenina
+      id: 7558e446
     - name: Maquillaje, Perfumes y Belleza
       slug: maquillaje-perfumes-belleza
+      id: b1a626a0
     - name: Depilación y Solares
       slug: depilacion-solares
+      id: 707f9858
     - name: Adulto Mayor e Incontinencia
       slug: adulto-mayor
+      id: b1aebd81
     - name: Primeros Auxilios y Suplementos
       slug: primeros-auxilios
+      id: ca229ded
 
 - name: Bebé
   slug: bebe
+  id: 7c9a7485
   subcategories:
     - name: Pañales y Toallas Húmedas
       slug: panales
+      id: c7b7a30e
     - name: Alimentación Bebé
       slug: alimentacion-bebe
+      id: 0a5797dd
     - name: Higiene y Perfumería Bebé
       slug: higiene-bebe
+      id: e5b9c89d
 
 - name: Mascotas
   slug: mascotas
+  id: bcf883dc
   subcategories:
     - name: Perros
       slug: perros
+      id: 4a30fd5e
     - name: Gatos
       slug: gatos
+      id: 553f5dc9
     - name: Otras Mascotas
       slug: otras-mascotas
+      id: 55abefbd
+
