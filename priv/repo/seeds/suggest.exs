@@ -110,3 +110,7 @@ for chain <- chains do
       end
   end
 end
+
+unless dry? do
+  Code.eval_file(Path.expand("sync_yaml.exs", __DIR__))
+end

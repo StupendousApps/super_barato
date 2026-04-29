@@ -77,4 +77,5 @@ cond do
 
     CategoryChecklist.write_file!(file, new)
     IO.puts("Wrote #{length(matches)} mappings to #{cat_slug}/#{sub_slug}")
+    Code.eval_file(Path.expand("sync_yaml.exs", __DIR__))
 end

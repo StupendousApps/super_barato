@@ -47,6 +47,10 @@ All tools live in this directory as `*.exs` scripts run via
 read the unified taxonomy straight from the `app_categories` /
 `app_subcategories` tables.
 
+The `.txt` checklists are the source of truth. Whenever a tool
+mutates them, it also regenerates the `chains:` blocks in
+`categories.yaml` (a double-entry view) via `sync_yaml.exs`.
+
 ### `progress.exs`
 
     mix run priv/repo/seeds/progress.exs
@@ -82,6 +86,17 @@ the same flag.
 Sweeps `[ ]` entries whose path matches `--path-contains` (case-
 insensitive substring) and rewrites them all to `--to`'s
 `<category-slug>/<subcategory-slug>`. Add `--dry-run` to preview.
+
+### `sync_yaml.exs`
+
+    mix run priv/repo/seeds/sync_yaml.exs
+
+Walks every checklist file, regroups `[x]` entries by `(category,
+subcategory)`, and rewrites the `chains:` blocks in
+`categories.yaml`. Idempotent. Preserves the taxonomy structure and
+the leading comment header. `suggest.exs` and `bulk_tag.exs` invoke
+this automatically after writing; run by hand whenever you edit a
+`.txt` directly.
 
 ### `review.exs`
 
