@@ -12,7 +12,13 @@ defmodule SuperBarato.Catalog do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{ChainCategory, ChainListing, Product, ProductIdentifier}
+  alias SuperBarato.Catalog.{
+    ChainCategory,
+    ChainListing,
+    ChainListingCategory,
+    Product,
+    ProductIdentifier
+  }
   alias SuperBarato.Search.Q
   alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
@@ -157,6 +163,7 @@ defmodule SuperBarato.Catalog do
       |> Ecto.Changeset.change(attrs)
       |> Repo.update()
 
+    sync_listing_categories(updated)
     {:ok, :updated, updated}
   end
 
@@ -238,14 +245,48 @@ defmodule SuperBarato.Catalog do
            conflict_target: [:chain, :identifiers_key],
            returning: true
          ) do
-      {:ok, row} -> {:ok, :upserted, row}
-      {:error, _} = err -> err
+      {:ok, row} ->
+        sync_listing_categories(row)
+        {:ok, :upserted, row}
+
+      {:error, _} = err ->
+        err
     end
   end
 
   defp listing_incoming_paths(%Listing{category_path: nil}), do: []
   defp listing_incoming_paths(%Listing{category_path: ""}), do: []
   defp listing_incoming_paths(%Listing{category_path: p}) when is_binary(p), do: [p]
+
+  # Sync `chain_listing_categories` join rows for one ChainListing.
+  # Each entry in `category_paths` is a `chain_categories.slug`; we
+  # resolve them to ids in a single query and INSERT OR IGNORE the
+  # joins (the unique index on (chain_listing_id, chain_category_id)
+  # absorbs re-runs without complaint).
+  #
+  # Paths that don't resolve (chain renamed a category, breadcrumb
+  # carried a slug we never crawled, …) are silently dropped — the
+  # join is best-effort. The legacy `category_paths` array still
+  # carries the raw value as a fallback.
+  defp sync_listing_categories(%ChainListing{id: id, chain: chain, category_paths: paths})
+       when is_list(paths) and paths != [] do
+    cat_ids =
+      Repo.all(
+        from c in ChainCategory,
+          where: c.chain == ^chain and c.slug in ^paths,
+          select: c.id
+      )
+
+    rows = Enum.map(cat_ids, &%{chain_listing_id: id, chain_category_id: &1})
+
+    if rows != [] do
+      Repo.insert_all(ChainListingCategory, rows, on_conflict: :nothing)
+    end
+
+    :ok
+  end
+
+  defp sync_listing_categories(_), do: :ok
 
   defp merge_category_paths(nil, incoming), do: incoming
   defp merge_category_paths(existing, []) when is_list(existing), do: existing

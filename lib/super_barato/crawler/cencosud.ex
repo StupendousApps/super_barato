@@ -621,22 +621,67 @@ defmodule SuperBarato.Crawler.Cencosud do
   defp first_image(url) when is_binary(url), do: url
   defp first_image(_), do: nil
 
+  # Translate a JSON-LD BreadcrumbList into the leaf category slug.
+  #
+  # Each ListItem carries an `item` URL (the category page) and a
+  # `name` (display label). We extract the URL path — that's what
+  # `chain_categories.slug` stores — drop the homepage entry (path
+  # `/`) and any entry that points at a Cencosud PDP (path ends in
+  # `/p`), then keep the deepest remaining path.
+  #
+  # Two real-world quirks the implementation handles:
+  #
+  #   * Santa Isabel emits `position` as a STRING ("1", "2"); Jumbo
+  #     emits it as an integer. `breadcrumb_position/1` parses both.
+  #
+  #   * SI breadcrumbs sometimes have only home + leaf-category (no
+  #     product entry); the older "drop position 1 + drop last" rule
+  #     emptied them. URL-pattern filtering keeps the leaf in that
+  #     case while still dropping the product when one is present.
   defp breadcrumb_path(%{"itemListElement" => items}) when is_list(items) do
     items
-    |> Enum.sort_by(&Map.get(&1, "position", 0))
-    # Drop position 1 (the homepage) and the last entry (the product
-    # itself). What's left is the category trail leading to this PDP.
-    |> Enum.drop(1)
-    |> Enum.drop(-1)
-    |> Enum.map(&Map.get(&1, "name"))
+    |> Enum.sort_by(&breadcrumb_position/1)
+    |> Enum.map(&breadcrumb_slug/1)
     |> Enum.reject(&is_nil/1)
     |> case do
       [] -> nil
-      names -> Enum.join(names, " > ")
+      slugs -> List.last(slugs)
     end
   end
 
   defp breadcrumb_path(_), do: nil
+
+  defp breadcrumb_position(%{"position" => p}) when is_integer(p), do: p
+
+  defp breadcrumb_position(%{"position" => p}) when is_binary(p) do
+    case Integer.parse(p) do
+      {n, _} -> n
+      :error -> 0
+    end
+  end
+
+  defp breadcrumb_position(_), do: 0
+
+  defp breadcrumb_slug(%{"item" => url}) when is_binary(url) do
+    case URI.parse(url) do
+      %URI{path: nil} ->
+        nil
+
+      %URI{path: path} ->
+        slug = path |> String.trim_leading("/") |> String.trim_trailing("/")
+
+        cond do
+          slug == "" -> nil
+          # Cencosud PDP marker — the breadcrumb's last entry is the
+          # product itself, not a category. Skip.
+          String.ends_with?(slug, "/p") -> nil
+          slug == "p" -> nil
+          true -> slug
+        end
+    end
+  end
+
+  defp breadcrumb_slug(_), do: nil
 
   # Stage 3: product info by chain_sku (VTEX itemId)
 

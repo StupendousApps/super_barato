@@ -92,7 +92,10 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
       assert l.brand == "Carnicería Propia"
       assert l.regular_price > 0
       assert l.pdp_url == url
-      assert l.category_path == "Carnes y Pescados > Vacuno > Carnes de Uso Diario"
+      # category_path is the deepest breadcrumb-URL slug, NOT a name
+      # trail — that's what `chain_categories.slug` stores, so the
+      # downstream `chain_listing_categories` join can resolve it.
+      assert l.category_path == "carnes-y-pescados/vacuno/carnes-de-uso-diario"
       assert is_binary(l.image_url) and l.image_url != ""
     end
 
@@ -139,6 +142,14 @@ defmodule SuperBarato.Crawler.CencosudSitemapTest do
       assert is_integer(listing.regular_price)
       assert listing.regular_price > 0
       assert is_binary(listing.name)
+
+      # SI breadcrumbs sometimes have only home + leaf-category (no
+      # product entry) and emit `position` as a string. Both used to
+      # break the parse and leave category_path nil; now the leaf
+      # slug is extracted from the breadcrumb item URL.
+      assert is_binary(listing.category_path)
+      assert listing.category_path != ""
+      refute String.ends_with?(listing.category_path, "/p")
     end
 
     test "parses energy-drink PDP" do
