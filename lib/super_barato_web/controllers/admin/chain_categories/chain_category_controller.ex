@@ -1,4 +1,4 @@
-defmodule SuperBaratoWeb.Admin.CategoryController do
+defmodule SuperBaratoWeb.Admin.ChainCategoryController do
   use SuperBaratoWeb, :controller
 
   alias SuperBarato.{Catalog, Crawler}
@@ -34,12 +34,12 @@ defmodule SuperBaratoWeb.Admin.CategoryController do
     }
 
     conn
-    |> assign(:top_nav, :categories)
+    |> assign(:top_nav, :chain_categories)
     |> assign(:active_chain, chain)
     |> assign(:result, result)
     |> assign(:filters, filters)
     |> assign(:sort, sort)
-    |> assign(:page_title, "Categories")
+    |> assign(:page_title, "Chain Categories")
     |> render(:index)
   end
 
