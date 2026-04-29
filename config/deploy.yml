@@ -97,10 +97,12 @@ aliases:
   shell:   app exec --interactive --reuse "bash"
   logs:    app logs -f
   migrate: app exec --reuse "bin/migrate"
-  # Drop SQLite + migrate + seed. Stop the app before running so no
-  # BEAM has an open handle on the file: `kamal app stop && kamal
-  # reset && kamal app start`.
-  reset:   app exec --reuse "bin/reset"
+  # Drop SQLite + migrate + seed. Spins up a fresh container (no
+  # --reuse) so the running web app's BEAM doesn't hold an open
+  # handle on the file we're deleting. The image must already
+  # carry rel/overlays/bin/reset — `kamal deploy` first if it
+  # doesn't.
+  reset:   app exec "bin/reset"
 
 # FlareSolverr accessory was removed — the prod IP is banned at the
 # Cloudflare edge for tottus.cl, so FlareSolverr's headless Chromium
