@@ -32,7 +32,9 @@
       />
       <:actions>
         <.button type="submit" variant={:primary}>Search</.button>
-        <.button href={~p"/products"} variant={:subtle}>Reset</.button>
+        <.button href={~p"/products"} variant={:subtle} aria-label="Reset">
+          <.sfsymbol name="repeat" />
+        </.button>
       </:actions>
     </.filters>
   </.form>

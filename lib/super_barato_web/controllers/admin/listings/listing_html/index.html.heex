@@ -33,7 +33,9 @@
       />
       <:actions>
         <.button type="submit" variant={:primary}>Search</.button>
-        <.button href={chain_tab_href(@active_chain)} variant={:subtle}>Reset</.button>
+        <.button href={chain_tab_href(@active_chain)} variant={:subtle} aria-label="Reset">
+          <.sfsymbol name="repeat" />
+        </.button>
       </:actions>
     </.filters>
   </.form>

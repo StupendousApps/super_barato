@@ -54,7 +54,9 @@
         <.button type="submit" name="run" value="1" variant={:primary}>
           Run probe
         </.button>
-        <.button href={~p"/crawlers/manual"} variant={:subtle}>Reset</.button>
+        <.button href={~p"/crawlers/manual"} variant={:subtle} aria-label="Reset">
+          <.sfsymbol name="repeat" />
+        </.button>
       </:actions>
     </.filters>
   </.form>
