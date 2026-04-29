@@ -15,6 +15,20 @@
     <:column>
       <.key_value>
         <:row label="Brand">{@product.brand || "—"}</:row>
+        <:row label="Category">
+          <%= if @category do %>
+            <.link href={~p"/products?#{[app_category: @category.cat_slug]}"}>{@category.cat_name}</.link>
+          <% else %>
+            —
+          <% end %>
+        </:row>
+        <:row label="Subcategory">
+          <%= if @category do %>
+            <.link href={~p"/products?#{[app_subcategory: @category.sub_slug]}"}>{@category.sub_name}</.link>
+          <% else %>
+            —
+          <% end %>
+        </:row>
         <:row label="EANs (GTIN-13)">
           <%= case @eans do %>
             <% [] -> %>

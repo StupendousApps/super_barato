@@ -14,6 +14,8 @@ defmodule SuperBaratoWeb.Admin.ProductController do
   def index(conn, params) do
     q = params["q"] || ""
     ean = params["ean"] || ""
+    app_category = params["app_category"] || ""
+    app_subcategory = params["app_subcategory"] || ""
     sort = params["sort"] || "-updated_at"
     page = parse_int(params["page"], 1)
     per_page = parse_int(params["per_page"], 25)
@@ -22,6 +24,8 @@ defmodule SuperBaratoWeb.Admin.ProductController do
       Catalog.list_products_page(
         q: q,
         ean: ean,
+        app_category: app_category,
+        app_subcategory: app_subcategory,
         sort: sort,
         page: page,
         per_page: per_page
@@ -31,14 +35,25 @@ defmodule SuperBaratoWeb.Admin.ProductController do
 
     listings_by_product_id = Linker.listings_by_product_ids(product_ids)
     eans_by_product_id = Catalog.eans_by_product_ids(product_ids)
+    categories_by_product_id = Catalog.categories_by_product_ids(product_ids)
+    {app_category_options, app_subcategory_options} = app_taxonomy_options(app_category)
 
-    filters = %{q: q, ean: ean, per_page: params["per_page"] || ""}
+    filters = %{
+      q: q,
+      ean: ean,
+      app_category: app_category,
+      app_subcategory: app_subcategory,
+      per_page: params["per_page"] || ""
+    }
 
     conn
     |> assign(:top_nav, :products)
     |> assign(:result, result)
     |> assign(:listings_by_product_id, listings_by_product_id)
     |> assign(:eans_by_product_id, eans_by_product_id)
+    |> assign(:categories_by_product_id, categories_by_product_id)
+    |> assign(:app_category_options, app_category_options)
+    |> assign(:app_subcategory_options, app_subcategory_options)
     |> assign(:chains, Crawler.known_chains())
     |> assign(:filters, filters)
     |> assign(:sort, sort)
@@ -52,6 +67,7 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     linked_listing_ids = MapSet.new(listings, & &1.id)
     sources = Linker.sources_by_listing(product.id)
     eans = Catalog.eans_for_product(product.id)
+    category = Catalog.categories_by_product_ids([product.id]) |> Map.get(product.id)
 
     # Search params. The `mode` toggle picks listings vs products —
     # listings → admin-link to this product, products → merge them
@@ -116,6 +132,7 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     |> assign(:linked_listing_ids, linked_listing_ids)
     |> assign(:sources, sources)
     |> assign(:eans, eans)
+    |> assign(:category, category)
     |> assign(:search_mode, mode)
     |> assign(:search_active, search_active?)
     |> assign(:search_result, search_result)
@@ -159,6 +176,51 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     |> Map.take(["q", "ean", "chain", "page"])
     |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
     |> Enum.into(%{})
+  end
+
+  # Builds the two `<.input type="select">` option lists for the
+  # category / subcategory filter dropdowns. Subcategory options cascade
+  # off the currently-selected category — show every subcategory when
+  # no category is picked, scope to the category's children when one
+  # is. Each option is `{label, value}` per the StupendousAdmin select
+  # input's contract.
+  defp app_taxonomy_options(selected_cat_slug) do
+    import Ecto.Query
+
+    cats =
+      SuperBarato.Repo.all(
+        from c in SuperBarato.Catalog.AppCategory,
+          order_by: [asc: c.position, asc: c.name],
+          select: %{slug: c.slug, name: c.name}
+      )
+
+    cat_options = [{"All", ""} | Enum.map(cats, &{&1.name, &1.slug})]
+
+    sub_query =
+      from s in SuperBarato.Catalog.AppSubcategory,
+        join: c in assoc(s, :app_category),
+        order_by: [asc: c.position, asc: c.name, asc: s.position, asc: s.name],
+        select: %{slug: s.slug, name: s.name, cat_slug: c.slug, cat_name: c.name}
+
+    sub_query =
+      if selected_cat_slug in [nil, ""] do
+        sub_query
+      else
+        from [s, c] in sub_query, where: c.slug == ^selected_cat_slug
+      end
+
+    sub_options =
+      [{"All", ""}] ++
+        Enum.map(SuperBarato.Repo.all(sub_query), fn s ->
+          label =
+            if selected_cat_slug in [nil, ""],
+              do: "#{s.cat_name} / #{s.name}",
+              else: s.name
+
+          {label, s.slug}
+        end)
+
+    {cat_options, sub_options}
   end
 
   defp parse_chain(nil), do: nil

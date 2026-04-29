@@ -10,6 +10,20 @@
         placeholder="Prefix, e.g. 78025"
       />
       <.input
+        name="app_category"
+        type="select"
+        value={@filters.app_category}
+        label="Category"
+        options={@app_category_options}
+      />
+      <.input
+        name="app_subcategory"
+        type="select"
+        value={@filters.app_subcategory}
+        label="Subcategory"
+        options={@app_subcategory_options}
+      />
+      <.input
         name="per_page"
         type="select"
         value={@filters.per_page}
@@ -50,6 +64,23 @@
         <% [first | rest] -> %>
           <div>{first}</div>
           <div class="cell-secondary">+{length(rest)} more</div>
+      <% end %>
+    </:col>
+
+    <%!-- Category drilldown — top line is the (most-common) app
+         subcategory, dim line below it is the parent category. Both
+         link back into /products with the matching filter applied. --%>
+    <:col :let={p} label="Category">
+      <%= case Map.get(@categories_by_product_id, p.id) do %>
+        <% nil -> %>
+          <span class="cell-secondary">—</span>
+        <% c -> %>
+          <div>
+            <.link href={~p"/products?#{[app_subcategory: c.sub_slug]}"}>{c.sub_name}</.link>
+          </div>
+          <div class="cell-secondary">
+            <.link href={~p"/products?#{[app_category: c.cat_slug]}"}>{c.cat_name}</.link>
+          </div>
       <% end %>
     </:col>
 

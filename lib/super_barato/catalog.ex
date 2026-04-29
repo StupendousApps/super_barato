@@ -13,12 +13,17 @@ defmodule SuperBarato.Catalog do
   import Ecto.Query
 
   alias SuperBarato.Catalog.{
+    AppCategory,
+    AppSubcategory,
+    CategoryMapping,
     ChainCategory,
     ChainListing,
     ChainListingCategory,
     Product,
     ProductIdentifier
   }
+
+  alias SuperBarato.Linker.ProductListing
   alias SuperBarato.Search.Q
   alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
@@ -583,6 +588,8 @@ defmodule SuperBarato.Catalog do
       Product
       |> apply_product_q_filter(opts[:q])
       |> apply_product_ean_filter(opts[:ean])
+      |> apply_product_app_category_filter(opts[:app_category])
+      |> apply_product_app_subcategory_filter(opts[:app_subcategory])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -617,6 +624,44 @@ defmodule SuperBarato.Catalog do
       join: pi in ProductIdentifier,
       on: pi.product_id == p.id,
       where: pi.kind in ["ean_13", "ean_8"] and like(pi.value, ^like),
+      distinct: true
+  end
+
+  # App-taxonomy filters — only return products that have at least
+  # one ChainListing whose ChainCategory has a CategoryMapping into
+  # the requested AppSubcategory (or AppCategory). DISTINCT so the
+  # 1-to-many fan-out doesn't multiply rows.
+  defp apply_product_app_subcategory_filter(query, slug) when slug in [nil, ""], do: query
+
+  defp apply_product_app_subcategory_filter(query, slug) when is_binary(slug) do
+    from p in query,
+      join: pl in ProductListing,
+      on: pl.product_id == p.id,
+      join: clc in ChainListingCategory,
+      on: clc.chain_listing_id == pl.chain_listing_id,
+      join: cm in CategoryMapping,
+      on: cm.chain_category_id == clc.chain_category_id,
+      join: s in AppSubcategory,
+      on: s.id == cm.app_subcategory_id,
+      where: s.slug == ^slug,
+      distinct: true
+  end
+
+  defp apply_product_app_category_filter(query, slug) when slug in [nil, ""], do: query
+
+  defp apply_product_app_category_filter(query, slug) when is_binary(slug) do
+    from p in query,
+      join: pl in ProductListing,
+      on: pl.product_id == p.id,
+      join: clc in ChainListingCategory,
+      on: clc.chain_listing_id == pl.chain_listing_id,
+      join: cm in CategoryMapping,
+      on: cm.chain_category_id == clc.chain_category_id,
+      join: s in AppSubcategory,
+      on: s.id == cm.app_subcategory_id,
+      join: ac in AppCategory,
+      on: ac.id == s.app_category_id,
+      where: ac.slug == ^slug,
       distinct: true
   end
 
@@ -663,6 +708,60 @@ defmodule SuperBarato.Catalog do
     |> Repo.all()
     |> Enum.reduce(%{}, fn {pid, ean}, acc ->
       Map.update(acc, pid, [ean], &(&1 ++ [ean]))
+    end)
+  end
+
+  @doc """
+  Bulk lookup: `%{product_id => %{cat_slug, cat_name, sub_slug, sub_name}}`
+  for the given product ids. Walks
+  Product → ProductListing → ChainListingCategory → CategoryMapping →
+  AppSubcategory → AppCategory.
+
+  A product can carry listings in multiple chain categories, each of
+  which may map to a different app subcategory. We pick the
+  most-frequent (chain_category × subcategory) pairing — that's the
+  consensus categorization across the product's chains. Ties are
+  broken alphabetically on subcategory name (stable + cheap).
+  """
+  def categories_by_product_ids(product_ids) when is_list(product_ids) do
+    rows =
+      Repo.all(
+        from pl in ProductListing,
+          join: clc in ChainListingCategory,
+          on: clc.chain_listing_id == pl.chain_listing_id,
+          join: cm in CategoryMapping,
+          on: cm.chain_category_id == clc.chain_category_id,
+          join: s in AppSubcategory,
+          on: s.id == cm.app_subcategory_id,
+          join: ac in AppCategory,
+          on: ac.id == s.app_category_id,
+          where: pl.product_id in ^product_ids,
+          group_by: [pl.product_id, ac.slug, ac.name, s.slug, s.name],
+          select: %{
+            product_id: pl.product_id,
+            cat_slug: ac.slug,
+            cat_name: ac.name,
+            sub_slug: s.slug,
+            sub_name: s.name,
+            count: count()
+          }
+      )
+
+    rows
+    |> Enum.group_by(& &1.product_id)
+    |> Map.new(fn {pid, group} ->
+      best =
+        group
+        |> Enum.sort_by(&{-&1.count, &1.sub_name})
+        |> List.first()
+
+      {pid,
+       %{
+         cat_slug: best.cat_slug,
+         cat_name: best.cat_name,
+         sub_slug: best.sub_slug,
+         sub_name: best.sub_name
+       }}
     end)
   end
 
