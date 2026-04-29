@@ -1,1228 +1,1228 @@
-b427eb1e [ ]
+b427eb1e [x] 8134061f
  387  Bebidas y Licores / Vinos y espumantes / Vino tinto
 bebidas-y-licores/vinos-y-espumantes/vino-tinto
 
-7103b7c8 [ ]
+7103b7c8 [x] 91c64a80
  201  Desayuno y Dulces / Chocolates y confites / Chocolates
 desayuno-y-dulces/chocolates-y-confites/chocolates
 
-25e594ec [ ]
+25e594ec [x] 573a01e0
  142  Despensa / Condimentos y salsas / Condimentos
 despensa/condimentos-y-salsas/condimentos
 
-eafe8dd7 [ ]
+eafe8dd7 [x] f1c4c7c5
  121  Perfumería / Cuidado capilar / Acondicionador
 perfumeria/cuidado-capilar/acondicionador
 
-9b951d20 [ ]
+9b951d20 [x] 335c7109
  120  Frutas y Verduras / Verduras / Verduras
 frutas-y-verduras/verduras/verduras
 
-91504d78 [ ]
+91504d78 [x] 7558e446
  104  Perfumería / Cuidado femenino / Protección femenina
 perfumeria/cuidado-femenino/proteccion-femenina
 
-a8cd73d4 [ ]
+a8cd73d4 [x] 39658c2f
  102  Perfumería / Cuidado femenino / Desodorante
 perfumeria/cuidado-femenino/desodorante
 
-808a515e [ ]
+808a515e [x] 12ee81b8
  101  Panadería y Pastelería / Pan envasado / Pan molde y pita
 panaderia-y-pasteleria/pan-envasado/pan-molde-y-pita
 
-403c7e29 [ ]
+403c7e29 [x] 39658c2f
   97  Perfumería / Cuidado masculino / Desodorantes
 perfumeria/cuidado-masculino/desodorantes
 
-8cc0fd22 [ ]
+8cc0fd22 [x] dadec147
   93  Despensa / Cóctel y snacks / Frutos secos
 despensa/coctel-y-snacks/frutos-secos
 
-dedbb5c6 [ ]
+dedbb5c6 [x] f1c4c7c5
   89  Perfumería / Cuidado capilar / Cremas para peinar
 perfumeria/cuidado-capilar/cremas-para-peinar
 
-75228277 [ ]
+75228277 [x] 53453632
   88  Despensa / Cóctel y snacks / Papas fritas
 despensa/coctel-y-snacks/papas-fritas
 
-f6935735 [ ]
+f6935735 [x] c7b7a30e
   85  Bebés y Niños / Pañales y toallas húmedas / Pañales
 bebes-y-ninos/panales-y-toallas-humedas/panales
 
-3e659bba [ ]
+3e659bba [x] b7195eff
   85  Perfumería / Cuidado bucal / Pasta dental
 perfumeria/cuidado-bucal/pasta-dental
 
-06a36bff [ ]
+06a36bff [x] 7230c42c
   83  Bebidas y Licores / Destilados y licores / Cóctel
 bebidas-y-licores/destilados-y-licores/coctel
 
-e1da1f90 [ ]
+e1da1f90 [x] 8a85ef06
   83  Despensa / Comida instantánea y preparada / Sopas, cremas y bases
 despensa/comida-instantanea-y-preparada/sopas-cremas-y-bases
 
-556fba33 [ ]
+556fba33 [x] 9a8077f0
   82  Panadería y Pastelería / Pastelería / Envasados y colaciones
 panaderia-y-pasteleria/pasteleria/envasados-y-colaciones
 
-73d92bd4 [ ]
+73d92bd4 [x] a0027a6c
   81  Quesos y Fiambres / Quesos / Especiales y tablas
 quesos-y-fiambres/quesos/especiales-y-tablas
 
-2487bb4d [ ]
+2487bb4d [x] 5af2da9d
   80  Bebidas y Licores / Bebidas / Bebidas regulares
 bebidas-y-licores/bebidas/bebidas-regulares
 
-e61db738 [ ]
+e61db738 [x] f1c4c7c5
   80  Perfumería / Cuidado capilar / Shampoo
 perfumeria/cuidado-capilar/shampoo
 
-19ab67f5 [ ]
+19ab67f5 [x] e035b90e
   79  Bebidas y Licores / Jugos / Jugos y néctares
 bebidas-y-licores/jugos/jugos-y-nectares
 
-53f56d19 [ ]
+53f56d19 [x] aaca9df8
   79  Desayuno y Dulces / Galletas y colaciones dulces / Galletas saludables
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletas-saludables
 
-530fd566 [ ]
+530fd566 [x] 91c64a80
   78  Desayuno y Dulces / Chocolates y confites / Gomitas, masticables y chupetes
 desayuno-y-dulces/chocolates-y-confites/gomitas-masticables-y-chupetes
 
-46b18892 [ ]
+46b18892 [x] aaca9df8
   76  Desayuno y Dulces / Galletas y colaciones dulces / Galletas tradicionales, obleas y champañas
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletas-tradicionales-obleas-y-champanas
 
-be48b6f9 [ ]
+be48b6f9 [x] 8134061f
   75  Bebidas y Licores / Vinos y espumantes / Vino blanco
 bebidas-y-licores/vinos-y-espumantes/vino-blanco
 
-e6aeedf6 [ ]
+e6aeedf6 [x] 7ff56c58
   73  Desayuno y Dulces / Mermelada y manjar / Mermeladas y dulces
 desayuno-y-dulces/mermelada-y-manjar/mermeladas-y-dulces
 
-990e6c41 [ ]
+990e6c41 [x] edb0d4ec
   73  Lácteos, Huevos y Refrigerados / Yoghurt / Batido
 lacteos-huevos-y-refrigerados/yoghurt/batido
 
-e88aae83 [ ]
+e88aae83 [x] 195b331c
   72  Carnes / Vacuno / Vacuno premium
 carnes/vacuno/vacuno-premium
 
-3a2bbe5b [ ]
+3a2bbe5b [x] 6370ccc4
   71  Despensa / Conservas / Pescados y mariscos en conserva
 despensa/conservas/pescados-y-mariscos-en-conserva
 
-8958f470 [ ]
+8958f470 [x] 99cbf6fb
   70  Bebidas y Licores / Vinos y espumantes / Espumantes
 bebidas-y-licores/vinos-y-espumantes/espumantes
 
-8e7f187a [ ]
+8e7f187a [x] aaca9df8
   70  Desayuno y Dulces / Galletas y colaciones dulces / Galletas bañadas y rellenas
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletas-banadas-y-rellenas
 
-80d2b0f4 [ ]
+80d2b0f4 [x] 7230c42c
   68  Bebidas y Licores / Destilados y licores / Piscos
 bebidas-y-licores/destilados-y-licores/piscos
 
-03bfb872 [ ]
+03bfb872 [x] a0027a6c
   68  Quesos y Fiambres / Quesos / Mantecoso y chanco
 quesos-y-fiambres/quesos/mantecoso-y-chanco
 
-9db87757 [ ]
+9db87757 [x] 9a8077f0
   66  Panadería y Pastelería / Pastelería / Masas dulces
 panaderia-y-pasteleria/pasteleria/masas-dulces
 
-8c73575a [ ]
+8c73575a [x] efb3292f
   65  Desayuno y Dulces / Cereales / Barras y colaciones
 desayuno-y-dulces/cereales/barras-y-colaciones
 
-5cbdb8cc [ ]
+5cbdb8cc [x] 038c5cc6
   61  Bebidas y Licores / Cervezas / Cerveza artesanal
 bebidas-y-licores/cervezas/cerveza-artesanal
 
-e4ebdc8b [ ]
+e4ebdc8b [x] efb3292f
   61  Desayuno y Dulces / Cereales / Chocolatados y azucarados
 desayuno-y-dulces/cereales/chocolatados-y-azucarados
 
-0255468f [ ]
+0255468f [x] b7195eff
   59  Perfumería / Cuidado bucal / Cepillos
 perfumeria/cuidado-bucal/cepillos
 
-1d2647c7 [ ]
+1d2647c7 [x] 6a62b166
   57  Lácteos, Huevos y Refrigerados / Leches y cremas / Leches individuales
 lacteos-huevos-y-refrigerados/leches-y-cremas/leches-individuales
 
-53be48eb [ ]
+53be48eb [x] 12ee81b8
   57  Panadería y Pastelería / Pan / Panes especiales
 panaderia-y-pasteleria/pan/panes-especiales
 
-741abca7 [ ]
+741abca7 [x] 087db1a8
   56  Limpieza / Baño y cocina / Cloro
 limpieza/bano-y-cocina/cloro
 
-91f7be41 [ ]
+91f7be41 [x] 2894ad7f
   56  Quesos y Fiambres / Fiambres y embutidos / Jamón y mortadela
 quesos-y-fiambres/fiambres-y-embutidos/jamon-y-mortadela
 
-e09cba16 [ ]
+e09cba16 [x] 7230c42c
   55  Bebidas y Licores / Destilados y licores / Whisky
 bebidas-y-licores/destilados-y-licores/whisky
 
-ef52604e [ ]
+ef52604e [x] 9a347127
   54  Congelados / Hielo, helados y postres / Helados cremosos
 congelados/hielo-helados-y-postres/helados-cremosos
 
-4a209ff4 [ ]
+4a209ff4 [x] 9a347127
   54  Congelados / Hielo, helados y postres / Helados premium
 congelados/hielo-helados-y-postres/helados-premium
 
-ad3b5a82 [ ]
+ad3b5a82 [x] 53453632
   54  Despensa / Cóctel y snacks / Snack
 despensa/coctel-y-snacks/snack
 
-1b088f14 [ ]
+1b088f14 [x] 8e326ace
   53  Desayuno y Dulces / Café, té y hierbas / Té especial
 desayuno-y-dulces/cafe-te-y-hierbas/te-especial
 
-11282458 [ ]
+11282458 [x] 038c5cc6
   51  Bebidas y Licores / Cervezas / Cerveza importada
 bebidas-y-licores/cervezas/cerveza-importada
 
-7f3546e3 [ ]
+7f3546e3 [x] efb3292f
   51  Desayuno y Dulces / Cereales / Fibra, avena y granola
 desayuno-y-dulces/cereales/fibra-avena-y-granola
 
-0e1c1daf [ ]
+0e1c1daf [x] 8134061f
   50  Bebidas y Licores / Vinos y espumantes / Vinos botellón y otros
 bebidas-y-licores/vinos-y-espumantes/vinos-botellon-y-otros
 
-7bfae576 [ ]
+7bfae576 [x] 671737c0
   50  Congelados / Frutas y verduras congeladas / Verduras congeladas
 congelados/frutas-y-verduras-congeladas/verduras-congeladas
 
-7094518c [ ]
+7094518c [x] 36d2eb32
   50  Despensa / Fideos, pastas y salsas / Cortos
 despensa/fideos-pastas-y-salsas/cortos
 
-b4d7a1de [ ]
+b4d7a1de [x] 79dc0e07
   50  Limpieza / Baño y cocina / Paños, esponjas y guantes
 limpieza/bano-y-cocina/panos-esponjas-y-guantes
 
-6c787673 [ ]
+6c787673 [x] 335c7109
   49  Frutas y Verduras / Verduras / Ensaladas listas
 frutas-y-verduras/verduras/ensaladas-listas
 
-97b55713 [ ]
+97b55713 [x] 244c71cc
   49  Quesos y Fiambres / Fiambres y embutidos / Parrilleros
 quesos-y-fiambres/fiambres-y-embutidos/parrilleros
 
-1b4a4317 [ ]
+1b4a4317 [x] 8e326ace
   48  Desayuno y Dulces / Café, té y hierbas / Café instantáneo
 desayuno-y-dulces/cafe-te-y-hierbas/cafe-instantaneo
 
-7c73ff32 [ ]
+7c73ff32 [x] 8e326ace
   48  Desayuno y Dulces / Café, té y hierbas / Hierbas y mate
 desayuno-y-dulces/cafe-te-y-hierbas/hierbas-y-mate
 
-04e23787 [ ]
+04e23787 [x] 102c9e23
   48  Frutas y Verduras / Frutas / Fruta
 frutas-y-verduras/frutas/fruta
 
-991b98df [ ]
+991b98df [x] 337d2fa4
   48  Perfumería / Cuidado personal / Jabón líquido
 perfumeria/cuidado-personal/jabon-liquido
 
-8ff73470 [ ]
+8ff73470 [x] f675d06f
   47  Limpieza / Detergente / Tratamiento ropa
 limpieza/detergente/tratamiento-ropa
 
-1e9d4883 [ ]
+1e9d4883 [x] 9a8077f0
   47  Panadería y Pastelería / Pastelería / Tortas
 panaderia-y-pasteleria/pasteleria/tortas
 
-ba0a93e5 [ ]
+ba0a93e5 [x] 91c64a80
   46  Desayuno y Dulces / Chocolates y confites / Calugas, caramelos y turrones
 desayuno-y-dulces/chocolates-y-confites/calugas-caramelos-y-turrones
 
-e3b00379 [ ]
+e3b00379 [x] 6065f6dd
   46  Despensa / Cóctel y snacks / Aceitunas y encurtidos
 despensa/coctel-y-snacks/aceitunas-y-encurtidos
 
-99204e57 [ ]
+99204e57 [x] 7230c42c
   45  Bebidas y Licores / Destilados y licores / Otros licores
 bebidas-y-licores/destilados-y-licores/otros-licores
 
-008f0765 [ ]
+008f0765 [x] c548fb63
   45  Despensa / Fideos, pastas y salsas / Salsa para pastas
 despensa/fideos-pastas-y-salsas/salsa-para-pastas
 
-23ea5748 [ ]
+23ea5748 [x] edb0d4ec
   45  Lácteos, Huevos y Refrigerados / Yoghurt / Trozos y especiales
 lacteos-huevos-y-refrigerados/yoghurt/trozos-y-especiales
 
-41a907a2 [ ]
+41a907a2 [x] b62fdf76
   44  Bebidas y Licores / Bebidas / Funcionales
 bebidas-y-licores/bebidas/funcionales
 
-7b01ecf3 [ ]
+7b01ecf3 [x] e035b90e
   44  Bebidas y Licores / Jugos / Jugos en polvo
 bebidas-y-licores/jugos/jugos-en-polvo
 
-dbb67f9b [ ]
+dbb67f9b [x] c430432e
   44  Limpieza / Pisos y muebles / Limpiador pisos
 limpieza/pisos-y-muebles/limpiador-pisos
 
-f6dd850f [ ]
+f6dd850f [x] a69bd951
   43  Limpieza / Baño y cocina / Limpiador baño
 limpieza/bano-y-cocina/limpiador-bano
 
-48d7816e [ ]
+48d7816e [x] 872d1a18
   42  Carnes / Pollo / Pechugas y filetitos
 carnes/pollo/pechugas-y-filetitos
 
-55092080 [ ]
+55092080 [x] c3de7e05
   41  Bebidas y Licores / Aguas / Agua saborizada
 bebidas-y-licores/aguas/agua-saborizada
 
-80779db8 [ ]
+80779db8 [x] dadec147
   41  Frutas y Verduras / Frutos secos / Frutos secos
 frutas-y-verduras/frutos-secos/frutos-secos
 
-3011b7fa [ ]
+3011b7fa [x] bea15380
   41  Panadería y Pastelería / Pan envasado / Tortillas y masas
 panaderia-y-pasteleria/pan-envasado/tortillas-y-masas
 
-e531d530 [ ]
+e531d530 [x] 554e0af9
   40  Lácteos, Huevos y Refrigerados / Huevos / Huevos gallina
 lacteos-huevos-y-refrigerados/huevos/huevos-gallina
 
-a1097030 [ ]
+a1097030 [x] 553f5dc9
   40  Mascotas / Alimento gato / Alimentos húmedos
 mascotas/alimento-gato/alimentos-humedos
 
-0e02aa03 [ ]
+0e02aa03 [x] 872d1a18
   39  Carnes / Pollo / Trutro
 carnes/pollo/trutro
 
-081fae94 [ ]
+081fae94 [x] 6a62b166
   39  Lácteos, Huevos y Refrigerados / Leches y cremas / Leche en polvo y suplementos
 lacteos-huevos-y-refrigerados/leches-y-cremas/leche-en-polvo-y-suplementos
 
-c1a4f364 [ ]
+c1a4f364 [x] b1a626a0
   39  Perfumería / Cuidado personal / Cosméticos y desmaquillantes
 perfumeria/cuidado-personal/cosmeticos-y-desmaquillantes
 
-fe1c4138 [ ]
+fe1c4138 [x] 9c369b5d
   38  Congelados / Hamburguesas, apanados y churrascos / Hamburguesas
 congelados/hamburguesas-apanados-y-churrascos/hamburguesas
 
-544c80a2 [ ]
+544c80a2 [x] 2add31ce
   38  Congelados / Hamburguesas, apanados y churrascos / Nuggets y apanados
 congelados/hamburguesas-apanados-y-churrascos/nuggets-y-apanados
 
-7e943d6a [ ]
+7e943d6a [x] 8e326ace
   38  Desayuno y Dulces / Café, té y hierbas / Té ceylan
 desayuno-y-dulces/cafe-te-y-hierbas/te-ceylan
 
-aef7bf24 [ ]
+aef7bf24 [x] aaca9df8
   38  Desayuno y Dulces / Galletas y colaciones dulces / Galletas colación
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletas-colacion
 
-49ad39e9 [ ]
+49ad39e9 [x] 28b7f2a6
   38  Limpieza / Limpieza hogar / Aerosoles y desinfectantes
 limpieza/limpieza-hogar/aerosoles-y-desinfectantes
 
-7360c4a1 [ ]
+7360c4a1 [x] 8316989a
   38  Perfumería / Cuidado masculino / Afeitadoras y repuestos
 perfumeria/cuidado-masculino/afeitadoras-y-repuestos
 
-0cc3951c [ ]
+0cc3951c [x] 038c5cc6
   37  Bebidas y Licores / Cervezas / Cerveza nacional
 bebidas-y-licores/cervezas/cerveza-nacional
 
-5d933dcb [ ]
+5d933dcb [x] c548fb63
   37  Despensa / Condimentos y salsas / Otras salsas
 despensa/condimentos-y-salsas/otras-salsas
 
-30b01d50 [ ]
+30b01d50 [x] 6370ccc4
   36  Despensa / Conservas / Verduras en conserva
 despensa/conservas/verduras-en-conserva
 
-d2c9aa4c [ ]
+d2c9aa4c [x] 79dc0e07
   36  Limpieza / Accesorios aseo / Bolsa basura
 limpieza/accesorios-aseo/bolsa-basura
 
-be583de5 [ ]
+be583de5 [x] f675d06f
   36  Limpieza / Detergente / Suavizante
 limpieza/detergente/suavizante
 
-43c0d259 [ ]
+43c0d259 [x] 087db1a8
   36  Limpieza / Limpieza hogar / Insecticidas
 limpieza/limpieza-hogar/insecticidas
 
-96b6b1b0 [ ]
+96b6b1b0 [x] edb0d4ec
   36  Lácteos, Huevos y Refrigerados / Yoghurt / Proteína
 lacteos-huevos-y-refrigerados/yoghurt/proteina
 
-ee83101d [ ]
+ee83101d [x] 6370ccc4
   35  Despensa / Conservas / Frutas en conserva
 despensa/conservas/frutas-en-conserva
 
-9323e137 [ ]
+9323e137 [x] a69bd951
   35  Limpieza / Baño y cocina / Lavalozas y lavavajillas
 limpieza/bano-y-cocina/lavalozas-y-lavavajillas
 
-e43b0af1 [ ]
+e43b0af1 [x] f675d06f
   35  Limpieza / Detergente / Detergente líquido
 limpieza/detergente/detergente-liquido
 
-cff9bb98 [ ]
+cff9bb98 [x] 553f5dc9
   35  Mascotas / Alimento gato / Alimento gato adulto
 mascotas/alimento-gato/alimento-gato-adulto
 
-da7b5c9b [ ]
+da7b5c9b [x] a6d3f160
   35  Perfumería / Cuidado corporal y facial / Cremas faciales
 perfumeria/cuidado-corporal-y-facial/cremas-faciales
 
-e404ff0a [ ]
+e404ff0a [x] 0a07f282
   34  Despensa / Comida instantánea y preparada / Platos y ensaladas
 despensa/comida-instantanea-y-preparada/platos-y-ensaladas
 
-f9ba8276 [ ]
+f9ba8276 [x] c548fb63
   34  Despensa / Condimentos y salsas / Mayonesa
 despensa/condimentos-y-salsas/mayonesa
 
-b38315a0 [ ]
+b38315a0 [x] 92f482c1
   34  Despensa / Harina y repostería / Postres en polvo
 despensa/harina-y-reposteria/postres-en-polvo
 
-81d11dca [ ]
+81d11dca [x] c99b5d7c
   34  Lácteos, Huevos y Refrigerados / Leches y cremas / Cremas
 lacteos-huevos-y-refrigerados/leches-y-cremas/cremas
 
-341f6c0f [ ]
+341f6c0f [x] edb0d4ec
   34  Lácteos, Huevos y Refrigerados / Yoghurt / Formato familiar
 lacteos-huevos-y-refrigerados/yoghurt/formato-familiar
 
-514909cf [ ]
+514909cf [x] bfa014b3
   33  Despensa / Arroz y legumbres / Legumbres
 despensa/arroz-y-legumbres/legumbres
 
-8ce79500 [ ]
+8ce79500 [x] 79dc0e07
   33  Limpieza / Pisos y muebles / Paños, traperos, mopas y baldes
 limpieza/pisos-y-muebles/panos-traperos-mopas-y-baldes
 
-b5627ee3 [ ]
+b5627ee3 [x] 0a5797dd
   33  Lácteos, Huevos y Refrigerados / Postres / Compotas
 lacteos-huevos-y-refrigerados/postres/compotas
 
-c41aa6b4 [ ]
+c41aa6b4 [x] 12ee81b8
   33  Panadería y Pastelería / Pan envasado / Pan especial
 panaderia-y-pasteleria/pan-envasado/pan-especial
 
-44c96e69 [ ]
+44c96e69 [x] a6d3f160
   33  Perfumería / Cuidado corporal y facial / Cremas corporales
 perfumeria/cuidado-corporal-y-facial/cremas-corporales
 
-edb35f42 [ ]
+edb35f42 [x] 244c71cc
   33  Quesos y Fiambres / Fiambres y embutidos / Salchichas
 quesos-y-fiambres/fiambres-y-embutidos/salchichas
 
-8186c3b7 [ ]
+8186c3b7 [x] 7230c42c
   32  Bebidas y Licores / Destilados y licores / Gin
 bebidas-y-licores/destilados-y-licores/gin
 
-9d0d4471 [ ]
+9d0d4471 [x] 92f482c1
   32  Despensa / Harina y repostería / Harina
 despensa/harina-y-reposteria/harina
 
-25daf42b [ ]
+25daf42b [x] b1aebd81
   32  Perfumería / Cuidado adulto / Pañales y pants
 perfumeria/cuidado-adulto/panales-y-pants
 
-2e65f7c5 [ ]
+2e65f7c5 [x] 573a01e0
   31  Despensa / Aceite y aliños / Sal
 despensa/aceite-y-alinos/sal
 
-2d7e6ebd [ ]
+2d7e6ebd [x] 36d2eb32
   31  Despensa / Fideos, pastas y salsas / Largos
 despensa/fideos-pastas-y-salsas/largos
 
-ba23e973 [ ]
+ba23e973 [x] 0c4d1a88
   31  Lácteos, Huevos y Refrigerados / Postres / Postres especiales
 lacteos-huevos-y-refrigerados/postres/postres-especiales
 
-7742b9e9 [ ]
+7742b9e9 [x] 4a30fd5e
   31  Mascotas / Alimento perro / Alimento perro adulto
 mascotas/alimento-perro/alimento-perro-adulto
 
-54867bca [ ]
+54867bca [x] ca6c6fbb
   30  Lácteos, Huevos y Refrigerados / Bebidas vegetales
 lacteos-huevos-y-refrigerados/bebidas-vegetales
 
-95110747 [ ]
+95110747 [x] 0c4d1a88
   30  Lácteos, Huevos y Refrigerados / Postres / Jaleas
 lacteos-huevos-y-refrigerados/postres/jaleas
 
-ed4ab7c7 [ ]
+ed4ab7c7 [x] 9a347127
   29  Congelados / Hielo, helados y postres / Pack helados individuales
 congelados/hielo-helados-y-postres/pack-helados-individuales
 
-680da229 [ ]
+680da229 [x] 8e326ace
   29  Desayuno y Dulces / Café, té y hierbas / Café grano y molido
 desayuno-y-dulces/cafe-te-y-hierbas/cafe-grano-y-molido
 
-3dbbc894 [ ]
+3dbbc894 [x] c548fb63
   29  Despensa / Cóctel y snacks / Pastas y salsas
 despensa/coctel-y-snacks/pastas-y-salsas
 
-e78c7096 [ ]
+e78c7096 [x] a0027a6c
   29  Quesos y Fiambres / Quesos / Queso fresco
 quesos-y-fiambres/quesos/queso-fresco
 
-f8469ff9 [ ]
+f8469ff9 [x] b62fdf76
   28  Bebidas y Licores / Bebidas / Energéticas
 bebidas-y-licores/bebidas/energeticas
 
-1034fd9f [ ]
+1034fd9f [x] e035b90e
   28  Bebidas y Licores / Jugos / Jugos colación
 bebidas-y-licores/jugos/jugos-colacion
 
-fa08ec4f [ ]
+fa08ec4f [x] 8134061f
   28  Bebidas y Licores / Vinos y espumantes / Vino caja
 bebidas-y-licores/vinos-y-espumantes/vino-caja
 
-d606aeb2 [ ]
+d606aeb2 [x] 8e326ace
   28  Desayuno y Dulces / Café, té y hierbas / Cápsulas
 desayuno-y-dulces/cafe-te-y-hierbas/capsulas
 
-65c890c9 [ ]
+65c890c9 [x] 6a62b166
   28  Lácteos, Huevos y Refrigerados / Leches y cremas / Leches blancas
 lacteos-huevos-y-refrigerados/leches-y-cremas/leches-blancas
 
-64a4a8be [ ]
+64a4a8be [x] 8e326ace
   28  Lácteos, Huevos y Refrigerados / Leches y cremas / Saborizantes para leche
 lacteos-huevos-y-refrigerados/leches-y-cremas/saborizantes-para-leche
 
-a72b218a [ ]
+a72b218a [x] 4a30fd5e
   28  Mascotas / Alimento perro / Snack perros
 mascotas/alimento-perro/snack-perros
 
-c3bb861c [ ]
+c3bb861c [x] e035b90e
   27  Bebidas y Licores / Jugos / Jugos frescos
 bebidas-y-licores/jugos/jugos-frescos
 
-74f2f950 [ ]
+74f2f950 [x] e5b9c89d
   27  Bebés y Niños / Perfumería / Shampoo y acondicionadores
 bebes-y-ninos/perfumeria/shampoo-y-acondicionadores
 
-fac35060 [ ]
+fac35060 [x] 195b331c
   27  Carnes / Vacuno / Molida, bistec y otros
 carnes/vacuno/molida-bistec-y-otros
 
-6cba979d [ ]
+6cba979d [x] ef6e2589
   27  Congelados / Pescados y mariscos / Pescados
 congelados/pescados-y-mariscos/pescados
 
-f02c2a01 [ ]
+f02c2a01 [x] aaca9df8
   27  Desayuno y Dulces / Galletas y colaciones dulces / Galletones y alfajores
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletones-y-alfajores
 
-a71a7091 [ ]
+a71a7091 [x] 397dbebb
   27  Despensa / Azúcar y endulzantes / Endulzantes
 despensa/azucar-y-endulzantes/endulzantes
 
-57e27dc9 [ ]
+57e27dc9 [x] 6a62b166
   27  Lácteos, Huevos y Refrigerados / Leches y cremas / Leches saborizadas
 lacteos-huevos-y-refrigerados/leches-y-cremas/leches-saborizadas
 
-a1e80592 [ ]
+a1e80592 [x] 2c7b72c2
   27  Lácteos, Huevos y Refrigerados / Mantequillas / Mantequilla
 lacteos-huevos-y-refrigerados/mantequillas/mantequilla
 
-6029262b [ ]
+6029262b [x] 2c7b72c2
   27  Lácteos, Huevos y Refrigerados / Mantequillas / Margarina y manteca
 lacteos-huevos-y-refrigerados/mantequillas/margarina-y-manteca
 
-1caeb69a [ ]
+1caeb69a [x] 707f9858
   27  Perfumería / Cuidado femenino / Depilación
 perfumeria/cuidado-femenino/depilacion
 
-549d1080 [ ]
+549d1080 [x] edb0d4ec
   26  Lácteos, Huevos y Refrigerados / Yoghurt / Probióticos y funcionales
 lacteos-huevos-y-refrigerados/yoghurt/probioticos-y-funcionales
 
-8ff981da [ ]
+8ff981da [x] aaca9df8
   25  Despensa / Cóctel y snacks / Galletas cóctel
 despensa/coctel-y-snacks/galletas-coctel
 
-d806f2db [ ]
+d806f2db [x] 064b5012
   25  Limpieza / Papeles / Papel higiénico
 limpieza/papeles/papel-higienico
 
-ce2dcfef [ ]
+ce2dcfef [-]
   25  Mascotas / Accesorios mascota / Accesorios animales
 mascotas/accesorios-mascota/accesorios-animales
 
-ed142a0b [ ]
+ed142a0b [x] 2894ad7f
   25  Quesos y Fiambres / Fiambres y embutidos / Salame y tocino
 quesos-y-fiambres/fiambres-y-embutidos/salame-y-tocino
 
-3e0f8205 [ ]
+3e0f8205 [x] c548fb63
   24  Despensa / Condimentos y salsas / Ketchup
 despensa/condimentos-y-salsas/ketchup
 
-6e49edae [ ]
+6e49edae [x] 79dc0e07
   24  Limpieza / Accesorios aseo / Limpieza calzado y ropa
 limpieza/accesorios-aseo/limpieza-calzado-y-ropa
 
-addefbe6 [ ]
+addefbe6 [x] 4a30fd5e
   24  Mascotas / Alimento perro / Alimentos húmedos y latas
 mascotas/alimento-perro/alimentos-humedos-y-latas
 
-79964fba [ ]
+79964fba [x] 2894ad7f
   24  Quesos y Fiambres / Fiambres y embutidos / Paté
 quesos-y-fiambres/fiambres-y-embutidos/pate
 
-603166dd [ ]
+603166dd [x] a0027a6c
   24  Quesos y Fiambres / Quesos / Queso crema y untables
 quesos-y-fiambres/quesos/queso-crema-y-untables
 
-d42ed379 [ ]
+d42ed379 [x] 195b331c
   23  Carnes / Vacuno / Otros cortes
 carnes/vacuno/otros-cortes
 
-328eccdb [ ]
+328eccdb [x] 44c2b7d9
   23  Despensa / Aceite y aliños / Aceite oliva
 despensa/aceite-y-alinos/aceite-oliva
 
-805a43de [ ]
+805a43de [x] bfa014b3
   23  Despensa / Arroz y legumbres / Arroz
 despensa/arroz-y-legumbres/arroz
 
-d25308ec [ ]
+d25308ec [x] 92f482c1
   23  Despensa / Harina y repostería / Decoración y coberturas
 despensa/harina-y-reposteria/decoracion-y-coberturas
 
-a3ff1aa2 [ ]
+a3ff1aa2 [x] edb0d4ec
   23  Lácteos, Huevos y Refrigerados / Leches y cremas / Leches cultivadas
 lacteos-huevos-y-refrigerados/leches-y-cremas/leches-cultivadas
 
-3838d9eb [ ]
+3838d9eb [x] 6a62b166
   23  Lácteos, Huevos y Refrigerados / Leches y cremas / Leches sin lactosa
 lacteos-huevos-y-refrigerados/leches-y-cremas/leches-sin-lactosa
 
-b7de91f4 [ ]
+b7de91f4 [x] 12ee81b8
   23  Panadería y Pastelería / Pan envasado / Pan hot dog y hamburguesa
 panaderia-y-pasteleria/pan-envasado/pan-hot-dog-y-hamburguesa
 
-7d9b1ae0 [ ]
+7d9b1ae0 [x] b7195eff
   23  Perfumería / Cuidado bucal / Enjuague bucal y sedas
 perfumeria/cuidado-bucal/enjuague-bucal-y-sedas
 
-58379b52 [ ]
+58379b52 [x] 337d2fa4
   23  Perfumería / Cuidado personal / Jabón en barra
 perfumeria/cuidado-personal/jabon-en-barra
 
-8786453f [ ]
+8786453f [x] c3de7e05
   22  Bebidas y Licores / Aguas / Agua con gas
 bebidas-y-licores/aguas/agua-con-gas
 
-46c4c285 [ ]
+46c4c285 [x] 671737c0
   22  Congelados / Frutas y verduras congeladas / Frutas
 congelados/frutas-y-verduras-congeladas/frutas
 
-44f98ec4 [ ]
+44f98ec4 [x] 8e326ace
   22  Desayuno y Dulces / Café, té y hierbas / Saborizados y cremas
 desayuno-y-dulces/cafe-te-y-hierbas/saborizados-y-cremas
 
-4dc04da3 [ ]
+4dc04da3 [x] 91c64a80
   22  Desayuno y Dulces / Chocolates y confites / Chicles y mentas
 desayuno-y-dulces/chocolates-y-confites/chicles-y-mentas
 
-e30563bf [ ]
+e30563bf [x] 7ff56c58
   22  Desayuno y Dulces / Miel y salsas / Miel
 desayuno-y-dulces/miel-y-salsas/miel
 
-6147de5e [ ]
+6147de5e [x] c548fb63
   22  Despensa / Condimentos y salsas / Mostaza
 despensa/condimentos-y-salsas/mostaza
 
-fd2977f8 [ ]
+fd2977f8 [x] c548fb63
   22  Despensa / Condimentos y salsas / Salsa picante
 despensa/condimentos-y-salsas/salsa-picante
 
-53dc682a [ ]
+53dc682a [x] 064b5012
   22  Limpieza / Papeles / Servilletas
 limpieza/papeles/servilletas
 
-195cf88c [ ]
+195cf88c [x] 064b5012
   22  Limpieza / Papeles / Toalla papel
 limpieza/papeles/toalla-papel
 
-90b786dc [ ]
+90b786dc [x] a0027a6c
   22  Quesos y Fiambres / Quesos / Gauda y ranco
 quesos-y-fiambres/quesos/gauda-y-ranco
 
-0986bcf7 [ ]
+0986bcf7 [x] 0a5797dd
   21  Bebés y Niños / Alimentación / Colados y picados
 bebes-y-ninos/alimentacion/colados-y-picados
 
-e48e17c7 [ ]
+e48e17c7 [x] 195b331c
   21  Carnes / Vacuno / Parrilleros
 carnes/vacuno/parrilleros
 
-ced86f21 [ ]
+ced86f21 [x] 671737c0
   21  Congelados / Frutas y verduras congeladas / Mix de verduras
 congelados/frutas-y-verduras-congeladas/mix-de-verduras
 
-9605d797 [ ]
+9605d797 [x] dd6155d9
   21  Congelados / Platos congelados / Platos preparados
 congelados/platos-congelados/platos-preparados
 
-70f027b9 [ ]
+70f027b9 [x] 7ff56c58
   21  Desayuno y Dulces / Mermelada y manjar / Manjar
 desayuno-y-dulces/mermelada-y-manjar/manjar
 
-9359441c [ ]
+9359441c [x] 397dbebb
   21  Despensa / Azúcar y endulzantes / Azúcar
 despensa/azucar-y-endulzantes/azucar
 
-b02578a3 [ ]
+b02578a3 [x] 92f482c1
   21  Despensa / Harina y repostería / Bases y premezclas
 despensa/harina-y-reposteria/bases-y-premezclas
 
-0ca6b2b6 [ ]
+0ca6b2b6 [x] f675d06f
   21  Limpieza / Detergente / Detergente polvo
 limpieza/detergente/detergente-polvo
 
-94677e5a [ ]
+94677e5a [x] a0027a6c
   21  Quesos y Fiambres / Quesos / Rallados y granulados
 quesos-y-fiambres/quesos/rallados-y-granulados
 
-543ce4f2 [ ]
+543ce4f2 [x] 5af2da9d
   20  Bebidas y Licores / Bebidas / Bebidas light y zero
 bebidas-y-licores/bebidas/bebidas-light-y-zero
 
-da7995b1 [ ]
+da7995b1 [x] 7230c42c
   20  Bebidas y Licores / Destilados y licores / Ron
 bebidas-y-licores/destilados-y-licores/ron
 
-f9c78833 [ ]
+f9c78833 [x] 91c64a80
   20  Desayuno y Dulces / Chocolates y confites / Marshmallows, malvas y guagüitas
 desayuno-y-dulces/chocolates-y-confites/marshmallows-malvas-y-guaguitas
 
-5dc3ee0c [ ]
+5dc3ee0c [x] 7ff56c58
   19  Desayuno y Dulces / Miel y salsas / Cremas y mantequillas
 desayuno-y-dulces/miel-y-salsas/cremas-y-mantequillas
 
-6d7d166f [ ]
+6d7d166f [x] 9dd4d7e5
   19  Despensa / Fideos, pastas y salsas / Pastas frescas
 despensa/fideos-pastas-y-salsas/pastas-frescas
 
-5e707dba [ ]
+5e707dba [x] bfa014b3
   19  Despensa / Productos naturales / Cereales y funcionales
 despensa/productos-naturales/cereales-y-funcionales
 
-d3105f32 [ ]
+d3105f32 [x] a69bd951
   19  Limpieza / Baño y cocina / Limpiador antigrasa
 limpieza/bano-y-cocina/limpiador-antigrasa
 
-4bd79782 [ ]
+4bd79782 [x] 0a5797dd
   18  Bebés y Niños / Alimentación / Cereales y postres
 bebes-y-ninos/alimentacion/cereales-y-postres
 
-5de8b764 [ ]
+5de8b764 [x] 8a85ef06
   18  Despensa / Fideos, pastas y salsas / Instantáneos
 despensa/fideos-pastas-y-salsas/instantaneos
 
-f3b3ce50 [ ]
+f3b3ce50 [x] c430432e
   18  Limpieza / Pisos y muebles / Ceras
 limpieza/pisos-y-muebles/ceras
 
-5035d455 [ ]
+5035d455 [x] 12ee81b8
   18  Panadería y Pastelería / Pan / Pan corriente
 panaderia-y-pasteleria/pan/pan-corriente
 
-77d5305c [ ]
+77d5305c [x] 7230c42c
   17  Bebidas y Licores / Destilados y licores / Vodka
 bebidas-y-licores/destilados-y-licores/vodka
 
-f7f61ca2 [ ]
+f7f61ca2 [x] c7b7a30e
   17  Bebés y Niños / Pañales y toallas húmedas / Toallas húmedas
 bebes-y-ninos/panales-y-toallas-humedas/toallas-humedas
 
-13029e50 [ ]
+13029e50 [x] 1b034bad
   17  Carnes / Cerdo / Costillas y costillar
 carnes/cerdo/costillas-y-costillar
 
-906b89bc [ ]
+906b89bc [x] 44c2b7d9
   17  Despensa / Aceite y aliños / Vinagre y aceto
 despensa/aceite-y-alinos/vinagre-y-aceto
 
-af7a4eb4 [ ]
+af7a4eb4 [x] 9dd4d7e5
   17  Despensa / Comida instantánea y preparada / Fideos y pastas
 despensa/comida-instantanea-y-preparada/fideos-y-pastas
 
-c93e299a [ ]
+c93e299a [x] 038c5cc6
   16  Bebidas y Licores / Cervezas / Cerveza sin alcohol
 bebidas-y-licores/cervezas/cerveza-sin-alcohol
 
-771038ed [ ]
+771038ed [x] 0a5797dd
   16  Bebés y Niños / Alimentación / Mamaderas, chupetes y accesorios
 bebes-y-ninos/alimentacion/mamaderas-chupetes-y-accesorios
 
-d97564d6 [ ]
+d97564d6 [x] dd6155d9
   16  Congelados / Platos congelados / Pizza
 congelados/platos-congelados/pizza
 
-f898710c [ ]
+f898710c [x] 6370ccc4
   16  Despensa / Conservas / Legumbres en conserva
 despensa/conservas/legumbres-en-conserva
 
-7559131c [ ]
+7559131c [x] 92f482c1
   16  Despensa / Harina y repostería / Levadura y polvos de hornear
 despensa/harina-y-reposteria/levadura-y-polvos-de-hornear
 
-dd7cf9e2 [ ]
+dd7cf9e2 [x] 79dc0e07
   16  Limpieza / Limpieza hogar / Velas y fósforos
 limpieza/limpieza-hogar/velas-y-fosforos
 
-fd9512e8 [ ]
+fd9512e8 [x] 2894ad7f
   16  Quesos y Fiambres / Fiambres y embutidos / Jamón serrano y otros
 quesos-y-fiambres/fiambres-y-embutidos/jamon-serrano-y-otros
 
-0d01dbd6 [ ]
+0d01dbd6 [x] a0027a6c
   16  Quesos y Fiambres / Quesos / Cabra y oveja
 quesos-y-fiambres/quesos/cabra-y-oveja
 
-95509cc9 [ ]
+95509cc9 [x] efb3292f
   15  Desayuno y Dulces / Cereales / Cereal inflado
 desayuno-y-dulces/cereales/cereal-inflado
 
-112d8c84 [ ]
+112d8c84 [x] 7ff56c58
   15  Desayuno y Dulces / Miel y salsas / Salsas
 desayuno-y-dulces/miel-y-salsas/salsas
 
-43e26d3f [ ]
+43e26d3f [x] b1a626a0
   14  Perfumería / Cuidado femenino / Colonia
 perfumeria/cuidado-femenino/colonia
 
-144b75dd [ ]
+144b75dd [x] c3de7e05
   13  Bebidas y Licores / Aguas / Agua sin gas
 bebidas-y-licores/aguas/agua-sin-gas
 
-3012cc05 [ ]
+3012cc05 [x] 9a347127
   13  Congelados / Hielo, helados y postres / Postres helados
 congelados/hielo-helados-y-postres/postres-helados
 
-624136c7 [ ]
+624136c7 [x] ef6e2589
   13  Congelados / Pescados y mariscos / Camarones
 congelados/pescados-y-mariscos/camarones
 
-39929bd8 [ ]
+39929bd8 [x] b3fe075a
   13  Despensa / Condimentos y salsas / Salsa de soya
 despensa/condimentos-y-salsas/salsa-de-soya
 
-1bdaf47c [ ]
+1bdaf47c [x] c430432e
   13  Limpieza / Pisos y muebles / Lustramuebles
 limpieza/pisos-y-muebles/lustramuebles
 
-e6ddb46e [ ]
+e6ddb46e [x] ba8719d1
   12  Bebidas y Licores / Jugos / Té líquido
 bebidas-y-licores/jugos/te-liquido
 
-22e4f354 [ ]
+22e4f354 [x] dd6155d9
   12  Congelados / Platos congelados / Cocktail
 congelados/platos-congelados/cocktail
 
-76959b0b [ ]
+76959b0b [x] 064b5012
   12  Limpieza / Papeles / Pañuelos desechables
 limpieza/papeles/panuelos-desechables
 
-62cb010a [ ]
+62cb010a [x] 79dc0e07
   12  Limpieza / Pisos y muebles / Escobas, palas, virutillas y plumeros
 limpieza/pisos-y-muebles/escobas-palas-virutillas-y-plumeros
 
-c42fe583 [ ]
+c42fe583 [x] 9a8077f0
   12  Panadería y Pastelería / Pastelería / Pie, kuchen y tartas
 panaderia-y-pasteleria/pasteleria/pie-kuchen-y-tartas
 
-7cfb03e7 [ ]
+7cfb03e7 [x] ca229ded
   12  Perfumería / Farmacia / Primeros auxilios
 perfumeria/farmacia/primeros-auxilios
 
-93e300ef [ ]
+93e300ef [x] 8134061f
   11  Bebidas y Licores / Vinos y espumantes / Vino Late harvest
 bebidas-y-licores/vinos-y-espumantes/vino-late-harvest
 
-a6b0874e [ ]
+a6b0874e [x] 195b331c
   11  Congelados / Hamburguesas, apanados y churrascos / Churrascos, lomitos y otros
 congelados/hamburguesas-apanados-y-churrascos/churrascos-lomitos-y-otros
 
-7ed00828 [ ]
+7ed00828 [x] 2add31ce
   11  Congelados / Pescados y mariscos / Pescados Apanados
 congelados/pescados-y-mariscos/pescados-apanados
 
-84cfae79 [ ]
+84cfae79 [x] 553f5dc9
   11  Mascotas / Accesorios mascota / Arena y sabanillas
 mascotas/accesorios-mascota/arena-y-sabanillas
 
-eb8d7ff6 [ ]
+eb8d7ff6 [x] 4a30fd5e
   11  Mascotas / Alimento perro / Alimento cachorro
 mascotas/alimento-perro/alimento-cachorro
 
-dd6082ec [ ]
+dd6082ec [x] e5b9c89d
   10  Bebés y Niños / Perfumería / Perfumes y colonias
 bebes-y-ninos/perfumeria/perfumes-y-colonias
 
-f238043e [ ]
+f238043e [x] 1b034bad
   10  Carnes / Cerdo / Malaya y plateada
 carnes/cerdo/malaya-y-plateada
 
-bdf0c21c [ ]
+bdf0c21c [x] 81168507
   10  Carnes / Pescadería
 carnes/pescaderia
 
-09f1d70e [ ]
+09f1d70e [x] bfa014b3
   10  Despensa / Arroz y legumbres / Arroz preparado
 despensa/arroz-y-legumbres/arroz-preparado
 
-d3e03f6f [ ]
+d3e03f6f [x] 0c4d1a88
   10  Lácteos, Huevos y Refrigerados / Postres / Flanes
 lacteos-huevos-y-refrigerados/postres/flanes
 
-29b3daea [ ]
+29b3daea [x] edb0d4ec
   10  Lácteos, Huevos y Refrigerados / Yoghurt / Con cereal e infantiles
 lacteos-huevos-y-refrigerados/yoghurt/con-cereal-e-infantiles
 
-835ef45d [ ]
+835ef45d [x] f1c4c7c5
   10  Perfumería / Cuidado capilar / Fijadores
 perfumeria/cuidado-capilar/fijadores
 
-ad4abce0 [ ]
+ad4abce0 [x] 1b034bad
    9  Carnes / Cerdo / Pulpa cerdo
 carnes/cerdo/pulpa-cerdo
 
-69019147 [ ]
+69019147 [x] aaca9df8
    9  Desayuno y Dulces / Galletas y colaciones dulces / Galletas chips
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletas-chips
 
-4aae959e [ ]
+4aae959e [x] 44c2b7d9
    9  Despensa / Aceite y aliños / Otros aceites
 despensa/aceite-y-alinos/otros-aceites
 
-f0665ea3 [ ]
+f0665ea3 [x] 7fc13cbc
    9  Despensa / Comida instantánea y preparada / Sandwich y tortillas
 despensa/comida-instantanea-y-preparada/sandwich-y-tortillas
 
-98fd6975 [ ]
+98fd6975 [x] 6a62b166
    9  Despensa / Harina y repostería / Leche condensada y evaporada
 despensa/harina-y-reposteria/leche-condensada-y-evaporada
 
-6ade6251 [ ]
+6ade6251 [x] 7fc13cbc
    9  Panadería y Pastelería / Asaduría / Empanadas
 panaderia-y-pasteleria/asaduria/empanadas
 
-e2a2f60d [ ]
+e2a2f60d [x] 8134061f
    8  Bebidas y Licores / Vinos y espumantes / Vino rosé
 bebidas-y-licores/vinos-y-espumantes/vino-rose
 
-bd83f93a [ ]
+bd83f93a [x] 1b034bad
    8  Carnes / Cerdo / Chuleta
 carnes/cerdo/chuleta
 
-593d03b2 [ ]
+593d03b2 [x] 1b034bad
    8  Carnes / Cerdo / Lomo cerdo
 carnes/cerdo/lomo-cerdo
 
-b14d981a [ ]
+b14d981a [x] 195b331c
    8  Carnes / Vacuno / Filete y lomo
 carnes/vacuno/filete-y-lomo
 
-f992f854 [ ]
+f992f854 [x] 44c2b7d9
    8  Despensa / Aceite y aliños / Aceite vegetal
 despensa/aceite-y-alinos/aceite-vegetal
 
-bf4cf407 [ ]
+bf4cf407 [x] b3fe075a
    8  Despensa / Cocina internacional / Comida thai
 despensa/cocina-internacional/comida-thai
 
-4dad5ad9 [ ]
+4dad5ad9 [x] b3fe075a
    8  Despensa / Cocina internacional / Comida árabe
 despensa/cocina-internacional/comida-arabe
 
-8edeb4f3 [ ]
+8edeb4f3 [x] 8a85ef06
    8  Despensa / Comida instantánea y preparada / Puré instantáneo
 despensa/comida-instantanea-y-preparada/pure-instantaneo
 
-73eeb1ac [ ]
+73eeb1ac [x] 6370ccc4
    8  Despensa / Conservas / Comida en conserva
 despensa/conservas/comida-en-conserva
 
-ff0f8ca2 [ ]
+ff0f8ca2 [x] 92f482c1
    8  Despensa / Harina y repostería / Esencias
 despensa/harina-y-reposteria/esencias
 
-73576e4b [ ]
+73576e4b [x] 12ee81b8
    8  Panadería y Pastelería / Pan envasado / Pan cóctel
 panaderia-y-pasteleria/pan-envasado/pan-coctel
 
-fed4cbd8 [ ]
+fed4cbd8 [x] a6d3f160
    8  Perfumería / Cuidado personal / Cuidado pies
 perfumeria/cuidado-personal/cuidado-pies
 
-984a50b6 [ ]
+984a50b6 [x] 0a5797dd
    7  Bebés y Niños / Alimentación / Leches y fórmulas
 bebes-y-ninos/alimentacion/leches-y-formulas
 
-fc4e9259 [ ]
+fc4e9259 [x] e5b9c89d
    7  Bebés y Niños / Perfumería / Talco, pomadas y varitas de algodón
 bebes-y-ninos/perfumeria/talco-pomadas-y-varitas-de-algodon
 
-a4ed009b [ ]
+a4ed009b [x] 9c369b5d
    7  Congelados / Hamburguesas, apanados y churrascos / Hamburguesas vegetales
 congelados/hamburguesas-apanados-y-churrascos/hamburguesas-vegetales
 
-51000ff2 [ ]
+51000ff2 [x] 9a347127
    7  Congelados / Hielo, helados y postres / Helados agua y fruta
 congelados/hielo-helados-y-postres/helados-agua-y-fruta
 
-455a8f4b [ ]
+455a8f4b [x] 44c2b7d9
    7  Despensa / Aceite y aliños / Aceite maravilla
 despensa/aceite-y-alinos/aceite-maravilla
 
-8306d33b [ ]
+8306d33b [x] c548fb63
    7  Despensa / Aceite y aliños / Sucedáneo
 despensa/aceite-y-alinos/sucedaneo
 
-d6ad1c55 [ ]
+d6ad1c55 [x] bfa014b3
    7  Despensa / Arroz y legumbres / Quínoa
 despensa/arroz-y-legumbres/quinoa
 
-9d54971f [ ]
+9d54971f [x] dadec147
    7  Despensa / Productos naturales / Semillas
 despensa/productos-naturales/semillas
 
-ed5b1f05 [ ]
+ed5b1f05 [x] 0c4d1a88
    7  Lácteos, Huevos y Refrigerados / Postres / Sémolas
 lacteos-huevos-y-refrigerados/postres/semolas
 
-5453eb5a [ ]
+5453eb5a [x] f1c4c7c5
    7  Perfumería / Cuidado capilar / Cepillos, peinetas y accesorios
 perfumeria/cuidado-capilar/cepillos-peinetas-y-accesorios
 
-bdfc82dd [ ]
+bdfc82dd [x] a6d3f160
    7  Perfumería / Cuidado corporal y facial / Cremas de mano
 perfumeria/cuidado-corporal-y-facial/cremas-de-mano
 
-de2f069b [ ]
+de2f069b [x] e5b9c89d
    6  Bebés y Niños / Perfumería / Cremas y aceites
 bebes-y-ninos/perfumeria/cremas-y-aceites
 
-965a6203 [ ]
+965a6203 [x] 872d1a18
    6  Carnes / Pollo / Saborizados
 carnes/pollo/saborizados
 
-5e43e00e [ ]
+5e43e00e [x] 6cf8f35c
    6  Congelados / Hielo, helados y postres / Hielo
 congelados/hielo-helados-y-postres/hielo
 
-0ba96871 [ ]
+0ba96871 [x] 92f482c1
    6  Despensa / Harina y repostería / Maicena y sémola
 despensa/harina-y-reposteria/maicena-y-semola
 
-58c4de86 [ ]
+58c4de86 [x] 5e3cd2a8
    6  Frutas y Verduras / Verduras / Verduras orgánicas
 frutas-y-verduras/verduras/verduras-organicas
 
-9dee88ca [ ]
+9dee88ca [x] 553f5dc9
    6  Mascotas / Alimento gato / Alimento gatito
 mascotas/alimento-gato/alimento-gatito
 
-6d0e5e68 [ ]
+6d0e5e68 [x] 12ee81b8
    6  Panadería y Pastelería / Pan envasado / Pan para hornear
 panaderia-y-pasteleria/pan-envasado/pan-para-hornear
 
-e26a9fdc [ ]
+e26a9fdc [x] b1aebd81
    6  Perfumería / Cuidado adulto / Protectores y toallas húmedas
 perfumeria/cuidado-adulto/protectores-y-toallas-humedas
 
-a3f718f3 [ ]
+a3f718f3 [-]
    6  Perfumería / Farmacia / Preservativos y lubricantes
 perfumeria/farmacia/preservativos-y-lubricantes
 
-3635731f [ ]
+3635731f [x] e5b9c89d
    5  Bebés y Niños / Perfumería / Jabones
 bebes-y-ninos/perfumeria/jabones
 
-6cbbf2e3 [ ]
+6cbbf2e3 [-]
    5  Bebés y Niños / Perfumería / Ropa y accesorios
 bebes-y-ninos/perfumeria/ropa-y-accesorios
 
-adc997cb [ ]
+adc997cb [x] 671737c0
    5  Congelados / Frutas y verduras congeladas / Pulpa fruta
 congelados/frutas-y-verduras-congeladas/pulpa-fruta
 
-621a5696 [ ]
+621a5696 [x] 9a347127
    5  Congelados / Hielo, helados y postres / Helados light
 congelados/hielo-helados-y-postres/helados-light
 
-ebb47495 [ ]
+ebb47495 [x] ef6e2589
    5  Congelados / Pescados y mariscos / Mariscos
 congelados/pescados-y-mariscos/mariscos
 
-8b704525 [ ]
+8b704525 [x] 55bc9274
    5  Congelados / Platos congelados / Postres congelados
 congelados/platos-congelados/postres-congelados
 
-f90f8f3f [ ]
+f90f8f3f [x] 36d2eb32
    5  Despensa / Fideos, pastas y salsas / Lasaña
 despensa/fideos-pastas-y-salsas/lasana
 
-f494bf48 [ ]
+f494bf48 [x] 36d2eb32
    5  Despensa / Fideos, pastas y salsas / Rellenos
 despensa/fideos-pastas-y-salsas/rellenos
 
-22e6f67a [ ]
+22e6f67a [x] dadec147
    5  Frutas y Verduras / Frutas / Fruta deshidratada
 frutas-y-verduras/frutas/fruta-deshidratada
 
-19351b00 [ ]
+19351b00 [x] a69bd951
    5  Limpieza / Baño y cocina / Limpiador crema
 limpieza/bano-y-cocina/limpiador-crema
 
-2b32380d [ ]
+2b32380d [x] 6a62b166
    5  Lácteos, Huevos y Refrigerados / Leches y cremas / Bebidas lácteas
 lacteos-huevos-y-refrigerados/leches-y-cremas/bebidas-lacteas
 
-22f8325a [ ]
+22f8325a [x] 0c4d1a88
    5  Lácteos, Huevos y Refrigerados / Postres / Leche asada y arroz con leche
 lacteos-huevos-y-refrigerados/postres/leche-asada-y-arroz-con-leche
 
-d3a3545f [ ]
+d3a3545f [x] 55abefbd
    5  Mascotas / Alimento otras mascotas / Alimentos
 mascotas/alimento-otras-mascotas/alimentos
 
-f2832aa1 [ ]
+f2832aa1 [x] 12ee81b8
    5  Panadería y Pastelería / Pan / Pan hamburguesa y hot dog
 panaderia-y-pasteleria/pan/pan-hamburguesa-y-hot-dog
 
-e5996cb9 [ ]
+e5996cb9 [x] 12ee81b8
    5  Panadería y Pastelería / Pan envasado / Pan rallado y crutones
 panaderia-y-pasteleria/pan-envasado/pan-rallado-y-crutones
 
-d9e71679 [ ]
+d9e71679 [x] 707f9858
    5  Perfumería / Cuidado corporal y facial / Protección solar
 perfumeria/cuidado-corporal-y-facial/proteccion-solar
 
-e1e5a0ff [ ]
+e1e5a0ff [x] 1b034bad
    4  Carnes / Cordero y otros / Cordero
 carnes/cordero-y-otros/cordero
 
-23cd0e4a [ ]
+23cd0e4a [x] bfa014b3
    4  Despensa / Fideos, pastas y salsas / Couscous
 despensa/fideos-pastas-y-salsas/couscous
 
-7c59a8cd [ ]
+7c59a8cd [x] 4a30fd5e
    4  Mascotas / Accesorios mascota / Shampoo animales
 mascotas/accesorios-mascota/shampoo-animales
 
-4d91a787 [ ]
+4d91a787 [x] 42bd31f2
    3  Carnes / Pavo / Trutros y otros
 carnes/pavo/trutros-y-otros
 
-c6e2983c [ ]
+c6e2983c [x] 79dc0e07
    3  Limpieza / Baño y cocina / Sopapos
 limpieza/bano-y-cocina/sopapos
 
-e0588a6e [ ]
+e0588a6e [x] f675d06f
    3  Limpieza / Detergente / Detergente en barra
 limpieza/detergente/detergente-en-barra
 
-2f197e76 [ ]
+2f197e76 [x] a69bd951
    3  Limpieza / Limpieza hogar / Limpiador vidrios y multiusos
 limpieza/limpieza-hogar/limpiador-vidrios-y-multiusos
 
-50bf1b29 [ ]
+50bf1b29 [x] b1a626a0
    3  Perfumería / Cuidado masculino / Colonias
 perfumeria/cuidado-masculino/colonias
 
-1c635b63 [ ]
+1c635b63 [x] ca229ded
    3  Perfumería / Cuidado personal / Alcohol gel
 perfumeria/cuidado-personal/alcohol-gel
 
-cf104377 [ ]
+cf104377 [x] 337d2fa4
    3  Perfumería / Cuidado personal / Gel de ducha
 perfumeria/cuidado-personal/gel-de-ducha
 
-79ab3aad [ ]
+79ab3aad [x] ca6c6fbb
    3  Quesos y Fiambres / Quesos / Veganos y Tofu
 quesos-y-fiambres/quesos/veganos-y-tofu
 
-536afc20 [ ]
+536afc20 [x] c3de7e05
    2  Bebidas y Licores / Aguas / Bidones
 bebidas-y-licores/aguas/bidones
 
-72ef0539 [ ]
+72ef0539 [x] 42bd31f2
    2  Carnes / Pavo / Pavo molido y picado
 carnes/pavo/pavo-molido-y-picado
 
-20285044 [ ]
+20285044 [x] 42bd31f2
    2  Carnes / Pavo / Pechuga y filete
 carnes/pavo/pechuga-y-filete
 
-7902358e [ ]
+7902358e [x] 872d1a18
    2  Carnes / Pollo / Pollo entero
 carnes/pollo/pollo-entero
 
-d2ae776d [ ]
+d2ae776d [x] 195b331c
    2  Carnes / Vacuno / Huesos y otros
 carnes/vacuno/huesos-y-otros
 
-087fbb60 [ ]
+087fbb60 [x] b3fe075a
    2  Despensa / Cocina internacional / Comida japonesa
 despensa/cocina-internacional/comida-japonesa
 
-97e573a3 [ ]
+97e573a3 [x] f675d06f
    2  Limpieza / Detergente / Detergente en cápsulas
 limpieza/detergente/detergente-en-capsulas
 
-1f0bcb18 [ ]
+1f0bcb18 [x] 12ee81b8
    2  Panadería y Pastelería / Pan envasado / Marraqueta y hallulla
 panaderia-y-pasteleria/pan-envasado/marraqueta-y-hallulla
 
-2bcef6a0 [ ]
+2bcef6a0 [x] 9a8077f0
    2  Panadería y Pastelería / Pastelería / Pan de pascua
 panaderia-y-pasteleria/pasteleria/pan-de-pascua
 
-a750252f [ ]
+a750252f [x] b1aebd81
    2  Perfumería / Cuidado adulto / Protección cama
 perfumeria/cuidado-adulto/proteccion-cama
 
-a8662009 [ ]
+a8662009 [x] b1a626a0
    2  Perfumería / Cuidado personal / Esponjas y accesorios
 perfumeria/cuidado-personal/esponjas-y-accesorios
 
-8216299a [ ]
+8216299a [x] 79dc0e07
    1  Limpieza / Accesorios aseo / Otros accesorios aseo
 limpieza/accesorios-aseo/otros-accesorios-aseo
 
-51b3c516 [ ]
+51b3c516 [x] c430432e
    1  Limpieza / Pisos y muebles / Limpiador alfombra
 limpieza/pisos-y-muebles/limpiador-alfombra
 
-b5ad728c [ ]
+b5ad728c [x] 554e0af9
    1  Lácteos, Huevos y Refrigerados / Huevos / Huevos especiales
 lacteos-huevos-y-refrigerados/huevos/huevos-especiales
 
-b13eca37 [ ]
+b13eca37 [x] 4a30fd5e
    1  Mascotas / Accesorios mascota / Antipulgas y garrapatas
 mascotas/accesorios-mascota/antipulgas-y-garrapatas
 
-61f3f9fe [ ]
+61f3f9fe [x] 9a8077f0
    1  Panadería y Pastelería / Pastelería / Pasteles
 panaderia-y-pasteleria/pasteleria/pasteles
 
