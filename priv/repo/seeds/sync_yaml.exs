@@ -74,29 +74,69 @@ parse_yaml = fn body ->
       stripped == "" or String.starts_with?(stripped, "#")
     end)
 
-  {cats, current} =
-    Enum.reduce(lines, {[], nil}, fn line, {cats, current} ->
+  # State machine carries `mode` to know whether `        - <item>`
+  # lines belong to a `keywords:` block (collected) or a `chains:`
+  # block (ignored — chains: is regenerated from scratch).
+  {cats, current, _mode} =
+    Enum.reduce(lines, {[], nil, :none}, fn line, {cats, current, mode} ->
       cond do
         String.starts_with?(line, "- name: ") ->
           name = String.trim_trailing(String.replace_prefix(line, "- name: ", ""))
           new_cats = if current, do: cats ++ [current], else: cats
-          {new_cats, %{name: name, slug: nil, subs: []}}
+          {new_cats, %{name: name, slug: nil, subs: []}, :none}
 
         String.starts_with?(line, "  slug: ") and current ->
           slug = String.trim_trailing(String.replace_prefix(line, "  slug: ", ""))
-          {cats, %{current | slug: slug}}
+          {cats, %{current | slug: slug}, :none}
 
         String.starts_with?(line, "    - name: ") and current ->
           name = String.trim_trailing(String.replace_prefix(line, "    - name: ", ""))
-          {cats, %{current | subs: current.subs ++ [%{name: name, slug: nil}]}}
+          sub = %{name: name, slug: nil, keywords: []}
+          {cats, %{current | subs: current.subs ++ [sub]}, :none}
 
         String.starts_with?(line, "      slug: ") and current ->
           slug = String.trim_trailing(String.replace_prefix(line, "      slug: ", ""))
           {last, rest} = List.pop_at(current.subs, -1)
-          {cats, %{current | subs: rest ++ [%{last | slug: slug}]}}
+          {cats, %{current | subs: rest ++ [%{last | slug: slug}]}, :none}
+
+        # Inline form: `      keywords: [a, b, c]`
+        String.starts_with?(line, "      keywords: [") and current ->
+          inner =
+            line
+            |> String.replace_prefix("      keywords: [", "")
+            |> String.trim_trailing()
+            |> String.trim_trailing("]")
+
+          kws =
+            inner
+            |> String.split(",")
+            |> Enum.map(fn s ->
+              s
+              |> String.trim()
+              |> String.trim_leading("\"")
+              |> String.trim_trailing("\"")
+              |> String.trim_leading("'")
+              |> String.trim_trailing("'")
+            end)
+            |> Enum.reject(&(&1 == ""))
+
+          {last, rest} = List.pop_at(current.subs, -1)
+          {cats, %{current | subs: rest ++ [%{last | keywords: last.keywords ++ kws}]}, :none}
+
+        # Block form: `      keywords:` followed by `        - kw` lines
+        line == "      keywords:" and current ->
+          {cats, current, :keywords}
+
+        line == "      chains:" and current ->
+          {cats, current, :chains}
+
+        String.starts_with?(line, "        - ") and mode == :keywords and current ->
+          kw = String.trim_trailing(String.replace_prefix(line, "        - ", ""))
+          {last, rest} = List.pop_at(current.subs, -1)
+          {cats, %{current | subs: rest ++ [%{last | keywords: last.keywords ++ [kw]}]}, mode}
 
         true ->
-          {cats, current}
+          {cats, current, mode}
       end
     end)
 
@@ -128,10 +168,19 @@ serialize_sub = fn cat, sub, chain_map ->
       "      slug: #{sub.slug}\n" <>
       "      id: #{hash_id.(path)}\n"
 
-  case chain_map do
-    nil -> base
-    _ -> base <> "      chains:\n" <> IO.iodata_to_binary(serialize_chains.(chain_map))
-  end
+  keywords =
+    case sub[:keywords] || [] do
+      [] -> ""
+      list -> "      keywords: [#{Enum.map_join(list, ", ", &~s/"#{&1}"/)}]\n"
+    end
+
+  chains_block =
+    case chain_map do
+      nil -> ""
+      _ -> "      chains:\n" <> IO.iodata_to_binary(serialize_chains.(chain_map))
+    end
+
+  base <> keywords <> chains_block
 end
 
 serialize_cat = fn cat ->
@@ -180,6 +229,7 @@ jsonl_lines =
           name: sub.name,
           slug: sub.slug,
           path: path,
+          keywords: sub[:keywords] || [],
           category_id: cat_id,
           category_name: cat.name,
           category_slug: cat.slug

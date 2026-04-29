@@ -23,7 +23,7 @@ import Ecto.Query
 threshold = opts[:threshold] || 0.92
 dry? = opts[:dry_run] == true
 
-subs =
+subs_db =
   Repo.all(
     from s in AppSubcategory,
       join: c in AppCategory,
@@ -36,10 +36,37 @@ subs =
       }
   )
 
-# Best-match: max(d(leaf, sub_name), 0.9 * d(leaf, cat_name)).
-# The cat-name match is dampened so a leaf that exactly matches a
-# category root (e.g. "Aguas") doesn't outrank a real subcategory
-# match.
+# Pull keyword lists from the JSONL — one source of truth, no need to
+# extend the DB schema for what's a single-shot triage helper.
+jsonl_path = Path.expand("categories.jsonl", __DIR__)
+
+keywords_by_pair =
+  if File.exists?(jsonl_path) do
+    jsonl_path
+    |> File.stream!()
+    |> Stream.map(&Jason.decode!/1)
+    |> Stream.filter(&(&1["kind"] == "subcategory"))
+    |> Enum.reduce(%{}, fn r, acc ->
+      Map.put(acc, {r["category_slug"], r["slug"]}, r["keywords"] || [])
+    end)
+  else
+    %{}
+  end
+
+subs =
+  Enum.map(subs_db, fn s ->
+    Map.put(s, :keywords, Map.get(keywords_by_pair, {s.cat_slug, s.sub_slug}, []))
+  end)
+
+# Best-match: max of
+#   d(leaf, sub_name),
+#   0.9 * d(leaf, cat_name),     — dampened so a leaf matching the
+#                                   category root doesn't outrank a
+#                                   real subcategory match,
+#   d(leaf, kw)  for kw <- sub.keywords  — full weight; keywords are
+#                                   curated synonyms / spelling
+#                                   variants explicitly added to
+#                                   improve matching.
 score = fn leaf ->
   l = String.downcase(leaf)
 
@@ -47,7 +74,13 @@ score = fn leaf ->
     Enum.map(subs, fn s ->
       d_sub = String.jaro_distance(l, String.downcase(s.sub_name))
       d_cat = String.jaro_distance(l, String.downcase(s.cat_name))
-      {s, max(d_sub, d_cat * 0.9)}
+
+      d_kw =
+        s.keywords
+        |> Enum.map(&String.jaro_distance(l, String.downcase(&1)))
+        |> Enum.max(fn -> 0.0 end)
+
+      {s, Enum.max([d_sub, d_cat * 0.9, d_kw])}
     end),
     fn {_, d} -> d end
   )
