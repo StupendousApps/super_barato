@@ -108,17 +108,21 @@ parse_yaml = fn body ->
             |> String.trim_trailing("]")
 
           kws =
-            inner
-            |> String.split(",")
-            |> Enum.map(fn s ->
-              s
-              |> String.trim()
-              |> String.trim_leading("\"")
-              |> String.trim_trailing("\"")
-              |> String.trim_leading("'")
-              |> String.trim_trailing("'")
-            end)
-            |> Enum.reject(&(&1 == ""))
+            cond do
+              # Quoted form: extract everything between matching quotes.
+              # Handles commas inside values (e.g. "0,0%").
+              String.contains?(inner, ~s/"/) ->
+                ~r/"([^"]*)"/
+                |> Regex.scan(inner, capture: :all_but_first)
+                |> Enum.flat_map(& &1)
+
+              # Unquoted form: comma-split.
+              true ->
+                inner
+                |> String.split(",")
+                |> Enum.map(&String.trim/1)
+                |> Enum.reject(&(&1 == ""))
+            end
 
           {last, rest} = List.pop_at(current.subs, -1)
           {cats, %{current | subs: rest ++ [%{last | keywords: last.keywords ++ kws}]}, :none}

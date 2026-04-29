@@ -16,12 +16,15 @@
     - name: Verduras
       slug: verduras
       id: 335c7109
+      keywords: ["vegetales", "hortalizas"]
     - name: Frutos Secos y Semillas
       slug: frutos-secos
       id: dadec147
+      keywords: ["mani", "almendra", "nuez", "pasas", "semilla"]
     - name: Orgánicos
       slug: organicos
       id: 5e3cd2a8
+      keywords: ["organico", "natural", "bio"]
 
 - name: Carnes y Pescados
   slug: carnes-y-pescados
@@ -30,21 +33,25 @@
     - name: Vacuno
       slug: vacuno
       id: 195b331c
+      keywords: ["res", "ternera", "lomito", "asado de tira", "molida"]
     - name: Pollo
       slug: pollo
       id: 872d1a18
     - name: Cerdo y Cordero
       slug: cerdo-y-cordero
       id: 1b034bad
+      keywords: ["chancho", "lechona", "ovino"]
     - name: Pavo
       slug: pavo
       id: 42bd31f2
     - name: Pescados y Mariscos
       slug: pescados-y-mariscos
       id: 81168507
+      keywords: ["salmon", "atun", "merluza", "camaron", "marisco", "reineta"]
     - name: Salchichas y Parrilleros
       slug: salchichas-y-parrilleros
       id: 244c71cc
+      keywords: ["vienesa", "longaniza", "chorizo", "anticucho", "parrillero"]
 
 - name: Lácteos y Refrigerados
   slug: lacteos-y-refrigerados
@@ -53,6 +60,7 @@
     - name: Leches
       slug: leches
       id: 6a62b166
+      keywords: ["leche condensada", "leche evaporada"]
     - name: Yoghurt
       slug: yoghurt
       id: edb0d4ec
@@ -60,12 +68,19 @@
     - name: Mantequillas y Margarinas
       slug: mantequillas-margarinas
       id: 2c7b72c2
+      keywords: ["manteca", "mantequilla", "margarina"]
     - name: Cremas
       slug: cremas
       id: c99b5d7c
+      keywords: ["crema acida", "crema chantilly", "crema batida", "nata"]
     - name: Postres Refrigerados
       slug: postres-refrigerados
       id: 0c4d1a88
+      keywords: ["flan", "pudding", "gelatina", "mousse"]
+    - name: Leches Vegetales
+      slug: leches-vegetales
+      id: ca6c6fbb
+      keywords: ["bebidas vegetales", "leche soya", "leche almendra", "leche avena", "leche coco"]
 
 - name: Quesos y Fiambres
   slug: quesos-y-fiambres
@@ -74,10 +89,11 @@
     - name: Quesos
       slug: quesos
       id: a0027a6c
+      keywords: ["queso", "gauda", "mantecoso", "queso fresco", "quesillo"]
     - name: Fiambres y Embutidos
       slug: fiambres-y-embutidos
       id: 2894ad7f
-      keywords: ["jamon", "salame"]
+      keywords: ["jamon", "salame", "mortadela", "pate", "longaniza"]
 
 - name: Bebidas
   slug: bebidas
@@ -86,21 +102,23 @@
     - name: Aguas
       slug: aguas
       id: c3de7e05
+      keywords: ["agua mineral", "agua purificada", "bidon", "agua tonica"]
     - name: Bebidas Gaseosas
       slug: bebidas-gaseosas
       id: 5af2da9d
+      keywords: ["gaseosa", "soda", "refresco", "coca cola", "sprite", "fanta"]
     - name: Jugos
       slug: jugos
       id: e035b90e
-    - name: Bebidas Vegetales
-      slug: bebidas-vegetales
-      id: c6657fef
+      keywords: ["nectar", "jugo natural", "jugo en polvo"]
     - name: Energéticas e Isotónicas
       slug: energeticas-isotonicas
       id: b62fdf76
+      keywords: ["redbull", "monster", "gatorade", "powerade", "energizante", "isotonico", "suero"]
     - name: Té e Infusiones Frías
       slug: te-frio
       id: ba8719d1
+      keywords: ["te helado", "ice tea", "infusion fria", "limonada"]
 
 - name: Licores
   slug: licores
@@ -109,21 +127,27 @@
     - name: Cervezas
       slug: cervezas
       id: 038c5cc6
+      keywords: ["cerveza", "beer", "cerveza artesanal"]
     - name: Vinos
       slug: vinos
       id: 8134061f
+      keywords: ["vino tinto", "vino blanco", "rosado", "vino rose"]
     - name: Espumantes
       slug: espumantes
       id: 99cbf6fb
+      keywords: ["champagne", "prosecco", "sidra", "cava"]
     - name: Destilados
       slug: destilados
       id: 7230c42c
+      keywords: ["pisco", "whisky", "ron", "vodka", "tequila", "ginebra", "gin", "licor"]
     - name: Mixers
       slug: mixers
       id: 61c13a39
+      keywords: ["agua tonica", "schweppes", "ginger beer"]
     - name: Sin Alcohol
       slug: sin-alcohol
       id: e92dac25
+      keywords: ["no alcohol", "0%", "cero alcohol", "cocktail sin alcohol"]
 
 - name: Despensa
   slug: despensa
@@ -132,6 +156,7 @@
     - name: Aceites
       slug: aceites
       id: 44c2b7d9
+      keywords: ["oliva", "aceite vegetal", "canola", "maravilla", "vinagre"]
     - name: Aliños y Condimentos
       slug: alinos-y-condimentos
       id: 573a01e0
@@ -142,33 +167,40 @@
       keywords: ["ketchup", "mayonesa", "mostaza", "aji", "salsa picante", "salsa de soja"]
     - name: Arroz, Legumbres y Granos
       slug: arroz-legumbres-y-granos
-      id: 806d5c3b
+      id: bfa014b3
       keywords: ["arroz", "poroto", "quinoa", "cuscus", "semilla", "lenteja", "arveja"]
     - name: Fideos y Pastas
       slug: pastas
       id: 36d2eb32
+      keywords: ["fideos", "pasta", "espagueti", "lasaña", "ravioles", "ñoquis", "tallarin"]
     - name: Conservas
       slug: conservas
       id: 6370ccc4
+      keywords: ["atun en conserva", "sardinas", "choclo", "arvejas en conserva", "durazno en conserva", "palmito"]
     - name: Aceitunas, Pepinillos y Encurtidos
       slug: aceitunas-pepinillos
       id: 6065f6dd
+      keywords: ["aceituna", "alcaparra", "pepinillo", "encurtido"]
     - name: Huevos
       slug: huevos
       id: 554e0af9
+      keywords: ["huevo"]
     - name: Azúcar y Endulzantes
       slug: azucar-y-endulzantes
       id: 397dbebb
+      keywords: ["azucar", "stevia", "edulcorante", "sacarina", "endulzante"]
     - name: Harinas y Repostería
       slug: harinas-reposteria
       id: 92f482c1
+      keywords: ["harina", "levadura", "polvo de hornear", "esencia vainilla", "reposteria", "decoraciones reposteria"]
     - name: Sopas e Instantáneos
       slug: sopas-instantaneos
       id: 8a85ef06
-      keywords: ["pure instantaneo", "caldo"]
+      keywords: ["pure instantaneo", "caldo", "sopa instantanea", "ramen"]
     - name: Cocina Internacional
       slug: cocina-internacional
       id: b3fe075a
+      keywords: ["asiatica", "italiana", "mexicana", "oriental", "salsa de soya", "wasabi", "sushi"]
 
 - name: Desayuno y Dulces
   slug: desayuno-y-dulces
@@ -181,12 +213,15 @@
     - name: Cereales, Avenas y Barras
       slug: cereales-avenas
       id: efb3292f
+      keywords: ["granola", "cereal", "barrita", "avena", "muesli"]
     - name: Galletas
       slug: galletas
       id: aaca9df8
+      keywords: ["galleta", "oreo", "cracker", "galleta dulce", "galleta salada"]
     - name: Chocolates y Dulces
       slug: chocolates-y-dulces
       id: 91c64a80
+      keywords: ["bombon", "caramelo", "calugas", "chicle", "gomita", "candy", "masticables"]
     - name: Mermeladas, Miel y Manjar
       slug: mermeladas-miel-manjar
       id: 7ff56c58
@@ -199,9 +234,11 @@
     - name: Snacks Salados
       slug: snacks-salados
       id: 53453632
+      keywords: ["papas fritas", "ramitas", "mani salado", "doritos", "nachos", "frituras", "cabritas"]
     - name: Colaciones
       slug: colaciones
       id: 998a3a11
+      keywords: ["colacion", "snack colacion"]
 
 - name: Congelados
   slug: congelados
@@ -210,33 +247,43 @@
     - name: Platos
       slug: platos
       id: dd6155d9
+      keywords: ["lasaña congelada", "comida congelada", "plato congelado", "pizza congelada", "empanada congelada"]
     - name: Hamburguesas
       slug: hamburguesas
       id: 9c369b5d
+      keywords: ["hamburguesa congelada", "hamburguesa de pollo", "hamburguesa vegetal"]
     - name: Apanados y Nuggets
       slug: apanados-nuggets
       id: 2add31ce
+      keywords: ["nugget", "croqueta", "milanesa", "apanado", "filete apanado", "empanada"]
     - name: Pollo
       slug: pollo
       id: b4fda11f
+      keywords: ["pollo congelado", "filete de pollo", "pechuga de pollo", "trutro", "ala congelada"]
     - name: Pescados y Mariscos
       slug: pescados-mariscos
       id: ef6e2589
+      keywords: ["salmon congelado", "merluza congelada", "camaron congelado", "reineta congelada"]
     - name: Frutas y Verduras
       slug: frutas-verduras
       id: 671737c0
+      keywords: ["verduras mixtas", "choclo congelado", "mix vegetales", "pulpa", "smoothie", "frutas congeladas", "verduras congeladas"]
     - name: Papas y Vegetales Pre-fritos
       slug: papas-prefritos
       id: ba99df2f
+      keywords: ["papas fritas", "papa congelada", "hash brown", "papas prefritas", "papas pay"]
     - name: Helados y Postres
       slug: helados-postres
       id: 9a347127
+      keywords: ["helado", "gelato", "paleta"]
     - name: Hielo
       slug: hielo
       id: 6cf8f35c
+      keywords: ["hielo en cubos"]
     - name: Postres
       slug: postres
       id: 55bc9274
+      keywords: ["torta congelada", "postre congelado", "mousse"]
 
 - name: Comidas Preparadas
   slug: comidas-preparadas
@@ -245,12 +292,15 @@
     - name: Empanadas y Sándwiches
       slug: empanadas-sandwiches
       id: 7fc13cbc
+      keywords: ["sandwich", "schiacciata", "empanada", "wrap"]
     - name: Pizzas y Pastas Frescas
       slug: pizzas-pastas-frescas
       id: 9dd4d7e5
+      keywords: ["pizza fresca", "masa fresca", "pasta fresca", "ñoqui fresco", "ravioli fresco"]
     - name: Platos Preparados
       slug: platos-preparados
       id: 0a07f282
+      keywords: ["ensalada lista", "sopa lista", "comida lista", "plato listo"]
 
 - name: Panadería y Pastelería
   slug: panaderia-y-pasteleria
@@ -259,12 +309,15 @@
     - name: Pan
       slug: pan
       id: 12ee81b8
+      keywords: ["hallulla", "marraqueta", "frica", "pan integral", "pan de molde"]
     - name: Masas y Tortillas
       slug: masas-tortillas
       id: bea15380
+      keywords: ["tortilla", "hojaldre", "masa de empanada", "masa de pizza"]
     - name: Pastelería
       slug: pasteleria
       id: 9a8077f0
+      keywords: ["torta", "kuchen", "brownie", "queque", "cheesecake", "pastel", "crema pastelera"]
 
 - name: Aseo y Limpieza
   slug: aseo-y-limpieza
@@ -273,27 +326,35 @@
     - name: Detergentes y Suavizantes
       slug: detergentes-suavizantes
       id: f675d06f
+      keywords: ["detergente", "suavizante", "ariel", "drive", "ace", "lavado de ropa"]
     - name: Papeles
       slug: papeles
       id: 064b5012
+      keywords: ["papel higienico", "servilletas", "toalla absorbente", "toalla cocina", "confort"]
     - name: Pisos y Muebles
       slug: pisos-muebles
       id: c430432e
+      keywords: ["limpiador piso", "lustramuebles", "cera", "lustra"]
     - name: Baño y Cocina
       slug: bano-cocina
       id: a69bd951
+      keywords: ["limpiador baño", "limpiador cocina", "antigrasa", "sarro", "multiuso", "lavalozas"]
     - name: Aromatizantes y Desodorantes Ambientales
       slug: aromatizantes
       id: 28b7f2a6
+      keywords: ["ambientador", "aromatizante", "glade", "fresh", "spray ambiental", "desodorante ambiental"]
     - name: Insecticidas y Desinfección
       slug: insecticidas-desinfeccion
       id: 087db1a8
+      keywords: ["insecticida", "raid", "baygon", "antihormigas", "desinfectante", "lavandina", "cloro"]
     - name: Bolsas y Envoltorios
       slug: bolsas-envoltorios
       id: 368d3599
+      keywords: ["bolsa de basura", "papel aluminio", "papel film", "plumavit", "bolsa"]
     - name: Accesorios de Limpieza
       slug: accesorios-limpieza
       id: 79dc0e07
+      keywords: ["escoba", "esponja", "mopa", "trapero", "virutilla", "fosforo", "guantes de aseo"]
 
 - name: Cuidado Personal
   slug: cuidado-personal
@@ -302,39 +363,47 @@
     - name: Cuidado Capilar
       slug: cuidado-capilar
       id: f1c4c7c5
-      keywords: ["shampoo"]
+      keywords: ["shampoo", "acondicionador", "tinte", "coloracion"]
     - name: Cuidado Corporal y Facial
       slug: cuidado-corporal-facial
       id: a6d3f160
+      keywords: ["crema corporal", "crema facial", "locion", "hidratante", "exfoliante"]
     - name: Higiene Bucal
       slug: higiene-bucal
       id: b7195eff
-      keywords: ["enjuague", "dental"]
+      keywords: ["enjuague", "dental", "pasta de dientes", "cepillo de dientes", "hilo dental"]
     - name: Desodorantes
       slug: desodorantes
       id: 39658c2f
+      keywords: ["desodorante", "antitranspirante"]
     - name: Jabones
       slug: jabones
       id: 337d2fa4
+      keywords: ["jabon", "gel ducha", "jabon liquido"]
     - name: Cuidado Masculino
       slug: cuidado-masculino
       id: 8316989a
+      keywords: ["afeitar", "gillette", "after shave", "espuma de afeitar"]
     - name: Protección Femenina
       slug: proteccion-femenina
       id: 7558e446
-      keywords: ["Tampones", "toallas hiegienicas"]
+      keywords: ["tampones", "toallas higienicas", "copa menstrual", "protectores diarios"]
     - name: Maquillaje, Perfumes y Belleza
       slug: maquillaje-perfumes-belleza
       id: b1a626a0
+      keywords: ["maquillaje", "labial", "sombras", "perfume", "colonia", "esmalte", "rimel"]
     - name: Depilación y Solares
       slug: depilacion-solares
       id: 707f9858
+      keywords: ["depilacion", "cera depilatoria", "bronceador", "protector solar"]
     - name: Adulto Mayor e Incontinencia
       slug: adulto-mayor
       id: b1aebd81
+      keywords: ["incontinencia", "panal adulto", "attends"]
     - name: Primeros Auxilios y Suplementos
       slug: primeros-auxilios
       id: ca229ded
+      keywords: ["vitamina", "suplemento", "alcohol", "gasa", "vendaje", "analgesico", "paracetamol"]
 
 - name: Bebé
   slug: bebe
@@ -343,12 +412,15 @@
     - name: Pañales y Toallas Húmedas
       slug: panales
       id: c7b7a30e
+      keywords: ["panal bebe", "toalla humeda bebe", "wipes"]
     - name: Alimentación Bebé
       slug: alimentacion-bebe
       id: 0a5797dd
+      keywords: ["compota", "papilla", "formula", "leche bebe", "cereal bebe"]
     - name: Higiene y Perfumería Bebé
       slug: higiene-bebe
       id: e5b9c89d
+      keywords: ["shampoo bebe", "talco bebe", "colonia bebe", "jabon bebe"]
 
 - name: Mascotas
   slug: mascotas
@@ -357,9 +429,12 @@
     - name: Perros
       slug: perros
       id: 4a30fd5e
+      keywords: ["alimento perro", "croqueta perro", "snack perro", "shampoo perro"]
     - name: Gatos
       slug: gatos
       id: 553f5dc9
+      keywords: ["alimento gato", "arena", "croqueta gato", "snack gato"]
     - name: Otras Mascotas
       slug: otras-mascotas
       id: 55abefbd
+      keywords: ["pajaro", "ave", "conejo", "peces", "hamster", "jaula"]
