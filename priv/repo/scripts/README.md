@@ -14,31 +14,6 @@ serialized by `SuperBarato.Catalog.CategoryChecklist`
 - `CategoryChecklist.parse/1` and `serialize/1` round-trip the file
   format.
 
-## Detour pending before triage can finish
-
-Two chains can't be triaged yet — their `chain_listings.category_paths`
-data doesn't match `categories.slug`:
-
-- **santa_isabel**: 0 of 8540 listings have category_paths populated.
-  Crawler isn't writing them. Nothing to salvage — needs re-crawl.
-- **jumbo**: paths are stored as human-readable breadcrumbs
-  (`"Carnes y Pescados > Vacuno > Carnes de Uso Diario"`) instead of
-  slug arrays. `jumbo_breadcrumb_map.sql` builds a name→slug map by
-  walking ancestry; output saved as `jumbo_breadcrumb_map.tsv`.
-  Recovery rate (8370 listings):
-  - 75% (6242) exact-match a category path.
-  - 14% (1202) match a prefix only (L1 or L2 — L3 leaf names like
-    `Vacuno`, `Aceites de Oliva` weren't crawled into `categories`).
-  - 11% (926) under `Hogar, Juguetería y Librería` — non-grocery,
-    safe to drop.
-
-Fix both crawlers to write `category_paths` as a JSON array of
-slugs (matching the `categories.slug` column for that chain), then
-re-run `dump_categories.sh` and these two chains will populate.
-
-The other four (lider, tottus, unimarc, acuenta) work today —
-5,936 entries combined.
-
 ## Tools
 
 All tools live in this directory as `*.exs` scripts run via
