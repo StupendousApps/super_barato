@@ -25,7 +25,7 @@ defmodule SuperBarato.Crawler.Chain do
   during stage-3 refresh.
   """
 
-  alias SuperBarato.Crawler.{Category, Listing}
+  alias SuperBarato.Crawler.{ChainCategory, Listing}
 
   @type task ::
           {:discover_categories, %{chain: atom(), parent: String.t() | nil}}
@@ -33,7 +33,7 @@ defmodule SuperBarato.Crawler.Chain do
           | {:fetch_product_info, %{chain: atom(), identifiers: [String.t()]}}
           | {:fetch_product_pdp, %{chain: atom(), url: String.t()}}
 
-  @type payload :: [Category.t()] | [Listing.t()]
+  @type payload :: [ChainCategory.t()] | [Listing.t()]
 
   @callback id() :: atom()
 

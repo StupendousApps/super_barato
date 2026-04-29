@@ -2,7 +2,7 @@ defmodule SuperBarato.Crawler.Chain.ProductProducerTest do
   use SuperBarato.DataCase, async: false
 
   alias SuperBarato.Catalog
-  alias SuperBarato.Crawler.Category
+  alias SuperBarato.Crawler.ChainCategory
   alias SuperBarato.Crawler.Chain.{ProductProducer, Queue}
 
   @chain :unimarc
@@ -50,7 +50,7 @@ defmodule SuperBarato.Crawler.Chain.ProductProducerTest do
 
   defp seed_categories(rows) do
     Enum.each(rows, fn row ->
-      cat = %Category{
+      cat = %ChainCategory{
         chain: @chain,
         slug: row.slug,
         name: row[:name] || row.slug,

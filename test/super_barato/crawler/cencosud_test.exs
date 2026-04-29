@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.CencosudTest do
   use ExUnit.Case, async: true
 
-  alias SuperBarato.Crawler.{Category, Cencosud, Listing}
+  alias SuperBarato.Crawler.{ChainCategory, Cencosud, Listing}
   alias SuperBarato.Fixtures
 
   @jumbo %Cencosud.Config{
@@ -30,7 +30,7 @@ defmodule SuperBarato.Crawler.CencosudTest do
 
     test "returns Category structs tagged with the chain", %{cats: cats} do
       assert length(cats) > 0
-      assert Enum.all?(cats, &match?(%Category{chain: :jumbo}, &1))
+      assert Enum.all?(cats, &match?(%ChainCategory{chain: :jumbo}, &1))
     end
 
     test "external_id is nil — sitemap doesn't carry numeric ids", %{cats: cats} do
@@ -77,7 +77,7 @@ defmodule SuperBarato.Crawler.CencosudTest do
     test "produces SI-tagged categories" do
       cats = Cencosud.parse_categories_xml(:santa_isabel, xml(:santa_isabel, "sitemap_category.xml"))
       assert length(cats) > 0
-      assert Enum.all?(cats, &match?(%Category{chain: :santa_isabel}, &1))
+      assert Enum.all?(cats, &match?(%ChainCategory{chain: :santa_isabel}, &1))
 
       # Bare host URL (https://www.santaisabel.cl) is filtered out —
       # no category at the empty path.

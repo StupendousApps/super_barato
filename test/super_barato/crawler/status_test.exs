@@ -4,7 +4,7 @@ defmodule SuperBarato.Crawler.StatusTest do
   alias SuperBarato.Catalog
   alias SuperBarato.Crawler
   alias SuperBarato.Crawler.{Schedules, Status}
-  alias SuperBarato.Crawler.Category, as: CrawlerCategory
+  alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
 
   describe "all/0" do

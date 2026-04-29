@@ -54,7 +54,7 @@ defmodule SuperBarato.Crawler.Acuenta do
 
   @behaviour SuperBarato.Crawler.Chain
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, Scope}
+  alias SuperBarato.Crawler.{ChainCategory, Http, Listing, Scope}
   alias SuperBarato.Linker.Identity
 
   require Logger
@@ -141,7 +141,7 @@ defmodule SuperBarato.Crawler.Acuenta do
     level = Map.get(node, "level") || length(segments)
 
     self =
-      %Category{
+      %ChainCategory{
         chain: @chain,
         external_id: reference,
         slug: slug,

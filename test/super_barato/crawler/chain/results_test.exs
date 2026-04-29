@@ -3,7 +3,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
 
   alias SuperBarato.{Catalog, PriceLog, Repo}
   alias SuperBarato.Catalog.ChainListing
-  alias SuperBarato.Crawler.Category, as: CrawlerCategory
+  alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Crawler.Chain.Results
   alias SuperBarato.Test.StubAdapter

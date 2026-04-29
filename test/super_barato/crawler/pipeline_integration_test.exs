@@ -16,7 +16,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
 
   alias SuperBarato.Catalog
   alias SuperBarato.Catalog.ChainListing
-  alias SuperBarato.Crawler.{Category, Listing}
+  alias SuperBarato.Crawler.{ChainCategory, Listing}
   alias SuperBarato.Crawler.Chain.{Cron, Queue, Supervisor, ProductProducer}
   alias SuperBarato.Test.StubAdapter
 
@@ -106,10 +106,10 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
       send(cron_pid(@chain), {:fire, hd(schedule)})
 
       # 4. Wait for persistence.
-      wait_until(fn -> Repo.one(from c in Catalog.Category, select: count(c.id)) == 3 end)
+      wait_until(fn -> Repo.one(from c in Catalog.ChainCategory, select: count(c.id)) == 3 end)
 
       # 5. Verify the DB contents.
-      cats = Repo.all(from c in Catalog.Category, order_by: c.slug)
+      cats = Repo.all(from c in Catalog.ChainCategory, order_by: c.slug)
 
       slugs = Enum.map(cats, & &1.slug)
       assert slugs == ["despensa", "despensa/arroz", "despensa/conservas"]
@@ -190,8 +190,8 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
 
   defp sample_categories do
     [
-      %Category{chain: @chain, slug: "despensa", name: "Despensa", level: 1, is_leaf: false},
-      %Category{
+      %ChainCategory{chain: @chain, slug: "despensa", name: "Despensa", level: 1, is_leaf: false},
+      %ChainCategory{
         chain: @chain,
         slug: "despensa/arroz",
         name: "Arroz",
@@ -199,7 +199,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
         level: 2,
         is_leaf: true
       },
-      %Category{
+      %ChainCategory{
         chain: @chain,
         slug: "despensa/conservas",
         name: "Conservas",
@@ -213,7 +213,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
   defp seed_leaf_categories(slugs) do
     Enum.each(slugs, fn slug ->
       {:ok, _} =
-        Catalog.upsert_category(%Category{
+        Catalog.upsert_category(%ChainCategory{
           chain: @chain,
           slug: slug,
           name: slug,

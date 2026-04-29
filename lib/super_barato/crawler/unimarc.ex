@@ -17,7 +17,7 @@ defmodule SuperBarato.Crawler.Unimarc do
 
   @behaviour SuperBarato.Crawler.Chain
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Crawler.{ChainCategory, Http, Listing, Session}
   alias SuperBarato.Linker.Identity
 
   require Logger
@@ -148,7 +148,7 @@ defmodule SuperBarato.Crawler.Unimarc do
 
         fallback =
           Enum.reduce(@fallback_top_level_categories, %{}, fn fb, acc ->
-            Map.put(acc, fb.slug, %Category{
+            Map.put(acc, fb.slug, %ChainCategory{
               chain: @chain,
               slug: fb.slug,
               name: fb.name,
@@ -215,7 +215,7 @@ defmodule SuperBarato.Crawler.Unimarc do
     slug = raw["categoryTree"] || raw["value"]
     level = Keyword.get(opts, :level) || infer_level(raw["level"])
 
-    %Category{
+    %ChainCategory{
       chain: @chain,
       slug: slug,
       name: raw["name"],

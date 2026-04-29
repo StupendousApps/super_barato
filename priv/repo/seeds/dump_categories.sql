@@ -1,5 +1,9 @@
 -- Dump categories for one chain. Bind :chain as the only parameter.
 --
+-- Categories with zero listings (count = 0) are skipped — they
+-- contribute nothing to triage, so the checklist stays focused on
+-- categories that actually hold products.
+--
 -- Output (three lines per category, blank line between):
 --   [ ]
 --   <count padded-left to 4>  <ancestry-path>
@@ -22,12 +26,12 @@ WITH RECURSIVE
   -- the name path. depth bounds recursion.
   ancestry(slug, name, parent_slug, path, depth) AS (
     SELECT slug, name, parent_slug, name, 0
-      FROM categories
+      FROM chain_categories
       WHERE chain = :chain
     UNION ALL
     SELECT a.slug, a.name, p.parent_slug, p.name || ' / ' || a.path, a.depth + 1
       FROM ancestry a
-      JOIN categories p
+      JOIN chain_categories p
         ON p.chain = :chain
        AND p.slug = a.parent_slug
       WHERE a.depth < 16
@@ -43,5 +47,6 @@ SELECT
     || char(10) || fp.slug
     || char(10)
 FROM full_path fp
-LEFT JOIN counts c ON c.slug = fp.slug
+JOIN counts c ON c.slug = fp.slug
+WHERE c.n > 0
 ORDER BY LOWER(fp.path);

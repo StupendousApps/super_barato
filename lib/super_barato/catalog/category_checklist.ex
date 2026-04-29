@@ -42,6 +42,31 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
   @spec parse_file(Path.t()) :: [entry]
   def parse_file(path), do: path |> File.read!() |> parse()
 
+  @spec write_file!(Path.t(), [entry]) :: :ok
+  def write_file!(path, entries) do
+    File.write!(path, serialize(entries))
+  end
+
+  @spec serialize([entry]) :: String.t()
+  def serialize(entries) do
+    entries
+    |> Enum.map(&serialize_entry/1)
+    |> Enum.join("\n")
+  end
+
+  defp serialize_entry(%{status: status, count: count, path: path, slug: slug, mapping: mapping}) do
+    status_line(status, mapping) <> "\n" <>
+      String.pad_leading(Integer.to_string(count), 4) <> "  " <> path <> "\n" <>
+      slug <> "\n"
+  end
+
+  defp status_line(:unchecked, _), do: "[ ]"
+  defp status_line(:no_match, _), do: "[-]"
+  defp status_line(:no_mapping, _), do: "[N]"
+
+  defp status_line(:mapped, %{category: cat, subcategory: sub}),
+    do: ~s/[x]: {category: "#{cat}", subcategory: "#{sub}"}/
+
   @spec parse(String.t()) :: [entry]
   def parse(text) do
     text

@@ -18,7 +18,7 @@ defmodule SuperBarato.Crawler.Cencosud do
   politeness is enforced at the chain level.
   """
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Crawler.{ChainCategory, Http, Listing, Session}
   alias SuperBarato.Linker.Identity
 
   @catalog_api "https://sm-web-api.ecomm.cencosud.com/catalog/api"
@@ -76,9 +76,9 @@ defmodule SuperBarato.Crawler.Cencosud do
   #                 actually matters downstream.
   #
   # No `external_id` — the sitemap doesn't carry numeric ids. Field
-  # stays nullable on Category, fine.
+  # stays nullable on ChainCategory, fine.
 
-  @spec discover_categories(Config.t()) :: {:ok, [Category.t()]} | {:error, term()}
+  @spec discover_categories(Config.t()) :: {:ok, [ChainCategory.t()]} | {:error, term()}
   def discover_categories(%Config{} = cfg) do
     case fetch_xml(cfg, cfg.categories_url) do
       {:ok, body} -> {:ok, parse_categories_xml(cfg.chain, body)}
@@ -95,7 +95,7 @@ defmodule SuperBarato.Crawler.Cencosud do
   # `__renderData` is the only source that matches the live menu.
 
   @spec discover_categories_from_home(Config.t(), String.t()) ::
-          {:ok, [Category.t()]} | {:error, term()}
+          {:ok, [ChainCategory.t()]} | {:error, term()}
   def discover_categories_from_home(%Config{} = cfg, home_url) when is_binary(home_url) do
     with {:ok, html} <- fetch_html(cfg, home_url),
          {:ok, data} <- extract_render_data(html),
@@ -139,7 +139,7 @@ defmodule SuperBarato.Crawler.Cencosud do
     end
   end
 
-  # Recursively flattens the nested `items` tree into `%Category{}`
+  # Recursively flattens the nested `items` tree into `%ChainCategory{}`
   # records. URL-less entries (banner/promo headers) are silently
   # skipped but their `items` are still walked, so a banner-style
   # parent doesn't drop its real children.
@@ -149,7 +149,7 @@ defmodule SuperBarato.Crawler.Cencosud do
       title = item["title"]
 
       if is_binary(slug) and is_binary(title) do
-        cat = %Category{
+        cat = %ChainCategory{
           chain: chain,
           slug: slug,
           name: title,
@@ -207,7 +207,7 @@ defmodule SuperBarato.Crawler.Cencosud do
         ps -> Enum.join(ps, "/")
       end
 
-    %Category{
+    %ChainCategory{
       chain: chain,
       slug: path,
       name: humanize_slug(last),

@@ -27,7 +27,7 @@ defmodule SuperBarato.Crawler.Lider do
 
   @behaviour SuperBarato.Crawler.Chain
 
-  alias SuperBarato.Crawler.{Category, Http, Listing, Session}
+  alias SuperBarato.Crawler.{ChainCategory, Http, Listing, Session}
   alias SuperBarato.Linker.Identity
 
   require Logger
@@ -162,7 +162,7 @@ defmodule SuperBarato.Crawler.Lider do
         nil
 
       slug ->
-        %Category{
+        %ChainCategory{
           chain: @chain,
           slug: slug,
           name: name,

@@ -2,7 +2,7 @@ defmodule SuperBarato.Catalog do
   @moduledoc """
   Persistence for the crawler.
 
-    * Categories → `upsert_category/1` writes `%Category{}` structs.
+    * Categories → `upsert_category/1` writes `%ChainCategory{}` structs.
     * Products   → `upsert_listing/1` writes `%Listing{}` structs
       (identity + current prices + image + metadata).
     * Refresh    → `record_product_info/2` updates a `ChainListing`
@@ -12,9 +12,9 @@ defmodule SuperBarato.Catalog do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{Category, ChainListing, Product, ProductIdentifier}
+  alias SuperBarato.Catalog.{ChainCategory, ChainListing, Product, ProductIdentifier}
   alias SuperBarato.Search.Q
-  alias SuperBarato.Crawler.Category, as: CrawlerCategory
+  alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
 
@@ -41,8 +41,8 @@ defmodule SuperBarato.Catalog do
       last_seen_at: now
     }
 
-    %Category{}
-    |> Category.discovery_changeset(attrs)
+    %ChainCategory{}
+    |> ChainCategory.discovery_changeset(attrs)
     |> Repo.insert(
       on_conflict:
         {:replace,
@@ -71,7 +71,7 @@ defmodule SuperBarato.Catalog do
   `ProductProducer` with `Repo.stream/2` for bounded-memory traversal.
   """
   def leaf_categories_query(chain) do
-    Category
+    ChainCategory
     |> where([c], c.chain == ^to_string(chain) and c.is_leaf == true and c.active == true)
   end
 
@@ -429,7 +429,7 @@ defmodule SuperBarato.Catalog do
 
     cats =
       Repo.all(
-        from c in Category,
+        from c in ChainCategory,
           where: c.chain == ^chain_str,
           select: %{slug: c.slug, name: c.name, parent_slug: c.parent_slug}
       )
@@ -469,7 +469,7 @@ defmodule SuperBarato.Catalog do
     per_page = opts[:per_page] |> clamp_per_page()
 
     query =
-      Category
+      ChainCategory
       |> apply_cat_chain_filter(opts[:chain])
       |> apply_cat_q_filter(opts[:q])
       |> apply_cat_type_filter(opts[:type])

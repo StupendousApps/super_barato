@@ -143,7 +143,7 @@ defmodule SuperBarato.Crawler.Scope do
   def in_scope?(chain, slug), do: not blacklisted?(chain, slug)
 
   @doc """
-  Drops blacklisted categories from a list of `%Crawler.Category{}`
+  Drops blacklisted categories from a list of `%Crawler.ChainCategory{}`
   structs, with whitelist exceptions that can rescue a sub-tree
   inside a blacklisted ancestor. Used by each chain's
   `discover_categories` immediately before `mark_leaves/1`.

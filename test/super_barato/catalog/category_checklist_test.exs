@@ -64,9 +64,32 @@ defmodule SuperBarato.Catalog.CategoryChecklistTest do
   end
 
   test "round-trips against a real seed file" do
-    path = Path.join([File.cwd!(), "priv/repo/seeds/categories/jumbo.txt"])
+    path = Path.join([File.cwd!(), "priv/repo/seeds/categories/lider.txt"])
     entries = CategoryChecklist.parse_file(path)
     assert length(entries) > 0
     assert Enum.all?(entries, &(&1.status in [:unchecked, :no_match, :no_mapping, :mapped]))
+  end
+
+  test "serialize/parse round-trip preserves entries" do
+    text = """
+    [ ]
+       0  Bebé
+    mi-bebe
+
+    [-]
+      12  Bebé / Rodados
+    mi-bebe/rodados
+
+    [N]
+       3  Marcas Tottus / Recco
+    CATG27088/Electro-y-Tecnologia
+
+    [x]: {category: "frutas-y-verduras", subcategory: "verduras"}
+     123  Frutas y Verduras / Verduras
+    frutas-y-verduras/verduras
+    """
+
+    entries = CategoryChecklist.parse(text)
+    assert CategoryChecklist.parse(CategoryChecklist.serialize(entries)) == entries
   end
 end

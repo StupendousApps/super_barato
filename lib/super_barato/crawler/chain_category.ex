@@ -1,4 +1,4 @@
-defmodule SuperBarato.Crawler.Category do
+defmodule SuperBarato.Crawler.ChainCategory do
   @moduledoc """
   Plain struct returned by `Crawler.Chain.discover_categories/0` — one row
   per category in the chain's tree. `slug` is the full path separator-

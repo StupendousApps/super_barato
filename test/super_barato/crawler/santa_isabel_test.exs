@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.SantaIsabelTest do
   use ExUnit.Case, async: true
 
-  alias SuperBarato.Crawler.{Category, Cencosud}
+  alias SuperBarato.Crawler.{ChainCategory, Cencosud}
   alias SuperBarato.Fixtures
 
   describe "Cencosud.categories_from_render_data/2 (SI home fixture)" do
@@ -23,7 +23,7 @@ defmodule SuperBarato.Crawler.SantaIsabelTest do
       slugs = MapSet.new(cats, & &1.slug)
 
       Enum.each(cats, fn c ->
-        assert %Category{chain: :santa_isabel} = c
+        assert %ChainCategory{chain: :santa_isabel} = c
         assert is_binary(c.slug) and c.slug != ""
         refute String.starts_with?(c.slug, "/")
         assert is_binary(c.name) and c.name != ""

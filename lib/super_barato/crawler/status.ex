@@ -13,7 +13,7 @@ defmodule SuperBarato.Crawler.Status do
   alias SuperBarato.Crawler
   alias SuperBarato.Crawler.{Schedules, Session}
   alias SuperBarato.Crawler.Chain.{Queue, Supervisor}
-  alias SuperBarato.Catalog.{Category, ChainListing}
+  alias SuperBarato.Catalog.{ChainCategory, ChainListing}
   alias SuperBarato.Repo
 
   @doc "Returns one snapshot per known chain."
@@ -31,8 +31,8 @@ defmodule SuperBarato.Crawler.Status do
       schedule_count: length(Schedules.list_for(chain)),
       listings_count: count(ChainListing, chain),
       last_priced_at: latest(ChainListing, :last_priced_at, chain),
-      categories_count: count(Category, chain),
-      last_seen_at: latest(Category, :last_seen_at, chain)
+      categories_count: count(ChainCategory, chain),
+      last_seen_at: latest(ChainCategory, :last_seen_at, chain)
     }
   end
 

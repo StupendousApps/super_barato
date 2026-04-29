@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.UnimarcTest do
   use ExUnit.Case, async: true
 
-  alias SuperBarato.Crawler.{Category, Listing, Unimarc}
+  alias SuperBarato.Crawler.{ChainCategory, Listing, Unimarc}
   alias SuperBarato.Fixtures
 
   describe "parse_subtree/1 (postFacets Congelados fixture)" do
@@ -13,7 +13,7 @@ defmodule SuperBarato.Crawler.UnimarcTest do
 
     test "every category is tagged :unimarc", %{cats: cats} do
       assert length(cats) > 0
-      assert Enum.all?(cats, &match?(%Category{chain: :unimarc}, &1))
+      assert Enum.all?(cats, &match?(%ChainCategory{chain: :unimarc}, &1))
     end
 
     test "includes the top-level Congelados", %{cats: cats} do

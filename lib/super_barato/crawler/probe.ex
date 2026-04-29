@@ -20,7 +20,7 @@ defmodule SuperBarato.Crawler.Probe do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{Category, ChainListing}
+  alias SuperBarato.Catalog.{ChainCategory, ChainListing}
   alias SuperBarato.Crawler.{Cencosud, Http, Listing}
   alias SuperBarato.Repo
 
@@ -68,7 +68,7 @@ defmodule SuperBarato.Crawler.Probe do
   has no categories yet (e.g. categories.json hasn't been crawled).
   """
   def category_options(chain) when is_atom(chain) do
-    Category
+    ChainCategory
     |> where([c], c.chain == ^to_string(chain) and c.active == true)
     |> order_by([c], asc: c.name)
     |> select([c], {c.name, c.slug})
@@ -224,7 +224,7 @@ defmodule SuperBarato.Crawler.Probe do
   ## Parse stages — chain + kind specific
 
   # Cencosud :categories — parse the category sitemap (XML) into
-  # Category structs. (categories.json retired; sitemap is the source.)
+  # ChainCategory structs. (categories.json retired; sitemap is the source.)
   defp run_parse_steps(chain, :categories, %Cencosud.Config{} = _cfg, {:ok, %Http.Response{status: 200, body: body}}, _url)
        when chain in @cencosud_chains do
     cats = Cencosud.parse_categories_xml(chain, body)
@@ -436,7 +436,7 @@ defmodule SuperBarato.Crawler.Probe do
     chain_str = to_string(chain)
 
     name =
-      Category
+      ChainCategory
       |> where([c], c.chain == ^chain_str and c.slug == ^slug)
       |> select([c], c.name)
       |> Repo.one()

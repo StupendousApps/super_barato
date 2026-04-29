@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.AcuentaTest do
   use ExUnit.Case, async: true
 
-  alias SuperBarato.Crawler.{Acuenta, Category, Listing}
+  alias SuperBarato.Crawler.{Acuenta, ChainCategory, Listing}
   alias SuperBarato.Linker.Identity
 
   @fixture_dir Path.expand("../../support/fixtures/acuenta", __DIR__)
@@ -17,7 +17,7 @@ defmodule SuperBarato.Crawler.AcuentaTest do
 
     test "returns Category structs tagged :acuenta", %{cats: cats} do
       assert length(cats) > 0
-      assert Enum.all?(cats, &match?(%Category{chain: :acuenta}, &1))
+      assert Enum.all?(cats, &match?(%ChainCategory{chain: :acuenta}, &1))
     end
 
     test "top-levels have level 1 and nil parent_slug", %{cats: cats} do

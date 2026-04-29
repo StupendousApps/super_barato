@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.LiderTest do
   use ExUnit.Case, async: true
 
-  alias SuperBarato.Crawler.{Category, Lider, Listing}
+  alias SuperBarato.Crawler.{ChainCategory, Lider, Listing}
   alias SuperBarato.Fixtures
 
   describe "extract_next_data/1" do
@@ -25,7 +25,7 @@ defmodule SuperBarato.Crawler.LiderTest do
 
     test "returns a non-empty Category list tagged :lider", %{cats: cats} do
       assert length(cats) > 0
-      assert Enum.all?(cats, &match?(%Category{chain: :lider}, &1))
+      assert Enum.all?(cats, &match?(%ChainCategory{chain: :lider}, &1))
     end
 
     test "top-levels have level 1 and nil parent_slug", %{cats: cats} do

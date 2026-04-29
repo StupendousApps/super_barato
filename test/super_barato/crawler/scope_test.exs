@@ -1,7 +1,7 @@
 defmodule SuperBarato.Crawler.ScopeTest do
   use ExUnit.Case, async: true
 
-  alias SuperBarato.Crawler.{Category, Scope}
+  alias SuperBarato.Crawler.{ChainCategory, Scope}
 
   describe "blacklisted?/2" do
     test "drops Jumbo non-grocery top-levels" do
@@ -76,10 +76,10 @@ defmodule SuperBarato.Crawler.ScopeTest do
   describe "filter/2" do
     test "drops blacklisted categories from a list" do
       cats = [
-        %Category{chain: :lider, slug: "frescos-y-lacteos", name: "x", level: 1},
-        %Category{chain: :lider, slug: "vestuario", name: "x", level: 1},
-        %Category{chain: :lider, slug: "vestuario/calcetines", name: "x", level: 2},
-        %Category{chain: :lider, slug: "despensa", name: "x", level: 1}
+        %ChainCategory{chain: :lider, slug: "frescos-y-lacteos", name: "x", level: 1},
+        %ChainCategory{chain: :lider, slug: "vestuario", name: "x", level: 1},
+        %ChainCategory{chain: :lider, slug: "vestuario/calcetines", name: "x", level: 2},
+        %ChainCategory{chain: :lider, slug: "despensa", name: "x", level: 1}
       ]
 
       kept = Scope.filter(:lider, cats) |> Enum.map(& &1.slug)
@@ -90,13 +90,13 @@ defmodule SuperBarato.Crawler.ScopeTest do
       # Tottus: blacklist `CATG25257/San-Valentin`, expect `CATG27997/Menaje`
       # (a child) to drop too even though their slugs share no prefix.
       cats = [
-        %Category{chain: :tottus, slug: "CATG25257/San-Valentin", name: "x",
+        %ChainCategory{chain: :tottus, slug: "CATG25257/San-Valentin", name: "x",
                   level: 1, parent_slug: nil},
-        %Category{chain: :tottus, slug: "CATG27997/Menaje", name: "x",
+        %ChainCategory{chain: :tottus, slug: "CATG27997/Menaje", name: "x",
                   level: 2, parent_slug: "CATG25257/San-Valentin"},
-        %Category{chain: :tottus, slug: "CATG28001/Sub", name: "x",
+        %ChainCategory{chain: :tottus, slug: "CATG28001/Sub", name: "x",
                   level: 3, parent_slug: "CATG27997/Menaje"},
-        %Category{chain: :tottus, slug: "CATG27055/Despensa", name: "x",
+        %ChainCategory{chain: :tottus, slug: "CATG27055/Despensa", name: "x",
                   level: 1, parent_slug: nil}
       ]
 

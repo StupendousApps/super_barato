@@ -1,8 +1,8 @@
-defmodule SuperBarato.Catalog.Category do
+defmodule SuperBarato.Catalog.ChainCategory do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "categories" do
+  schema "chain_categories" do
     field :chain, :string
     field :external_id, :string
     field :slug, :string

@@ -4,7 +4,7 @@ defmodule SuperBaratoWeb.Admin.DashboardController do
   import Ecto.Query
 
   alias SuperBarato.{Crawler, Repo}
-  alias SuperBarato.Catalog.{Category, ChainListing, Product}
+  alias SuperBarato.Catalog.{ChainCategory, ChainListing, Product}
   alias SuperBarato.Linker.ProductListing
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
@@ -13,7 +13,7 @@ defmodule SuperBaratoWeb.Admin.DashboardController do
   def index(conn, _params) do
     products = Repo.aggregate(Product, :count)
     listings = Repo.aggregate(ChainListing, :count)
-    categories = Repo.aggregate(Category, :count)
+    categories = Repo.aggregate(ChainCategory, :count)
     links = Repo.aggregate(ProductListing, :count)
 
     multi_chain_products =
