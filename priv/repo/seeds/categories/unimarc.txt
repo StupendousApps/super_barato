@@ -1,12 +1,4 @@
 [ ]
-   0  Bebidas y Licores
-bebidas-y-licores
-
-[ ]
-   0  Bebidas y Licores / Aguas
-bebidas-y-licores/aguas
-
-[ ]
   22  Bebidas y Licores / Aguas / Agua con gas
 bebidas-y-licores/aguas/agua-con-gas
 
@@ -21,10 +13,6 @@ bebidas-y-licores/aguas/agua-sin-gas
 [ ]
    2  Bebidas y Licores / Aguas / Bidones
 bebidas-y-licores/aguas/bidones
-
-[ ]
-   0  Bebidas y Licores / Bebidas
-bebidas-y-licores/bebidas
 
 [ ]
   20  Bebidas y Licores / Bebidas / Bebidas light y zero
@@ -43,10 +31,6 @@ bebidas-y-licores/bebidas/energeticas
 bebidas-y-licores/bebidas/funcionales
 
 [ ]
-   0  Bebidas y Licores / Cervezas
-bebidas-y-licores/cervezas
-
-[ ]
   61  Bebidas y Licores / Cervezas / Cerveza artesanal
 bebidas-y-licores/cervezas/cerveza-artesanal
 
@@ -61,10 +45,6 @@ bebidas-y-licores/cervezas/cerveza-nacional
 [ ]
   16  Bebidas y Licores / Cervezas / Cerveza sin alcohol
 bebidas-y-licores/cervezas/cerveza-sin-alcohol
-
-[ ]
-   0  Bebidas y Licores / Destilados y licores
-bebidas-y-licores/destilados-y-licores
 
 [ ]
   83  Bebidas y Licores / Destilados y licores / Cóctel
@@ -95,10 +75,6 @@ bebidas-y-licores/destilados-y-licores/vodka
 bebidas-y-licores/destilados-y-licores/whisky
 
 [ ]
-   0  Bebidas y Licores / Jugos
-bebidas-y-licores/jugos
-
-[ ]
   28  Bebidas y Licores / Jugos / Jugos colación
 bebidas-y-licores/jugos/jugos-colacion
 
@@ -117,10 +93,6 @@ bebidas-y-licores/jugos/jugos-y-nectares
 [ ]
   12  Bebidas y Licores / Jugos / Té líquido
 bebidas-y-licores/jugos/te-liquido
-
-[ ]
-   0  Bebidas y Licores / Vinos y espumantes
-bebidas-y-licores/vinos-y-espumantes
 
 [ ]
   70  Bebidas y Licores / Vinos y espumantes / Espumantes
@@ -151,14 +123,6 @@ bebidas-y-licores/vinos-y-espumantes/vino-tinto
 bebidas-y-licores/vinos-y-espumantes/vinos-botellon-y-otros
 
 [ ]
-   0  Bebés y Niños
-bebes-y-ninos
-
-[ ]
-   0  Bebés y Niños / Alimentación
-bebes-y-ninos/alimentacion
-
-[ ]
   18  Bebés y Niños / Alimentación / Cereales y postres
 bebes-y-ninos/alimentacion/cereales-y-postres
 
@@ -175,20 +139,12 @@ bebes-y-ninos/alimentacion/leches-y-formulas
 bebes-y-ninos/alimentacion/mamaderas-chupetes-y-accesorios
 
 [ ]
-   0  Bebés y Niños / Pañales y toallas húmedas
-bebes-y-ninos/panales-y-toallas-humedas
-
-[ ]
   85  Bebés y Niños / Pañales y toallas húmedas / Pañales
 bebes-y-ninos/panales-y-toallas-humedas/panales
 
 [ ]
   17  Bebés y Niños / Pañales y toallas húmedas / Toallas húmedas
 bebes-y-ninos/panales-y-toallas-humedas/toallas-humedas
-
-[ ]
-   0  Bebés y Niños / Perfumería
-bebes-y-ninos/perfumeria
 
 [ ]
    6  Bebés y Niños / Perfumería / Cremas y aceites
@@ -215,14 +171,6 @@ bebes-y-ninos/perfumeria/shampoo-y-acondicionadores
 bebes-y-ninos/perfumeria/talco-pomadas-y-varitas-de-algodon
 
 [ ]
-   0  Carnes
-carnes
-
-[ ]
-   0  Carnes / Cerdo
-carnes/cerdo
-
-[ ]
    8  Carnes / Cerdo / Chuleta
 carnes/cerdo/chuleta
 
@@ -243,16 +191,8 @@ carnes/cerdo/malaya-y-plateada
 carnes/cerdo/pulpa-cerdo
 
 [ ]
-   0  Carnes / Cordero y otros
-carnes/cordero-y-otros
-
-[ ]
    4  Carnes / Cordero y otros / Cordero
 carnes/cordero-y-otros/cordero
-
-[ ]
-   0  Carnes / Pavo
-carnes/pavo
 
 [ ]
    2  Carnes / Pavo / Pavo molido y picado
@@ -271,10 +211,6 @@ carnes/pavo/trutros-y-otros
 carnes/pescaderia
 
 [ ]
-   0  Carnes / Pollo
-carnes/pollo
-
-[ ]
   42  Carnes / Pollo / Pechugas y filetitos
 carnes/pollo/pechugas-y-filetitos
 
@@ -289,10 +225,6 @@ carnes/pollo/saborizados
 [ ]
   39  Carnes / Pollo / Trutro
 carnes/pollo/trutro
-
-[ ]
-   0  Carnes / Vacuno
-carnes/vacuno
 
 [ ]
    8  Carnes / Vacuno / Filete y lomo
@@ -319,14 +251,6 @@ carnes/vacuno/parrilleros
 carnes/vacuno/vacuno-premium
 
 [ ]
-   0  Congelados
-congelados
-
-[ ]
-   0  Congelados / Frutas y verduras congeladas
-congelados/frutas-y-verduras-congeladas
-
-[ ]
   22  Congelados / Frutas y verduras congeladas / Frutas
 congelados/frutas-y-verduras-congeladas/frutas
 
@@ -343,10 +267,6 @@ congelados/frutas-y-verduras-congeladas/pulpa-fruta
 congelados/frutas-y-verduras-congeladas/verduras-congeladas
 
 [ ]
-   0  Congelados / Hamburguesas, apanados y churrascos
-congelados/hamburguesas-apanados-y-churrascos
-
-[ ]
   11  Congelados / Hamburguesas, apanados y churrascos / Churrascos, lomitos y otros
 congelados/hamburguesas-apanados-y-churrascos/churrascos-lomitos-y-otros
 
@@ -361,10 +281,6 @@ congelados/hamburguesas-apanados-y-churrascos/hamburguesas-vegetales
 [ ]
   38  Congelados / Hamburguesas, apanados y churrascos / Nuggets y apanados
 congelados/hamburguesas-apanados-y-churrascos/nuggets-y-apanados
-
-[ ]
-   0  Congelados / Hielo, helados y postres
-congelados/hielo-helados-y-postres
 
 [ ]
    7  Congelados / Hielo, helados y postres / Helados agua y fruta
@@ -395,10 +311,6 @@ congelados/hielo-helados-y-postres/pack-helados-individuales
 congelados/hielo-helados-y-postres/postres-helados
 
 [ ]
-   0  Congelados / Pescados y mariscos
-congelados/pescados-y-mariscos
-
-[ ]
   13  Congelados / Pescados y mariscos / Camarones
 congelados/pescados-y-mariscos/camarones
 
@@ -415,10 +327,6 @@ congelados/pescados-y-mariscos/pescados
 congelados/pescados-y-mariscos/pescados-apanados
 
 [ ]
-   0  Congelados / Platos congelados
-congelados/platos-congelados
-
-[ ]
   12  Congelados / Platos congelados / Cocktail
 congelados/platos-congelados/cocktail
 
@@ -433,14 +341,6 @@ congelados/platos-congelados/platos-preparados
 [ ]
    5  Congelados / Platos congelados / Postres congelados
 congelados/platos-congelados/postres-congelados
-
-[ ]
-   0  Desayuno y Dulces
-desayuno-y-dulces
-
-[ ]
-   0  Desayuno y Dulces / Café, té y hierbas
-desayuno-y-dulces/cafe-te-y-hierbas
 
 [ ]
   29  Desayuno y Dulces / Café, té y hierbas / Café grano y molido
@@ -471,10 +371,6 @@ desayuno-y-dulces/cafe-te-y-hierbas/te-ceylan
 desayuno-y-dulces/cafe-te-y-hierbas/te-especial
 
 [ ]
-   0  Desayuno y Dulces / Cereales
-desayuno-y-dulces/cereales
-
-[ ]
   65  Desayuno y Dulces / Cereales / Barras y colaciones
 desayuno-y-dulces/cereales/barras-y-colaciones
 
@@ -489,10 +385,6 @@ desayuno-y-dulces/cereales/chocolatados-y-azucarados
 [ ]
   51  Desayuno y Dulces / Cereales / Fibra, avena y granola
 desayuno-y-dulces/cereales/fibra-avena-y-granola
-
-[ ]
-   0  Desayuno y Dulces / Chocolates y confites
-desayuno-y-dulces/chocolates-y-confites
 
 [ ]
   46  Desayuno y Dulces / Chocolates y confites / Calugas, caramelos y turrones
@@ -513,10 +405,6 @@ desayuno-y-dulces/chocolates-y-confites/gomitas-masticables-y-chupetes
 [ ]
   20  Desayuno y Dulces / Chocolates y confites / Marshmallows, malvas y guagüitas
 desayuno-y-dulces/chocolates-y-confites/marshmallows-malvas-y-guaguitas
-
-[ ]
-   0  Desayuno y Dulces / Galletas y colaciones dulces
-desayuno-y-dulces/galletas-y-colaciones-dulces
 
 [ ]
   70  Desayuno y Dulces / Galletas y colaciones dulces / Galletas bañadas y rellenas
@@ -543,20 +431,12 @@ desayuno-y-dulces/galletas-y-colaciones-dulces/galletas-tradicionales-obleas-y-c
 desayuno-y-dulces/galletas-y-colaciones-dulces/galletones-y-alfajores
 
 [ ]
-   0  Desayuno y Dulces / Mermelada y manjar
-desayuno-y-dulces/mermelada-y-manjar
-
-[ ]
   21  Desayuno y Dulces / Mermelada y manjar / Manjar
 desayuno-y-dulces/mermelada-y-manjar/manjar
 
 [ ]
   73  Desayuno y Dulces / Mermelada y manjar / Mermeladas y dulces
 desayuno-y-dulces/mermelada-y-manjar/mermeladas-y-dulces
-
-[ ]
-   0  Desayuno y Dulces / Miel y salsas
-desayuno-y-dulces/miel-y-salsas
 
 [ ]
   19  Desayuno y Dulces / Miel y salsas / Cremas y mantequillas
@@ -569,14 +449,6 @@ desayuno-y-dulces/miel-y-salsas/miel
 [ ]
   15  Desayuno y Dulces / Miel y salsas / Salsas
 desayuno-y-dulces/miel-y-salsas/salsas
-
-[ ]
-   0  Despensa
-despensa
-
-[ ]
-   0  Despensa / Aceite y aliños
-despensa/aceite-y-alinos
 
 [ ]
    7  Despensa / Aceite y aliños / Aceite maravilla
@@ -607,10 +479,6 @@ despensa/aceite-y-alinos/sucedaneo
 despensa/aceite-y-alinos/vinagre-y-aceto
 
 [ ]
-   0  Despensa / Arroz y legumbres
-despensa/arroz-y-legumbres
-
-[ ]
   23  Despensa / Arroz y legumbres / Arroz
 despensa/arroz-y-legumbres/arroz
 
@@ -627,20 +495,12 @@ despensa/arroz-y-legumbres/legumbres
 despensa/arroz-y-legumbres/quinoa
 
 [ ]
-   0  Despensa / Azúcar y endulzantes
-despensa/azucar-y-endulzantes
-
-[ ]
   21  Despensa / Azúcar y endulzantes / Azúcar
 despensa/azucar-y-endulzantes/azucar
 
 [ ]
   27  Despensa / Azúcar y endulzantes / Endulzantes
 despensa/azucar-y-endulzantes/endulzantes
-
-[ ]
-   0  Despensa / Cocina internacional
-despensa/cocina-internacional
 
 [ ]
    2  Despensa / Cocina internacional / Comida japonesa
@@ -653,10 +513,6 @@ despensa/cocina-internacional/comida-thai
 [ ]
    8  Despensa / Cocina internacional / Comida árabe
 despensa/cocina-internacional/comida-arabe
-
-[ ]
-   0  Despensa / Comida instantánea y preparada
-despensa/comida-instantanea-y-preparada
 
 [ ]
   17  Despensa / Comida instantánea y preparada / Fideos y pastas
@@ -677,10 +533,6 @@ despensa/comida-instantanea-y-preparada/sandwich-y-tortillas
 [ ]
   83  Despensa / Comida instantánea y preparada / Sopas, cremas y bases
 despensa/comida-instantanea-y-preparada/sopas-cremas-y-bases
-
-[ ]
-   0  Despensa / Condimentos y salsas
-despensa/condimentos-y-salsas
 
 [ ]
  142  Despensa / Condimentos y salsas / Condimentos
@@ -711,10 +563,6 @@ despensa/condimentos-y-salsas/salsa-de-soya
 despensa/condimentos-y-salsas/salsa-picante
 
 [ ]
-   0  Despensa / Conservas
-despensa/conservas
-
-[ ]
    8  Despensa / Conservas / Comida en conserva
 despensa/conservas/comida-en-conserva
 
@@ -733,10 +581,6 @@ despensa/conservas/pescados-y-mariscos-en-conserva
 [ ]
   36  Despensa / Conservas / Verduras en conserva
 despensa/conservas/verduras-en-conserva
-
-[ ]
-   0  Despensa / Cóctel y snacks
-despensa/coctel-y-snacks
 
 [ ]
   46  Despensa / Cóctel y snacks / Aceitunas y encurtidos
@@ -761,10 +605,6 @@ despensa/coctel-y-snacks/pastas-y-salsas
 [ ]
   54  Despensa / Cóctel y snacks / Snack
 despensa/coctel-y-snacks/snack
-
-[ ]
-   0  Despensa / Fideos, pastas y salsas
-despensa/fideos-pastas-y-salsas
 
 [ ]
   50  Despensa / Fideos, pastas y salsas / Cortos
@@ -799,10 +639,6 @@ despensa/fideos-pastas-y-salsas/rellenos
 despensa/fideos-pastas-y-salsas/salsa-para-pastas
 
 [ ]
-   0  Despensa / Harina y repostería
-despensa/harina-y-reposteria
-
-[ ]
   21  Despensa / Harina y repostería / Bases y premezclas
 despensa/harina-y-reposteria/bases-y-premezclas
 
@@ -835,24 +671,12 @@ despensa/harina-y-reposteria/maicena-y-semola
 despensa/harina-y-reposteria/postres-en-polvo
 
 [ ]
-   0  Despensa / Productos naturales
-despensa/productos-naturales
-
-[ ]
   19  Despensa / Productos naturales / Cereales y funcionales
 despensa/productos-naturales/cereales-y-funcionales
 
 [ ]
    7  Despensa / Productos naturales / Semillas
 despensa/productos-naturales/semillas
-
-[ ]
-   0  Frutas y Verduras
-frutas-y-verduras
-
-[ ]
-   0  Frutas y Verduras / Frutas
-frutas-y-verduras/frutas
 
 [ ]
   48  Frutas y Verduras / Frutas / Fruta
@@ -863,16 +687,8 @@ frutas-y-verduras/frutas/fruta
 frutas-y-verduras/frutas/fruta-deshidratada
 
 [ ]
-   0  Frutas y Verduras / Frutos secos
-frutas-y-verduras/frutos-secos
-
-[ ]
   41  Frutas y Verduras / Frutos secos / Frutos secos
 frutas-y-verduras/frutos-secos/frutos-secos
-
-[ ]
-   0  Frutas y Verduras / Verduras
-frutas-y-verduras/verduras
 
 [ ]
   49  Frutas y Verduras / Verduras / Ensaladas listas
@@ -887,14 +703,6 @@ frutas-y-verduras/verduras/verduras
 frutas-y-verduras/verduras/verduras-organicas
 
 [ ]
-   0  Limpieza
-limpieza
-
-[ ]
-   0  Limpieza / Accesorios aseo
-limpieza/accesorios-aseo
-
-[ ]
   36  Limpieza / Accesorios aseo / Bolsa basura
 limpieza/accesorios-aseo/bolsa-basura
 
@@ -905,10 +713,6 @@ limpieza/accesorios-aseo/limpieza-calzado-y-ropa
 [ ]
    1  Limpieza / Accesorios aseo / Otros accesorios aseo
 limpieza/accesorios-aseo/otros-accesorios-aseo
-
-[ ]
-   0  Limpieza / Baño y cocina
-limpieza/bano-y-cocina
 
 [ ]
   56  Limpieza / Baño y cocina / Cloro
@@ -939,10 +743,6 @@ limpieza/bano-y-cocina/panos-esponjas-y-guantes
 limpieza/bano-y-cocina/sopapos
 
 [ ]
-   0  Limpieza / Detergente
-limpieza/detergente
-
-[ ]
    3  Limpieza / Detergente / Detergente en barra
 limpieza/detergente/detergente-en-barra
 
@@ -967,10 +767,6 @@ limpieza/detergente/suavizante
 limpieza/detergente/tratamiento-ropa
 
 [ ]
-   0  Limpieza / Limpieza hogar
-limpieza/limpieza-hogar
-
-[ ]
   38  Limpieza / Limpieza hogar / Aerosoles y desinfectantes
 limpieza/limpieza-hogar/aerosoles-y-desinfectantes
 
@@ -987,10 +783,6 @@ limpieza/limpieza-hogar/limpiador-vidrios-y-multiusos
 limpieza/limpieza-hogar/velas-y-fosforos
 
 [ ]
-   0  Limpieza / Papeles
-limpieza/papeles
-
-[ ]
   25  Limpieza / Papeles / Papel higiénico
 limpieza/papeles/papel-higienico
 
@@ -1005,10 +797,6 @@ limpieza/papeles/servilletas
 [ ]
   22  Limpieza / Papeles / Toalla papel
 limpieza/papeles/toalla-papel
-
-[ ]
-   0  Limpieza / Pisos y muebles
-limpieza/pisos-y-muebles
 
 [ ]
   18  Limpieza / Pisos y muebles / Ceras
@@ -1035,16 +823,8 @@ limpieza/pisos-y-muebles/lustramuebles
 limpieza/pisos-y-muebles/panos-traperos-mopas-y-baldes
 
 [ ]
-   0  Lácteos, Huevos y Refrigerados
-lacteos-huevos-y-refrigerados
-
-[ ]
   30  Lácteos, Huevos y Refrigerados / Bebidas vegetales
 lacteos-huevos-y-refrigerados/bebidas-vegetales
-
-[ ]
-   0  Lácteos, Huevos y Refrigerados / Huevos
-lacteos-huevos-y-refrigerados/huevos
 
 [ ]
    1  Lácteos, Huevos y Refrigerados / Huevos / Huevos especiales
@@ -1053,10 +833,6 @@ lacteos-huevos-y-refrigerados/huevos/huevos-especiales
 [ ]
   40  Lácteos, Huevos y Refrigerados / Huevos / Huevos gallina
 lacteos-huevos-y-refrigerados/huevos/huevos-gallina
-
-[ ]
-   0  Lácteos, Huevos y Refrigerados / Leches y cremas
-lacteos-huevos-y-refrigerados/leches-y-cremas
 
 [ ]
    5  Lácteos, Huevos y Refrigerados / Leches y cremas / Bebidas lácteas
@@ -1095,20 +871,12 @@ lacteos-huevos-y-refrigerados/leches-y-cremas/leches-sin-lactosa
 lacteos-huevos-y-refrigerados/leches-y-cremas/saborizantes-para-leche
 
 [ ]
-   0  Lácteos, Huevos y Refrigerados / Mantequillas
-lacteos-huevos-y-refrigerados/mantequillas
-
-[ ]
   27  Lácteos, Huevos y Refrigerados / Mantequillas / Mantequilla
 lacteos-huevos-y-refrigerados/mantequillas/mantequilla
 
 [ ]
   27  Lácteos, Huevos y Refrigerados / Mantequillas / Margarina y manteca
 lacteos-huevos-y-refrigerados/mantequillas/margarina-y-manteca
-
-[ ]
-   0  Lácteos, Huevos y Refrigerados / Postres
-lacteos-huevos-y-refrigerados/postres
 
 [ ]
   33  Lácteos, Huevos y Refrigerados / Postres / Compotas
@@ -1135,10 +903,6 @@ lacteos-huevos-y-refrigerados/postres/postres-especiales
 lacteos-huevos-y-refrigerados/postres/semolas
 
 [ ]
-   0  Lácteos, Huevos y Refrigerados / Yoghurt
-lacteos-huevos-y-refrigerados/yoghurt
-
-[ ]
   73  Lácteos, Huevos y Refrigerados / Yoghurt / Batido
 lacteos-huevos-y-refrigerados/yoghurt/batido
 
@@ -1163,14 +927,6 @@ lacteos-huevos-y-refrigerados/yoghurt/proteina
 lacteos-huevos-y-refrigerados/yoghurt/trozos-y-especiales
 
 [ ]
-   0  Mascotas
-mascotas
-
-[ ]
-   0  Mascotas / Accesorios mascota
-mascotas/accesorios-mascota
-
-[ ]
   25  Mascotas / Accesorios mascota / Accesorios animales
 mascotas/accesorios-mascota/accesorios-animales
 
@@ -1187,10 +943,6 @@ mascotas/accesorios-mascota/arena-y-sabanillas
 mascotas/accesorios-mascota/shampoo-animales
 
 [ ]
-   0  Mascotas / Alimento gato
-mascotas/alimento-gato
-
-[ ]
    6  Mascotas / Alimento gato / Alimento gatito
 mascotas/alimento-gato/alimento-gatito
 
@@ -1203,16 +955,8 @@ mascotas/alimento-gato/alimento-gato-adulto
 mascotas/alimento-gato/alimentos-humedos
 
 [ ]
-   0  Mascotas / Alimento otras mascotas
-mascotas/alimento-otras-mascotas
-
-[ ]
    5  Mascotas / Alimento otras mascotas / Alimentos
 mascotas/alimento-otras-mascotas/alimentos
-
-[ ]
-   0  Mascotas / Alimento perro
-mascotas/alimento-perro
 
 [ ]
   11  Mascotas / Alimento perro / Alimento cachorro
@@ -1231,20 +975,8 @@ mascotas/alimento-perro/alimentos-humedos-y-latas
 mascotas/alimento-perro/snack-perros
 
 [ ]
-   0  Panadería y Pastelería
-panaderia-y-pasteleria
-
-[ ]
-   0  Panadería y Pastelería / Asaduría
-panaderia-y-pasteleria/asaduria
-
-[ ]
    9  Panadería y Pastelería / Asaduría / Empanadas
 panaderia-y-pasteleria/asaduria/empanadas
-
-[ ]
-   0  Panadería y Pastelería / Pan
-panaderia-y-pasteleria/pan
 
 [ ]
   18  Panadería y Pastelería / Pan / Pan corriente
@@ -1257,10 +989,6 @@ panaderia-y-pasteleria/pan/pan-hamburguesa-y-hot-dog
 [ ]
   57  Panadería y Pastelería / Pan / Panes especiales
 panaderia-y-pasteleria/pan/panes-especiales
-
-[ ]
-   0  Panadería y Pastelería / Pan envasado
-panaderia-y-pasteleria/pan-envasado
 
 [ ]
    2  Panadería y Pastelería / Pan envasado / Marraqueta y hallulla
@@ -1295,10 +1023,6 @@ panaderia-y-pasteleria/pan-envasado/pan-rallado-y-crutones
 panaderia-y-pasteleria/pan-envasado/tortillas-y-masas
 
 [ ]
-   0  Panadería y Pastelería / Pastelería
-panaderia-y-pasteleria/pasteleria
-
-[ ]
   82  Panadería y Pastelería / Pastelería / Envasados y colaciones
 panaderia-y-pasteleria/pasteleria/envasados-y-colaciones
 
@@ -1323,14 +1047,6 @@ panaderia-y-pasteleria/pasteleria/pie-kuchen-y-tartas
 panaderia-y-pasteleria/pasteleria/tortas
 
 [ ]
-   0  Perfumería
-perfumeria
-
-[ ]
-   0  Perfumería / Cuidado adulto
-perfumeria/cuidado-adulto
-
-[ ]
   32  Perfumería / Cuidado adulto / Pañales y pants
 perfumeria/cuidado-adulto/panales-y-pants
 
@@ -1341,10 +1057,6 @@ perfumeria/cuidado-adulto/proteccion-cama
 [ ]
    6  Perfumería / Cuidado adulto / Protectores y toallas húmedas
 perfumeria/cuidado-adulto/protectores-y-toallas-humedas
-
-[ ]
-   0  Perfumería / Cuidado bucal
-perfumeria/cuidado-bucal
 
 [ ]
   59  Perfumería / Cuidado bucal / Cepillos
@@ -1359,20 +1071,12 @@ perfumeria/cuidado-bucal/enjuague-bucal-y-sedas
 perfumeria/cuidado-bucal/pasta-dental
 
 [ ]
-   0  Perfumería / Cuidado capilar
-perfumeria/cuidado-capilar
-
-[ ]
  121  Perfumería / Cuidado capilar / Acondicionador
 perfumeria/cuidado-capilar/acondicionador
 
 [ ]
    7  Perfumería / Cuidado capilar / Cepillos, peinetas y accesorios
 perfumeria/cuidado-capilar/cepillos-peinetas-y-accesorios
-
-[ ]
-   0  Perfumería / Cuidado capilar / Coloración y tinturas
-perfumeria/cuidado-capilar/coloracion-y-tinturas
 
 [ ]
   89  Perfumería / Cuidado capilar / Cremas para peinar
@@ -1385,10 +1089,6 @@ perfumeria/cuidado-capilar/fijadores
 [ ]
   80  Perfumería / Cuidado capilar / Shampoo
 perfumeria/cuidado-capilar/shampoo
-
-[ ]
-   0  Perfumería / Cuidado corporal y facial
-perfumeria/cuidado-corporal-y-facial
 
 [ ]
   33  Perfumería / Cuidado corporal y facial / Cremas corporales
@@ -1407,10 +1107,6 @@ perfumeria/cuidado-corporal-y-facial/cremas-faciales
 perfumeria/cuidado-corporal-y-facial/proteccion-solar
 
 [ ]
-   0  Perfumería / Cuidado femenino
-perfumeria/cuidado-femenino
-
-[ ]
   14  Perfumería / Cuidado femenino / Colonia
 perfumeria/cuidado-femenino/colonia
 
@@ -1427,10 +1123,6 @@ perfumeria/cuidado-femenino/desodorante
 perfumeria/cuidado-femenino/proteccion-femenina
 
 [ ]
-   0  Perfumería / Cuidado masculino
-perfumeria/cuidado-masculino
-
-[ ]
   38  Perfumería / Cuidado masculino / Afeitadoras y repuestos
 perfumeria/cuidado-masculino/afeitadoras-y-repuestos
 
@@ -1439,16 +1131,8 @@ perfumeria/cuidado-masculino/afeitadoras-y-repuestos
 perfumeria/cuidado-masculino/colonias
 
 [ ]
-   0  Perfumería / Cuidado masculino / Crema, gel y espuma de afeitar
-perfumeria/cuidado-masculino/crema-gel-y-espuma-de-afeitar
-
-[ ]
   97  Perfumería / Cuidado masculino / Desodorantes
 perfumeria/cuidado-masculino/desodorantes
-
-[ ]
-   0  Perfumería / Cuidado personal
-perfumeria/cuidado-personal
 
 [ ]
    3  Perfumería / Cuidado personal / Alcohol gel
@@ -1479,24 +1163,12 @@ perfumeria/cuidado-personal/jabon-en-barra
 perfumeria/cuidado-personal/jabon-liquido
 
 [ ]
-   0  Perfumería / Farmacia
-perfumeria/farmacia
-
-[ ]
    6  Perfumería / Farmacia / Preservativos y lubricantes
 perfumeria/farmacia/preservativos-y-lubricantes
 
 [ ]
   12  Perfumería / Farmacia / Primeros auxilios
 perfumeria/farmacia/primeros-auxilios
-
-[ ]
-   0  Quesos y Fiambres
-quesos-y-fiambres
-
-[ ]
-   0  Quesos y Fiambres / Fiambres y embutidos
-quesos-y-fiambres/fiambres-y-embutidos
 
 [ ]
   16  Quesos y Fiambres / Fiambres y embutidos / Jamón serrano y otros
@@ -1521,10 +1193,6 @@ quesos-y-fiambres/fiambres-y-embutidos/salame-y-tocino
 [ ]
   33  Quesos y Fiambres / Fiambres y embutidos / Salchichas
 quesos-y-fiambres/fiambres-y-embutidos/salchichas
-
-[ ]
-   0  Quesos y Fiambres / Quesos
-quesos-y-fiambres/quesos
 
 [ ]
   16  Quesos y Fiambres / Quesos / Cabra y oveja

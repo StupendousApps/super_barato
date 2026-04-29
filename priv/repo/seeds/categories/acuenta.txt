@@ -1,12 +1,4 @@
 [ ]
-   0  Aseo y limpieza
-aseo-y-limpieza/11
-
-[ ]
-   0  Aseo y limpieza / Artículos de limpieza
-aseo-y-limpieza/11/articulos-de-limpieza/1102
-
-[ ]
    4  Aseo y limpieza / Artículos de limpieza / Escobillones, escobillas y palas
 aseo-y-limpieza/11/articulos-de-limpieza/1102/escobillones-escobillas-y-palas/110203
 
@@ -17,10 +9,6 @@ aseo-y-limpieza/11/articulos-de-limpieza/1102/esponjas-y-guantes/110202
 [ ]
   11  Aseo y limpieza / Artículos de limpieza / Paños, traperos y mopas
 aseo-y-limpieza/11/articulos-de-limpieza/1102/panos-traperos-y-mopas/110201
-
-[ ]
-   0  Aseo y limpieza / Baño y Cocina
-aseo-y-limpieza/11/bano-y-cocina/1107
 
 [ ]
   24  Aseo y limpieza / Baño y Cocina / Lavaloza
@@ -51,10 +39,6 @@ aseo-y-limpieza/11/bolsas-de-basura-y-envoltorios/1103
 aseo-y-limpieza/11/cuidado-calzado/1110
 
 [ ]
-   0  Aseo y limpieza / Desinfección
-aseo-y-limpieza/11/desinfeccion/1104
-
-[ ]
   32  Aseo y limpieza / Desinfección / Cloro
 aseo-y-limpieza/11/desinfeccion/1104/cloro/110401
 
@@ -69,10 +53,6 @@ aseo-y-limpieza/11/desinfeccion/1104/toallas-humedas/110402
 [ ]
   15  Aseo y limpieza / Desodorantes Ambientales
 aseo-y-limpieza/11/desodorantes-ambientales/1101
-
-[ ]
-   0  Aseo y limpieza / Detergentes y Suavizantes
-aseo-y-limpieza/11/detergentes-y-suavizantes/1105
 
 [ ]
   23  Aseo y limpieza / Detergentes y Suavizantes / Detergente en Polvo
@@ -103,10 +83,6 @@ aseo-y-limpieza/11/fosforos/1106
 aseo-y-limpieza/11/insecticidas-y-plaguicidas/1112
 
 [ ]
-   0  Aseo y limpieza / Papeles
-aseo-y-limpieza/11/papeles/1113
-
-[ ]
   14  Aseo y limpieza / Papeles / Papel Higiénico
 aseo-y-limpieza/11/papeles/1113/papel-higienico/111301
 
@@ -117,10 +93,6 @@ aseo-y-limpieza/11/papeles/1113/servilletas/111303
 [ ]
    9  Aseo y limpieza / Papeles / Toallas de Papel
 aseo-y-limpieza/11/papeles/1113/toallas-de-papel/111302
-
-[ ]
-   0  Aseo y limpieza / Pisos y Muebles
-aseo-y-limpieza/11/pisos-y-muebles/1108
 
 [ ]
   20  Aseo y limpieza / Pisos y Muebles / Cera y Virutilla
@@ -135,24 +107,12 @@ aseo-y-limpieza/11/pisos-y-muebles/1108/limpiadores-de-piso/110801
 aseo-y-limpieza/11/pisos-y-muebles/1108/lustramuebles/110803
 
 [ ]
-   0  Bebidas y Snacks
-bebidas-y-snacks/02
-
-[ ]
-   0  Bebidas y Snacks / Aguas
-bebidas-y-snacks/02/aguas/0201
-
-[ ]
   16  Bebidas y Snacks / Aguas / Aguas Minerales y Purificadas
 bebidas-y-snacks/02/aguas/0201/aguas-minerales-y-purificadas/020101
 
 [ ]
    9  Bebidas y Snacks / Aguas / Aguas Saborizadas
 bebidas-y-snacks/02/aguas/0201/aguas-saborizadas/020102
-
-[ ]
-   0  Bebidas y Snacks / Bebidas
-bebidas-y-snacks/02/bebidas/0202
 
 [ ]
   33  Bebidas y Snacks / Bebidas / Bebidas desechables regulares
@@ -171,20 +131,12 @@ bebidas-y-snacks/02/bebidas/0202/bebidas-individuales/020204
 bebidas-y-snacks/02/bebidas/0202/bebidas-retornables/020203
 
 [ ]
-   0  Bebidas y Snacks / Energéticas e Isotónicas
-bebidas-y-snacks/02/energeticas-e-isotonicas/0209
-
-[ ]
   11  Bebidas y Snacks / Energéticas e Isotónicas / Energéticas 
 bebidas-y-snacks/02/energeticas-e-isotonicas/0209/energeticas/020901
 
 [ ]
    9  Bebidas y Snacks / Energéticas e Isotónicas / Isotónicas y Sueros
 bebidas-y-snacks/02/energeticas-e-isotonicas/0209/isotonicas-y-sueros/020902
-
-[ ]
-   0  Bebidas y Snacks / Jugos
-bebidas-y-snacks/02/jugos/0205
 
 [ ]
   28  Bebidas y Snacks / Jugos / Jugos en Polvo
@@ -195,20 +147,12 @@ bebidas-y-snacks/02/jugos/0205/jugos-en-polvo/020503
 bebidas-y-snacks/02/jugos/0205/jugos-liquidos/020501
 
 [ ]
-   0  Bebidas y Snacks / Siempre Útil
-bebidas-y-snacks/02/siempre-util/0207
-
-[ ]
    8  Bebidas y Snacks / Siempre Útil / Pilas
 bebidas-y-snacks/02/siempre-util/0207/pilas/020707
 
 [ ]
    5  Bebidas y Snacks / Siempre Útil / Snack Dulce
 bebidas-y-snacks/02/siempre-util/0207/snack-dulce/020701
-
-[ ]
-   0  Bebidas y Snacks / Snacks y Galletas Saladas
-bebidas-y-snacks/02/snacks-y-galletas-saladas/0208
 
 [ ]
    8  Bebidas y Snacks / Snacks y Galletas Saladas / Aceitunas, Pepinillos y Encurtidos
@@ -243,14 +187,6 @@ bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/tortillas/020802
 bebidas-y-snacks/02/snacks-y-galletas-saladas/0208/untable/020807
 
 [ ]
-   0  Canasta Ahorradora
-canasta-ahorradora/400
-
-[ ]
-   0  Carnes
-carnes/03
-
-[ ]
   25  Carnes / Cerdo
 carnes/03/cerdo/0302
 
@@ -275,10 +211,6 @@ carnes/03/salchichas-y-parrilleros/0307
 carnes/03/vacuno/0305
 
 [ ]
-   0  Congelados
-congelados/04
-
-[ ]
    2  Congelados / Comidas Preparadas
 congelados/04/comidas-preparadas/0405
 
@@ -297,14 +229,6 @@ congelados/04/nuggets-y-apanados/0407
 [ ]
   15  Congelados / Verduras y Frutas Congeladas
 congelados/04/verduras-y-frutas-congeladas/0403
-
-[ ]
-   0  Desayuno y Dulces
-desayuno-y-dulces/44
-
-[ ]
-   0  Desayuno y Dulces / Café, Té y Hierbas
-desayuno-y-dulces/44/cafe-te-y-hierbas/4401
 
 [ ]
    2  Desayuno y Dulces / Café, Té y Hierbas / Café Descafeinado
@@ -339,10 +263,6 @@ desayuno-y-dulces/44/cafe-te-y-hierbas/4401/te-negro/440106
 desayuno-y-dulces/44/cafe-te-y-hierbas/4401/te-verde-y-saborizados/440107
 
 [ ]
-   0  Desayuno y Dulces / Cereales, Avenas y Barras
-desayuno-y-dulces/44/cereales-avenas-y-barras/4403
-
-[ ]
    9  Desayuno y Dulces / Cereales, Avenas y Barras / Avena y Granola
 desayuno-y-dulces/44/cereales-avenas-y-barras/4403/avena-y-granola/440304
 
@@ -357,10 +277,6 @@ desayuno-y-dulces/44/cereales-avenas-y-barras/4403/cereal-de-trigo-inflado/44030
 [ ]
   54  Desayuno y Dulces / Cereales, Avenas y Barras / Cereales
 desayuno-y-dulces/44/cereales-avenas-y-barras/4403/cereales/440301
-
-[ ]
-   0  Desayuno y Dulces / Chocolates y Dulces
-desayuno-y-dulces/44/chocolates-y-dulces/4404
 
 [ ]
   22  Desayuno y Dulces / Chocolates y Dulces / Bombones y Otros
@@ -385,10 +301,6 @@ desayuno-y-dulces/44/chocolates-y-dulces/4404/gomitas-y-masticables/440404
 [ ]
    7  Desayuno y Dulces / Chocolates y Dulces / Malvas, Marshmallows y Merenguitos
 desayuno-y-dulces/44/chocolates-y-dulces/4404/malvas-marshmallows-y-merenguitos/440406
-
-[ ]
-   0  Desayuno y Dulces / Galletas y Colaciones
-desayuno-y-dulces/44/galletas-y-colaciones/4405
 
 [ ]
    8  Desayuno y Dulces / Galletas y Colaciones / Galletas colación
@@ -419,10 +331,6 @@ desayuno-y-dulces/44/galletas-y-colaciones/4405/integrales-arroz-y-otros/440507
 desayuno-y-dulces/44/galletas-y-colaciones/4405/queques-y-bizcochos/440506
 
 [ ]
-   0  Desayuno y Dulces / Manjar, Miel y Mermeladas
-desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406
-
-[ ]
    8  Desayuno y Dulces / Manjar, Miel y Mermeladas / Cremas dulces
 desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/cremas-dulces/440604
 
@@ -439,14 +347,6 @@ desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/mermeladas-y-membrillos/44060
 desayuno-y-dulces/44/manjar-miel-y-mermeladas/4406/miel/440603
 
 [ ]
-   0  Despensa
-despensa/05
-
-[ ]
-   0  Despensa / Aceites y Vinagres
-despensa/05/aceites-y-vinagres/0501
-
-[ ]
    6  Despensa / Aceites y Vinagres / Aceites de Oliva
 despensa/05/aceites-y-vinagres/0501/aceites-de-oliva/050102
 
@@ -457,10 +357,6 @@ despensa/05/aceites-y-vinagres/0501/aceites-vegetales/050101
 [ ]
   19  Despensa / Aceites y Vinagres / Vinagres y Sucedáneos
 despensa/05/aceites-y-vinagres/0501/vinagres-y-sucedaneos/050103
-
-[ ]
-   0  Despensa / Arroz, Legumbres y Semillas
-despensa/05/arroz-legumbres-y-semillas/0502
 
 [ ]
   18  Despensa / Arroz, Legumbres y Semillas / Arroz
@@ -483,20 +379,12 @@ despensa/05/arroz-legumbres-y-semillas/0502/porotos-y-lentejas/050203
 despensa/05/arroz-legumbres-y-semillas/0502/semillas-y-cereales/050205
 
 [ ]
-   0  Despensa / Azúcar y Endulzantes
-despensa/05/azucar-y-endulzantes/0503
-
-[ ]
   18  Despensa / Azúcar y Endulzantes / Azúcar
 despensa/05/azucar-y-endulzantes/0503/azucar/050301
 
 [ ]
   15  Despensa / Azúcar y Endulzantes / Endulzantes
 despensa/05/azucar-y-endulzantes/0503/endulzantes/050302
-
-[ ]
-   0  Despensa / Conservas
-despensa/05/conservas/0506
 
 [ ]
   43  Despensa / Conservas / Frutas en Conserva
@@ -511,10 +399,6 @@ despensa/05/conservas/0506/pescados-y-mariscos-en-conserva/050603
 despensa/05/conservas/0506/verduras-en-conserva/050602
 
 [ ]
-   0  Despensa / Fideos, Pastas y Salsas
-despensa/05/fideos-pastas-y-salsas/0516
-
-[ ]
    8  Despensa / Fideos, Pastas y Salsas / Lasañas y rellenos
 despensa/05/fideos-pastas-y-salsas/0516/lasanas-y-rellenos/051602
 
@@ -525,10 +409,6 @@ despensa/05/fideos-pastas-y-salsas/0516/pastas-y-fideos/051601
 [ ]
   37  Despensa / Fideos, Pastas y Salsas / Salsas para pastas
 despensa/05/fideos-pastas-y-salsas/0516/salsas-para-pastas/051603
-
-[ ]
-   0  Despensa / Harinas y Polvos
-despensa/05/harinas-y-polvos/0512
 
 [ ]
   12  Despensa / Harinas y Polvos / Harina de Maíz, Sémola y Polenta
@@ -547,10 +427,6 @@ despensa/05/harinas-y-polvos/0512/harinas-integrales/051202
 despensa/05/harinas-y-polvos/0512/polvos-levaduras-y-otros/051204
 
 [ ]
-   0  Despensa / Repostería
-despensa/05/reposteria/0517
-
-[ ]
   20  Despensa / Repostería / Decoración y coberturas
 despensa/05/reposteria/0517/decoracion-y-coberturas/051703
 
@@ -567,10 +443,6 @@ despensa/05/reposteria/0517/horneables-y-premezclas/051702
 despensa/05/reposteria/0517/salsas-para-postres-y-esencias/051704
 
 [ ]
-   0  Despensa / Sal y Condimentos
-despensa/05/sal-y-condimentos/0518
-
-[ ]
   42  Despensa / Sal y Condimentos / Bases y caldos
 despensa/05/sal-y-condimentos/0518/bases-y-caldos/051803
 
@@ -581,10 +453,6 @@ despensa/05/sal-y-condimentos/0518/condimentos/051802
 [ ]
   13  Despensa / Sal y Condimentos / Sal
 despensa/05/sal-y-condimentos/0518/sal/051801
-
-[ ]
-   0  Despensa / Salsas y Aderezos
-despensa/05/salsas-y-aderezos/0519
 
 [ ]
    8  Despensa / Salsas y Aderezos / Ketchup
@@ -607,10 +475,6 @@ despensa/05/salsas-y-aderezos/0519/otras-salsas/051905
 despensa/05/salsas-y-aderezos/0519/salsas-picantes/051904
 
 [ ]
-   0  Despensa / Sopas, Cremas e Instantáneos
-despensa/05/sopas-cremas-e-instantaneos/0520
-
-[ ]
    7  Despensa / Sopas, Cremas e Instantáneos / Comidas instantáneas
 despensa/05/sopas-cremas-e-instantaneos/0520/comidas-instantaneas/052003
 
@@ -621,30 +485,6 @@ despensa/05/sopas-cremas-e-instantaneos/0520/pure-instantaneo/052001
 [ ]
   43  Despensa / Sopas, Cremas e Instantáneos / Sopas y Cremas
 despensa/05/sopas-cremas-e-instantaneos/0520/sopas-y-cremas/052002
-
-[ ]
-   0  Día de la madre
-dia-de-la-madre/77
-
-[ ]
-   0  Día de la madre / Chocolates, bombones y otros
-dia-de-la-madre/77/chocolates-bombones-y-otros/7701
-
-[ ]
-   0  Día de la madre / Regalos
-dia-de-la-madre/77/regalos/7702
-
-[ ]
-   0  Día de la madre / Tortas y pasteles
-dia-de-la-madre/77/tortas-y-pasteles/7703
-
-[ ]
-   0  El Bar
-el-bar/80
-
-[ ]
-   0  El Bar / Cervezas
-el-bar/80/cervezas/8001
 
 [ ]
    4  El Bar / Cervezas / Artesanales
@@ -667,10 +507,6 @@ el-bar/80/cervezas/8001/tradicionales/800102
 el-bar/80/cigarrillos/8007
 
 [ ]
-   0  El Bar / Coctel
-el-bar/80/coctel/8005
-
-[ ]
    3  El Bar / Coctel / Complementos
 el-bar/80/coctel/8005/complementos/800501
 
@@ -689,10 +525,6 @@ el-bar/80/coctel/8005/sour/800504
 [ ]
    7  El Bar / Coctel / Tragos Preparados y Vermouth
 el-bar/80/coctel/8005/tragos-preparados-y-vermouth/800505
-
-[ ]
-   0  El Bar / Destilados
-el-bar/80/destilados/8003
 
 [ ]
    6  El Bar / Destilados / Gin y Vodka
@@ -719,10 +551,6 @@ el-bar/80/espumantes/8006
 el-bar/80/sin-alcohol/8004
 
 [ ]
-   0  El Bar / Vinos
-el-bar/80/vinos/8002
-
-[ ]
    1  El Bar / Vinos / Espumantes
 el-bar/80/vinos/8002/espumantes/800203
 
@@ -739,14 +567,6 @@ el-bar/80/vinos/8002/vinos-blancos/800202
 el-bar/80/vinos/8002/vinos-tintos/800201
 
 [ ]
-   0  Frescos y Lácteos
-frescos-y-lacteos/07
-
-[ ]
-   0  Frescos y Lácteos / Fiambrería
-frescos-y-lacteos/07/fiambreria/0701
-
-[ ]
   32  Frescos y Lácteos / Fiambrería / Jamones y Mortadelas
 frescos-y-lacteos/07/fiambreria/0701/jamones-y-mortadelas/070103
 
@@ -757,10 +577,6 @@ frescos-y-lacteos/07/fiambreria/0701/pates/070101
 [ ]
   11  Frescos y Lácteos / Fiambrería / Salames, Tocinos y Arrollados
 frescos-y-lacteos/07/fiambreria/0701/salames-tocinos-y-arrollados/070104
-
-[ ]
-   0  Frescos y Lácteos / Huevos y Mantequillas
-frescos-y-lacteos/07/huevos-y-mantequillas/0702
 
 [ ]
    6  Frescos y Lácteos / Huevos y Mantequillas / Huevos
@@ -777,10 +593,6 @@ frescos-y-lacteos/07/huevos-y-mantequillas/0702/mantequillas/070202
 [ ]
   19  Frescos y Lácteos / Huevos y Mantequillas / Margarinas
 frescos-y-lacteos/07/huevos-y-mantequillas/0702/margarinas/070203
-
-[ ]
-   0  Frescos y Lácteos / Leches y Cremas
-frescos-y-lacteos/07/leches-y-cremas/0703
 
 [ ]
    3  Frescos y Lácteos / Leches y Cremas / Bebidas Vegetales
@@ -819,20 +631,12 @@ frescos-y-lacteos/07/leches-y-cremas/0703/leches-saborizadas/070304
 frescos-y-lacteos/07/leches-y-cremas/0703/saborizantes-para-leche/070305
 
 [ ]
-   0  Frescos y Lácteos / Platos Preparados
-frescos-y-lacteos/07/platos-preparados/0709
-
-[ ]
    9  Frescos y Lácteos / Platos Preparados / Otros Platos Preparados
 frescos-y-lacteos/07/platos-preparados/0709/otros-platos-preparados/070902
 
 [ ]
    5  Frescos y Lácteos / Platos Preparados / Pizzas
 frescos-y-lacteos/07/platos-preparados/0709/pizzas/070901
-
-[ ]
-   0  Frescos y Lácteos / Postres
-frescos-y-lacteos/07/postres/0706
 
 [ ]
    6  Frescos y Lácteos / Postres / Flan
@@ -845,10 +649,6 @@ frescos-y-lacteos/07/postres/0706/jaleas-y-compotas/070602
 [ ]
   19  Frescos y Lácteos / Postres / Otros Postres
 frescos-y-lacteos/07/postres/0706/otros-postres/070603
-
-[ ]
-   0  Frescos y Lácteos / Quesos y Quesillos
-frescos-y-lacteos/07/quesos-y-quesillos/0707
 
 [ ]
    9  Frescos y Lácteos / Quesos y Quesillos / Quesillos y Quesos Frescos
@@ -867,10 +667,6 @@ frescos-y-lacteos/07/quesos-y-quesillos/0707/quesos-crema/070703
 frescos-y-lacteos/07/quesos-y-quesillos/0707/quesos-rallados/070704
 
 [ ]
-   0  Frescos y Lácteos / Yoghurt
-frescos-y-lacteos/07/yoghurt/0708
-
-[ ]
   60  Frescos y Lácteos / Yoghurt / Batidos
 frescos-y-lacteos/07/yoghurt/0708/batidos/070801
 
@@ -883,10 +679,6 @@ frescos-y-lacteos/07/yoghurt/0708/infantiles/070803
 frescos-y-lacteos/07/yoghurt/0708/proteina-y-probioticos/070802
 
 [ ]
-   0  Frutas y Verduras
-frutas-y-verduras/06
-
-[ ]
   16  Frutas y Verduras / Frutas
 frutas-y-verduras/06/frutas/0601
 
@@ -895,28 +687,8 @@ frutas-y-verduras/06/frutas/0601
 frutas-y-verduras/06/verduras/0602
 
 [ ]
-   0  Luka, dos y tres lukas
-luka-dos-y-tres-lukas/60
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Alimento Mascotas a $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/alimento-mascotas-a-1000/600101
-
-[ ]
    1  Luka, dos y tres lukas / Bodegazo a $1.000 / Aseo y Limpieza a $1000
 luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/aseo-y-limpieza-a-1000/600102
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Bebestibles y Snacks a $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/bebestibles-y-snacks-a-1000/600103
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Carnes, Salchichas y Congelados a $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/carnes-salchichas-y-congelados-a-1000/600112
 
 [ ]
    7  Luka, dos y tres lukas / Bodegazo a $1.000 / Desayuno y colaciones a $1000
@@ -927,80 +699,12 @@ luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/desayuno-y-colaciones-a-1000/6001
 luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/despensa-a-1000/600106
 
 [ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Dulces y Chocolates $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/dulces-y-chocolates-1000/600107
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / El Bar a $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/el-bar-a-1000/600108
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Frescos y Lácteos $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/frescos-y-lacteos-1000/600109
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Mundo bebé a $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/mundo-bebe-a-1000/600104
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $1.000 / Perfumeria y Cuidado Personal a $1000
-luka-dos-y-tres-lukas/60/bodegazo-a-1-000/6001/perfumeria-y-cuidado-personal-a-1000/600110
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Alimento Mascotas a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/alimento-mascotas-a-2000/600201
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Aseo y Limpieza a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/aseo-y-limpieza-a-2000/600202
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Bebestibles y Snacks a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/bebestibles-y-snacks-a-2000/600203
-
-[ ]
    7  Luka, dos y tres lukas / Bodegazo a $2.000 / Desayuno y colaciones a $2000
 luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/desayuno-y-colaciones-a-2000/600205
 
 [ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Despensa a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/despensa-a-2000/600206
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Dulces y Chocolates a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/dulces-y-chocolates-a-2000/600207
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Frescos y Lácteos a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/frescos-y-lacteos-a-2000/600208
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Mundo bebé a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/mundo-bebe-a-2000/600204
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $2.000 / Perfumeria y Cuidado Personal a $2000
-luka-dos-y-tres-lukas/60/bodegazo-a-2-000/6002/perfumeria-y-cuidado-personal-a-2000/600210
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003
-
-[ ]
    1  Luka, dos y tres lukas / Bodegazo a $3.000 / Aseo y Limpieza a $3000
 luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/aseo-y-limpieza-a-3000/600302
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000 / Bebestibles y Snacks a $3000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/bebestibles-y-snacks-a-3000/600303
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000 / Carnes, Salchichas y Congelados a $3000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/carnes-salchichas-y-congelados-a-3000/600311
 
 [ ]
    5  Luka, dos y tres lukas / Bodegazo a $3.000 / Desayuno y colaciones a $3000
@@ -1011,40 +715,8 @@ luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/desayuno-y-colaciones-a-3000/6003
 luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/despensa-a-3000/600306
 
 [ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000 / Dulces y chocolates a $3000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/dulces-y-chocolates-a-3000/600310
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000 / El Bar a $3000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/el-bar-a-3000/600307
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000 / Mundo bebé a $3000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/mundo-bebe-a-3000/600304
-
-[ ]
-   0  Luka, dos y tres lukas / Bodegazo a $3.000 / Perfumería y Cuidado Personal a $3000
-luka-dos-y-tres-lukas/60/bodegazo-a-3-000/6003/perfumeria-y-cuidado-personal-a-3000/600309
-
-[ ]
-   0  Marcas Propias
-marcas-propias/20
-
-[ ]
-   0  Marcas Propias / Acuenta
-marcas-propias/20/acuenta/2001
-
-[ ]
   25  Marcas Propias / Autodrive
 marcas-propias/20/autodrive/2013
-
-[ ]
-   0  Marcas Propias / El Buen Corte
-marcas-propias/20/el-buen-corte/2003
-
-[ ]
-   0  Marcas Propias / Equate
-marcas-propias/20/equate/2005
 
 [ ]
    7  Marcas Propias / Great Value
@@ -1063,22 +735,6 @@ marcas-propias/20/haus/2008
 marcas-propias/20/lider/2002
 
 [ ]
-   0  Marcas Propias / Parents Choice
-marcas-propias/20/parents-choice/2007
-
-[ ]
-   0  Marcas Propias / Selección
-marcas-propias/20/seleccion/2006
-
-[ ]
-   0  Mascotas
-mascotas/88
-
-[ ]
-   0  Mascotas / Gatos
-mascotas/88/gatos/8802
-
-[ ]
   10  Mascotas / Gatos / Alimento húmedo y snacks
 mascotas/88/gatos/8802/alimento-humedo-y-snacks/880105
 
@@ -1089,10 +745,6 @@ mascotas/88/gatos/8802/alimento-seco/880104
 [ ]
    4  Mascotas / Gatos / Higiene y juguetes
 mascotas/88/gatos/8802/higiene-y-juguetes/880106
-
-[ ]
-   0  Mascotas / Perros
-mascotas/88/perros/8801
 
 [ ]
   23  Mascotas / Perros / Alimento húmedo y snacks
@@ -1107,14 +759,6 @@ mascotas/88/perros/8801/alimento-seco/880101
 mes-del-completo/1200
 
 [ ]
-   0  Mundo bebé
-mundo-bebe/09
-
-[ ]
-   0  Mundo bebé / Accesorios de alimentación bebé
-mundo-bebe/09/accesorios-de-alimentacion-bebe/0901
-
-[ ]
    1  Mundo bebé / Accesorios de alimentación bebé / Lactancia
 mundo-bebe/09/accesorios-de-alimentacion-bebe/0901/lactancia/090103
 
@@ -1125,10 +769,6 @@ mundo-bebe/09/accesorios-de-alimentacion-bebe/0901/mamaderas-chupetes-y-tetinas/
 [ ]
    1  Mundo bebé / Accesorios de alimentación bebé / Sillas y Accesorios para comer
 mundo-bebe/09/accesorios-de-alimentacion-bebe/0901/sillas-y-accesorios-para-comer/090102
-
-[ ]
-   0  Mundo bebé / Alimento y formulas bebé
-mundo-bebe/09/alimento-y-formulas-bebe/0902
 
 [ ]
   10  Mundo bebé / Alimento y formulas bebé / Cereales y Snacks
@@ -1145,10 +785,6 @@ mundo-bebe/09/alimento-y-formulas-bebe/0902/leches-y-formulas/090201
 [ ]
    2  Mundo bebé / Higiene y Baño
 mundo-bebe/09/higiene-y-bano/0905
-
-[ ]
-   0  Mundo bebé / Higiene y perfumería bebé
-mundo-bebe/09/higiene-y-perfumeria-bebe/0904
 
 [ ]
    3  Mundo bebé / Higiene y perfumería bebé / Accesorios de Baño y Cuidado
@@ -1175,24 +811,12 @@ mundo-bebe/09/higiene-y-perfumeria-bebe/0904/shampoo-y-acondicionador/090401
 mundo-bebe/09/higiene-y-perfumeria-bebe/0904/talcos-y-pomadas/090405
 
 [ ]
-   0  Mundo bebé / Pañales y Toallas Húmedas
-mundo-bebe/09/panales-y-toallas-humedas/0903
-
-[ ]
   73  Mundo bebé / Pañales y Toallas Húmedas / Pañales
 mundo-bebe/09/panales-y-toallas-humedas/0903/panales/090301
 
 [ ]
   17  Mundo bebé / Pañales y Toallas Húmedas / Toallitas Húmedas
 mundo-bebe/09/panales-y-toallas-humedas/0903/toallitas-humedas/090302
-
-[ ]
-   0  Panadería y Pastelería
-panaderia-y-pasteleria/10
-
-[ ]
-   0  Panadería y Pastelería / Panadería
-panaderia-y-pasteleria/10/panaderia/1001
 
 [ ]
    4  Panadería y Pastelería / Panadería / Otros
@@ -1207,10 +831,6 @@ panaderia-y-pasteleria/10/panaderia/1001/panaderia-envasada/100102
 panaderia-y-pasteleria/10/panaderia/1001/panaderia-granel/100101
 
 [ ]
-   0  Panadería y Pastelería / Pastelería
-panaderia-y-pasteleria/10/pasteleria/1002
-
-[ ]
   15  Panadería y Pastelería / Pastelería / Queques y otros
 panaderia-y-pasteleria/10/pasteleria/1002/queques-y-otros/100202
 
@@ -1221,14 +841,6 @@ panaderia-y-pasteleria/10/pasteleria/1002/tortas-y-pasteles/100201
 [ ]
   10  Panadería y Pastelería / Tortillas y masas
 panaderia-y-pasteleria/10/tortillas-y-masas/1004
-
-[ ]
-   0  Perfumería y Cuidado Personal
-perfumeria-y-cuidado-personal/12
-
-[ ]
-   0  Perfumería y Cuidado Personal / Belleza y Coloración
-perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202
 
 [ ]
    4  Perfumería y Cuidado Personal / Belleza y Coloración / Accesorios y Complementos
@@ -1247,20 +859,12 @@ perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202/cosmeticos-y-cosmetiq
 perfumeria-y-cuidado-personal/12/belleza-y-coloracion/1202/fijadores/120202
 
 [ ]
-   0  Perfumería y Cuidado Personal / Cuidado Adulto Mayor
-perfumeria-y-cuidado-personal/12/cuidado-adulto-mayor/1203
-
-[ ]
    5  Perfumería y Cuidado Personal / Cuidado Adulto Mayor / Apósitos, Sabanillas y otros
 perfumeria-y-cuidado-personal/12/cuidado-adulto-mayor/1203/apositos-sabanillas-y-otros/120302
 
 [ ]
   15  Perfumería y Cuidado Personal / Cuidado Adulto Mayor / Pañales y Protectores de Cama
 perfumeria-y-cuidado-personal/12/cuidado-adulto-mayor/1203/panales-y-protectores-de-cama/120301
-
-[ ]
-   0  Perfumería y Cuidado Personal / Cuidado Bucal
-perfumeria-y-cuidado-personal/12/cuidado-bucal/1204
 
 [ ]
   44  Perfumería y Cuidado Personal / Cuidado Bucal / Cepillos y Pasta Dental Adultos
@@ -1279,10 +883,6 @@ perfumeria-y-cuidado-personal/12/cuidado-bucal/1204/enjuague-bucal/120403
 perfumeria-y-cuidado-personal/12/cuidado-bucal/1204/seda-dental/120404
 
 [ ]
-   0  Perfumería y Cuidado Personal / Cuidado Capilar
-perfumeria-y-cuidado-personal/12/cuidado-capilar/1201
-
-[ ]
   59  Perfumería y Cuidado Personal / Cuidado Capilar / Acondicionador
 perfumeria-y-cuidado-personal/12/cuidado-capilar/1201/acondicionador/120102
 
@@ -1293,10 +893,6 @@ perfumeria-y-cuidado-personal/12/cuidado-capilar/1201/mascarillas-y-cremas-de-pe
 [ ]
   73  Perfumería y Cuidado Personal / Cuidado Capilar / Shampoo
 perfumeria-y-cuidado-personal/12/cuidado-capilar/1201/shampoo/120101
-
-[ ]
-   0  Perfumería y Cuidado Personal / Cuidado Facial y Corporal
-perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210
 
 [ ]
   18  Perfumería y Cuidado Personal / Cuidado Facial y Corporal / Cremas Corporales
@@ -1315,10 +911,6 @@ perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210/limpieza-y-desma
 perfumeria-y-cuidado-personal/12/cuidado-facial-y-corporal/1210/proteccion-solar/121005
 
 [ ]
-   0  Perfumería y Cuidado Personal / Cuidado Femenino
-perfumeria-y-cuidado-personal/12/cuidado-femenino/1207
-
-[ ]
   13  Perfumería y Cuidado Personal / Cuidado Femenino / Depilación
 perfumeria-y-cuidado-personal/12/cuidado-femenino/1207/depilacion/120704
 
@@ -1331,10 +923,6 @@ perfumeria-y-cuidado-personal/12/cuidado-femenino/1207/perfumes-y-colonias/12070
 perfumeria-y-cuidado-personal/12/cuidado-femenino/1207/proteccion-femenina/120702
 
 [ ]
-   0  Perfumería y Cuidado Personal / Cuidado Masculino
-perfumeria-y-cuidado-personal/12/cuidado-masculino/1206
-
-[ ]
    5  Perfumería y Cuidado Personal / Cuidado Masculino / Afeitado Espumas y Gel
 perfumeria-y-cuidado-personal/12/cuidado-masculino/1206/afeitado-espumas-y-gel/120603
 
@@ -1345,10 +933,6 @@ perfumeria-y-cuidado-personal/12/cuidado-masculino/1206/afeitado-maquinas/120602
 [ ]
   45  Perfumería y Cuidado Personal / Cuidado Masculino / Desodorantes
 perfumeria-y-cuidado-personal/12/cuidado-masculino/1206/desodorantes/120601
-
-[ ]
-   0  Perfumería y Cuidado Personal / Higiene y Cuidado Personal
-perfumeria-y-cuidado-personal/12/higiene-y-cuidado-personal/1205
 
 [ ]
    5  Perfumería y Cuidado Personal / Higiene y Cuidado Personal / Cuidado de Pies
@@ -1371,46 +955,6 @@ perfumeria-y-cuidado-personal/12/otros-perfumeria/1208
 perfumeria-y-cuidado-personal/12/salud-y-primeros-auxilios/1211
 
 [ ]
-   0  Precios que no se tocan
-precios-que-no-se-tocan/55
-
-[ ]
-   0  Precios que no se tocan / Bebidas, aguas y jugos
-precios-que-no-se-tocan/55/bebidas-aguas-y-jugos/5501
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado / Cuidado Adulto
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502/cuidado-adulto/550201
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado / Cuidado Bucal
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502/cuidado-bucal/550202
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado / Cuidado capilar
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502/cuidado-capilar/550203
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado / Cuidado femenino
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502/cuidado-femenino/550204
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado / Cuidado masculino
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502/cuidado-masculino/550205
-
-[ ]
-   0  Precios que no se tocan / Belleza, higiene y cuidado / Jabón, gel y cremas
-precios-que-no-se-tocan/55/belleza-higiene-y-cuidado/5502/jabon-gel-y-cremas/550206
-
-[ ]
-   0  Precios que no se tocan / Carnes
-precios-que-no-se-tocan/55/carnes/5503
-
-[ ]
   16  Precios que no se tocan / Chocolates, dulces y galletas
 precios-que-no-se-tocan/55/chocolates-dulces-y-galletas/5504
 
@@ -1419,86 +963,10 @@ precios-que-no-se-tocan/55/chocolates-dulces-y-galletas/5504
 precios-que-no-se-tocan/55/colaciones/5505
 
 [ ]
-   0  Precios que no se tocan / Congelados
-precios-que-no-se-tocan/55/congelados/5506
-
-[ ]
-   0  Precios que no se tocan / Desayuno y once
-precios-que-no-se-tocan/55/desayuno-y-once/5507
-
-[ ]
-   0  Precios que no se tocan / Despensa
-precios-que-no-se-tocan/55/despensa/5508
-
-[ ]
-   0  Precios que no se tocan / Despensa / Aceites, vinagres y enlatados
-precios-que-no-se-tocan/55/despensa/5508/aceites-vinagres-y-enlatados/550801
-
-[ ]
-   0  Precios que no se tocan / Despensa / Harina, arroz y legumbres
-precios-que-no-se-tocan/55/despensa/5508/harina-arroz-y-legumbres/550802
-
-[ ]
    9  Precios que no se tocan / Despensa / Pastas y salsas
 precios-que-no-se-tocan/55/despensa/5508/pastas-y-salsas/550803
 
 [ ]
-   0  Precios que no se tocan / Despensa / Sopas
-precios-que-no-se-tocan/55/despensa/5508/sopas/550804
-
-[ ]
-   0  Precios que no se tocan / Frutas y Verduras
-precios-que-no-se-tocan/55/frutas-y-verduras/5509
-
-[ ]
-   0  Precios que no se tocan / La boti
-precios-que-no-se-tocan/55/la-boti/5510
-
-[ ]
    2  Precios que no se tocan / La boti / Cerveza
 precios-que-no-se-tocan/55/la-boti/5510/cerveza/551001
-
-[ ]
-   0  Precios que no se tocan / Limpieza
-precios-que-no-se-tocan/55/limpieza/5512
-
-[ ]
-   0  Precios que no se tocan / Lácteos y Fiambrería
-precios-que-no-se-tocan/55/lacteos-y-fiambreria/5511
-
-[ ]
-   0  Precios que no se tocan / Lácteos y Fiambrería / Huevos y Mantequilla
-precios-que-no-se-tocan/55/lacteos-y-fiambreria/5511/huevos-y-mantequilla/551101
-
-[ ]
-   0  Precios que no se tocan / Lácteos y Fiambrería / Leches y cremas
-precios-que-no-se-tocan/55/lacteos-y-fiambreria/5511/leches-y-cremas/551102
-
-[ ]
-   0  Precios que no se tocan / Lácteos y Fiambrería / Quesos y Fiambrería
-precios-que-no-se-tocan/55/lacteos-y-fiambreria/5511/quesos-y-fiambreria/551103
-
-[ ]
-   0  Precios que no se tocan / Lácteos y Fiambrería / Salchichas y Parrilleros
-precios-que-no-se-tocan/55/lacteos-y-fiambreria/5511/salchichas-y-parrilleros/551104
-
-[ ]
-   0  Precios que no se tocan / Lácteos y Fiambrería / Yogurt y Postres
-precios-que-no-se-tocan/55/lacteos-y-fiambreria/5511/yogurt-y-postres/551105
-
-[ ]
-   0  Precios que no se tocan / Mascotas
-precios-que-no-se-tocan/55/mascotas/5513
-
-[ ]
-   0  Precios que no se tocan / Mundo Bebé
-precios-que-no-se-tocan/55/mundo-bebe/5514
-
-[ ]
-   0  Precios que no se tocan / Panadería y Pastelería
-precios-que-no-se-tocan/55/panaderia-y-pasteleria/5515
-
-[ ]
-   0  Precios que no se tocan / Snacks y galletas saldas
-precios-que-no-se-tocan/55/snacks-y-galletas-saldas/5516
 

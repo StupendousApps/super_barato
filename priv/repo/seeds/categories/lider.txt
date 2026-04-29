@@ -1,24 +1,4 @@
 [ ]
-   0  Bebidas y Snacks
-bebidas-y-snack/13901022
-
-[ ]
-   0  Bebidas y Snacks / Aceitunas Pepinillos y Encurtidos
-bebidas-y-snacks/snacks-y-picoteo/aceitunas-pepinillos-y-encurtidos/13901022_66742898_78341269
-
-[ ]
-   0  Bebidas y Snacks / Aloe Vera
-bebidas-y-snacks/aguas/aloe-vera/13901022_67311042_89652778
-
-[ ]
-   0  Bebidas y Snacks / Bidón
-bebidas-y-snacks/aguas/bidon/13901022_67311042_75349459
-
-[ ]
-   0  Bebidas y Snacks / Cabritas
-bebidas-y-snacks/snacks-y-picoteo/cabritas/13901022_66742898_27078414
-
-[ ]
    2  Bebidas y Snacks / Colaciones
 bebidas-y-snacks/jugos/colaciones/13901022_61163586_54484975
 
@@ -31,12 +11,8 @@ bebidas-y-snacks/jugos/en-polvo/13901022_61163586_46285707
 bebidas-y-snacks/bebidas-funcionales/energeticas/13901022_63687960_66329784
 
 [ ]
-   0  Bebidas y Snacks / Frutos Secos
-bebidas-y-snacks/snacks-y-picoteo/frutos-secos/13901022_66742898_63978999
-
-[ ]
-   0  Bebidas y Snacks / Galletas Saladas
-bebidas-y-snacks/snacks-y-picoteo/galletas-saladas/13901022_66742898_71825687
+   1  Bebidas y Snacks / Individuales
+bebidas-y-snacks/aguas/individuales/13901022_67311042_63260507
 
 [ ]
   33  Bebidas y Snacks / Individuales
@@ -45,10 +21,6 @@ bebidas-y-snacks/bebidas/individuales/13901022_56657077_37655717
 [ ]
    5  Bebidas y Snacks / Individuales
 bebidas-y-snacks/jugos/individuales/13901022_61163586_45220448
-
-[ ]
-   1  Bebidas y Snacks / Individuales
-bebidas-y-snacks/aguas/individuales/13901022_67311042_63260507
 
 [ ]
   18  Bebidas y Snacks / Isotonicas y Sueros
@@ -65,10 +37,6 @@ bebidas-y-snacks/refrigerados/jugos-nectares/13901022_41934663_66114975
 [ ]
    2  Bebidas y Snacks / Jugos Prensados
 bebidas-y-snacks/refrigerados/jugos-prensados/13901022_41934663_28248986
-
-[ ]
-   0  Bebidas y Snacks / Kombucha
-bebidas-y-snacks/refrigerados/kombucha/13901022_41934663_15531995
 
 [ ]
   20  Bebidas y Snacks / Light y Zero
@@ -103,6 +71,14 @@ bebidas-y-snacks/bebidas/regulares/13901022_56657077_93029006
 bebidas-y-snacks/bebidas/retornables/13901022_56657077_33265335
 
 [ ]
+  40  Bebidas y Snacks / Revisar todo
+bebidas-y-snacks/aguas/13901022_67311042
+
+[ ]
+  42  Bebidas y Snacks / Revisar todo
+bebidas-y-snacks/bebidas-funcionales/13901022_63687960
+
+[ ]
   41  Bebidas y Snacks / Revisar todo
 bebidas-y-snacks/bebidas/13901022_56657077
 
@@ -113,14 +89,6 @@ bebidas-y-snacks/jugos/13901022_61163586
 [ ]
   40  Bebidas y Snacks / Revisar todo
 bebidas-y-snacks/refrigerados/13901022_41934663
-
-[ ]
-  42  Bebidas y Snacks / Revisar todo
-bebidas-y-snacks/bebidas-funcionales/13901022_63687960
-
-[ ]
-  40  Bebidas y Snacks / Revisar todo
-bebidas-y-snacks/aguas/13901022_67311042
 
 [ ]
  288  Bebidas y Snacks / Revisar todo
@@ -137,14 +105,6 @@ bebidas-y-snacks/bebidas-funcionales/te-helado/13901022_63687960_65545662
 [ ]
    1  Bebidas y Snacks / Tortillas
 bebidas-y-snacks/snacks-y-picoteo/tortillas/13901022_66742898_96840690
-
-[ ]
-   0  Bebidas y Snacks / Untables
-bebidas-y-snacks/snacks-y-picoteo/untables/13901022_66742898_65352178
-
-[ ]
-   0  Carnes y Pescados
-carnes-y-pescados/21856785
 
 [ ]
    8  Carnes y Pescados / Apanados
@@ -175,16 +135,8 @@ carnes-y-pescados/vacuno/carnes-molidas/21856785_29265944_68501092
 carnes-y-pescados/vacuno/carnes-para-horno/21856785_29265944_60492631
 
 [ ]
-   0  Carnes y Pescados / Carnes para Olla
-carnes-y-pescados/vacuno/carnes-para- olla/21856785_29265944_96511332
-
-[ ]
    4  Carnes y Pescados / Carnes para Parrilla
 carnes-y-pescados/vacuno/carnes-para-parrilla/21856785_29265944_50526969
-
-[ ]
-   0  Carnes y Pescados / Carnes para Sartén
-carnes-y-pescados/vacuno/carnes-para sarten/21856785_29265944_80964603
 
 [ ]
   15  Carnes y Pescados / Carnes Premium
@@ -193,10 +145,6 @@ carnes-y-pescados/vacuno/Carnes-premium/21856785_29265944_30952649
 [ ]
    3  Carnes y Pescados / Chuletas
 carnes-y-pescados/cerdo/chuletas/21856785_97025819_47338432
-
-[ ]
-   0  Carnes y Pescados / Chuletas
-carnes-y-pescados/cordero/chuletas/21856785_32675613_99151867
 
 [ ]
    6  Carnes y Pescados / Cortes Parrilleros
@@ -211,10 +159,6 @@ carnes-y-pescados/cerdo/costillar-y-costillitas/21856785_97025819_51448656
 carnes-y-pescados/pescados-y-mariscos/especialidades/21856785_89519682_21662988
 
 [ ]
-   0  Carnes y Pescados / Listo para Cocinar
-carnes-y-pescados/pavo/listo_para-cocinar/21856785_66365889_91285228
-
-[ ]
    5  Carnes y Pescados / Lomo
 carnes-y-pescados/cerdo/lomo/21856785_97025819_91139765
 
@@ -225,18 +169,6 @@ carnes-y-pescados/pescados-y-mariscos/mariscos/21856785_89519682_86920189
 [ ]
   13  Carnes y Pescados / Merluza
 carnes-y-pescados/pescados-y-mariscos/merluza/21856785_89519682_86937463
-
-[ ]
-   0  Carnes y Pescados / Molida y Hamburguesas
-carnes-y-pescados/pavo/molida_y_hamburguesas/21856785_66365889_81213008
-
-[ ]
-   0  Carnes y Pescados / Molidas y Otros
-carnes-y-pescados/cerdo/molidas-y-otros/21856785_97025819_17833060
-
-[ ]
-   0  Carnes y Pescados / Novedades
-carnes-y-pescados/pescados_y_mariscos/novedades/21856785_89519682_10513320
 
 [ ]
    9  Carnes y Pescados / Otros Pescados
@@ -251,20 +183,12 @@ carnes-y-pescados/pollo/parrilla-y-saborizados/21856785_36612818_13798362
 carnes-y-pescados/para-parrilla/parrilleros/21856785_96130591_58087468
 
 [ ]
-   0  Carnes y Pescados / Pechuga y Filetes
-carnes-y-pescados/pavo/pechuga-y-filetes/21856785_66365889_22249135
-
-[ ]
    6  Carnes y Pescados / Pechuga y Filetitos de Pollo
 carnes-y-pescados/pollo/pechuga-y-filetitos-de-pollo/21856785_36612818_49820290
 
 [ ]
    1  Carnes y Pescados / Pollo Asado
 carnes-y-pescados/pollo/pollo-asado/21856785_36612818_85138768
-
-[ ]
-   0  Carnes y Pescados / Pollo Entero
-carnes-y-pescados/pollo/pollo- entero/21856785_36612818_47980549
 
 [ ]
    6  Carnes y Pescados / Pollo sin Marinar
@@ -275,28 +199,28 @@ carnes-y-pescados/pollo/pollo-sin-marinar/21856785_36612818_73535774
 carnes-y-pescados/cerdo/pulpa/21856785_97025819_35224679
 
 [ ]
-  27  Carnes y Pescados / Revisar todo
-carnes-y-pescados/vacuno/21856785_29265944
-
-[ ]
   42  Carnes y Pescados / Revisar todo
 carnes-y-pescados/cerdo/21856785_97025819
 
 [ ]
-  40  Carnes y Pescados / Revisar todo
-carnes-y-pescados/pollo/21856785_36612818
-
-[ ]
-   6  Carnes y Pescados / Revisar todo
-carnes-y-pescados/pavo/21856785_66365889
+   2  Carnes y Pescados / Revisar todo
+carnes-y-pescados/cordero/21856785_32675613
 
 [ ]
   11  Carnes y Pescados / Revisar todo
 carnes-y-pescados/para-parrilla/21856785_96130591
 
 [ ]
-   2  Carnes y Pescados / Revisar todo
-carnes-y-pescados/cordero/21856785_32675613
+   6  Carnes y Pescados / Revisar todo
+carnes-y-pescados/pavo/21856785_66365889
+
+[ ]
+  40  Carnes y Pescados / Revisar todo
+carnes-y-pescados/pollo/21856785_36612818
+
+[ ]
+  27  Carnes y Pescados / Revisar todo
+carnes-y-pescados/vacuno/21856785_29265944
 
 [ ]
    4  Carnes y Pescados / Salchichas
@@ -311,16 +235,8 @@ carnes-y-pescados/pescados-y-mariscos/salmon/21856785_89519682_82454763
 carnes-y-pescados/pollo/subproductos-y-otros/21856785_36612818_81490114
 
 [ ]
-   0  Carnes y Pescados / Trutro de Pavo
-carnes-y-pescados/pavo/trutro_de_pavo/21856785_66365889_79631022
-
-[ ]
   14  Carnes y Pescados / Trutro de Pollo
 carnes-y-pescados/pollo/trutro-de-pollo/21856785_36612818_80084355
-
-[ ]
-   0  Chocolates
-chocolates/29989562
 
 [ ]
    9  Chocolates / Bitter
@@ -331,104 +247,24 @@ chocolates/tipos/bitter/29989562_39577250_78729742
 chocolates/tipos/blanco/29989562_39577250_94319913
 
 [ ]
-   0  Chocolates / Bombones y otros
-chocolates/variedad/bombones-y-otros/29989562_94850100_10976520
-
-[ ]
   11  Chocolates / Con leche
 chocolates/tipos/con-leche/29989562_39577250_29502470
-
-[ ]
-   0  Chocolates / Mazapán y turrones
-chocolates/variedad/mazapan-y-turrones/29989562_94850100_85381898
-
-[ ]
- 125  Chocolates / Revisar todo
-chocolates/variedad/29989562_94850100
 
 [ ]
   39  Chocolates / Revisar todo
 chocolates/tipos/29989562_39577250
 
 [ ]
-   0  Chocolates / Tableta con agregado
-chocolates/variedad/tableta-con-agregado/29989562_94850100_93610272
-
-[ ]
-   0  Chocolates / Tableta maciza
-chocolates/variedad/tableta-maciza/29989562_94850100_93521730
-
-[ ]
-   0  Chocolates / Tableta rellena
-chocolates/variedad/tableta-rellena/29989562_94850100_40073187
-
-[ ]
-   0  Colaciones
-colaciones/49858221
+ 125  Chocolates / Revisar todo
+chocolates/variedad/29989562_94850100
 
 [ ]
    3  Colaciones / Alfajores
 colaciones/galletas-y-snack-colacion/alfajores/49858221_84316329_65515799
 
 [ ]
-   0  Colaciones / Barritas Cereal
-colaciones/barritas-y-cereales/barritas-cereal/49858221_71008317_76906531
-
-[ ]
-   0  Colaciones / Barritas Proteina y Veganas
-colaciones/barritas-y-cereales/barritas-proteina-y-veganas/49858221_71008317_64381614
-
-[ ]
-   0  Colaciones / Base Vegetal
-colaciones/yoghurt/base-vegetal/49858221_10191488_43019893
-
-[ ]
-   0  Colaciones / Batidos
-colaciones/yoghurt/batidos/49858221_10191488_73231020
-
-[ ]
-   0  Colaciones / Bizcochos
-colaciones/galletas-y-snack-colacion/bizcochos/49858221_84316329_10933846
-
-[ ]
-   0  Colaciones / Cereales Colación
-colaciones/barritas-y-cereales/cereales-colacion/49858221_71008317_24442358
-
-[ ]
-   0  Colaciones / Formato Familiar
-colaciones/yoghurt/formato-familiar/49858221_10191488_15620541
-
-[ ]
    2  Colaciones / Galletas Colación
 colaciones/galletas-y-snack-colacion/galletas-colacion/49858221_84316329_15554075
-
-[ ]
-   0  Colaciones / Galletones
-colaciones/galletas-y-snack-colacion/galletones/49858221_84316329_17281342
-
-[ ]
-   0  Colaciones / Infantiles
-colaciones/yoghurt/infantiles/49858221_10191488_25393311
-
-[ ]
-   0  Colaciones / Jugos Light y Aguas Saborizadas
-colaciones/jugos-colacion/jugos-light-y-aguas-saborizadas/49858221_87081691_19874809
-
-[ ]
-   0  Colaciones / Jugos Regulares
-colaciones/jugos-colacion/jugos-regulares/49858221_87081691_68575053
-
-[ ]
-   0  Colaciones / Natural
-colaciones/yoghurt/natural/49858221_10191488_99568026
-
-[ ]
-   0  Colaciones / Probióticos
-colaciones/yoghurt/probioticos/49858221_10191488_79786337
-
-[ ]
-   0  Colaciones / Proteina
-colaciones/yoghurt/proteina/49858221_10191488_95052794
 
 [ ]
    7  Colaciones / Revisar todo
@@ -449,30 +285,6 @@ colaciones/leches-colacion/49858221_52536805
 [ ]
    1  Colaciones / Revisar todo
 colaciones/yoghurt/49858221_10191488
-
-[ ]
-   0  Colaciones / Saborizadas
-colaciones/leches-colacion/saborizadas/49858221_52536805_37350627
-
-[ ]
-   0  Colaciones / Salud y Bienestar
-colaciones/yoghurt/salud-y-bienestar/49858221_10191488_90804175
-
-[ ]
-   0  Colaciones / Sin Lactosa
-colaciones/yoghurt/sin-lactosa/49858221_10191488_17831070
-
-[ ]
-   0  Colaciones / Sin Lactosa Vegetales y Proteínas
-colaciones/leches-colacion/sin-lactosa-vegetales-y-proteinas/49858221_52536805_61477831
-
-[ ]
-   0  Colaciones / Trozos
-colaciones/yoghurt/trozos/49858221_10191488_80833264
-
-[ ]
-   0  Congelados
-congelados/13010356
 
 [ ]
   13  Congelados / Apanados
@@ -535,20 +347,20 @@ congelados/helados/postres-congelados/13010356_52337906_18544276
 congelados/verduras-y-frutas-congeladas/pulpas-de-fruta-y-smoothies/13010356_19939301_71703882
 
 [ ]
-  29  Congelados / Revisar todo
-congelados/verduras-y-frutas-congeladas/13010356_19939301
+  23  Congelados / Revisar todo
+congelados/comidas-congeladas/13010356_98401550
 
 [ ]
   36  Congelados / Revisar todo
 congelados/hamburguesas-y-churrascos/13010356_13257607
 
 [ ]
-  23  Congelados / Revisar todo
-congelados/comidas-congeladas/13010356_98401550
-
-[ ]
   40  Congelados / Revisar todo
 congelados/helados/13010356_52337906
+
+[ ]
+  29  Congelados / Revisar todo
+congelados/verduras-y-frutas-congeladas/13010356_19939301
 
 [ ]
    9  Congelados / Vegetarianos
@@ -557,10 +369,6 @@ congelados/hamburguesas-y-churrascos/vegetarianos/13010356_13257607_91758612
 [ ]
    7  Congelados / Verduras Congeladas
 congelados/verduras-y-frutas-congeladas/verduras-congeladas/13010356_19939301_87269140
-
-[ ]
-   0  Desayunos y Dulces
-desayunos-y-dulces/23483116
 
 [ ]
   10  Desayunos y Dulces / Artesanales
@@ -577,22 +385,6 @@ desayunos-y-dulces/dulces-mermeladas-y-manjar/azucar/23483116_35492092_35385017
 [ ]
   20  Desayunos y Dulces / Barras de Cereal
 desayunos-y-dulces/cereales/barras-de-cereal/23483116_70936805_13936422
-
-[ ]
-   0  Desayunos y Dulces / Café Descafeinado
-desayunos-y-dulces/cafe-te-y-hierbas/cafe-descafeinado/23483116_11894805_27014801
-
-[ ]
-   0  Desayunos y Dulces / Café en Grano y Molido
-desayunos-y-dulces/cafe-te-y-hierbas/cafe-en-grano-y-molido/23483116_11894805_93629287
-
-[ ]
-   0  Desayunos y Dulces / Café Instantáneo
-desayunos-y-dulces/cafe-te-y-hierbas/cafe-instantaneo/23483116_11894805_17324926
-
-[ ]
-   0  Desayunos y Dulces / Café Saborizados y Cremas
-desayunos-y-dulces/cafe-te-y-hierbas/cafe-saborizados-y-cremas/23483116_11894805_25767631
 
 [ ]
   18  Desayunos y Dulces / Calugas y Masticables
@@ -615,20 +407,8 @@ desayunos-y-dulces/cereales/cereales/23483116_70936805_86431999
 desayunos-y-dulces/chocolates-y-candy/chicles-mentitas/23483116_82062599_23506684
 
 [ ]
-   0  Desayunos y Dulces / Chips Chocolate
-desayunos-y-dulces/galletas-y-colaciones-dulces/chips-chocolate/23483116_20760251_82235880
-
-[ ]
-   0  Desayunos y Dulces / Clásicas Obleas y Champaña
-desayunos-y-dulces/galletas-y-colaciones-dulces/clasicas-obleas-y-champana/23483116_20760251_78598382
-
-[ ]
   10  Desayunos y Dulces / Colaciones Escolares
 desayunos-y-dulces/cereales/colaciones-escolares/23483116_70936805_64958996
-
-[ ]
-   0  Desayunos y Dulces / Cápsulas de Café
-desayunos-y-dulces/cafe-te-y-hierbas/capsulas-de-cafe/23483116_11894805_20654322
 
 [ ]
    9  Desayunos y Dulces / Endulzante
@@ -639,14 +419,6 @@ desayunos-y-dulces/dulces-mermeladas-y-manjar/endulzante/23483116_35492092_77562
 desayunos-y-dulces/postres-para-preparar/flan-y-budin/23483116_58016199_39076644
 
 [ ]
-   0  Desayunos y Dulces / Galletas Colación
-desayunos-y-dulces/galletas-y-colaciones-dulces/galletas-colacion/23483116_20760251_13232333
-
-[ ]
-   0  Desayunos y Dulces / Galletones y Alfajores
-desayunos-y-dulces/galletas-y-colaciones-dulces/galletones-y-alfajores/23483116_20760251_34760357
-
-[ ]
    7  Desayunos y Dulces / Gelatina en Polvo
 desayunos-y-dulces/postres-para-preparar/gelatina-en-polvo/23483116_58016199_71040522
 
@@ -655,32 +427,12 @@ desayunos-y-dulces/postres-para-preparar/gelatina-en-polvo/23483116_58016199_710
 desayunos-y-dulces/chocolates-y-candy/gomitas/23483116_82062599_92694896
 
 [ ]
-   0  Desayunos y Dulces / Hierbas y Yerba Mate
-desayunos-y-dulces/cafe-te-y-hierbas/hierbas-y-yerba-mate/23483116_11894805_60147378
-
-[ ]
-   0  Desayunos y Dulces / Manjar y Dulce de Leche
-desayunos-y-dulces/dulces-mermeladas-y-manjar/manjar-y-dulce-de-leche/23483116_35492092_59812150
-
-[ ]
   17  Desayunos y Dulces / MarshMallows
 desayunos-y-dulces/chocolates-y-candy/marshmallows/23483116_82062599_63895350
 
 [ ]
-   0  Desayunos y Dulces / Mermeladas
-desayunos-y-dulces/dulces-mermeladas-y-manjar/mermeladas/23483116_35492092_42714329
-
-[ ]
    9  Desayunos y Dulces / Miel y Dulces
 desayunos-y-dulces/dulces-mermeladas-y-manjar/miel-y-dulces/23483116_35492092_56308533
-
-[ ]
-   0  Desayunos y Dulces / Quequitos y Bizcochos
-desayunos-y-dulces/galletas-y-colaciones-dulces/quequitos-y-bizcochos/23483116_20760251_83587992
-
-[ ]
-   0  Desayunos y Dulces / Rellenas Bañadas
-desayunos-y-dulces/galletas-y-colaciones-dulces/rellenas-banadas/23483116_20760251_12832369
 
 [ ]
  341  Desayunos y Dulces / Revisar todo
@@ -691,36 +443,20 @@ desayunos-y-dulces/cafe-te-y-hierbas/23483116_11894805
 desayunos-y-dulces/cereales/23483116_70936805
 
 [ ]
- 263  Desayunos y Dulces / Revisar todo
-desayunos-y-dulces/galletas-y-colaciones-dulces/23483116_20760251
+  44  Desayunos y Dulces / Revisar todo
+desayunos-y-dulces/chocolates-y-candy/23483116_82062599
 
 [ ]
   10  Desayunos y Dulces / Revisar todo
 desayunos-y-dulces/dulces-mermeladas-y-manjar/23483116_35492092
 
 [ ]
-  44  Desayunos y Dulces / Revisar todo
-desayunos-y-dulces/chocolates-y-candy/23483116_82062599
+ 263  Desayunos y Dulces / Revisar todo
+desayunos-y-dulces/galletas-y-colaciones-dulces/23483116_20760251
 
 [ ]
   35  Desayunos y Dulces / Revisar todo
 desayunos-y-dulces/postres-para-preparar/23483116_58016199
-
-[ ]
-   0  Desayunos y Dulces / Saludables
-desayunos-y-dulces/galletas-y-colaciones-dulces/saludables/23483116_20760251_74336868
-
-[ ]
-   0  Desayunos y Dulces / Té Ceylan
-desayunos-y-dulces/cafe-te-y-hierbas/te-ceylan/23483116_11894805_89993349
-
-[ ]
-   0  Desayunos y Dulces / Té Especiales y Sabores
-desayunos-y-dulces/cafe-te-y-hierbas/te-especiales-y-sabores/23483116_11894805_97536167
-
-[ ]
-   0  Despensa
-despensa/46589040
 
 [ ]
   19  Despensa / Aceites
@@ -739,40 +475,12 @@ despensa/salsas/aji/46589040_47278253_87502381
 despensa/arroz-y-legumbres/arroz/46589040_29552324_51088530
 
 [ ]
-   0  Despensa / Arroz Integral
-despensa/arroz-y-legumbres/arroz-integral/46589040_29552324_96333687
-
-[ ]
   13  Despensa / Arroz Preparado
 despensa/arroz-y-legumbres/arroz-preparado/46589040_29552324_44081608
 
 [ ]
   20  Despensa / Bases y Caldos
 despensa/alimentos-instantaneos/bases-y-caldos/46589040_52225904_15412572
-
-[ ]
-   0  Despensa / Cocina India
-despensa/cocina-internacional/cocina-india/46589040_15612080_16260289
-
-[ ]
-   0  Despensa / Cocina Mexicana
-despensa/cocina-internacional/cocina-mexicana/46589040_15612080_30423299
-
-[ ]
-   0  Despensa / Cocina Oriental
-despensa/cocina-internacional/cocina-oriental/46589040_15612080_84470856
-
-[ ]
-   0  Despensa / Cocina Peruana
-despensa/cocina-internacional/cocina-peruana/46589040_15612080_86977909
-
-[ ]
-   0  Despensa / Cocina Thai
-despensa/cocina-internacional/cocina-thai/46589040_15612080_24300106
-
-[ ]
-   0  Despensa / Cocina Árabe
-despensa/cocina-internacional/cocina-arabe/46589040_15612080_70724381
 
 [ ]
   16  Despensa / Comida Instantánea
@@ -789,10 +497,6 @@ despensa/conservas/frutas-en-conserva/46589040_33283038_71899797
 [ ]
    2  Despensa / Harinas Blancas
 despensa/harinas-y-polvos/harinas-blancas/46589040_37852653_14516025
-
-[ ]
-   0  Despensa / Harinas Integrales
-despensa/harinas-y-polvos/harinas-integrales/46589040_37852653_33035161
 
 [ ]
    7  Despensa / Ketchup
@@ -819,32 +523,12 @@ despensa/salsas/mayonesa/46589040_47278253_48348239
 despensa/salsas/mostaza/46589040_47278253_31552960
 
 [ ]
-   0  Despensa / Otras Harinas
-despensa/harinas-y-polvos/otras-harinas/46589040_37852653_57307883
-
-[ ]
   16  Despensa / Otras Salsas
 despensa/salsas/otras-salsas/46589040_47278253_59885943
 
 [ ]
-   0  Despensa / Pastas Cortas
-despensa/pastas-y-salsas/pastas-cortas/46589040_59615139_15312906
-
-[ ]
    2  Despensa / Pastas Instantáneas
 despensa/pastas-y-salsas/pastas-instantaneas/46589040_59615139_10063499
-
-[ ]
-   0  Despensa / Pastas Integrales
-despensa/pastas-y-salsas/pastas-integrales/46589040_59615139_52948110
-
-[ ]
-   0  Despensa / Pastas Largas
-despensa/pastas-y-salsas/pastas-largas/46589040_59615139_38544442
-
-[ ]
-   0  Despensa / Pastas sin gluten
-despensa/pastas-y-salsas/pastas-sin-gluten/46589040_59615139_37142491
 
 [ ]
   12  Despensa / Pescados en Conserva
@@ -855,36 +539,36 @@ despensa/conservas/pescados-en-conserva/46589040_33283038_76234655
 despensa/alimentos-instantaneos/pure/46589040_52225904_49849286
 
 [ ]
- 154  Despensa / Revisar todo
-despensa/pastas-y-salsas/46589040_59615139
-
-[ ]
-  30  Despensa / Revisar todo
-despensa/harinas-y-polvos/46589040_37852653
-
-[ ]
-  24  Despensa / Revisar todo
-despensa/arroz-y-legumbres/46589040_29552324
-
-[ ]
-  34  Despensa / Revisar todo
-despensa/salsas/46589040_47278253
-
-[ ]
   20  Despensa / Revisar todo
 despensa/aceites-y-aderezos/46589040_87511978
-
-[ ]
-  29  Despensa / Revisar todo
-despensa/conservas/46589040_33283038
 
 [ ]
   31  Despensa / Revisar todo
 despensa/alimentos-instantaneos/46589040_52225904
 
 [ ]
+  24  Despensa / Revisar todo
+despensa/arroz-y-legumbres/46589040_29552324
+
+[ ]
   26  Despensa / Revisar todo
 despensa/cocina-internacional/46589040_15612080
+
+[ ]
+  29  Despensa / Revisar todo
+despensa/conservas/46589040_33283038
+
+[ ]
+  30  Despensa / Revisar todo
+despensa/harinas-y-polvos/46589040_37852653
+
+[ ]
+ 154  Despensa / Revisar todo
+despensa/pastas-y-salsas/46589040_59615139
+
+[ ]
+  34  Despensa / Revisar todo
+despensa/salsas/46589040_47278253
 
 [ ]
    1  Despensa / Rincón del Mundo
@@ -893,14 +577,6 @@ despensa/alimentos-instantaneos/rincon-del-mundo/46589040_52225904_23958702
 [ ]
   37  Despensa / Sal
 despensa/aceites-y-aderezos/sal/46589040_87511978_65414892
-
-[ ]
-   0  Despensa / Salsa para pastas
-despensa/pastas-y-salsas/salsa-para-pastas/46589040_59615139_33207611
-
-[ ]
-   0  Despensa / Semillas y Cereales
-despensa/arroz-y-legumbres/semillas-y-cereales/46589040_29552324_54544672
 
 [ ]
   29  Despensa / Sopas y Cremas
@@ -915,10 +591,6 @@ despensa/conservas/verduras-en-conserva/46589040_33283038_87516479
 despensa/aceites-y-aderezos/vinagres-y-sucedaneos/46589040_87511978_23197156
 
 [ ]
-   0  Frutas y Verduras
-frutas-y-verduras/22884697
-
-[ ]
   15  Frutas y Verduras / Acelga, Espinaca y Hojas Verdes
 frutas-y-verduras/verduras/acelga-espinaca-y-hojas-verdes/22884697_56981658_81959808
 
@@ -927,20 +599,12 @@ frutas-y-verduras/verduras/acelga-espinaca-y-hojas-verdes/22884697_56981658_8195
 frutas-y-verduras/verduras/aderezos-y-complementos/22884697_56981658_90407235
 
 [ ]
-   0  Frutas y Verduras / Almendras y mani
-frutas-y-verduras/frutos-secos/almendras-y-mani/22884697_77940868_68638881
-
-[ ]
    9  Frutas y Verduras / Champiñones
 frutas-y-verduras/verduras/champinones/22884697_56981658_75779080
 
 [ ]
   11  Frutas y Verduras / Ensaladas listas
 frutas-y-verduras/verduras/ensaladas-listas/22884697_56981658_19199185
-
-[ ]
-   0  Frutas y Verduras / Fruta Picada
-frutas-y-verduras/frutas/fruta-Picada/22884697_93034836_41753395
 
 [ ]
   18  Frutas y Verduras / Hierbas y Brotes
@@ -959,24 +623,12 @@ frutas-y-verduras/frutas/limon-naranja-kiwi-y-citricos/22884697_93034836_4257007
 frutas-y-verduras/frutas/manzanas-y-peras/22884697_93034836_29741665
 
 [ ]
-   0  Frutas y Verduras / Mix
-frutas-y-verduras/frutos-secos/mix/22884697_77940868_83793236
-
-[ ]
    2  Frutas y Verduras / Otras Frutas
 frutas-y-verduras/frutas/otras-frutas/22884697_93034836_18835024
 
 [ ]
   15  Frutas y Verduras / Otras Verduras
 frutas-y-verduras/verduras/otras-verduras/22884697_56981658_76797476
-
-[ ]
-   0  Frutas y Verduras / Otros Frutos secos
-frutas-y-verduras/frutos-secos/otros-frutos-secos/22884697_77940868_48510277
-
-[ ]
-   0  Frutas y Verduras / Paltas
-frutas-y-verduras/frutas/paltas/22884697_93034836_74747974
 
 [ ]
   14  Frutas y Verduras / Papas, Cebollas y Ajos
@@ -999,16 +651,12 @@ frutas-y-verduras/verduras/repollo-brocoli-y-coliflor/22884697_56981658_85528760
 frutas-y-verduras/frutas/22884697_93034836
 
 [ ]
-  44  Frutas y Verduras / Revisar todo
-frutas-y-verduras/verduras/22884697_56981658
-
-[ ]
   10  Frutas y Verduras / Revisar todo
 frutas-y-verduras/frutos-secos/22884697_77940868
 
 [ ]
-   0  Frutas y Verduras / Semillas
-frutas-y-verduras/frutos-secos/semillas/22884697_77940868_34051965
+  44  Frutas y Verduras / Revisar todo
+frutas-y-verduras/verduras/22884697_56981658
 
 [ ]
    9  Frutas y Verduras / Tomates
@@ -1023,14 +671,6 @@ frutas-y-verduras/frutas/uvas-y-berries/22884697_93034836_71576040
 frutas-y-verduras/verduras/zapallos-zanahorias-y-berenjena/22884697_56981658_21660014
 
 [ ]
-   0  La Boti
-la-boti/60338008
-
-[ ]
-   0  La Boti / Artesanales
-la-boti/cerveza/artesanales/60338008_25254512_95883367
-
-[ ]
   34  La Boti / Blanco
 la-boti/vinos/blanco/60338008_85836428_40759004
 
@@ -1039,24 +679,12 @@ la-boti/vinos/blanco/60338008_85836428_40759004
 la-boti/espumantes/brut-y-extra-brut/60338008_75569554_40093930
 
 [ ]
-   0  La Boti / Cervezas
-la-boti/sin-alcohol/cervezas/60338008_15483971_26504837
-
-[ ]
-   0  La Boti / Combina 3 Espumantes
-la-boti/vinos-y-espumantes-3x/combina-3-espumantes/60338008_77596990_42321275
-
-[ ]
   29  La Boti / Combina 3x 15.990
 la-boti/vinos-y-espumantes-3x/combina-3x-15990/60338008_77596990_83383486
 
 [ ]
   19  La Boti / Combina 3x 18.990
 la-boti/vinos-y-espumantes-3x/combina-3x-18990/60338008_77596990_99448932
-
-[ ]
-   0  La Boti / Combina 3x 2.990
-la-boti/cerveza/combina-3x-2.990/60338008_25254512_52292572
 
 [ ]
   14  La Boti / Combina 3x 21.990
@@ -1069,10 +697,6 @@ la-boti/vinos-y-espumantes-3x/combina-3x-24990/60338008_77596990_95447923
 [ ]
   20  La Boti / Combina 3x 27.990
 la-boti/vinos-y-espumantes-3x/combina-3x-27990/60338008_77596990_41644678
-
-[ ]
-   0  La Boti / Combina 3x 3.990
-la-boti/cerveza/combina-3x-3.990/60338008_25254512_36896307
 
 [ ]
   11  La Boti / Combina 3x 6.990
@@ -1103,14 +727,6 @@ la-boti/destilados/gin/60338008_18800914_35374371
 la-boti/preparalo-tu-mismo/gin-tonic/60338008_59156238_84982572
 
 [ ]
-   0  La Boti / Importadas
-la-boti/cerveza/importadas/60338008_25254512_89665872
-
-[ ]
-   0  La Boti / Individuales
-la-boti/espumantes/individuales/60338008_75569554_83585492
-
-[ ]
    1  La Boti / Individuales
 la-boti/vinos/individuales/60338008_85836428_91269168
 
@@ -1139,10 +755,6 @@ la-boti/preparalo-tu-mismo/moscow-mule/60338008_59156238_46759941
 la-boti/destilados/pisco/60338008_18800914_61791484
 
 [ ]
-   0  La Boti / Premium
-la-boti/cerveza/premium/60338008_25254512_37891560
-
-[ ]
    7  La Boti / Premium
 la-boti/espumantes/premium/60338008_75569554_70698448
 
@@ -1155,32 +767,32 @@ la-boti/vinos/premium/60338008_85836428_40470033
 la-boti/sin-alcohol/60338008_15483971
 
 [ ]
-  24  La Boti / Revisar todo
-la-boti/vinos-y-espumantes-3x/60338008_77596990
-
-[ ]
  134  La Boti / Revisar todo
 la-boti/cerveza/60338008_25254512
-
-[ ]
-  41  La Boti / Revisar todo
-la-boti/espumantes/60338008_75569554
-
-[ ]
-  44  La Boti / Revisar todo
-la-boti/vinos/60338008_85836428
-
-[ ]
-  37  La Boti / Revisar todo
-la-boti/destilados/60338008_18800914
 
 [ ]
   42  La Boti / Revisar todo
 la-boti/coctel/60338008_30587707
 
 [ ]
+  37  La Boti / Revisar todo
+la-boti/destilados/60338008_18800914
+
+[ ]
+  41  La Boti / Revisar todo
+la-boti/espumantes/60338008_75569554
+
+[ ]
   39  La Boti / Revisar todo
 la-boti/preparalo-tu-mismo/60338008_59156238
+
+[ ]
+  24  La Boti / Revisar todo
+la-boti/vinos-y-espumantes-3x/60338008_77596990
+
+[ ]
+  44  La Boti / Revisar todo
+la-boti/vinos/60338008_85836428
 
 [ ]
   17  La Boti / Ron
@@ -1189,10 +801,6 @@ la-boti/destilados/ron/60338008_18800914_97182693
 [ ]
   25  La Boti / Rose y Late Harvest
 la-boti/vinos/rose-y-late-harvest/60338008_85836428_66177866
-
-[ ]
-   0  La Boti / Saborizadas
-la-boti/cerveza/saborizadas/60338008_25254512_20767940
 
 [ ]
    4  La Boti / Saborizados
@@ -1223,20 +831,12 @@ la-boti/preparalo-tu-mismo/tequila-sunrise/60338008_59156238_59097423
 la-boti/vinos/tinto/60338008_85836428_31491496
 
 [ ]
-   0  La Boti / Tradicionales
-la-boti/cerveza/tradicionales/60338008_25254512_84744709
-
-[ ]
   25  La Boti / Tragos Preparados
 la-boti/coctel/tragos-preparados/60338008_30587707_81763173
 
 [ ]
    1  La Boti / Vermouth
 la-boti/coctel/vermouth/60338008_30587707_12773651
-
-[ ]
-   0  La Boti / Vinos y Espumantes
-la-boti/sin-alcohol/vinos-y-espumantes/60338008_15483971_17437456
 
 [ ]
   18  La Boti / Vodka
@@ -1247,20 +847,8 @@ la-boti/destilados/vodka/60338008_18800914_70647850
 la-boti/destilados/whisky/60338008_18800914_67188509
 
 [ ]
-   0  Limpieza y Aseo
-limpieza-y-aseo/43390617
-
-[ ]
-   0  Limpieza y Aseo / Accesorios
-limpieza-y-aseo/mascotas-en-casa/accesorios/43390617_43573441_34383398
-
-[ ]
    4  Limpieza y Aseo / Accesorios Baño
 limpieza-y-aseo/bano-y-cocina/accesorios-bano/43390617_15090475_80332378
-
-[ ]
-   0  Limpieza y Aseo / Accesorios Cocina
-limpieza-y-aseo/bano-y-cocina/accesorios-cocina/43390617_15090475_61006974
 
 [ ]
    5  Limpieza y Aseo / Aerosoles Desinfectantes
@@ -1285,18 +873,6 @@ limpieza-y-aseo/ambientadores/ambientadores-gel/43390617_32024397_40226375
 [ ]
    4  Limpieza y Aseo / Ambientadores Toque
 limpieza-y-aseo/ambientadores/ambientadores-toque/43390617_32024397_60978553
-
-[ ]
-   0  Limpieza y Aseo / Ambientales
-limpieza-y-aseo/mas-sustentables/ambientales/43390617_56006489_11446605
-
-[ ]
-   0  Limpieza y Aseo / Arañas y Baratas
-limpieza-y-aseo/insecticidas-y-control-de-plagas/aranas-y-baratas/43390617_74938748_56928756
-
-[ ]
-   0  Limpieza y Aseo / Bolsas
-limpieza-y-aseo/mascotas-en-casa/bolsas/43390617_43573441_01814928
 
 [ ]
   17  Limpieza y Aseo / Bolsas de Basura
@@ -1363,10 +939,6 @@ limpieza-y-aseo/accesorios-aseo/esponjas-y-guantes/43390617_61764352_18064860
 limpieza-y-aseo/accesorios-aseo/fosforos/43390617_61764352_97864899
 
 [ ]
-   0  Limpieza y Aseo / Hormigas Pulgas y Garrapatas
-limpieza-y-aseo/insecticidas-y-control-de-plagas/hormigas-pulgas-y-garrapatas/43390617_74938748_51106271
-
-[ ]
    6  Limpieza y Aseo / Jabón para Ropa
 limpieza-y-aseo/detergentes/jabon-para-ropa/43390617_23557375_49917328
 
@@ -1423,10 +995,6 @@ limpieza-y-aseo/papeles/papel-higienico/43390617_72719306_32418994
 limpieza-y-aseo/mas-sustentables/papeles/43390617_56006489_72633958
 
 [ ]
-   0  Limpieza y Aseo / Papeles para Cocinar
-limpieza-y-aseo/papeles/papeles-para-cocinar/43390617_72719306_58991757
-
-[ ]
   21  Limpieza y Aseo / Paños y Mopas
 limpieza-y-aseo/accesorios-aseo/panos-y-mopas/43390617_61764352_82535168
 
@@ -1439,32 +1007,8 @@ limpieza-y-aseo/papeles/panuelos/43390617_72719306_85239901
 limpieza-y-aseo/pisos-y-muebles/piso-flotante/43390617_45008163_27298233
 
 [ ]
-   0  Limpieza y Aseo / Raticidas
-limpieza-y-aseo/insecticidas-y-control-de-plagas/raticidas/43390617_74938748_97570812
-
-[ ]
    1  Limpieza y Aseo / Repelentes
 limpieza-y-aseo/insecticidas-y-control-de-plagas/repelentes/43390617_74938748_38550225
-
-[ ]
-  38  Limpieza y Aseo / Revisar todo
-limpieza-y-aseo/detergentes/43390617_23557375
-
-[ ]
-  23  Limpieza y Aseo / Revisar todo
-limpieza-y-aseo/bano-y-cocina/43390617_15090475
-
-[ ]
-  27  Limpieza y Aseo / Revisar todo
-limpieza-y-aseo/pisos-y-muebles/43390617_45008163
-
-[ ]
-  29  Limpieza y Aseo / Revisar todo
-limpieza-y-aseo/papeles/43390617_72719306
-
-[ ]
-  25  Limpieza y Aseo / Revisar todo
-limpieza-y-aseo/desinfeccion/43390617_57052803
 
 [ ]
   28  Limpieza y Aseo / Revisar todo
@@ -1473,6 +1017,18 @@ limpieza-y-aseo/accesorios-aseo/43390617_61764352
 [ ]
   40  Limpieza y Aseo / Revisar todo
 limpieza-y-aseo/ambientadores/43390617_32024397
+
+[ ]
+  23  Limpieza y Aseo / Revisar todo
+limpieza-y-aseo/bano-y-cocina/43390617_15090475
+
+[ ]
+  25  Limpieza y Aseo / Revisar todo
+limpieza-y-aseo/desinfeccion/43390617_57052803
+
+[ ]
+  38  Limpieza y Aseo / Revisar todo
+limpieza-y-aseo/detergentes/43390617_23557375
 
 [ ]
   44  Limpieza y Aseo / Revisar todo
@@ -1485,6 +1041,14 @@ limpieza-y-aseo/mas-sustentables/43390617_56006489
 [ ]
    4  Limpieza y Aseo / Revisar Todo
 limpieza-y-aseo/mascotas-en-casa/43390617_43573441
+
+[ ]
+  29  Limpieza y Aseo / Revisar todo
+limpieza-y-aseo/papeles/43390617_72719306
+
+[ ]
+  27  Limpieza y Aseo / Revisar todo
+limpieza-y-aseo/pisos-y-muebles/43390617_45008163
 
 [ ]
   12  Limpieza y Aseo / Servilletas
@@ -1507,38 +1071,6 @@ limpieza-y-aseo/papeles/toalla-papel/43390617_72719306_42198737
 limpieza-y-aseo/detergentes/tratamiento-ropa/43390617_23557375_18992759
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos
-lacteos,fiambreria-y-huevos/45669105
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Almendra
-frescos-y-lacteos/bebidas-vegetales/almendra/45669105_53011137_35310704
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Arroz
-frescos-y-lacteos/bebidas-vegetales/arroz/45669105_53011137_50439586
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Avena
-frescos-y-lacteos/bebidas-vegetales/avena/45669105_53011137_81935028
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Base Vegetal
-frescos-y-lacteos/yoghurt/base-vegetal/45669105_59066660_80416783
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Batidos
-frescos-y-lacteos/yoghurt/batidos/45669105_59066660_24871675
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Bebidas Vegetales
-frescos-y-lacteos/leche/bebidas-vegetales/45669105_39354732_11571591
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Blanca
-frescos-y-lacteos/leche/blanca/45669105_39354732_67846210
-
-[ ]
   17  Lácteos, Fiambrería y Huevos / Cabra y Oveja
 frescos-y-lacteos/quesos/cabra-y-oveja/45669105_72564080_31680545
 
@@ -1551,40 +1083,8 @@ frescos-y-lacteos/quesos/chanco-y-mantecoso/45669105_72564080_89974098
 frescos-y-lacteos/quesos/cheddar/45669105_72564080_52422189
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Chocolate
-frescos-y-lacteos/bebidas-vegetales/chocolate/45669105_53011137_94991010
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Coco
-frescos-y-lacteos/bebidas-vegetales/coco/45669105_53011137_38679735
-
-[ ]
    6  Lácteos, Fiambrería y Huevos / Compotas
 frescos-y-lacteos/postres-refrigerados/compotas/45669105_15349134_40696280
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Crema Chantilly
-frescos-y-lacteos/cremas/crema-chantilly/45669105_27824002_27008959
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Crema Sin Lactosa
-frescos-y-lacteos/cremas/crema-sin-lactosa/45669105_27824002_28300135
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Crema Tradicional
-frescos-y-lacteos/cremas/crema-tradicional/45669105_27824002_53554811
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Cremas Light
-frescos-y-lacteos/cremas/cremas-light/45669105_27824002_97669671
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Cremas Refrigeradas
-frescos-y-lacteos/cremas/cremas-refrigeradas/45669105_27824002_12967063
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / En Polvo
-frescos-y-lacteos/leche/en-polvo/45669105_39354732_60000386
 
 [ ]
   37  Lácteos, Fiambrería y Huevos / Especialidades y Tablas
@@ -1595,36 +1095,12 @@ frescos-y-lacteos/quesos/especialidades-y-tablas/45669105_72564080_76845273
 frescos-y-lacteos/postres-refrigerados/flan/45669105_15349134_31961073
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Formato Familiar
-frescos-y-lacteos/yoghurt/formato-familiar/45669105_59066660_14769204
-
-[ ]
    8  Lácteos, Fiambrería y Huevos / Gauda
 frescos-y-lacteos/quesos/gauda/45669105_72564080_21161375
 
 [ ]
   12  Lácteos, Fiambrería y Huevos / Granulados y Rallados
 frescos-y-lacteos/quesos/granulados-y-rallados/45669105_72564080_73251959
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Huevos de campo y gallina libre
-frescos-y-lacteos/huevos/huevos-de-campo-y-gallina-libre/45669105_43398659_48802880
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Huevos de codorniz
-frescos-y-lacteos/huevos/huevos-de-codorniz/45669105_43398659_52629740
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Huevos tradicionales
-frescos-y-lacteos/huevos/huevos-tradicionales/45669105_43398659_42673615
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Individuales
-frescos-y-lacteos/leche/individuales/45669105_39354732_42678608
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Infantiles
-frescos-y-lacteos/yoghurt/infantiles/45669105_59066660_76245301
 
 [ ]
    9  Lácteos, Fiambrería y Huevos / Jalea
@@ -1647,40 +1123,8 @@ frescos-y-lacteos/fiambres-y-embutidos/jamon-serrano-y-otros/45669105_22196003_9
 frescos-y-lacteos/postres-refrigerados/leche-asada-y-arroz-con-leche/45669105_15349134_75960253
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Leche condensada y evaporada
-frescos-y-lacteos/dulces_mermeladas_y_manjar/leche-condensada-y-evaporada/45669105_21333127_69217375
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Leche Cultivada
-frescos-y-lacteos/leche/leche-cultivada/45669105_39354732_94089240
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Leche sin Lactosa
-frescos-y-lacteos/leche/leche-sin-lactosa/45669105_39354732_55540378
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Levaduras
-frescos-y-lacteos/mantequillas-y-margarinas/levaduras/45669105_15064481_78611651
-
-[ ]
   25  Lácteos, Fiambrería y Huevos / Manjar y dulces de leche
 frescos-y-lacteos/dulces_mermeladas_y_manjar/manjar_y_dulces_de_leche/45669105_21333127_86772668
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Mantecas
-frescos-y-lacteos/mantequillas-y-margarinas/mantecas/45669105_15064481_83830629
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Mantequillas
-frescos-y-lacteos/mantequillas-y-margarinas/mantequillas/45669105_15064481_07799555
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Mantequillas y margarinas
-frescos-y-lacteos/dulces_mermeladas_y_manjar/mantequillas_y_margarinas/45669105_21333127_22706358
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Margarinas
-frescos-y-lacteos/mantequillas-y-margarinas/margarinas/45669105_15064481_90195359
 
 [ ]
    8  Lácteos, Fiambrería y Huevos / Mermeladas
@@ -1699,14 +1143,6 @@ frescos-y-lacteos/fiambres-y-embutidos/mortadela-y-otros/45669105_22196003_85629
 frescos-y-lacteos/yoghurt/natural/45669105_59066660_92081883
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Otras Bebidas Vegetales
-frescos-y-lacteos/bebidas-vegetales/otras-bebidas-vegetales/45669105_53011137_56946828
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Otros
-frescos-y-lacteos/huevos/otros/45669105_43398659_63187578
-
-[ ]
   29  Lácteos, Fiambrería y Huevos / Parrilleros
 frescos-y-lacteos/fiambres-y-embutidos/parrilleros/45669105_22196003_21842317
 
@@ -1723,10 +1159,6 @@ frescos-y-lacteos/postres-refrigerados/postres-cremosos/45669105_15349134_391052
 frescos-y-lacteos/postres-refrigerados/postres-tipo-mousse/45669105_15349134_84090179
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Probióticos
-frescos-y-lacteos/yoghurt/probioticos/45669105_59066660_74270296
-
-[ ]
    2  Lácteos, Fiambrería y Huevos / Proteina
 frescos-y-lacteos/yoghurt/proteina/45669105_59066660_20390000
 
@@ -1735,52 +1167,44 @@ frescos-y-lacteos/yoghurt/proteina/45669105_59066660_20390000
 frescos-y-lacteos/quesos/queso-fresco/45669105_72564080_66028932
 
 [ ]
-  44  Lácteos, Fiambrería y Huevos / Revisar todo
-frescos-y-lacteos/fiambres-y-embutidos/45669105_22196003
-
-[ ]
- 175  Lácteos, Fiambrería y Huevos / Revisar todo
-frescos-y-lacteos/leche/45669105_39354732
-
-[ ]
   22  Lácteos, Fiambrería y Huevos / Revisar todo
 frescos-y-lacteos/bebidas-vegetales/45669105_53011137
-
-[ ]
- 233  Lácteos, Fiambrería y Huevos / Revisar todo
-frescos-y-lacteos/yoghurt/45669105_59066660
-
-[ ]
-  44  Lácteos, Fiambrería y Huevos / Revisar todo
-frescos-y-lacteos/postres-refrigerados/45669105_15349134
-
-[ ]
-  35  Lácteos, Fiambrería y Huevos / Revisar todo
-frescos-y-lacteos/dulces_mermeladas_y_manjar/45669105_21333127
-
-[ ]
-  32  Lácteos, Fiambrería y Huevos / Revisar todo
-frescos-y-lacteos/quesos/45669105_72564080
-
-[ ]
-  72  Lácteos, Fiambrería y Huevos / Revisar Todo
-frescos-y-lacteos/mantequillas-y-margarinas/45669105_15064481
 
 [ ]
   25  Lácteos, Fiambrería y Huevos / Revisar todo
 frescos-y-lacteos/cremas/45669105_27824002
 
 [ ]
+  35  Lácteos, Fiambrería y Huevos / Revisar todo
+frescos-y-lacteos/dulces_mermeladas_y_manjar/45669105_21333127
+
+[ ]
+  44  Lácteos, Fiambrería y Huevos / Revisar todo
+frescos-y-lacteos/fiambres-y-embutidos/45669105_22196003
+
+[ ]
   32  Lácteos, Fiambrería y Huevos / Revisar Todo
 frescos-y-lacteos/huevos/45669105_43398659
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Saborizadas
-frescos-y-lacteos/leche/saborizadas/45669105_39354732_51230408
+ 175  Lácteos, Fiambrería y Huevos / Revisar todo
+frescos-y-lacteos/leche/45669105_39354732
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Saborizantes
-frescos-y-lacteos/leche/saborizantes/45669105_39354732_22417433
+  72  Lácteos, Fiambrería y Huevos / Revisar Todo
+frescos-y-lacteos/mantequillas-y-margarinas/45669105_15064481
+
+[ ]
+  44  Lácteos, Fiambrería y Huevos / Revisar todo
+frescos-y-lacteos/postres-refrigerados/45669105_15349134
+
+[ ]
+  32  Lácteos, Fiambrería y Huevos / Revisar todo
+frescos-y-lacteos/quesos/45669105_72564080
+
+[ ]
+ 233  Lácteos, Fiambrería y Huevos / Revisar todo
+frescos-y-lacteos/yoghurt/45669105_59066660
 
 [ ]
   21  Lácteos, Fiambrería y Huevos / Salame y Tocino
@@ -1795,16 +1219,8 @@ frescos-y-lacteos/fiambres-y-embutidos/salchichas/45669105_22196003_42978581
 frescos-y-lacteos/yoghurt/salud-y-bienestar/45669105_59066660_27805453
 
 [ ]
-   0  Lácteos, Fiambrería y Huevos / Sin Lactosa
-frescos-y-lacteos/yoghurt/sin-lactosa/45669105_59066660_73965460
-
-[ ]
    7  Lácteos, Fiambrería y Huevos / Snack
 frescos-y-lacteos/quesos/snack/45669105_72564080_66637065
-
-[ ]
-   0  Lácteos, Fiambrería y Huevos / Soya
-frescos-y-lacteos/bebidas-vegetales/soya/45669105_53011137_42950425
 
 [ ]
    1  Lácteos, Fiambrería y Huevos / Sémola
@@ -1823,136 +1239,24 @@ frescos-y-lacteos/quesos/untable-y-fundido/45669105_72564080_80746235
 frescos-y-lacteos/quesos/veganos/45669105_72564080_93322279
 
 [ ]
-   0  Marcas Americanas
-marcas-americanas/27359988
-
-[ ]
-   0  Marcas Americanas / Aceite
-marcas-americanas/despensa/aceite/27359988_41803797_35420717
-
-[ ]
-   0  Marcas Americanas / ACT II
-marcas-americanas/marcas-destacadas/act-ii/27359988_58702810_90373060
-
-[ ]
    1  Marcas Americanas / Aderezos
 marcas-americanas/complementos/aderezos/27359988_46428809_14539722
-
-[ ]
-   0  Marcas Americanas / Afeitado y depilación
-marcas-americanas/belleza-y-bebe/afeitado-y-depilacion/27359988_13440254_43191762
-
-[ ]
-   0  Marcas Americanas / Alimentos
-marcas-americanas/novedades/alimentos/27359988_46265780_51440970
-
-[ ]
-   0  Marcas Americanas / Alimentos
-marcas-americanas/novedades/belleza-y-bebe/27359988_46265780_88258080
-
-[ ]
-   0  Marcas Americanas / Bebestibles y Saborizantes
-marcas-americanas/desayuno/bebestibles-y-saborizantes/27359988_6464094_12097926
-
-[ ]
-   0  Marcas Americanas / Bolsas y accesorios
-marcas-americanas/limpieza-y-hogar/bolsas-y-accesorios/27359988_86741091_14518081
-
-[ ]
-   0  Marcas Americanas / Cabritas
-marcas-americanas/dulces-y-snacks/cabritas/27359988_17887579_90058273
-
-[ ]
-   0  Marcas Americanas / Café
-marcas-americanas/desayuno/cafe/27359988_6464094_51738953
-
-[ ]
-   0  Marcas Americanas / Cereales y pre-mezclas
-marcas-americanas/desayuno/cereales-y-pre-mezclas/27359988_6464094_60802374
 
 [ ]
    1  Marcas Americanas / Chocolates
 marcas-americanas/dulces-y-snacks/chocolates/27359988_17887579_85536142
 
 [ ]
-   0  Marcas Americanas / Condimentos
-marcas-americanas/complementos/condimentos/27359988_46428809_48904901
-
-[ ]
-   0  Marcas Americanas / Conservas
-marcas-americanas/despensa/conservas/27359988_41803797_26229634
-
-[ ]
-   0  Marcas Americanas / Cuidado bucal
-marcas-americanas/belleza-y-bebe/cuidado-bucal/27359988_13440254_61096512
-
-[ ]
-   0  Marcas Americanas / Cuidado corporal
-marcas-americanas/belleza-y-bebe/cuidado-corporal/27359988_13440254_10999153
-
-[ ]
-   0  Marcas Americanas / Cuidado facial
-marcas-americanas/belleza-y-bebe/cuidado-facial/27359988_13440254_67399974
-
-[ ]
-   0  Marcas Americanas / Detergente
-marcas-americanas/limpieza-y-hogar/detergente/27359988_86741091_24765687
-
-[ ]
    1  Marcas Americanas / Dulces y gomitas
 marcas-americanas/dulces-y-snacks/dulces-y-gomitas/27359988_17887579_15384651
-
-[ ]
-   0  Marcas Americanas / Equate
-marcas-americanas/marcas-destacadas/equate/27359988_58702810_49262460
 
 [ ]
    1  Marcas Americanas / Folgers
 marcas-americanas/marcas-destacadas/folgers/27359988_58702810_20819193
 
 [ ]
-   0  Marcas Americanas / Frutas
-marcas-americanas/carnes-y-congelados/frutas/27359988_23628340_59586720
-
-[ ]
-   0  Marcas Americanas / Frutos secos
-marcas-americanas/dulces-y-snacks/frutos-secos/27359988_17887579_30288697
-
-[ ]
-   0  Marcas Americanas / Galletas
-marcas-americanas/dulces-y-snacks/galletas/27359988_17887579_18362577
-
-[ ]
-   0  Marcas Americanas / Helados y postres
-marcas-americanas/carnes-y-congelados/helados-y-postres/27359988_23628340_21657539
-
-[ ]
-   0  Marcas Americanas / Jugos y aguas
-marcas-americanas/despensa/jugos-y-aguas/27359988_41803797_45942938
-
-[ ]
-   0  Marcas Americanas / Lavalozas
-marcas-americanas/limpieza-y-hogar/lavalozas/27359988_86741091_76292581
-
-[ ]
-   0  Marcas Americanas / Limpiadores
-marcas-americanas/limpieza-y-hogar/limpiadores/27359988_86741091_30085336
-
-[ ]
-   0  Marcas Americanas / Limpieza y Hogar
-marcas-americanas/novedades/limpieza-y-hogar/27359988_46265780_87302162
-
-[ ]
-   0  Marcas Americanas / M Y M
-marcas-americanas/marcas-destacadas/m-y-m/27359988_58702810_47573885
-
-[ ]
    2  Marcas Americanas / Marcas Destacadas
 marcas-americanas/marcas-destacadas/great-value/27359988_58702810_29315559
-
-[ ]
-   0  Marcas Americanas / Mundo bebé
-marcas-americanas/belleza-y-bebe/mundo-bebe/27359988_13440254_30166886
 
 [ ]
    1  Marcas Americanas / Our finest
@@ -1963,56 +1267,16 @@ marcas-americanas/marcas-destacadas/our-finest/27359988_58702810_11795138
 marcas-americanas/dulces-y-snacks/papas-fritas-y-soufles/27359988_17887579_48051229
 
 [ ]
-   0  Marcas Americanas / Parents choice
-marcas-americanas/marcas-destacadas/parents-choice/27359988_58702810_95195710
-
-[ ]
-   0  Marcas Americanas / Pizza
-marcas-americanas/carnes-y-congelados/pizza/27359988_23628340_92555472
-
-[ ]
-   0  Marcas Americanas / Platos preparados
-marcas-americanas/carnes-y-congelados/platos-preparados/27359988_23628340_16316292
-
-[ ]
-   0  Marcas Americanas / Postres y edulcorantes
-marcas-americanas/despensa/postres-y-edulcorantes/27359988_41803797_14823034
-
-[ ]
-   0  Marcas Americanas / Pure Balance
-pure-balance/38351958
-
-[ ]
-   0  Marcas Americanas / Queso
-marcas-americanas/desayuno/queso/27359988_6464094_71698945
-
-[ ]
-   0  Marcas Americanas / Quinoa y pasta
-marcas-americanas/despensa/quinoa-y-pasta/27359988_41803797_61435516
-
-[ ]
-   0  Marcas Americanas / Revisar Todo
-marcas-americanas/novedades/27359988_46265780
-
-[ ]
-   0  Marcas Americanas / Revisar Todo
-marcas-americanas/marcas-destacadas/27359988_58702810
-
-[ ]
    3  Marcas Americanas / Revisar Todo
 marcas-americanas/carnes-y-congelados/27359988_23628340
 
 [ ]
-   6  Marcas Americanas / Revisar Todo
-marcas-americanas/desayuno/27359988_64640941
-
-[ ]
-   0  Marcas Americanas / Revisar Todo
-marcas-americanas/despensa/27359988_41803797
-
-[ ]
    9  Marcas Americanas / Revisar Todo
 marcas-americanas/complementos/27359988_46428809
+
+[ ]
+   6  Marcas Americanas / Revisar Todo
+marcas-americanas/desayuno/27359988_64640941
 
 [ ]
   25  Marcas Americanas / Revisar Todo
@@ -2023,68 +1287,8 @@ marcas-americanas/dulces-y-snacks/27359988_17887579
 marcas-americanas/limpieza-y-hogar/27359988_86741091
 
 [ ]
-   0  Marcas Americanas / Revisar Todo
-marcas-americanas/belleza-y-bebe/27359988_13440254
-
-[ ]
-   0  Marcas Americanas / Salsas del mundo
-marcas-americanas/complementos/salsas-del-mundo/27359988_46428809_16247944
-
-[ ]
-   0  Marcas Americanas / Salsas y marinados
-marcas-americanas/complementos/salsas-y-marinados/27359988_46428809_85176406
-
-[ ]
    1  Marcas Americanas / Shampoo y acondicionador
 marcas-americanas/belleza-y-bebe/shampoo-y-acondicionador/27359988_13440254_40228090
-
-[ ]
-   0  Marcas Americanas / Skittles
-marcas-americanas/marcas-destacadas/skittles/27359988_58702810_82972914
-
-[ ]
-   0  Marcas Americanas / Snacks salados
-marcas-americanas/dulces-y-snacks/snacks-salados/27359988_17887579_33124623
-
-[ ]
-   0  Marcas Americanas / Snyders
-marcas-americanas/marcas-destacadas/snyders/27359988_58702810_55188479
-
-[ ]
-   0  Marcas Americanas / Sopas y cremas
-marcas-americanas/despensa/sopas-y-cremas/27359988_41803797_55157272
-
-[ ]
-   0  Marcas Americanas / Suavizantes y aroma
-marcas-americanas/limpieza-y-hogar/suavizantes-y-aroma/27359988_86741091_52123397
-
-[ ]
-   0  Marcas Americanas / Té y hierbas
-marcas-americanas/desayuno/te-y-hierbas/27359988_6464094_14651456
-
-[ ]
-   0  Marcas Americanas / Untables
-marcas-americanas/desayuno/untables/27359988_6464094_46010527
-
-[ ]
-   0  Marcas Americanas / Verduras
-marcas-americanas/carnes-y-congelados/verduras/27359988_23628340_73409068
-
-[ ]
-   0  Marcas Americanas / Your fresh market
-marcas-americanas/marcas-destacadas/your-fresh-market/27359988_58702810_83716921
-
-[ ]
-   0  Marcas Propias
-marcas-propias/69507955
-
-[ ]
-   0  Marcas Propias / Accesorios automovil
-marcas-propias/automotriz/accesorios-automovil/69507955_50552275_77726561
-
-[ ]
-   0  Marcas Propias / Accesorios bebe
-marcas-propias/todo-bebes/accesorios-bebe/69507955_10772765_52370966
 
 [ ]
   24  Marcas Propias / Accesorios y envoltorios
@@ -2107,16 +1311,8 @@ marcas-propias/nuestras-marcas/acuenta/69507955_30193274_85432170
 marcas-propias/complementos-y-snacks/aderezos/69507955_82726189_63308362
 
 [ ]
-   0  Marcas Propias / Alimentos
-marcas-propias/novedades/alimentos/69507955_96996813_96153577
-
-[ ]
   11  Marcas Propias / Aliños
 marcas-propias/complementos-y-snacks/alinos/69507955_82726189_74596728
-
-[ ]
-   0  Marcas Propias / Ampolletas y velas
-marcas-propias/ferreteria-y-jardineria/ampolletas-y-velas/69507955_26243687_38770754
 
 [ ]
    2  Marcas Propias / Apanados
@@ -2139,10 +1335,6 @@ marcas-propias/desayuno/azucar-y-endulzantes/69507955_77670911_67506565
 marcas-propias/despensa/bases-y-caldos/69507955_88445154_78036701
 
 [ ]
-   0  Marcas Propias / Bebida Vegetal
-marcas-propias/lacteos/bebida-vegetal/69507955_81156032_75937384
-
-[ ]
    3  Marcas Propias / Cabritas
 marcas-propias/dulce-momento/cabritas/69507955_60951885_95864144
 
@@ -2153,10 +1345,6 @@ marcas-propias/desayuno/cafe-y-te/69507955_77670911_15030637
 [ ]
   18  Marcas Propias / Camarones y Mariscos
 marcas-propias/hay-carnes/camarones-y-mariscos/69507955_18040839_91692547
-
-[ ]
-   0  Marcas Propias / Carbon
-marcas-propias/ferreteria-y-jardineria/carbon/69507955_26243687_20938818
 
 [ ]
    2  Marcas Propias / Cerdo y Pollo
@@ -2217,10 +1405,6 @@ marcas-propias/limpieza-hogar/detergentes/69507955_15116335_45736087
 [ ]
   12  Marcas Propias / Dulces y Chocolates
 marcas-propias/dulce-momento/dulces-y-chocolates/69507955_60951885_42969522
-
-[ ]
-   0  Marcas Propias / El Buen Corte
-marcas-propias/nuestras-marcas/el-buen-corte/69507955_30193274_45345322
 
 [ ]
    2  Marcas Propias / Empanadas
@@ -2295,10 +1479,6 @@ marcas-propias/dulce-momento/jugos-y-aguas/69507955_60951885_26113337
 marcas-propias/limpieza-hogar/lavalozas/69507955_15116335_68705410
 
 [ ]
-   0  Marcas Propias / Leche
-marcas-propias/lacteos/leche/69507955_81156032_49895531
-
-[ ]
    3  Marcas Propias / Legumbres
 marcas-propias/despensa/legumbres/69507955_88445154_89243297
 
@@ -2311,28 +1491,8 @@ marcas-propias/nuestras-marcas/lider/69507955_30193274_77297815
 marcas-propias/limpieza-hogar/limpiadores/69507955_15116335_68053924
 
 [ ]
-   0  Marcas Propias / Limpieza Hogar
-marcas-propias/novedades/limpieza-hogar/69507955_96996813_63994704
-
-[ ]
-   0  Marcas Propias / Mantencion piscina
-marcas-propias/ferreteria-y-jardineria/mantencion-piscina/69507955_26243687_26186077
-
-[ ]
-   0  Marcas Propias / Mantenimiento automovil
-marcas-propias/automotriz/mantenimiento-automovil/69507955_50552275_91523387
-
-[ ]
-   0  Marcas Propias / Marketside
-marcas-propias/nuestras-marcas/marketside/69507955_30193274_35446480
-
-[ ]
    1  Marcas Propias / Masas Listas
 marcas-propias/nuestras-preparaciones/masas-listas/69507955_60983176_19185170
-
-[ ]
-   0  Marcas Propias / Our Finest
-marcas-propias/nuestras-marcas/our-finest/69507955_30193274_91600849
 
 [ ]
    1  Marcas Propias / Panadería
@@ -2347,10 +1507,6 @@ marcas-propias/complementos-y-snacks/papas-fritas-y-otros/69507955_82726189_2740
 marcas-propias/limpieza-hogar/papel-higienico/69507955_15116335_78601612
 
 [ ]
-   0  Marcas Propias / Parents Choice
-marcas-propias/nuestras-marcas/parents-choice/69507955_30193274_25003952
-
-[ ]
    9  Marcas Propias / Parrilleros y Salchichas
 marcas-propias/hay-carnes/parrilleros-y-salchichas/69507955_18040839_53169836
 
@@ -2361,10 +1517,6 @@ marcas-propias/nuestras-preparaciones/pasta-fresca/69507955_60983176_69950811
 [ ]
   17  Marcas Propias / Pastas
 marcas-propias/despensa/pastas/69507955_88445154_64642233
-
-[ ]
-   0  Marcas Propias / Pastelería
-marcas-propias/nuestras-preparaciones/pasteleria/69507955_60983176_78488898
 
 [ ]
    1  Marcas Propias / Pañales Bebé
@@ -2399,64 +1551,60 @@ marcas-propias/lacteos/queso-especial/69507955_81156032_27181544
 marcas-propias/lacteos/queso-mantecoso-y-gauda/69507955_81156032_26642716
 
 [ ]
-  14  Marcas Propias / Revisar todo
-marcas-propias/novedades/69507955_96996813
-
-[ ]
-   0  Marcas Propias / Revisar todo
-marcas-propias/nuestras-marcas/69507955_30193274
-
-[ ]
   42  Marcas Propias / Revisar todo
-marcas-propias/despensa/69507955_88445154
-
-[ ]
-  44  Marcas Propias / Revisar todo
-marcas-propias/complementos-y-snacks/69507955_82726189
-
-[ ]
-  34  Marcas Propias / Revisar todo
-marcas-propias/lacteos/69507955_81156032
-
-[ ]
-  41  Marcas Propias / Revisar todo
-marcas-propias/congelados/69507955_76248501
-
-[ ]
-  44  Marcas Propias / Revisar todo
-marcas-propias/hay-carnes/69507955_18040839
-
-[ ]
-  10  Marcas Propias / Revisar todo
-marcas-propias/nuestras-preparaciones/69507955_60983176
-
-[ ]
-  40  Marcas Propias / Revisar todo
-marcas-propias/desayuno/69507955_77670911
-
-[ ]
-  29  Marcas Propias / Revisar todo
-marcas-propias/dulce-momento/69507955_60951885
+marcas-propias/automotriz/69507955_50552275
 
 [ ]
   36  Marcas Propias / Revisar todo
 marcas-propias/belleza-y-bebe/69507955_34690291
 
 [ ]
-  43  Marcas Propias / Revisar todo
-marcas-propias/limpieza-hogar/69507955_15116335
-
-[ ]
-  42  Marcas Propias / Revisar todo
-marcas-propias/automotriz/69507955_50552275
-
-[ ]
   41  Marcas Propias / Revisar todo
 marcas-propias/celebraciones/69507955_31420714
 
 [ ]
+  44  Marcas Propias / Revisar todo
+marcas-propias/complementos-y-snacks/69507955_82726189
+
+[ ]
+  41  Marcas Propias / Revisar todo
+marcas-propias/congelados/69507955_76248501
+
+[ ]
+  40  Marcas Propias / Revisar todo
+marcas-propias/desayuno/69507955_77670911
+
+[ ]
+  42  Marcas Propias / Revisar todo
+marcas-propias/despensa/69507955_88445154
+
+[ ]
+  29  Marcas Propias / Revisar todo
+marcas-propias/dulce-momento/69507955_60951885
+
+[ ]
   26  Marcas Propias / Revisar todo
 marcas-propias/ferreteria-y-jardineria/69507955_26243687
+
+[ ]
+  44  Marcas Propias / Revisar todo
+marcas-propias/hay-carnes/69507955_18040839
+
+[ ]
+  34  Marcas Propias / Revisar todo
+marcas-propias/lacteos/69507955_81156032
+
+[ ]
+  43  Marcas Propias / Revisar todo
+marcas-propias/limpieza-hogar/69507955_15116335
+
+[ ]
+  14  Marcas Propias / Revisar todo
+marcas-propias/novedades/69507955_96996813
+
+[ ]
+  10  Marcas Propias / Revisar todo
+marcas-propias/nuestras-preparaciones/69507955_60983176
 
 [ ]
    1  Marcas Propias / Revisar todo
@@ -2471,24 +1619,12 @@ marcas-propias/lacteos/saborizantes/69507955_81156032_59213502
 marcas-propias/complementos-y-snacks/salsas-y-agregados/69507955_82726189_49819846
 
 [ ]
-   0  Marcas Propias / Seguridad y viajes
-marcas-propias/todo-bebes/seguridad-y-viajes/69507955_10772765_81277271
-
-[ ]
-   0  Marcas Propias / Selección
-marcas-propias/nuestras-marcas/seleccion/69507955_30193274_33702202
-
-[ ]
    9  Marcas Propias / Servilletas y Toallas
 marcas-propias/limpieza-hogar/servilletas-y-toallas/69507955_15116335_66186509
 
 [ ]
   12  Marcas Propias / Sopas y Cremas
 marcas-propias/despensa/sopas-y-cremas/69507955_88445154_24438768
-
-[ ]
-   0  Marcas Propias / Toallitas Humedas
-marcas-propias/belleza-y-bebe/toallitas-humedas/69507955_34690291_54826438
 
 [ ]
   10  Marcas Propias / Untables
@@ -2515,44 +1651,12 @@ marcas-propias/congelados/verduras/69507955_76248501_60510565
 marcas-propias/lacteos/yoghurt/69507955_81156032_72213059
 
 [ ]
-   0  Marcas Propias / Your Fresh Market
-marcas-propias/nuestras-marcas/your-fresh-market/69507955_30193274_73874363
-
-[ ]
-   0  Mascotas
-mascotas/07089592
-
-[ ]
-   0  Mascotas / Accesorios y Juguetes
-mascotas/perro/accesorios-y-juguetes/07089592_29432822_42226397
-
-[ ]
   33  Mascotas / Accesorios y Juguetes
 mascotas/gato/accesorios-y-juguetes/07089592_85723699_56091010
 
 [ ]
-   0  Mascotas / Alimento Conejo
-mascotas/otras-mascotas/alimento-conejo/07089592_42714284_49619948
-
-[ ]
-   0  Mascotas / Alimento Humedo
-mascotas/perro/alimento-humedo/07089592_29432822_02175062
-
-[ ]
   18  Mascotas / Alimento Humedo
 mascotas/gato/alimento-humedo/07089592_85723699_39598429
-
-[ ]
-   0  Mascotas / Alimento Pajaro
-mascotas/otras-mascotas/alimento-pajaro/07089592_42714284_59337773
-
-[ ]
-   0  Mascotas / Alimento Roedor
-mascotas/otras-mascotas/alimento-roedor/07089592_42714284_53427902
-
-[ ]
-   0  Mascotas / Alimento Seco
-mascotas/perro/alimento-seco/07089592_29432822_59354834
 
 [ ]
   19  Mascotas / Alimento Seco
@@ -2571,40 +1675,28 @@ mascotas/higiene-y-bienestar/bao-y-limpieza/07089592_02342029_81556437
 mascotas/higiene-y-bienestar/bolsas-y-accesorios-sanitarios/07089592_02342029_52790901
 
 [ ]
- 245  Mascotas / Revisar todo
-mascotas/perro/07089592_29432822
-
-[ ]
   44  Mascotas / Revisar todo
 mascotas/gato/07089592_85723699
-
-[ ]
-   3  Mascotas / Revisar todo
-mascotas/otras-mascotas/07089592_42714284
 
 [ ]
   44  Mascotas / Revisar todo
 mascotas/higiene-y-bienestar/07089592_02342029
 
 [ ]
-   0  Mascotas / Snack y Premios
-mascotas/perro/snack-y-premios/07089592_29432822_49543527
+   3  Mascotas / Revisar todo
+mascotas/otras-mascotas/07089592_42714284
+
+[ ]
+ 245  Mascotas / Revisar todo
+mascotas/perro/07089592_29432822
 
 [ ]
   35  Mascotas / Snack y Premios
 mascotas/gato/snack-y-premios/07089592_85723699_83034796
 
 [ ]
-   0  Mundo Bebé y Juguetería
-mundo-bebe-y-jugueteria/11780484
-
-[ ]
    7  Mundo Bebé y Juguetería / Accesorios Baño
 mundo-bebe-y-jugueteria/perfumeria-e-higiene/accesorios-bano/11780484_96645034_87629217
-
-[ ]
-   0  Mundo Bebé y Juguetería / Accesorios Bebé
-mundo-bebe-y-jugueteria/ropa-de-bebe/accesorios-bebe/11780484_75259820_39565084
 
 [ ]
   14  Mundo Bebé y Juguetería / Accesorios Lactancia y Cuidado
@@ -2623,20 +1715,12 @@ mundo-bebe-y-jugueteria/actividades-bebe/accesorios-y-seguridad/11780484_8521429
 mundo-bebe-y-jugueteria/panales-y-muda/babysec/11780484_69224535_59131125
 
 [ ]
-   0  Mundo Bebé y Juguetería / Centro de Actividades y Estimulación
-mundo-bebe-y-jugueteria/actividades-bebe/centro-de-actividades-y-estimulacion/11780484_85214299_98170774
-
-[ ]
   33  Mundo Bebé y Juguetería / Cereales Jugos y Snacks
 mundo-bebe-y-jugueteria/alimentacion-y-lactancia/cereales-jugos-y-snacks/11780484_23586822_25882846
 
 [ ]
   13  Mundo Bebé y Juguetería / Chupetes y Accesorios
 mundo-bebe-y-jugueteria/alimentacion-y-lactancia/chupetes-y-accesorios/11780484_23586822_62165355
-
-[ ]
-   0  Mundo Bebé y Juguetería / Coches y Sillas de Auto
-mundo-bebe-y-jugueteria/actividades-bebe/coches-y-sillas-de-auto/11780484_85214299_70470202
 
 [ ]
   20  Mundo Bebé y Juguetería / Colados Picados y Aceites
@@ -2649,10 +1733,6 @@ mundo-bebe-y-jugueteria/perfumeria-e-higiene/colonias-y-lociones/11780484_966450
 [ ]
   10  Mundo Bebé y Juguetería / Cremas y Aceites
 mundo-bebe-y-jugueteria/perfumeria-e-higiene/cremas-y-aceites/11780484_96645034_57030571
-
-[ ]
-   0  Mundo Bebé y Juguetería / Cunas y Dormitorio
-mundo-bebe-y-jugueteria/actividades-bebe/cunas-y-dormitorio/11780484_85214299_71173986
 
 [ ]
    2  Mundo Bebé y Juguetería / Emubaby
@@ -2671,16 +1751,8 @@ mundo-bebe-y-jugueteria/panales-y-muda/huggies/11780484_69224535_24872702
 mundo-bebe-y-jugueteria/perfumeria-e-higiene/jabon/11780484_96645034_33865365
 
 [ ]
-   0  Mundo Bebé y Juguetería / Juguetes y Accesorios Baño
-mundo-bebe-y-jugueteria/actividades-bebe/juguetes-y-accesorios-bano/11780484_85214299_97671494
-
-[ ]
   36  Mundo Bebé y Juguetería / Mamaderas Tetinas y Vasos
 mundo-bebe-y-jugueteria/alimentacion-y-lactancia/mamaderas-tetinas-y-vasos/11780484_23586822_71925836
-
-[ ]
-   0  Mundo Bebé y Juguetería / Mordedores y Sonajeros
-mundo-bebe-y-jugueteria/actividades-bebe/mordedores-y-sonajeros/11780484_85214299_86865170
 
 [ ]
    5  Mundo Bebé y Juguetería / Pampers
@@ -2691,16 +1763,12 @@ mundo-bebe-y-jugueteria/panales-y-muda/pampers/11780484_69224535_63027401
 mundo-bebe-y-jugueteria/panales-y-muda/parents-choice/11780484_69224535_53648247
 
 [ ]
-   0  Mundo Bebé y Juguetería / Pañales
-mundo-bebe-y-jugueteria/panales-y-toallas-humedas/panales/11780484_12671170_82649776
-
-[ ]
   41  Mundo Bebé y Juguetería / Reivsar todo
 mundo-bebe-y-jugueteria/perfumeria-e-higiene/11780484_96645034
 
 [ ]
-  17  Mundo Bebé y Juguetería / Revisar todo
-mundo-bebe-y-jugueteria/panales-y-toallas-humedas/11780484_12671170
+  44  Mundo Bebé y Juguetería / Revisar todo
+mundo-bebe-y-jugueteria/actividades-bebe/11780484_85214299
 
 [ ]
   42  Mundo Bebé y Juguetería / Revisar todo
@@ -2711,8 +1779,8 @@ mundo-bebe-y-jugueteria/alimentacion-y-lactancia/11780484_23586822
 mundo-bebe-y-jugueteria/panales-y-muda/11780484_69224535
 
 [ ]
-  44  Mundo Bebé y Juguetería / Revisar todo
-mundo-bebe-y-jugueteria/actividades-bebe/11780484_85214299
+  17  Mundo Bebé y Juguetería / Revisar todo
+mundo-bebe-y-jugueteria/panales-y-toallas-humedas/11780484_12671170
 
 [ ]
    4  Mundo Bebé y Juguetería / Revisar todo
@@ -2723,48 +1791,20 @@ mundo-bebe-y-jugueteria/ropa-de-bebe/11780484_75259820
 mundo-bebe-y-jugueteria/perfumeria-e-higiene/shampoo-y-balsamo/11780484_96645034_33464976
 
 [ ]
-   0  Mundo Bebé y Juguetería / Sillas para Comer
-mundo-bebe-y-jugueteria/alimentacion-y-lactancia/sillas-para-comer/11780484_23586822_76958416
-
-[ ]
    5  Mundo Bebé y Juguetería / Talcos y Pomadas
 mundo-bebe-y-jugueteria/perfumeria-e-higiene/talcos-y-pomadas/11780484_96645034_48346309
-
-[ ]
-   0  Mundo Bebé y Juguetería / Textil Bebé
-mundo-bebe-y-jugueteria/ropa-de-bebe/textil-bebe/11780484_75259820_13653943
 
 [ ]
   37  Mundo Bebé y Juguetería / Toallas Húmedas
 mundo-bebe-y-jugueteria/panales-y-toallas-humedas/toallas-humedas/11780484_12671170_62518890
 
 [ ]
-   0  Mundo Bebé y Juguetería / Vestuario Bebé
-mundo-bebe-y-jugueteria/ropa-de-bebe/vestuario-bebe/11780484_75259820_61468915
-
-[ ]
-   0  Panadería y Pastelería
-panaderia-y-pasteleria/73535247
-
-[ ]
    6  Panadería y Pastelería / Alfajores
 panaderia-y-pasteleria/pasteleria/alfajores/73535247_90671850_54272476
 
 [ ]
-   0  Panadería y Pastelería / Azúcar
-panaderia-y-pasteleria/reposteria/azucar/73535247_58054857_71112270
-
-[ ]
-   0  Panadería y Pastelería / Baguette
-panaderia-y-pasteleria/panaderia-granel/baguette/73535247_87066079_75533995
-
-[ ]
    1  Panadería y Pastelería / Bases para Tortas
 panaderia-y-pasteleria/pasteleria/bases-para-tortas/73535247_90671850_20471163
-
-[ ]
-   0  Panadería y Pastelería / Ciabatta
-panaderia-y-pasteleria/panaderia-granel/ciabatta/73535247_87066079_76033537
 
 [ ]
    2  Panadería y Pastelería / Coberturas
@@ -2779,10 +1819,6 @@ panaderia-y-pasteleria/panaderia-envasada/cockteleria/73535247_22477361_69746250
 panaderia-y-pasteleria/reposteria/cremas/73535247_58054857_96912309
 
 [ ]
-   0  Panadería y Pastelería / Decoración
-panaderia-y-pasteleria/reposteria/decoracion/73535247_58054857_60545993
-
-[ ]
   12  Panadería y Pastelería / Dulces Artesanales
 panaderia-y-pasteleria/pasteleria/dulces-artesanales/73535247_90671850_37916949
 
@@ -2795,16 +1831,8 @@ panaderia-y-pasteleria/reposteria/endulzantes/73535247_58054857_28368901
 panaderia-y-pasteleria/reposteria/esencias/73535247_58054857_40023146
 
 [ ]
-   0  Panadería y Pastelería / Especial
-panaderia-y-pasteleria/panaderia-granel/especial/73535247_87066079_52254435
-
-[ ]
    6  Panadería y Pastelería / Féculas y Polvos
 panaderia-y-pasteleria/reposteria/feculas-y-polvos/73535247_58054857_15688045
-
-[ ]
-   0  Panadería y Pastelería / Hot Dog y Hamburguesa
-panaderia-y-pasteleria/panaderia-granel/hot-dog-y-hamburguesa/73535247_87066079_90180394
 
 [ ]
    5  Panadería y Pastelería / Leche Condensada y Evaporada
@@ -2827,14 +1855,6 @@ panaderia-y-pasteleria/panaderia-envasada/masas-pizzas-y-empanadas/73535247_2247
 panaderia-y-pasteleria/reposteria/mezclas-y-premezclas/73535247_58054857_73821449
 
 [ ]
-   0  Panadería y Pastelería / Pan Cocktail
-panaderia-y-pasteleria/panaderia-granel/pan-cocktail/73535247_87066079_15359640
-
-[ ]
-   0  Panadería y Pastelería / Pan de Campo y Alemán
-panaderia-y-pasteleria/panaderia-granel/pan-de-campo-y-aleman/73535247_87066079_55828653
-
-[ ]
   12  Panadería y Pastelería / Pan de Molde Blanco
 panaderia-y-pasteleria/panaderia-envasada/pan-de-molde-blanco/73535247_22477361_83966286
 
@@ -2845,10 +1865,6 @@ panaderia-y-pasteleria/panaderia-envasada/pan-de-molde-integral/73535247_2247736
 [ ]
    3  Panadería y Pastelería / Pan de Pascua y Pan Dulce
 panaderia-y-pasteleria/pasteleria/pan-de-pascua-y-pan-dulce/73535247_90671850_31388464
-
-[ ]
-   0  Panadería y Pastelería / Pan dulce
-panaderia-y-pasteleria/panaderia-granel/pan-dulce/73535247_87066079_42419035
 
 [ ]
    6  Panadería y Pastelería / Pan Especial
@@ -2869,10 +1885,6 @@ panaderia-y-pasteleria/panaderia-envasada/pan-para-hornear-en-casa/73535247_2247
 [ ]
    8  Panadería y Pastelería / Pan Pita
 panaderia-y-pasteleria/panaderia-envasada/pan-pita/73535247_22477361_29378700
-
-[ ]
-   0  Panadería y Pastelería / Pan Pita
-panaderia-y-pasteleria/panaderia-granel/pan-pita/73535247_87066079_18746396
 
 [ ]
    1  Panadería y Pastelería / Pan Rallado
@@ -2911,196 +1923,8 @@ panaderia-y-pasteleria/pasteleria/tortas-y-pasteles/73535247_90671850_29178081
 panaderia-y-pasteleria/panaderia-envasada/tortillas/73535247_22477361_17270661
 
 [ ]
-   0  Panadería y Pastelería / Tradicional
-panaderia-y-pasteleria/panaderia-granel/tradicional/73535247_87066079_10579506
-
-[ ]
-   0  Perfumería y Salud
-perfumeria-y-salud/79913105
-
-[ ]
-   0  Perfumería y Salud / Accesorios y complementos
-perfumeria-y-salud/belleza/accesorios-y-complementos/79913105_14554833_90438079
-
-[ ]
-   0  Perfumería y Salud / Acondicionadores
-perfumeria-y-salud/cuidado-capilar/acondicionadores/79913105_63165426_32432849
-
-[ ]
-   0  Perfumería y Salud / Afeitado Espumas y Gel
-perfumeria-y-salud/cuidado-hombre/afeitado-espumas-y-gel/79913105_46480165_64468091
-
-[ ]
-   0  Perfumería y Salud / Afeitado Máquinas
-perfumeria-y-salud/cuidado-hombre/afeitado-maquinas/79913105_46480165_48409964
-
-[ ]
-   0  Perfumería y Salud / Algodón y Botiquín
-perfumeria-y-salud/salud/algodon-y-botiquin/79913105_94972302_80931049
-
-[ ]
-   0  Perfumería y Salud / Anteojos de Lectura
-perfumeria-y-salud/salud/anteojos-de-lectura/79913105_94972302_19966698
-
-[ ]
-   0  Perfumería y Salud / Anteojos y otros accesorios
-perfumeria-y-salud/cuidado-adulto-mayor/anteojos-y-otros-accesorios/79913105_36806076_64515360
-
-[ ]
-   0  Perfumería y Salud / Apósitos y Toallitas Húmedas
-perfumeria-y-salud/cuidado-adulto-mayor/apositos-y-toallitas-humedas/79913105_36806076_90912458
-
-[ ]
-   0  Perfumería y Salud / Bronceador y Autobronceante
-perfumeria-y-salud/proteccion-solar/bronceador-y-autobronceante/79913105_35040711_24498069
-
-[ ]
-   0  Perfumería y Salud / Cepillos Dentales Adulto
-perfumeria-y-salud/cuidado-bucal/cepillos-dentales-adulto/79913105_79132028_28653022
-
-[ ]
-   0  Perfumería y Salud / Cepillos Dentales Infantil
-perfumeria-y-salud/cuidado-bucal/cepillos-dentales-infantil/79913105_79132028_35579341
-
-[ ]
-   0  Perfumería y Salud / Coloración
-perfumeria-y-salud/belleza/coloracion/79913105_14554833_44389952
-
-[ ]
-   0  Perfumería y Salud / Cosméticos y Cosmetiqueros
-perfumeria-y-salud/belleza/cosmeticos-y-cosmetiqueros/79913105_14554833_76118167
-
-[ ]
-   0  Perfumería y Salud / Crema Dental Adulto
-perfumeria-y-salud/cuidado-bucal/crema-dental-adulto/79913105_79132028_61299478
-
-[ ]
-   0  Perfumería y Salud / Crema Dental Infantil
-perfumeria-y-salud/cuidado-bucal/crema-dental-infantil/79913105_79132028_28001385
-
-[ ]
-   0  Perfumería y Salud / Cremas Corporales
-perfumeria-y-salud/cuidado-facial-y-corporal/cremas-corporales/79913105_20985429_28920041
-
-[ ]
-   0  Perfumería y Salud / Cremas de Manos
-perfumeria-y-salud/cuidado-facial-y-corporal/cremas-de-manos/79913105_20985429_67639676
-
-[ ]
-   0  Perfumería y Salud / Cremas de Peinar
-perfumeria-y-salud/cuidado-capilar/cremas-de-peinar/79913105_63165426_73254438
-
-[ ]
-   0  Perfumería y Salud / Cremas Faciales
-perfumeria-y-salud/cuidado-facial-y-corporal/cremas-faciales/79913105_20985429_67730084
-
-[ ]
-   0  Perfumería y Salud / Cuidado After sun
-perfumeria-y-salud/proteccion-solar/cuidado-after-sun/79913105_35040711_05320242
-
-[ ]
-   0  Perfumería y Salud / Cuidado de Pies
-perfumeria-y-salud/cuidado-personal/cuidado-de-pies/79913105_16440401_20017659
-
-[ ]
-   0  Perfumería y Salud / Cuidado Personal
-perfumeria-y-salud/cuidado-adulto-mayor/cuidado-personal/79913105_36806076_48651593
-
-[ ]
-   0  Perfumería y Salud / Depilación
-perfumeria-y-salud/cuidado-mujer/depilacion/79913105_95389554_44238237
-
-[ ]
-   0  Perfumería y Salud / Desodorantes
-perfumeria-y-salud/cuidado-hombre/desodorantes/79913105_46480165_19020959
-
-[ ]
-   0  Perfumería y Salud / Desodorantes
-perfumeria-y-salud/cuidado-mujer/desodorantes/79913105_95389554_61156872
-
-[ ]
-   0  Perfumería y Salud / Enjuague Bucal
-perfumeria-y-salud/cuidado-bucal/enjuague-bucal/79913105_79132028_97736226
-
-[ ]
-   0  Perfumería y Salud / Fijadores
-perfumeria-y-salud/belleza/fijadores/79913105_14554833_32813759
-
-[ ]
-   0  Perfumería y Salud / Gel de Ducha
-perfumeria-y-salud/cuidado-personal/gel-de-ducha/79913105_16440401_97215559
-
-[ ]
-   0  Perfumería y Salud / Jabón en Barra
-perfumeria-y-salud/cuidado-personal/jabon-en-barra/79913105_16440401_67166201
-
-[ ]
-   0  Perfumería y Salud / Jabón Líquido
-perfumeria-y-salud/cuidado-personal/jabon-liquido/79913105_16440401_17105958
-
-[ ]
-   0  Perfumería y Salud / Limpieza y Desmaquillantes
-perfumeria-y-salud/cuidado-facial-y-corporal/limpieza-y-desmaquillantes/79913105_20985429_51182210
-
-[ ]
-   0  Perfumería y Salud / Pants
-perfumeria-y-salud/cuidado-adulto-mayor/pants/79913105_36806076_16453925
-
-[ ]
-   0  Perfumería y Salud / Pañales y Protector de Cama
-perfumeria-y-salud/cuidado-adulto-mayor/panales-y-protector-de-cama/79913105_36806076_71686120
-
-[ ]
-   0  Perfumería y Salud / Perfumes y Colonias
-perfumeria-y-salud/cuidado-hombre/perfumes-y-colonias/79913105_46480165_29100563
-
-[ ]
-   0  Perfumería y Salud / Perfumes y Colonias
-perfumeria-y-salud/cuidado-mujer/perfumes-y-colonias/79913105_95389554_82338605
-
-[ ]
-   0  Perfumería y Salud / Preservativos y Gel Lubricante
-perfumeria-y-salud/salud/preservativos-y-gel-lubricante/79913105_94972302_61163157
-
-[ ]
-   0  Perfumería y Salud / Protección Femenina
-perfumeria-y-salud/cuidado-mujer/proteccion-femenina/79913105_95389554_61900701
-
-[ ]
-   0  Perfumería y Salud / Protector Solar Corporal
-perfumeria-y-salud/proteccion-solar/protector-solar-corporal/79913105_35040711_03769655
-
-[ ]
-   0  Perfumería y Salud / Protector Solar Facial
-perfumeria-y-salud/proteccion-solar/protector-solar-facial/79913105_35040711_75424910
-
-[ ]
-   0  Perfumería y Salud / Protector Solar Infantil
-perfumeria-y-salud/proteccion-solar/protector-solar-infantil/79913105_35040711_84291211
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/proteccion-solar/79913105_35040711
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/cuidado-facial-y-corporal/79913105_20985429
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/cuidado-capilar/79913105_63165426
-
-[ ]
    1  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/cuidado-personal/79913105_16440401
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/cuidado-bucal/79913105_79132028
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/cuidado-hombre/79913105_46480165
+perfumeria-y-salud/cuidado-adulto-mayor/79913105_36806076
 
 [ ]
    6  Perfumería y Salud / Revisar todo
@@ -3108,63 +1932,11 @@ perfumeria-y-salud/cuidado-mujer/79913105_95389554
 
 [ ]
    1  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/cuidado-adulto-mayor/79913105_36806076
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/belleza/79913105_14554833
-
-[ ]
-   0  Perfumería y Salud / Revisar todo
-perfumeria-y-salud/salud/79913105_94972302
-
-[ ]
-   0  Perfumería y Salud / Seda Dental
-perfumeria-y-salud/cuidado-bucal/seda-dental/79913105_79132028_25166427
-
-[ ]
-   0  Perfumería y Salud / Set de Spa
-perfumeria-y-salud/cuidado-personal/set-de-spa/79913105_16440401_25939395
-
-[ ]
-   0  Perfumería y Salud / Set para niños
-perfumeria-y-salud/cuidado-personal/set-para-ninos/79913105_16440401_27646225
-
-[ ]
-   0  Perfumería y Salud / Shampoo
-perfumeria-y-salud/cuidado-capilar/shampoo/79913105_63165426_26752698
-
-[ ]
-   0  Perfumería y Salud / Tratamiento Especifico
-perfumeria-y-salud/cuidado-capilar/tratamiento-especifico/79913105_63165426_24766894
-
-[ ]
-   0  Perfumería y Salud / Vitaminas y Suplementos
-perfumeria-y-salud/cuidado-adulto-mayor/vitaminas-y-suplementos/79913105_36806076_19473443
-
-[ ]
-   0  Perfumería y Salud / Vitaminas y Suplementos
-perfumeria-y-salud/salud/vitaminas-y-suplementos/79913105_94972302_96471261
+perfumeria-y-salud/cuidado-personal/79913105_16440401
 
 [ ]
   43  Platos Preparados
 platos-preparados/17061702
-
-[ ]
-   0  Salud y Estilos De Vida
-salud-y-estilos-de-vida/60967524
-
-[ ]
-   0  Salud y Estilos De Vida / /browse/salud-y-estilos-de-vida/mascotas/jugos-organicos/60967524_40760590_63076963
-salud-y-estilos-de-vida/mascotas/snack-para-tus-mascotas/60967524_05792820_06193989
-
-[ ]
-   0  Salud y Estilos De Vida / Arena para Gato
-salud-y-estilos-de-vida/mascotas/arena-para--gato/60967524_05792820_91181694
-
-[ ]
-   0  Salud y Estilos De Vida / Arena para Gato
-salud-y-estilos-de-vida/mascotas/suplementos-para-tus- mascotas/60967524_05792820_98835067
 
 [ ]
    1  Salud y Estilos De Vida / Barritas Y Cereales Proteicos
@@ -3183,16 +1955,8 @@ salud-y-estilos-de-vida/a-base-de-plantas/bebidas-vegetales/60967524_91601784_39
 salud-y-estilos-de-vida/a-base-de-plantas/desayuno-a-base-de-plantas/60967524_91601784_80058452
 
 [ ]
-   0  Salud y Estilos De Vida / Desayuno Sin Azucar
-salud-y-estilos-de-vida/sin-azucar/desayuno-sin-azucar/60967524_50531651_67107568
-
-[ ]
    2  Salud y Estilos De Vida / Despensa A Base De Plantas
 salud-y-estilos-de-vida/a-base-de-plantas/despensa-a-base-de-plantas/60967524_91601784_26707486
-
-[ ]
-   0  Salud y Estilos De Vida / Despensa Saludable
-salud-y-estilos-de-vida/mas-estilos-de-vida/despensa-saludable/60967524_40760590_25041172
 
 [ ]
    9  Salud y Estilos De Vida / Despensa Sin Gluten
@@ -3203,20 +1967,12 @@ salud-y-estilos-de-vida/sin-gluten/despensa-sin-gluten/60967524_30159201_1445282
 salud-y-estilos-de-vida/a-base-de-plantas/dulces-y-galletas-a-base-de-plantas/60967524_91601784_49766295
 
 [ ]
-   0  Salud y Estilos De Vida / Galletas Y Dulces Sin Azucar
-salud-y-estilos-de-vida/sin-azucar/galletas-y-dulces-sin-azucar/60967524_50531651_96516497
-
-[ ]
    5  Salud y Estilos De Vida / Galletas Y Dulces Sin Gluten
 salud-y-estilos-de-vida/sin-gluten/galletas-y-dulces-sin-gluten/60967524_30159201_15534315
 
 [ ]
    3  Salud y Estilos De Vida / Helados A Base De Plantas
 salud-y-estilos-de-vida/a-base-de-plantas/helados-a-base-de-plantas/60967524_91601784_27947079
-
-[ ]
-   0  Salud y Estilos De Vida / Jugos Organicos
-salud-y-estilos-de-vida/mas-estilos-de-vida/jugos-organicos/60967524_40760590_63076963
 
 [ ]
    4  Salud y Estilos De Vida / Leches Sin Lactosa
@@ -3243,12 +1999,12 @@ salud-y-estilos-de-vida/sin-lactosa/quesos-sin-lactosa/60967524_83861841_3640214
 salud-y-estilos-de-vida/a-base-de-plantas/60967524_91601784
 
 [ ]
-  30  Salud y Estilos De Vida / Revisar todo
-salud-y-estilos-de-vida/sin-gluten/60967524_30159201
+  20  Salud y Estilos De Vida / Revisar todo
+salud-y-estilos-de-vida/mas-estilos-de-vida/60967524_40760590
 
 [ ]
-  44  Salud y Estilos De Vida / Revisar todo
-salud-y-estilos-de-vida/sin-lactosa/60967524_83861841
+  32  Salud y Estilos De Vida / Revisar Todo
+salud-y-estilos-de-vida/mascotas/60967524_05792820
 
 [ ]
   36  Salud y Estilos De Vida / Revisar todo
@@ -3259,12 +2015,12 @@ salud-y-estilos-de-vida/proteina/60967524_94901070
 salud-y-estilos-de-vida/sin-azucar/60967524_50531651
 
 [ ]
-  20  Salud y Estilos De Vida / Revisar todo
-salud-y-estilos-de-vida/mas-estilos-de-vida/60967524_40760590
+  30  Salud y Estilos De Vida / Revisar todo
+salud-y-estilos-de-vida/sin-gluten/60967524_30159201
 
 [ ]
-  32  Salud y Estilos De Vida / Revisar Todo
-salud-y-estilos-de-vida/mascotas/60967524_05792820
+  44  Salud y Estilos De Vida / Revisar todo
+salud-y-estilos-de-vida/sin-lactosa/60967524_83861841
 
 [ ]
    5  Salud y Estilos De Vida / Snacks Sin Gluten
@@ -3275,32 +2031,12 @@ salud-y-estilos-de-vida/sin-gluten/snacks-sin-gluten/60967524_30159201_84911181
 salud-y-estilos-de-vida/a-base-de-plantas/sucedaneos-de-lacteos/60967524_91601784_53904357
 
 [ ]
-   0  Salud y Estilos De Vida / Untable Sin Azúcar
-salud-y-estilos-de-vida/sin-azucar/untable-sin-azucar/60967524_50531651_14798863
-
-[ ]
    7  Salud y Estilos De Vida / Yogurt Sin Lactosa
 salud-y-estilos-de-vida/sin-lactosa/yogurt-sin-lactosa/60967524_83861841_45216184
 
 [ ]
-   0  Salud y Estilos De Vida / Yogurt Y Frescos Saludables
-salud-y-estilos-de-vida/mas-estilos-de-vida/yogurt-y-frescos-saludables/60967524_40760590_89985443
-
-[ ]
-   0  Soy Pyme
-soy-pyme/52660800
-
-[ ]
    1  Soy Pyme / Accesorios de belleza
 soy-pyme/perfumeria-y-cuidado-personal/accesorios-de-belleza/52660800_69844972_10810157
-
-[ ]
-   0  Soy Pyme / Accesorios de mascotas
-soy-pyme/alimentos-mascotas-y-accesorios/accesorios-de-mascotas/52660800_78024985_39399678
-
-[ ]
-   0  Soy Pyme / Alimentos bebé
-soy-pyme/mundo-bebe/alimentos-bebe/52660800_95107711_65420657
 
 [ ]
   13  Soy Pyme / Alimentos internacionales
@@ -3311,112 +2047,28 @@ soy-pyme/despensa/alimentos-internacionales/52660800_84510960_96195328
 soy-pyme/desayuno-y-dulces/barritas-y-cereales/52660800_72422692_58074828
 
 [ ]
-   0  Soy Pyme / Bebidas
-soy-pyme/aguas-bebidas-y-licores/bebidas/52660800_37604048_84182646
-
-[ ]
-   0  Soy Pyme / Carnes de vacuno
-soy-pyme/carnes-pescados-y-parrilleros/carnes-de-vacuno/52660800_50405001_36692214
-
-[ ]
-   0  Soy Pyme / Cerdo y pollo
-soy-pyme/carnes-pescados-y-parrilleros/cerdo-y-pollo/52660800_50405001_23185076
-
-[ ]
-   0  Soy Pyme / Cervezas
-soy-pyme/aguas-bebidas-y-licores/cervezas/52660800_37604048_97201097
-
-[ ]
-   0  Soy Pyme / Cocktails
-soy-pyme/aguas-bebidas-y-licores/cocktails/52660800_37604048_73364173
-
-[ ]
-   0  Soy Pyme / Comida para perros y gatos
-soy-pyme/alimentos-mascotas-y-accesorios/comida-para-perros-y-gatos/52660800_78024985_28689083
-
-[ ]
    8  Soy Pyme / Conservas y aderezos
 soy-pyme/despensa/conservas-y-aderezos/52660800_84510960_57470401
-
-[ ]
-   0  Soy Pyme / Cosméticos
-soy-pyme/perfumeria-y-cuidado-personal/cosmeticos/52660800_69844972_47220124
 
 [ ]
    3  Soy Pyme / Cuidado bucal
 soy-pyme/perfumeria-y-cuidado-personal/cuidado-bucal/52660800_69844972_99029014
 
 [ ]
-   0  Soy Pyme / Cuidado capilar
-soy-pyme/perfumeria-y-cuidado-personal/cuidado-capilar/52660800_69844972_52884307
-
-[ ]
    1  Soy Pyme / Cuidado corporal
 soy-pyme/perfumeria-y-cuidado-personal/cuidado-corporal/52660800_69844972_42391637
-
-[ ]
-   0  Soy Pyme / Cuidados bebé
-soy-pyme/mundo-bebe/cuidados-bebe/52660800_95107711_67697917
-
-[ ]
-   0  Soy Pyme / Detergentes
-soy-pyme/aseo-y-limpieza/detergentes/52660800_70238259_76600555
 
 [ ]
    8  Soy Pyme / Dulces y galletas
 soy-pyme/desayuno-y-dulces/dulces-y-galletas/52660800_72422692_21594415
 
 [ ]
-   0  Soy Pyme / Frutas picada
-soy-pyme/alimentos-preparados/frutas-picada/52660800_52387418_71302253
-
-[ ]
-   0  Soy Pyme / Harinas y aceites
-soy-pyme/despensa/harinas-y-aceites/52660800_84510960_19141559
-
-[ ]
-   0  Soy Pyme / Helados
-soy-pyme/helados-y-postres-congelados/helados/52660800_37115324_50675505
-
-[ ]
-   0  Soy Pyme / Higiene de mascotas
-soy-pyme/alimentos-mascotas-y-accesorios/higiene-de-mascotas/52660800_78024985_69020562
-
-[ ]
-   0  Soy Pyme / Huevos y mantequillas
-soy-pyme/frescos-y-lacteos/huevos-y-mantequillas/52660800_15831019_30694685
-
-[ ]
-   0  Soy Pyme / Jugos y Aguas
-soy-pyme/aguas-bebidas-y-licores/jugos-y-aguas/52660800_37604048_64849803
-
-[ ]
-   0  Soy Pyme / Leches yogurts y saborizantes
-soy-pyme/frescos-y-lacteos/leches-yogurts-y-saborizantes/52660800_15831019_71549117
-
-[ ]
    1  Soy Pyme / Licores y Espumantes
 soy-pyme/aguas-bebidas-y-licores/licores-y-espumantes/52660800_37604048_16055025
 
 [ ]
-   0  Soy Pyme / Limpiadores hogar
-soy-pyme/aseo-y-limpieza/limpiadores-hogar/52660800_70238259_83990683
-
-[ ]
    4  Soy Pyme / Mermeladas
 soy-pyme/desayuno-y-dulces/mermeladas/52660800_72422692_74106407
-
-[ ]
-   0  Soy Pyme / Panadería
-soy-pyme/panaderia-y-pasteleria/panaderia/52660800_10568745_92216941
-
-[ ]
-   0  Soy Pyme / Papeles y accesorios
-soy-pyme/aseo-y-limpieza/papeles-y-accesorios/52660800_70238259_40347921
-
-[ ]
-   0  Soy Pyme / Parrilleros
-soy-pyme/carnes-pescados-y-parrilleros/parrilleros/52660800_50405001_40240977
 
 [ ]
    2  Soy Pyme / Pastas salsas y arroz
@@ -3427,32 +2079,12 @@ soy-pyme/despensa/pastas-salsas-y-arroz/52660800_84510960_27788126
 soy-pyme/desayuno-y-dulces/pasteleria/52660800_72422692_69954307
 
 [ ]
-   0  Soy Pyme / Pastelería
-soy-pyme/panaderia-y-pasteleria/pasteleria/52660800_10568745_58410503
-
-[ ]
-   0  Soy Pyme / Pescadería
-soy-pyme/carnes-pescados-y-parrilleros/pescaderia/52660800_50405001_30972449
-
-[ ]
-   0  Soy Pyme / Platos preparados
-soy-pyme/alimentos-preparados/platos-preparados/52660800_52387418_43428105
-
-[ ]
    6  Soy Pyme / Postres
 soy-pyme/despensa/postres/52660800_84510960_13556982
 
 [ ]
-   0  Soy Pyme / Quesos
-soy-pyme/frescos-y-lacteos/quesos/52660800_15831019_74823803
-
-[ ]
   44  Soy Pyme / Revisar todo
 soy-pyme/aguas-bebidas-y-licores/52660800_37604048
-
-[ ]
-   0  Soy Pyme / Revisar todo
-soy-pyme/alimentos-mascotas-y-accesorios/52660800_78024985
 
 [ ]
    5  Soy Pyme / Revisar todo
@@ -3505,8 +2137,4 @@ soy-pyme/despensa/snacks/52660800_84510960_35506262
 [ ]
   10  Soy Pyme / Te Café y endulzantes
 soy-pyme/desayuno-y-dulces/te-cafe-y-endulzantes/52660800_72422692_25412321
-
-[ ]
-   0  Soy Pyme / Vinos
-soy-pyme/aguas-bebidas-y-licores/vinos/52660800_37604048_57835020
 
