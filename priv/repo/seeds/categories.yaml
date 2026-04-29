@@ -71,6 +71,7 @@
         unimarc:
           - frutas-y-verduras/verduras/verduras
           - frutas-y-verduras/verduras/ensaladas-listas
+          - frutas-y-verduras/verduras/verduras-organicas
     - name: Frutos Secos y Semillas
       slug: frutos-secos
       id: dadec147
@@ -95,15 +96,6 @@
           - frutas-y-verduras/frutos-secos/frutos-secos
           - despensa/productos-naturales/semillas
           - frutas-y-verduras/frutas/fruta-deshidratada
-    - name: Orgánicos
-      slug: organicos
-      id: 5e3cd2a8
-      keywords: ["organico", "natural", "bio"]
-      chains:
-        jumbo:
-          - frutas-y-verduras
-        unimarc:
-          - frutas-y-verduras/verduras/verduras-organicas
 
 - name: Carnes y Pescados
   slug: carnes-y-pescados
