@@ -27,3 +27,22 @@
     text-decoration: line-through;
     margin-top: 2px;
 }
+
+/* Drag-and-drop row reorder (see assets/js/sortable.js). */
+.sort-handle {
+    cursor: grab;
+    user-select: none;
+    color: var(--text-color-3, #888);
+    touch-action: none;
+}
+.sort-handle:active { cursor: grabbing; }
+
+tr.is-sort-dragging { opacity: 0.4; }
+
+.sort-ghost {
+    pointer-events: none;
+    opacity: 0.95;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    background: var(--background-color, #fff);
+}

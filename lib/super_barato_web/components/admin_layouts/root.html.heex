@@ -11,6 +11,8 @@
     <StupendousAdmin.Stylesheets.render />
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/admin/admin.css"} />
     <StupendousAdmin.Scripts.render />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    </script>
   </head>
   <.admin_body flash={@flash}>
     {@inner_content}

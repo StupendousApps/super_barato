@@ -46,6 +46,10 @@ defmodule SuperBaratoWeb.Router do
     delete "/listings/:id/link", ListingController, :link_delete
     get "/chain-categories", ChainCategoryController, :index
     get "/app-categories", AppCategoryController, :index
+    post "/app-categories/reorder", AppCategoryController, :reorder_categories
+    post "/app-categories/subcategories/reorder",
+         AppCategoryController,
+         :reorder_subcategories
 
     get "/crawlers", ScheduleController, :index, as: :crawlers_root
     resources "/crawlers/schedules", ScheduleController, except: [:show]
