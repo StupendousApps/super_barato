@@ -123,7 +123,13 @@ defmodule SuperBarato.Repo.Migrations.PruneTottus do
     IO.puts("[prune_tottus] removed #{cats_n} categories, #{listings_n} listings")
   end
 
-  # === Step 2: no-price listings + orphan-product sweep =====================
+  # === Step 2: drop no-price listings entirely ==============================
+  #
+  # The runtime rule (`Catalog.upsert_listing/1`) refuses to insert a
+  # listing without a price, so going forward no row of this shape
+  # gets created. This step cleans up the legacy ones already on
+  # disk: unlink, delete the listings, then orphan-sweep Products
+  # that lose their last link as a result.
 
   defp drop_no_price_products do
     {:ok, %{num_rows: unlinked_n}} =
@@ -135,6 +141,12 @@ defmodule SuperBarato.Repo.Migrations.PruneTottus do
       )
       """)
 
+    {:ok, %{num_rows: listings_n}} =
+      repo().query("""
+      DELETE FROM chain_listings
+      WHERE current_regular_price IS NULL OR current_regular_price <= 0
+      """)
+
     {:ok, %{num_rows: prod_n}} =
       repo().query("""
       DELETE FROM products
@@ -142,7 +154,9 @@ defmodule SuperBarato.Repo.Migrations.PruneTottus do
       """)
 
     IO.puts(
-      "[prune_tottus] unlinked #{unlinked_n} no-price listings, dropped #{prod_n} orphan products"
+      "[prune_tottus] unlinked #{unlinked_n} no-price links, " <>
+        "deleted #{listings_n} no-price listings, " <>
+        "dropped #{prod_n} orphan products"
     )
   end
 
