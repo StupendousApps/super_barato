@@ -1,8 +1,9 @@
 -- Sample seven random listings from one chain category. Bind :chain
 -- and :slug as parameters.
 --
--- A listing is included if its category_paths array contains :slug.
--- Output is one block per listing, blank line between:
+-- A listing is included if it joins to the (chain, slug) row in
+-- chain_listing_categories. Output is one block per listing, blank
+-- line between:
 --
 --   <brand> — <name>
 --   $<regular_price> (sku <chain_sku>)
@@ -25,10 +26,10 @@ SELECT
     || COALESCE(cl.pdp_url, '')
     || char(10)
 FROM chain_listings cl
+JOIN chain_listing_categories clc ON clc.chain_listing_id = cl.id
+JOIN chain_categories cc ON cc.id = clc.chain_category_id
 WHERE cl.chain = :chain
-  AND EXISTS (
-    SELECT 1 FROM json_each(cl.category_paths) AS p
-    WHERE p.value = :slug
-  )
+  AND cc.chain = :chain
+  AND cc.slug = :slug
 ORDER BY RANDOM()
 LIMIT 7;

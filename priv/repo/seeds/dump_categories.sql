@@ -14,13 +14,17 @@
 -- (looped from a shell — see tmp/dump_categories.sh)
 
 WITH RECURSIVE
-  -- Per-slug listing counts in this chain. One pass over chain_listings
-  -- expanding category_paths via json_each, grouped once.
+  -- Per-slug listing counts via the chain_listing_categories join
+  -- table (FK-correct, no JSON expansion). Replaces the legacy
+  -- json_each(category_paths) path so jumbo (whose column held
+  -- breadcrumb names instead of slugs) still produces real counts
+  -- here — its 7,444 salvaged join rows are the source of truth now.
   counts(slug, n) AS (
-    SELECT p.value, COUNT(*)
-    FROM chain_listings cl, json_each(cl.category_paths) AS p
-    WHERE cl.chain = :chain
-    GROUP BY p.value
+    SELECT cc.slug, COUNT(*)
+    FROM chain_listing_categories clc
+    JOIN chain_categories cc ON cc.id = clc.chain_category_id
+    WHERE cc.chain = :chain
+    GROUP BY cc.slug
   ),
   -- Walk parent_slug from each category up to the root, accumulating
   -- the name path. depth bounds recursion.

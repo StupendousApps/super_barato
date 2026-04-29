@@ -42,9 +42,10 @@ case System.argv() do
     {:ok, %{rows: [[count]]}} =
       Repo.query(
         """
-        SELECT COUNT(*) FROM chain_listings cl
-        WHERE cl.chain = ?
-          AND EXISTS (SELECT 1 FROM json_each(cl.category_paths) AS p WHERE p.value = ?)
+        SELECT COUNT(*)
+        FROM chain_listing_categories clc
+        JOIN chain_categories cc ON cc.id = clc.chain_category_id
+        WHERE cc.chain = ? AND cc.slug = ?
         """,
         [chain, slug]
       )
@@ -58,10 +59,11 @@ case System.argv() do
     {:ok, %{rows: rows}} =
       Repo.query(
         """
-        SELECT brand, name, current_regular_price, chain_sku, pdp_url
+        SELECT cl.brand, cl.name, cl.current_regular_price, cl.chain_sku, cl.pdp_url
         FROM chain_listings cl
-        WHERE cl.chain = ?
-          AND EXISTS (SELECT 1 FROM json_each(cl.category_paths) AS p WHERE p.value = ?)
+        JOIN chain_listing_categories clc ON clc.chain_listing_id = cl.id
+        JOIN chain_categories cc ON cc.id = clc.chain_category_id
+        WHERE cc.chain = ? AND cc.slug = ?
         ORDER BY RANDOM() LIMIT 7
         """,
         [chain, slug]
