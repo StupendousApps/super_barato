@@ -34,33 +34,27 @@
     - name: Salchichas y Parrilleros
       slug: salchichas-y-parrilleros
 
-- name: Lácteos y Quesos
-  slug: lacteos-y-quesos
+- name: Lácteos y Refrigerados
+  slug: lacteos-y-refrigerados
   subcategories:
     - name: Leches
       slug: leches
     - name: Yoghurt
       slug: yoghurt
-    - name: Quesos
-      slug: quesos
     - name: Mantequillas y Margarinas
-      slug: mantequillas
+      slug: mantequillas-margarinas
     - name: Cremas
       slug: cremas
     - name: Postres Refrigerados
-      slug: postres
-    - name: Huevos
-      slug: huevos
-    - name: Bebidas Vegetales
-      slug: bebidas-vegetales
+      slug: postres-refrigerados
 
-- name: Fiambres
-  slug: fiambres
+- name: Quesos y Fiambres
+  slug: quesos-y-fiambres
   subcategories:
+    - name: Quesos
+      slug: quesos
     - name: Fiambres y Embutidos
       slug: fiambres-y-embutidos
-    - name: Aceitunas, Pepinillos y Encurtidos
-      slug: aceitunas-pepinillos
 
 - name: Bebidas
   slug: bebidas
@@ -71,6 +65,8 @@
       slug: bebidas-gaseosas
     - name: Jugos
       slug: jugos
+    - name: Bebidas Vegetales
+      slug: bebidas-vegetales
     - name: Energéticas e Isotónicas
       slug: energeticas-isotonicas
     - name: Té e Infusiones Frías
@@ -87,6 +83,8 @@
       slug: espumantes
     - name: Destilados
       slug: destilados
+    - name: Mixers
+      slug: mixers
     - name: Sin Alcohol
       slug: sin-alcohol
 
@@ -103,6 +101,10 @@
       slug: pastas
     - name: Conservas
       slug: conservas
+    - name: Aceitunas, Pepinillos y Encurtidos
+      slug: aceitunas-pepinillos
+    - name: Huevos
+      slug: huevos
     - name: Azúcar y Endulzantes
       slug: azucar-y-endulzantes
     - name: Harinas y Repostería
@@ -137,19 +139,21 @@
 - name: Congelados
   slug: congelados
   subcategories:
-    - name: Comidas Preparadas
-      slug: comidas-preparadas
+    - name: Platos Congelados
+      slug: platos-congelados
     - name: Hamburguesas y Apanados
       slug: hamburguesas-apanados
     - name: Helados y Postres
       slug: helados-postres
+    - name: Hielo
+      slug: hielo
     - name: Frutas y Verduras Congeladas
       slug: frutas-verduras-congeladas
     - name: Pescados y Mariscos Congelados
       slug: pescados-mariscos-congelados
 
 - name: Comidas Preparadas
-  slug: comidas-preparadas-frescas
+  slug: comidas-preparadas
   subcategories:
     - name: Empanadas y Sándwiches
       slug: empanadas-sandwiches
@@ -157,16 +161,16 @@
       slug: pizzas-pastas-frescas
     - name: Platos Preparados
       slug: platos-preparados
-    - name: Pastelería
-      slug: pasteleria
 
-- name: Panadería
-  slug: panaderia
+- name: Panadería y Pastelería
+  slug: panaderia-y-pasteleria
   subcategories:
     - name: Pan
       slug: pan
     - name: Masas y Tortillas
       slug: masas-tortillas
+    - name: Pastelería
+      slug: pasteleria
 
 - name: Aseo y Limpieza
   slug: aseo-y-limpieza
@@ -205,16 +209,12 @@
       slug: cuidado-masculino
     - name: Protección Femenina
       slug: proteccion-femenina
-    - name: Maquillaje y Belleza
-      slug: maquillaje-belleza
+    - name: Maquillaje, Perfumes y Belleza
+      slug: maquillaje-perfumes-belleza
     - name: Depilación y Solares
       slug: depilacion-solares
     - name: Adulto Mayor e Incontinencia
       slug: adulto-mayor
-
-- name: Farmacia
-  slug: farmacia
-  subcategories:
     - name: Primeros Auxilios y Suplementos
       slug: primeros-auxilios
 
@@ -227,8 +227,6 @@
       slug: alimentacion-bebe
     - name: Higiene y Perfumería Bebé
       slug: higiene-bebe
-    - name: Vestuario y Rodados
-      slug: vestuario-rodados
 
 - name: Mascotas
   slug: mascotas
@@ -239,5 +237,3 @@
       slug: gatos
     - name: Otras Mascotas
       slug: otras-mascotas
-    - name: Mascotas en el Hogar
-      slug: mascotas-hogar
