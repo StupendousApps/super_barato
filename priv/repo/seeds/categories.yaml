@@ -129,15 +129,21 @@
   slug: despensa
   id: 76bb6777
   subcategories:
-    - name: Aceites y Aliños
-      slug: aceites-y-alinos
-      id: 91204618
+    - name: Aceites
+      slug: aceites
+      id: 44c2b7d9
+    - name: Aliños y Condimentos
+      slug: alinos-y-condimentos
+      id: 573a01e0
+      keywords: ["sal", "oregano", "aceto balsamico"]
     - name: Aderezos y Salsas
       slug: aderezos-y-salsas
       id: c548fb63
-    - name: Arroz, Legumbres y Quinoa
-      slug: arroz-y-legumbres
+      keywords: ["ketchup", "mayonesa", "mostaza", "aji", "salsa picante", "salsa de soja"]
+    - name: Arroz, Legumbres y Granos
+      slug: arroz-legumbres-y-granos
       id: 806d5c3b
+      keywords: ["arroz", "poroto", "quinoa", "cuscus", "semilla", "lenteja", "arveja"]
     - name: Fideos y Pastas
       slug: pastas
       id: 36d2eb32
@@ -159,6 +165,7 @@
     - name: Sopas e Instantáneos
       slug: sopas-instantaneos
       id: 8a85ef06
+      keywords: ["pure instantaneo", "caldo"]
     - name: Cocina Internacional
       slug: cocina-internacional
       id: b3fe075a
@@ -170,6 +177,7 @@
     - name: Café, Té y Hierbas
       slug: cafe-te-hierbas
       id: 8e326ace
+      keywords: ["Mate", "Yerba mate"]
     - name: Cereales, Avenas y Barras
       slug: cereales-avenas
       id: efb3292f
@@ -182,6 +190,7 @@
     - name: Mermeladas, Miel y Manjar
       slug: mermeladas-miel-manjar
       id: 7ff56c58
+      keywords: ["Mantequilla de Mani", "syrups"]
 
 - name: Snacks
   slug: snacks
@@ -293,12 +302,14 @@
     - name: Cuidado Capilar
       slug: cuidado-capilar
       id: f1c4c7c5
+      keywords: ["shampoo"]
     - name: Cuidado Corporal y Facial
       slug: cuidado-corporal-facial
       id: a6d3f160
     - name: Higiene Bucal
       slug: higiene-bucal
       id: b7195eff
+      keywords: ["enjuague", "dental"]
     - name: Desodorantes
       slug: desodorantes
       id: 39658c2f
@@ -311,6 +322,7 @@
     - name: Protección Femenina
       slug: proteccion-femenina
       id: 7558e446
+      keywords: ["Tampones", "toallas hiegienicas"]
     - name: Maquillaje, Perfumes y Belleza
       slug: maquillaje-perfumes-belleza
       id: b1a626a0
@@ -351,4 +363,3 @@
     - name: Otras Mascotas
       slug: otras-mascotas
       id: 55abefbd
-

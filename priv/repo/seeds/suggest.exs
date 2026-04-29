@@ -58,29 +58,45 @@ subs =
     Map.put(s, :keywords, Map.get(keywords_by_pair, {s.cat_slug, s.sub_slug}, []))
   end)
 
-# Best-match: max of
-#   d(leaf, sub_name),
-#   0.9 * d(leaf, cat_name),     — dampened so a leaf matching the
-#                                   category root doesn't outrank a
-#                                   real subcategory match,
-#   d(leaf, kw)  for kw <- sub.keywords  — full weight; keywords are
-#                                   curated synonyms / spelling
-#                                   variants explicitly added to
-#                                   improve matching.
+# Normalize for matching: lowercase + strip combining marks (accent-
+# insensitive). Keywords are written without tildes by convention; the
+# scorer normalizes both sides so an entry called "Mantequilla de Maní"
+# still matches a keyword "mani".
+norm = fn s ->
+  s
+  |> String.downcase()
+  |> :unicode.characters_to_nfd_binary()
+  |> String.replace(~r/\p{Mn}/u, "")
+end
+
+# Score = base + signals, capped at 1.0:
+#
+#   base    = max(d(leaf, sub_name), 0.9 * d(leaf, cat_name))
+#                  — the structural match. The cat-name leg is
+#                    dampened so a leaf matching just the root
+#                    doesn't outrank a real subcategory match.
+#
+#   signal  = 0.15 * max(d(leaf, kw))  for kw <- sub.keywords
+#                  — keywords are a hint, not a verdict. A perfect
+#                    keyword match alone (base ~0) tops out around
+#                    0.15, well below threshold; what the keyword
+#                    does is push a borderline structural match
+#                    (e.g. 0.80) across the line.
 score = fn leaf ->
-  l = String.downcase(leaf)
+  l = norm.(leaf)
 
   Enum.max_by(
     Enum.map(subs, fn s ->
-      d_sub = String.jaro_distance(l, String.downcase(s.sub_name))
-      d_cat = String.jaro_distance(l, String.downcase(s.cat_name))
+      d_sub = String.jaro_distance(l, norm.(s.sub_name))
+      d_cat = String.jaro_distance(l, norm.(s.cat_name))
 
       d_kw =
         s.keywords
-        |> Enum.map(&String.jaro_distance(l, String.downcase(&1)))
+        |> Enum.map(&String.jaro_distance(l, norm.(&1)))
         |> Enum.max(fn -> 0.0 end)
 
-      {s, Enum.max([d_sub, d_cat * 0.9, d_kw])}
+      base = max(d_sub, d_cat * 0.9)
+      {s, min(1.0, base + 0.15 * d_kw)}
     end),
     fn {_, d} -> d end
   )
