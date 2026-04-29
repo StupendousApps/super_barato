@@ -1,734 +1,750 @@
 [ ]
-  60  Bebidas y Jugos / Aguas / Agua Mineral
-CATG27598/Agua-Mineral
+ 677  Marcas Tottus / Lácteos
+CATG27139/Lacteos--y-Quesos
 
 [ ]
-  36  Bebidas y Jugos / Aguas / Agua Purificada
-CATG27599/Agua-Purificada
+ 321  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas Dulces
+CATG27391/Galletas-Dulces
 
 [ ]
- 103  Bebidas y Jugos / Aguas / Aguas Saborizadas y Especiales
-CATG27600/Aguas-Saborizadas-y-Especiales
-
-[ ]
- 112  Bebidas y Jugos / Bebidas / Bebidas Light y Zero
-CATG27606/Bebidas-Light-y-Zero
-
-[ ]
- 121  Bebidas y Jugos / Bebidas / Bebidas Regulares
-CATG27605/Bebidas-Regulares
-
-[ ]
-  17  Bebidas y Jugos / Bebidas / Bebidas Retornables
-CATG29094/Bebidas-Retornables
-
-[ ]
-  49  Bebidas y Jugos / Bebidas / Pack
-CATG27607/Pack
-
-[ ]
-  42  Bebidas y Jugos / Isotónicas y Energéticas / Energéticas
-CATG27609/Energeticas
-
-[ ]
-  52  Bebidas y Jugos / Isotónicas y Energéticas / Isotónicas
-CATG27608/Isotonicas
-
-[ ]
-  55  Bebidas y Jugos / Jugos y Néctar / Bebidas Instantáneas en Polvo
-CATG27604/Bebidas-Instantaneas-en-Polvo
-
-[ ]
-  70  Bebidas y Jugos / Jugos y Néctar / Colaciones
-CATG27603/Colaciones
-
-[ ]
- 161  Bebidas y Jugos / Jugos y Néctar / Jugos Naturales y Refrigerados
-CATG27602/Jugos-Naturales-y-Refrigerados
-
-[ ]
-  55  Bebidas y Jugos / Jugos y Néctar / Jugos y Néctar Líquidos
-CATG27601/Jugos-y-Nectar-Líquidos
-
-[ ]
-  23  Bebidas y Jugos / Té Líquido y Limonadas / Limonadas y Otros
-CATG27611/Limonadas-y-Otros
-
-[ ]
-  21  Bebidas y Jugos / Té Líquido y Limonadas / Té Líquido
-CATG27610/Te-Liquido
-
-[ ]
-  93  Belleza / Colonias
-CATG27145/Colonias
-
-[ ]
-  37  Belleza / Cosméticos / Accesorios
-CATG27727/Accesorios
-
-[ ]
-  13  Belleza / Cosméticos / Desmaquillantes
-CATG27718/Desmaquillantes
-
-[ ]
-  32  Belleza / Cosméticos / Labios
-CATG27723/Labios
-
-[ ]
-   8  Belleza / Cosméticos / Ojos, Pestañas y Cejas
-CATG27722/Ojos-Pestanas-y-Cejas
-
-[ ]
-   7  Belleza / Cosméticos / Rostro
-CATG27724/Rostro
-
-[ ]
-   9  Belleza / Cosméticos / Uñas
-CATG27725/Unas
-
-[ ]
- 116  Belleza / Cuidado Capilar / Acondicionador
-CATG27693/Acondicionador
-
-[ ]
-   9  Belleza / Cuidado Capilar / Kids
-CATG27701/Kids
-
-[ ]
-  23  Belleza / Cuidado Capilar / Pack
-CATG27253/Pack
-
-[ ]
- 198  Belleza / Cuidado Capilar / Shampoo
-CATG27149/Shampoo
-
-[ ]
-  81  Belleza / Cuidado Corporal / Cremas de Cuerpo y Manos
-CATG27719/Cremas-de-cuerpo-y-manos
-
-[ ]
-  16  Belleza / Cuidado Corporal / Protección Solar
-CATG27717/Proteccion-Solar
-
-[ ]
- 118  Belleza / Cuidado del Rostro / Aguas Micelar, Serum y Otros
-CATG27714/Aguas-Micelar-Serum-y-Otros
-
-[ ]
-  84  Belleza / Cuidado del Rostro / Cremas Faciales
-CATG27716/Cremas-Faciales
-
-[ ]
- 201  Belleza / Tratamientos y Coloración / Fijadores, Cremas y Otros
-CATG27710/Fijadores-Cremas-y-Otros
+ 321  Marcas Tottus / Mundo Bebé
+CATG27087/Mundo-Bebe
 
 [ ]
  242  Belleza / Tratamientos y Coloración / Tinturas
 CATG27709/Tinturas
 
 [ ]
- 130  Cervezas / Cervezas Artesanales
-CATG27206/Cervezas-Artesanales
+ 223  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Condimentos
+CATG27320/Condimentos
 
 [ ]
-  22  Cervezas / Cervezas Clásicas
-CATG27205/Cervezas-Clasicas
+ 213  Marcas Tottus / Recco
+CATG27088/Electro-y-Tecnologia
 
 [ ]
-  77  Cervezas / Cervezas Importadas
-CATG27208/Cervezas-Importadas
+ 201  Belleza / Tratamientos y Coloración / Fijadores, Cremas y Otros
+CATG27710/Fijadores-Cremas-y-Otros
 
 [ ]
-  83  Cervezas / Cervezas Premium
-CATG27207/Cervezas-Premium
+ 198  Belleza / Cuidado Capilar / Shampoo
+CATG27149/Shampoo
 
 [ ]
-  13  Cervezas / Cervezas Sin Alcohol o Gluten
-CATG27209/Cervezas-Sin-Alcohol-o-Gluten
+ 197  Vinos y Licores / Vino Tinto / Cabernet Sauvignon
+CATG27537/Cabernet-Sauvignon
 
 [ ]
-  48  Lácteos y Quesos / Cremas
-CATG27192/Cremas
-
-[ ]
-  70  Lácteos y Quesos / Leches / Leche en Polvo y Saborizante
-CATG27530/Leche-en-Polvo-y-Saborizante
-
-[ ]
-   9  Lácteos y Quesos / Leches / Leches Cultivadas y Bebidas Lácteas
-CATG27529/Leches-Cultivadas-y-Bebidas-Lacteas
-
-[ ]
-  23  Lácteos y Quesos / Leches / Leches Descremadas
-CATG27526/Leches-Descremadas
-
-[ ]
-  23  Lácteos y Quesos / Leches / Leches Enteras
-CATG27524/Leches-Enteras
-
-[ ]
-  85  Lácteos y Quesos / Leches / Leches Individuales
-CATG27522/Leches-Individuales
-
-[ ]
-   2  Lácteos y Quesos / Leches / Leches Protein
-CATG27527/Leches-Protein
-
-[ ]
-  58  Lácteos y Quesos / Leches / Leches Saborizadas
-CATG27523/Leches-Saborizadas
-
-[ ]
-  19  Lácteos y Quesos / Leches / Leches Semidescremadas
-CATG27525/Leches-Semidescremadas
-
-[ ]
-  16  Lácteos y Quesos / Leches / Leches Sin Lactosa
-CATG27528/Leches-sin-Lactosa
-
-[ ]
-   9  Lácteos y Quesos / Mantequillas y Mantecas / Levaduras y Mantecas
-CATG27521/Levaduras-y-Mantecas
-
-[ ]
-  42  Lácteos y Quesos / Mantequillas y Mantecas / Mantequillas
-CATG27519/Mantequillas
-
-[ ]
-  29  Lácteos y Quesos / Mantequillas y Mantecas / Margarinas
-CATG27520/Margarinas
-
-[ ]
-   9  Lácteos y Quesos / Postres Listos / Flan
-CATG27531/Flan
-
-[ ]
-  14  Lácteos y Quesos / Postres Listos / Jaleas
-CATG27532/Jaleas
-
-[ ]
-   3  Lácteos y Quesos / Postres Listos / Leche Asada y Arroz con Leche
-CATG27533/Leche-Asada-y-Arroz-con-Leche
-
-[ ]
-  26  Lácteos y Quesos / Postres Listos / Otros Postres
-CATG27535/Otros-Postres
-
-[ ]
-  20  Lácteos y Quesos / Quesos / Quesillos y Queso Fresco
-CATG27503/Quesillos-y-Queso-Fresco
-
-[ ]
-  22  Lácteos y Quesos / Quesos / Queso Chanco y Ranco
-CATG27498/Queso-Chanco-y-Ranco
-
-[ ]
-   5  Lácteos y Quesos / Quesos / Queso Crema y Untables
-CATG27499/Queso-Crema-y-untables
-
-[ ]
-  22  Lácteos y Quesos / Quesos / Queso de Cabra
-CATG27504/Queso-de-Cabra
-
-[ ]
-  25  Lácteos y Quesos / Quesos / Queso Gauda y Rodda
-CATG27496/Queso-Gauda-y-Rodda
-
-[ ]
-  60  Lácteos y Quesos / Quesos / Queso Mantecoso
-CATG27495/Queso-Mantecoso
-
-[ ]
-  22  Lácteos y Quesos / Quesos / Queso Rallado y Granulado
-CATG27501/Queso-Rallado-y-Granulado
-
-[ ]
-   1  Lácteos y Quesos / Quesos / Quesos a Granel
-CATG27494/Quesos-a-Granel
-
-[ ]
-  96  Lácteos y Quesos / Quesos / Quesos Especiales
-CATG27497/Quesos-Especiales
-
-[ ]
-   6  Lácteos y Quesos / Quesos / Quesos Sin Lactosa
-CATG27502/Quesos-Sin-Lactosa
-
-[ ]
-   3  Lácteos y Quesos / Quesos / Quesos Veganos
-CATG27500/Quesos-Veganos
-
-[ ]
-  13  Lácteos y Quesos / Quesos / Tablas de Quesos
-CATG27505/Tablas-de-Quesos
-
-[ ]
-   5  Lácteos y Quesos / Yoghurt / Probióticos
-CATG27517/Probioticos
-
-[ ]
-   7  Lácteos y Quesos / Yoghurt / Yoghurt Base Vegetal
-CATG27516/Yoghurt-Base-Vegetal
-
-[ ]
-  47  Lácteos y Quesos / Yoghurt / Yoghurt Familiares
-CATG27512/Yoghurt-Familiares
-
-[ ]
-  26  Lácteos y Quesos / Yoghurt / Yoghurt Griego
-CATG27763/Yoghurt-Griego
-
-[ ]
- 150  Lácteos y Quesos / Yoghurt / Yoghurt Individual
-CATG27511/Yoghurt-Individual
-
-[ ]
-   2  Lácteos y Quesos / Yoghurt / Yoghurt Natural
-CATG27513/Yoghurt-Natural
-
-[ ]
-  13  Lácteos y Quesos / Yoghurt / Yoghurt Protein
-CATG27515/Yoghurt-Protein
-
-[ ]
-   7  Lácteos y Quesos / Yoghurt / Yoghurt Sin Lactosa
-CATG27514/Yoghurt-Sin-Lactosa
-
-[ ]
-  93  Marcas Tottus / Abarrotes / Aceites / Aceite de Oliva
-CATG27299/Aceites-de-Oliva
-
-[ ]
-  14  Marcas Tottus / Abarrotes / Aceites / Aceite Maravilla
-CATG27298/Aceite-Maravilla
-
-[ ]
-  12  Marcas Tottus / Abarrotes / Aceites / Aceite Vegetal
-CATG27297/Aceite-Vegetal
-
-[ ]
-  28  Marcas Tottus / Abarrotes / Aceites / Aceites Especiales
-CATG27300/Aceites-Especiales
-
-[ ]
-  53  Marcas Tottus / Abarrotes / Aderezos / Ketchup
-CATG27322/Ketchup
-
-[ ]
-  81  Marcas Tottus / Abarrotes / Aderezos / Mayonesa
-CATG27323/Mayonesa
-
-[ ]
-  54  Marcas Tottus / Abarrotes / Aderezos / Mostaza
-CATG27324/Mostaza
-
-[ ]
- 141  Marcas Tottus / Abarrotes / Aderezos / Otros Aderezos y Salsas
-CATG27325/Otros-Aderezos-y-Salsas
-
-[ ]
-  41  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Arroz
-CATG27292/Arroz
-
-[ ]
-  39  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Arroz Preparado y Especial
-CATG27293/Arroz-Preparado-y-Especial
-
-[ ]
-  40  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Cereales y Semillas
-CATG27296/Cereales-y-Semillas
-
-[ ]
-  47  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Lentejas y Porotos
-CATG27294/Lentejas-y-Porotos
-
-[ ]
-  12  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Otras Legumbres
-CATG27295/Otras-Legumbres
-
-[ ]
-  42  Marcas Tottus / Abarrotes / Cocktail y Snack / Aceitunas y Pickles
-CATG27673/Aceitunas-y-Pickles
-
-[ ]
- 132  Marcas Tottus / Abarrotes / Cocktail y Snack / Frutos Secos y Deshidratados
-CATG27672/Frutos-Secos-y-Deshidratados
-
-[ ]
- 101  Marcas Tottus / Abarrotes / Cocktail y Snack / Galletas de Cocktail
-CATG27390/Galletas-de-Cocktail
+ 185  Marcas Tottus / Desayunos / Chocolates / Chocolate en Barra
+CATG27383/Chocolate-en-Barra
 
 [ ]
  180  Marcas Tottus / Abarrotes / Cocktail y Snack / Otros Snack
 CATG27675/Otros-Snack
 
 [ ]
+ 161  Bebidas y Jugos / Jugos y Néctar / Jugos Naturales y Refrigerados
+CATG27602/Jugos-Naturales-y-Refrigerados
+
+[ ]
  160  Marcas Tottus / Abarrotes / Cocktail y Snack / Papas Fritas
 CATG27670/Papas-Fritas
 
 [ ]
-  84  Marcas Tottus / Abarrotes / Cocktail y Snack / Untables y Conservas
-CATG27674/Untables-y-Conservas
+ 158  Vinos y Licores / Vino Tinto / Carmenere
+CATG27536/Carmenere
 
 [ ]
-  38  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Ají
-CATG27319/Aji
-
-[ ]
- 223  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Condimentos
-CATG27320/Condimentos
-
-[ ]
-  68  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Sal
-CATG27318/Sal
-
-[ ]
-  33  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Vinagres y Sucedáneos
-CATG27321/Vinagres-y-Sucedaneos
-
-[ ]
-  60  Marcas Tottus / Abarrotes / Conservas y Enlatados / Comidas Preparadas
-CATG27306/Comidas-Preparadas
-
-[ ]
-  30  Marcas Tottus / Abarrotes / Conservas y Enlatados / Compotas
-CATG27304/Compotas
-
-[ ]
- 102  Marcas Tottus / Abarrotes / Conservas y Enlatados / Frutas en Conservas
-CATG27303/Frutas-en-Conserva
-
-[ ]
-  87  Marcas Tottus / Abarrotes / Conservas y Enlatados / Legumbres y Verduras en Conservas
-CATG27305/Legumbres-y-Verduras-en-Conserva
-
-[ ]
-  80  Marcas Tottus / Abarrotes / Conservas y Enlatados / Mariscos en Conserva
-CATG27302/Mariscos-en-Conserva
-
-[ ]
- 120  Marcas Tottus / Abarrotes / Conservas y Enlatados / Pescados en Conserva
-CATG27301/Pescados-en-Conserva
-
-[ ]
-  13  Marcas Tottus / Abarrotes / Harinas / Féculas
-CATG27309/Feculas
-
-[ ]
-  30  Marcas Tottus / Abarrotes / Harinas / Harinas Blancas
-CATG27307/Harinas-Blancas
-
-[ ]
-  22  Marcas Tottus / Abarrotes / Harinas / Harinas Especiales
-CATG27308/Harinas-Especiales
-
-[ ]
-  11  Marcas Tottus / Abarrotes / Pastas y Salsas / Lasañas y Pastas Rellenas
-CATG27287/Lasanas-y-Pastas-Rellenas
-
-[ ]
-  32  Marcas Tottus / Abarrotes / Pastas y Salsas / Pastas Frescas y Refrigeradas
-CATG27288/Pastas-Frescas-y-Refrigeradas
-
-[ ]
-  16  Marcas Tottus / Abarrotes / Pastas y Salsas / Pastas Sin Gluten, Integrales y Otros
-CATG27286/Pastas-sin-Gluten--Integrales-y-Otros
+ 150  Lácteos y Quesos / Yoghurt / Yoghurt Individual
+CATG27511/Yoghurt-Individual
 
 [ ]
  146  Marcas Tottus / Abarrotes / Pastas y Salsas / Pastas y Fideos
 CATG27284/Pastas-y-Fideos
 
 [ ]
-  30  Marcas Tottus / Abarrotes / Pastas y Salsas / Pestos y Otras Salsas
-CATG27291/Pesto-y-Otras-Salsas
-
-[ ]
- 100  Marcas Tottus / Abarrotes / Pastas y Salsas / Salsas de Tomate
-CATG27289/Salsas-de-Tomate
-
-[ ]
-  30  Marcas Tottus / Abarrotes / Postres y Repostería / Decoración
-CATG27330/Decoracion
-
-[ ]
-  88  Marcas Tottus / Abarrotes / Postres y Repostería / Jaleas, Flan y Otros
-CATG27326/Jaleas-Flan-y-Otros
-
-[ ]
-  20  Marcas Tottus / Abarrotes / Postres y Repostería / Leches Condensadas y Evaporadas
-CATG27329/Leches-Condensadas-y-Evaporadas
-
-[ ]
-  23  Marcas Tottus / Abarrotes / Postres y Repostería / Levaduras y Polvos de Hornear
-CATG27331/Levaduras-y-Polvos-de-Hornear
-
-[ ]
-  20  Marcas Tottus / Abarrotes / Postres y Repostería / Manjar, Cremas y Coberturas
-CATG27332/Manjar--Cremas-y-Coberturas
-
-[ ]
-  44  Marcas Tottus / Abarrotes / Postres y Repostería / Premezclas
-CATG27327/Premezclas
-
-[ ]
-  30  Marcas Tottus / Abarrotes / Postres y Repostería / Salsas Dulces
-CATG27328/Salsas-Dulces
-
-[ ]
- 106  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Caldos y Bases
-CATG27316/Caldos-y-Bases
-
-[ ]
-  22  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Pastas Instantáneas
-CATG27290/Pastas-Instantaneas
-
-[ ]
-  11  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Puré Instantáneo
-CATG27317/Pure-Instantaneo
+ 141  Marcas Tottus / Abarrotes / Aderezos / Otros Aderezos y Salsas
+CATG27325/Otros-Aderezos-y-Salsas
 
 [ ]
  136  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Sopas y Cremas
 CATG27315/Sopas-y-Cremas
 
 [ ]
-   7  Marcas Tottus / Aguas, Bebidas y Jugos
-CATG27085/Bebidas--Aguas-y-Jugos
+ 135  Marcas Tottus / Desayunos / Caramelos y Chicles / Gomitas y Masticables
+CATG27394/Gomitas-y-Masticables
 
 [ ]
-  70  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Bolsas de Basura
-CATG27468/Bolsas-de-Basura
+ 132  Marcas Tottus / Abarrotes / Cocktail y Snack / Frutos Secos y Deshidratados
+CATG27672/Frutos-Secos-y-Deshidratados
 
 [ ]
-  33  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Bolsas Multiusos
-CATG27469/Bolsas-Multiusos
-
-[ ]
-  38  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Escobillones y Palas
-CATG27471/Escobillones-y-Palas
-
-[ ]
-  12  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Fósforos y Velas
-CATG27474/Fosforos-y-Velas
-
-[ ]
-  57  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Guantes, Esponjas y Paños
-CATG27472/Guantes-Esponjas-y-Panos
-
-[ ]
-  39  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Limpieza de Calzado y Otros
-CATG27475/Limpieza-de-Calzado-y-Otros
-
-[ ]
-  19  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Toallas Desinfectantes
-CATG27476/Toallas-Desinfectantes
-
-[ ]
-  87  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Traperos, Mopas y Baldes
-CATG27470/Traperos-Mopas-y-Baldes
-
-[ ]
-  42  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Desinfectantes Ambientales
-CATG27466/Desinfectantes-Ambientales
-
-[ ]
-  77  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Desodorantes Ambientales
-CATG27463/Desodorantes-Ambientales
-
-[ ]
-  30  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Desodorantes Ambientales Eléctricos
-CATG27464/Desodorantes-Ambientales-Electricos
-
-[ ]
-  75  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Insecticidas
-CATG27467/Insecticidas
-
-[ ]
-  26  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Varillas y Otros
-CATG27465/Varillas-y-Otros
-
-[ ]
-  87  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Cloro
-CATG27453/Cloro
-
-[ ]
- 108  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Lavalozas y Lavavajillas
-CATG27450/Lavalozas-y-Lavavajillas
-
-[ ]
-  30  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpia Vidrios
-CATG27456/Limpia-Vidrios
-
-[ ]
-  36  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores Antigrasa
-CATG27455/Limpiadores-Antigrasa
-
-[ ]
-  52  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores de Baño
-CATG27452/Limpiadores-de-Bano
-
-[ ]
-   2  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores de Cocina
-CATG27451/Limpiadores-de-Cocina
-
-[ ]
-  22  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores en Crema
-CATG27454/Limpiadores-en-Crema
-
-[ ]
-  41  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores Multiusos
-CATG27457/Limpiadores-Multiusos
-
-[ ]
-  16  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Otros Limpiadores
-CATG27458/Otros-Limpiadores
-
-[ ]
-  50  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Detergentes en Polvo
-CATG27440/Detergentes-en-Polvo
-
-[ ]
-  64  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Detergentes Líquidos
-CATG27439/Detergentes-Liquidos
-
-[ ]
- 103  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Suavizantes
-CATG27441/Suavizantes
-
-[ ]
- 121  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Tratamientos de Ropa
-CATG27444/Tratamiento-de-Ropa
-
-[ ]
-  19  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Papeles Higiénicos
-CATG27445/Papeles-Higienicos
-
-[ ]
-  51  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Papeles y Envoltorios de Cocina
-CATG27449/Papeles-y-Envoltorios-de-Cocina
-
-[ ]
-  38  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Servilletas
-CATG27447/Servilletas
-
-[ ]
-  27  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Toallas de Papel
-CATG27446/Toallas-de-Papel
-
-[ ]
-  48  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Cera y Virutilla
-CATG27462/Cera-y-Virutilla
+ 130  Cervezas / Cervezas Artesanales
+CATG27206/Cervezas-Artesanales
 
 [ ]
  129  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Limpiadores de Pisos
 CATG27459/Limpiadores-de-Pisos
 
 [ ]
-   8  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Limpiadores para Piso Flotante
-CATG27460/Limpiadores-para-Piso-Flotante
+ 121  Bebidas y Jugos / Bebidas / Bebidas Regulares
+CATG27605/Bebidas-Regulares
 
 [ ]
-  30  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Lustramuebles y Otros Limpiadores
-CATG27461/Lustramuebles-y-Otros-Limpiadores
+ 121  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Tratamientos de Ropa
+CATG27444/Tratamiento-de-Ropa
 
 [ ]
-   4  Marcas Tottus / Carnes / Carbón
-CATG27285/Carbon
+ 120  Marcas Tottus / Abarrotes / Conservas y Enlatados / Pescados en Conserva
+CATG27301/Pescados-en-Conserva
 
 [ ]
-   8  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Cerdo
-CATG27403/Cerdo
+ 118  Belleza / Cuidado del Rostro / Aguas Micelar, Serum y Otros
+CATG27714/Aguas-Micelar-Serum-y-Otros
 
 [ ]
-   4  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Pavo
-CATG27405/Pavo
+ 117  Vinos y Licores / Licores y Cócteles / Licores
+CATG27557/Licores
 
 [ ]
-  19  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Pollo
-CATG27404/Pollo
+ 116  Belleza / Cuidado Capilar / Acondicionador
+CATG27693/Acondicionador
+
+[ ]
+ 113  Vinos y Licores / Destilados / Pisco
+CATG27560/Pisco
+
+[ ]
+ 112  Bebidas y Jugos / Bebidas / Bebidas Light y Zero
+CATG27606/Bebidas-Light-y-Zero
+
+[ ]
+ 109  Marcas Tottus / Desayunos / Cereales / Barras de Cereal y Proteicas
+CATG27371/Barras-de-Cereal-y-Proteicas
+
+[ ]
+ 108  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Lavalozas y Lavavajillas
+CATG27450/Lavalozas-y-Lavavajillas
+
+[ ]
+ 106  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Caldos y Bases
+CATG27316/Caldos-y-Bases
+
+[ ]
+ 103  Bebidas y Jugos / Aguas / Aguas Saborizadas y Especiales
+CATG27600/Aguas-Saborizadas-y-Especiales
+
+[ ]
+ 103  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Suavizantes
+CATG27441/Suavizantes
+
+[ ]
+ 102  Marcas Tottus / Abarrotes / Conservas y Enlatados / Frutas en Conservas
+CATG27303/Frutas-en-Conserva
+
+[ ]
+ 102  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas Saludables
+CATG27392/Galletas-Saludables
+
+[ ]
+ 101  Marcas Tottus / Abarrotes / Cocktail y Snack / Galletas de Cocktail
+CATG27390/Galletas-de-Cocktail
+
+[ ]
+ 101  Marcas Tottus / Desayunos / Caramelos y Chicles / Caramelos
+CATG27395/Caramelos
+
+[ ]
+ 101  Vinos y Licores / Licores y Cócteles / Ready to Drink
+CATG27559/Ready-to-Drink
+
+[ ]
+ 100  Marcas Tottus / Abarrotes / Pastas y Salsas / Salsas de Tomate
+CATG27289/Salsas-de-Tomate
+
+[ ]
+  99  Vinos y Licores / Destilados / Whisky
+CATG27561/Whisky
+
+[ ]
+  98  Marcas Tottus / Desayunos / Té e Infusiones / Hierbas y Yerbas Mates
+CATG27366/Hierbas-y-Yerbas-Mates
+
+[ ]
+  96  Lácteos y Quesos / Quesos / Quesos Especiales
+CATG27497/Quesos-Especiales
+
+[ ]
+  93  Belleza / Colonias
+CATG27145/Colonias
+
+[ ]
+  93  Marcas Tottus / Abarrotes / Aceites / Aceite de Oliva
+CATG27299/Aceites-de-Oliva
+
+[ ]
+  93  Vinos y Licores / Vino Tinto / Blend
+CATG27540/Blend
+
+[ ]
+  92  Marcas Tottus / Desayunos / Chocolates / Bombones
+CATG27386/Bombones
+
+[ ]
+  92  Marcas Tottus / Desayunos / Mermeladas y Untables / Mermeladas
+CATG27379/Mermeladas
+
+[ ]
+  90  Vinos y Licores / Vino Tinto / Otros Tintos
+CATG27541/Otros-Tintos
+
+[ ]
+  88  Marcas Tottus / Abarrotes / Postres y Repostería / Jaleas, Flan y Otros
+CATG27326/Jaleas-Flan-y-Otros
+
+[ ]
+  88  Marcas Tottus / Cuidado Personal / Depilación y Afeitado / Rasuradoras y Repuestos
+CATG27743/Rasuradoras-y-Repuestos
+
+[ ]
+  88  Marcas Tottus / Huevos y Fiambres / Salame y Cocktail / Aceitunas y Pickles
+CATG27493/Aceitunas-y-Pickles
+
+[ ]
+  88  Marcas Tottus / Mascotas / Gatos / Alimentos Gato
+CATG27758/Alimentos-Gato
+
+[ ]
+  87  Marcas Tottus / Abarrotes / Conservas y Enlatados / Legumbres y Verduras en Conservas
+CATG27305/Legumbres-y-Verduras-en-Conserva
+
+[ ]
+  87  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Traperos, Mopas y Baldes
+CATG27470/Traperos-Mopas-y-Baldes
+
+[ ]
+  87  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Cloro
+CATG27453/Cloro
+
+[ ]
+  87  Marcas Tottus / Mascotas / Snack y Huesos
+CATG27756/Snack-y-Huesos
+
+[ ]
+  86  Marcas Tottus / Desayunos / Chocolates / Otros
+CATG27387/Otros-Chocolates
+
+[ ]
+  85  Lácteos y Quesos / Leches / Leches Individuales
+CATG27522/Leches-Individuales
+
+[ ]
+  84  Belleza / Cuidado del Rostro / Cremas Faciales
+CATG27716/Cremas-Faciales
+
+[ ]
+  84  Marcas Tottus / Abarrotes / Cocktail y Snack / Untables y Conservas
+CATG27674/Untables-y-Conservas
+
+[ ]
+  84  Marcas Tottus / Congelados / Verduras Congeladas / Otras Verduras Congeladas
+CATG27409/Otras-Verduras-Congeladas
+
+[ ]
+  84  Marcas Tottus / Mascotas / Perros / Alimentos Adulto
+CATG27754/Alimentos-Adulto
+
+[ ]
+  83  Cervezas / Cervezas Premium
+CATG27207/Cervezas-Premium
+
+[ ]
+  83  Marcas Tottus / Congelados / Helados / Helados Tradicionales
+CATG27428/Helados-Tradicionales
+
+[ ]
+  81  Belleza / Cuidado Corporal / Cremas de Cuerpo y Manos
+CATG27719/Cremas-de-cuerpo-y-manos
+
+[ ]
+  81  Marcas Tottus / Abarrotes / Aderezos / Mayonesa
+CATG27323/Mayonesa
+
+[ ]
+  80  Marcas Tottus / Abarrotes / Conservas y Enlatados / Mariscos en Conserva
+CATG27302/Mariscos-en-Conserva
+
+[ ]
+  79  Marcas Tottus / Desayunos / Cereales / Avenas y Granolas
+CATG27370/Avenas-y-Granolas
+
+[ ]
+  78  Vinos y Licores / Espumantes / Otros
+CATG27553/Otros
+
+[ ]
+  77  Cervezas / Cervezas Importadas
+CATG27208/Cervezas-Importadas
+
+[ ]
+  77  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Desodorantes Ambientales
+CATG27463/Desodorantes-Ambientales
+
+[ ]
+  77  Marcas Tottus / Cuidado Personal / Desodorantes / Spray
+CATG27739/Spray
+
+[ ]
+  77  Marcas Tottus / Cuidado Personal / Higiene Bucal / Pasta de Dientes
+CATG27728/Pasta-de-Dientes
+
+[ ]
+  77  Marcas Tottus / Desayunos / Té e Infusiones / Té Especial e Infusiones
+CATG27365/Te-Especial-e-Infusiones
+
+[ ]
+  76  Vinos y Licores / Vino Tinto / Merlot
+CATG27538/Merlot
+
+[ ]
+  75  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Insecticidas
+CATG27467/Insecticidas
+
+[ ]
+  73  Vinos y Licores / Espumantes / Brut y Extra Brut
+CATG27549/Brut-y-Extra-Brut
+
+[ ]
+  72  Marcas Tottus / Congelados / Hamburguesas y Churrascos / Hamburguesas de Carne
+CATG27413/Hamburguesas-Carne
+
+[ ]
+  72  Marcas Tottus / Congelados / Helados / Helados Multipack
+CATG27431/Helados-Multipack
+
+[ ]
+  71  Marcas Tottus / Cuidado Personal / Desodorantes / Barra
+CATG27741/Barra
+
+[ ]
+  70  Bebidas y Jugos / Jugos y Néctar / Colaciones
+CATG27603/Colaciones
+
+[ ]
+  70  Lácteos y Quesos / Leches / Leche en Polvo y Saborizante
+CATG27530/Leche-en-Polvo-y-Saborizante
+
+[ ]
+  70  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Bolsas de Basura
+CATG27468/Bolsas-de-Basura
+
+[ ]
+  69  Vinos y Licores / Destilados / Gin
+CATG27564/Gin
+
+[ ]
+  68  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Sal
+CATG27318/Sal
+
+[ ]
+  68  Vinos y Licores / Vino Blanco / Sauvignon Blanc
+CATG27542/Sauvignon-Blanc
+
+[ ]
+  67  Marcas Tottus / Desayunos / Cereales / Cereales Chocolatados
+CATG27368/Cereales-Chocolatados
+
+[ ]
+  64  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Detergentes Líquidos
+CATG27439/Detergentes-Liquidos
+
+[ ]
+  63  Marcas Tottus / Cuidado Personal / Jabones / Líquidos
+CATG27733/Liquidos
+
+[ ]
+  63  Panadería y Pastelería / Panadería / Pan Granel
+CATG27648/Pan-Granel
+
+[ ]
+  63  Vinos y Licores / Licores y Cócteles / Sour y Cócteles
+CATG27555/Sour-y-Cocteles
+
+[ ]
+  62  Panadería y Pastelería / Pastelería / Galletas y Colaciones
+CATG27661/Galletas-y-Colaciones
+
+[ ]
+  62  Vinos y Licores / Vino Blanco / Otros Blancos
+CATG27544/Otros-Blancos
+
+[ ]
+  61  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Chorizos
+CATG27487/Chorizos
+
+[ ]
+  60  Bebidas y Jugos / Aguas / Agua Mineral
+CATG27598/Agua-Mineral
+
+[ ]
+  60  Lácteos y Quesos / Quesos / Queso Mantecoso
+CATG27495/Queso-Mantecoso
+
+[ ]
+  60  Marcas Tottus / Abarrotes / Conservas y Enlatados / Comidas Preparadas
+CATG27306/Comidas-Preparadas
+
+[ ]
+  60  Marcas Tottus / Desayunos / Manjar
+CATG27118/Manjar
+
+[ ]
+  59  Marcas Tottus / Cuidado Personal / Protección Femenina / Toallas Higiénicas
+CATG27736/Toallas-Higienicas
+
+[ ]
+  59  Panadería y Pastelería / Masas y Tortillas / Tortillas
+CATG27667/Tortillas
+
+[ ]
+  58  Lácteos y Quesos / Leches / Leches Saborizadas
+CATG27523/Leches-Saborizadas
+
+[ ]
+  58  Marcas Tottus / Congelados / Helados / Helados Premium
+CATG28150/Helados-Premium
+
+[ ]
+  57  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Guantes, Esponjas y Paños
+CATG27472/Guantes-Esponjas-y-Panos
+
+[ ]
+  56  Marcas Tottus / Desayunos / Mermeladas y Untables / Dulces Untables
+CATG27382/Dulces-Untables
+
+[ ]
+  55  Bebidas y Jugos / Jugos y Néctar / Bebidas Instantáneas en Polvo
+CATG27604/Bebidas-Instantaneas-en-Polvo
+
+[ ]
+  55  Bebidas y Jugos / Jugos y Néctar / Jugos y Néctar Líquidos
+CATG27601/Jugos-y-Nectar-Líquidos
+
+[ ]
+  55  Marcas Tottus / Cuidado Personal / Higiene Bucal / Cepillos
+CATG27730/Cepillos
+
+[ ]
+  55  Marcas Tottus / Huevos y Fiambres / Salchichas y Vienesas / Cerdo
+CATG27761/Cerdo
+
+[ ]
+  54  Marcas Tottus / Abarrotes / Aderezos / Mostaza
+CATG27324/Mostaza
+
+[ ]
+  53  Marcas Tottus / Abarrotes / Aderezos / Ketchup
+CATG27322/Ketchup
+
+[ ]
+  52  Bebidas y Jugos / Isotónicas y Energéticas / Isotónicas
+CATG27608/Isotonicas
+
+[ ]
+  52  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores de Baño
+CATG27452/Limpiadores-de-Bano
+
+[ ]
+  52  Marcas Tottus / Vinos y Licores
+CATG27084/Vinos-y-Licores
+
+[ ]
+  52  Panadería y Pastelería / Panadería / Pan de Molde
+CATG27649/Pan-de-Molde
+
+[ ]
+  51  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Papeles y Envoltorios de Cocina
+CATG27449/Papeles-y-Envoltorios-de-Cocina
+
+[ ]
+  51  Marcas Tottus / Mascotas / Higiene y Cuidados
+CATG27168/Higiene-y-Cuidados
+
+[ ]
+  51  Panadería y Pastelería / Pastelería / Masas y Hojaldres
+CATG27659/Masas-y-Hojaldres
+
+[ ]
+  50  Marcas Tottus / Aseo y Limpieza / Detergente y Cuidado para la Ropa / Detergentes en Polvo
+CATG27440/Detergentes-en-Polvo
+
+[ ]
+  50  Marcas Tottus / Desayunos / Café / Café Instantáneo
+CATG27361/Cafe-Instantaneo
+
+[ ]
+  49  Bebidas y Jugos / Bebidas / Pack
+CATG27607/Pack
+
+[ ]
+  49  Marcas Tottus / Huevos y Fiambres / Salame y Cocktail / Salame
+CATG27492/Salame
+
+[ ]
+  48  Lácteos y Quesos / Cremas
+CATG27192/Cremas
+
+[ ]
+  48  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Cera y Virutilla
+CATG27462/Cera-y-Virutilla
+
+[ ]
+  47  Lácteos y Quesos / Yoghurt / Yoghurt Familiares
+CATG27512/Yoghurt-Familiares
+
+[ ]
+  47  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Lentejas y Porotos
+CATG27294/Lentejas-y-Porotos
+
+[ ]
+  47  Marcas Tottus / Mascotas / Accesorios y Juguetes
+CATG27752/Accesorios-y-Juguetes
+
+[ ]
+  46  Marcas Tottus / Cuidado Personal / Higiene Bucal / Enjuagues e Hilo Dental
+CATG27729/Enjuagues-e-Hilo-Dental
+
+[ ]
+  46  Marcas Tottus / Desayunos / Mermeladas y Untables / Miel
+CATG27381/Miel
+
+[ ]
+  45  Marcas Tottus / Congelados / Helados / Postres Helados
+CATG27430/Postres-Helados
+
+[ ]
+  45  Marcas Tottus / Desayunos / Té e Infusiones / Té
+CATG27364/Te
+
+[ ]
+  45  Marcas Tottus / Huevos y Fiambres / Pates
+CATG27270/Pates
+
+[ ]
+  45  Panadería y Pastelería / Pastelería / Queques y Magdalenas
+CATG27660/Queques-y-Magdalenas
+
+[ ]
+  44  Marcas Tottus / Abarrotes / Postres y Repostería / Premezclas
+CATG27327/Premezclas
+
+[ ]
+  44  Marcas Tottus / Desayunos / Caramelos y Chicles / Chicles
+CATG27396/Chicles
+
+[ ]
+  44  Marcas Tottus / Desayunos / Cereales / Cereales Saludables
+CATG27367/Cereales-Saludables
+
+[ ]
+  42  Bebidas y Jugos / Isotónicas y Energéticas / Energéticas
+CATG27609/Energeticas
+
+[ ]
+  42  Lácteos y Quesos / Mantequillas y Mantecas / Mantequillas
+CATG27519/Mantequillas
+
+[ ]
+  42  Marcas Tottus / Abarrotes / Cocktail y Snack / Aceitunas y Pickles
+CATG27673/Aceitunas-y-Pickles
+
+[ ]
+  42  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Desinfectantes Ambientales
+CATG27466/Desinfectantes-Ambientales
+
+[ ]
+  42  Marcas Tottus / Cuidado Personal / Salud / Incontinencia y Pañales Adulto
+CATG27750/Incontinencia-y-Panales-Adulto
+
+[ ]
+  42  Marcas Tottus / Frutas y Verduras / Verduras / Ensaladas Listas
+CATG27582/Ensaladas-Listas
+
+[ ]
+  42  Vinos y Licores / Destilados / Vodka
+CATG27562/Vodka
+
+[ ]
+  42  Vinos y Licores / Vino Blanco / Chardonnay
+CATG27543/Chardonnay
+
+[ ]
+  41  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Arroz
+CATG27292/Arroz
+
+[ ]
+  41  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores Multiusos
+CATG27457/Limpiadores-Multiusos
+
+[ ]
+  40  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Cereales y Semillas
+CATG27296/Cereales-y-Semillas
+
+[ ]
+  40  Marcas Tottus / Desayunos / Café / Cápsulas de Café
+CATG27359/Capsulas-de-Cafe
+
+[ ]
+  40  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Longanizas
+CATG27488/Longanizas
+
+[ ]
+  40  Panadería y Pastelería / Pastelería / Tortas y Pasteles
+CATG27658/Tortas-y-Pasteles
+
+[ ]
+  39  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Arroz Preparado y Especial
+CATG27293/Arroz-Preparado-y-Especial
+
+[ ]
+  39  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Limpieza de Calzado y Otros
+CATG27475/Limpieza-de-Calzado-y-Otros
 
 [ ]
   39  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Vacuno
 CATG27402/Vacuno
 
 [ ]
-   2  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes para el Horno
-CATG27351/Carnes-para-el-Horno
+  39  Marcas Tottus / Congelados / Helados / Helados Light y Funcionales
+CATG28151/Helados-Light-y-Funcionales
 
 [ ]
-   2  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes para la Cacerola
-CATG27352/Carnes-para-la-Cacerola
+  39  Marcas Tottus / Desayunos / Café / Café en Grano y Molido
+CATG27358/Cafe-en-Grano-y-Molido
 
 [ ]
-   3  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes para la Parrilla
-CATG27350/Carnes-para-la-Parrilla
+  39  Marcas Tottus / Desayunos / Mermeladas y Untables / Mermeladas Light y sin Azúcar
+CATG27380/Mermeladas-Light-y-sin-Azucar
 
 [ ]
-   1  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes Premium
-CATG27353/Carnes-Premium
+  39  Panadería y Pastelería / Panadería / Hot Dog y Hamburguesas
+CATG27651/Hot-Dog-y-Hamburguesas
 
 [ ]
-  12  Marcas Tottus / Carnes / Cerdo / Chuletas de Cerdo
-CATG27342/Chuletas-de-Cerdo
+  38  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Ají
+CATG27319/Aji
 
 [ ]
-  29  Marcas Tottus / Carnes / Cerdo / Cortes Parrilleros de Cerdo
-CATG27343/Cortes-Parrilleros-de-Cerdo
+  38  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Escobillones y Palas
+CATG27471/Escobillones-y-Palas
 
 [ ]
-  15  Marcas Tottus / Carnes / Cerdo / Costillar y Costillitas
-CATG27340/Costillar-y-Costillitas
+  38  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Servilletas
+CATG27447/Servilletas
 
 [ ]
-  13  Marcas Tottus / Carnes / Cerdo / Pulpas, Lomos y Filetes
-CATG27341/Pulpas--Lomos-y-Filetes
+  38  Marcas Tottus / Desayunos / Caramelos y Chicles / Malvas
+CATG27397/Malvas
 
 [ ]
-  17  Marcas Tottus / Carnes / Pollo / Alitas y Otros Cortes de Pollo
-CATG27348/Alitas-y-Otros-Cortes-de-Pollo
+  38  Marcas Tottus / Huevos y Fiambres / Jamón / Pechuga de Pavo y Pollo
+CATG27480/Pechuga-de-Pavo-y-Pollo
 
 [ ]
-  16  Marcas Tottus / Carnes / Pollo / Filetitos de Pollo
-CATG27345/Filetitos-de-Pollo
+  37  Belleza / Cosméticos / Accesorios
+CATG27727/Accesorios
 
 [ ]
-   1  Marcas Tottus / Carnes / Pollo / Parrillas y Saborizados
-CATG27349/Parrillas-y-Saborizados
+  37  Marcas Tottus / Cuidado Personal / Jabones / Barra
+CATG27734/Barra
 
 [ ]
-   5  Marcas Tottus / Carnes / Vacuno / Interiores de Vacuno
-CATG27356/Interiores-Vacuno
+  37  Marcas Tottus / Desayunos / Endulzantes / Alulosa, Sucralosa y Otros
+CATG27378/Alulosa--Sucralosa-y-Otros
 
 [ ]
-  22  Marcas Tottus / Carnes / Vacuno / La Gran Estancia
-CATG27336/La-Gran-Estancia
+  37  Vinos y Licores / Destilados / Ron
+CATG27563/Ron
 
 [ ]
-   2  Marcas Tottus / Carnes / Vacuno / Molidas, Bistec y Trozos
-CATG27355/Molidas--Bistec-y-Trozos
+  36  Bebidas y Jugos / Aguas / Agua Purificada
+CATG27599/Agua-Purificada
 
 [ ]
-   2  Marcas Tottus / Carnes / Vacuno / Tottus Black
-CATG27335/Tottus-Black
+  36  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores Antigrasa
+CATG27455/Limpiadores-Antigrasa
 
 [ ]
-  12  Marcas Tottus / Carnes / Vacuno / Tottus Importado
-CATG27334/Tottus-Importado
+  36  Marcas Tottus / Congelados / Verduras Congeladas / Papas Congeladas
+CATG27407/Papas-Congeladas
 
 [ ]
-  10  Marcas Tottus / Carnes / Vacuno / Tottus Nacional
-CATG27338/Tottus-Nacional
+  35  Marcas Tottus / Desayunos / Café / Café Sabores
+CATG27362/Cafe-Sabores
 
 [ ]
-  12  Marcas Tottus / Congelados / Comida Congelada / Comida Oriental
-CATG27436/Comida-Oriental
+  34  Marcas Tottus / Cuidado Personal / Salud / Artículos de Botiquín
+CATG27747/Articulos-de-Botiquin
 
 [ ]
-   6  Marcas Tottus / Congelados / Comida Congelada / Empanadas y Quiches
-CATG27437/Empanadas-y-quiches
+  34  Marcas Tottus / Huevos y Fiambres / Jamón / Jamón de Cerdo
+CATG27481/Jamon-de-Cerdo
 
 [ ]
-  14  Marcas Tottus / Congelados / Comida Congelada / Lasagñas y Pastas
-CATG27435/Lasagnas-y-Pastas
+  33  Marcas Tottus / Abarrotes / Condimentos y Vinagres / Vinagres y Sucedáneos
+CATG27321/Vinagres-y-Sucedaneos
+
+[ ]
+  33  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Bolsas Multiusos
+CATG27469/Bolsas-Multiusos
+
+[ ]
+  32  Belleza / Cosméticos / Labios
+CATG27723/Labios
+
+[ ]
+  32  Marcas Tottus / Abarrotes / Pastas y Salsas / Pastas Frescas y Refrigeradas
+CATG27288/Pastas-Frescas-y-Refrigeradas
+
+[ ]
+  31  Marcas Tottus / Cuidado Personal / Protección Femenina / Protectores Diarios
+CATG27737/Protectores-Diarios
+
+[ ]
+  31  Marcas Tottus / Desayunos / Bebidas Vegetales / Otras Bebidas Vegetales
+CATG27510/Otras-Bebidas-Vegetales
+
+[ ]
+  30  Marcas Tottus / Abarrotes / Conservas y Enlatados / Compotas
+CATG27304/Compotas
+
+[ ]
+  30  Marcas Tottus / Abarrotes / Harinas / Harinas Blancas
+CATG27307/Harinas-Blancas
+
+[ ]
+  30  Marcas Tottus / Abarrotes / Pastas y Salsas / Pestos y Otras Salsas
+CATG27291/Pesto-y-Otras-Salsas
+
+[ ]
+  30  Marcas Tottus / Abarrotes / Postres y Repostería / Decoración
+CATG27330/Decoracion
+
+[ ]
+  30  Marcas Tottus / Abarrotes / Postres y Repostería / Salsas Dulces
+CATG27328/Salsas-Dulces
+
+[ ]
+  30  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Desodorantes Ambientales Eléctricos
+CATG27464/Desodorantes-Ambientales-Electricos
+
+[ ]
+  30  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpia Vidrios
+CATG27456/Limpia-Vidrios
+
+[ ]
+  30  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Lustramuebles y Otros Limpiadores
+CATG27461/Lustramuebles-y-Otros-Limpiadores
 
 [ ]
   30  Marcas Tottus / Congelados / Comida Congelada / Otras Comidas Congeladas
@@ -739,6 +755,370 @@ CATG27438/Otras-Comidas-Congeladas
 CATG27128/Pizzas-y-Pizzetas
 
 [ ]
+  30  Mundo Bebé / Perfumería Bebé / Shampoo y Acondicionadores
+CATG27616/Shampoo-y-Acondicionadores
+
+[ ]
+  30  Panadería y Pastelería / Pastelería / Dulces, Barquillos y Cuchuflís
+CATG27662/Dulces-Barquillos-y-Cuchuflis
+
+[ ]
+  29  Lácteos y Quesos / Mantequillas y Mantecas / Margarinas
+CATG27520/Margarinas
+
+[ ]
+  29  Marcas Tottus / Carnes / Cerdo / Cortes Parrilleros de Cerdo
+CATG27343/Cortes-Parrilleros-de-Cerdo
+
+[ ]
+  29  Marcas Tottus / Desayunos / Cereales / Cereales Azucarados
+CATG27369/Cereales-Azucarados
+
+[ ]
+  29  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas de Agua y Soda
+CATG27389/Galletas-de-Agua-y-Soda
+
+[ ]
+  29  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Longanicillas
+CATG27489/Longanicillas
+
+[ ]
+  28  Marcas Tottus / Abarrotes / Aceites / Aceites Especiales
+CATG27300/Aceites-Especiales
+
+[ ]
+  28  Panadería y Pastelería / Panadería / Pan Pita
+CATG27652/Pan-Pita
+
+[ ]
+  28  Pescados y Mariscos / Camarones
+CATG27421/Camarones
+
+[ ]
+  27  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Toallas de Papel
+CATG27446/Toallas-de-Papel
+
+[ ]
+  27  Marcas Tottus / Congelados / Hamburguesas y Churrascos / Churrascos
+CATG27416/Churrascos
+
+[ ]
+  27  Marcas Tottus / Huevos y Fiambres / Huevos / Huevos Blancos
+CATG27484/Huevos-Blancos
+
+[ ]
+  27  Marcas Tottus / Mascotas / Perros / Alimentos Cachorro
+CATG27753/Alimentos-Cachorro
+
+[ ]
+  26  Lácteos y Quesos / Postres Listos / Otros Postres
+CATG27535/Otros-Postres
+
+[ ]
+  26  Lácteos y Quesos / Yoghurt / Yoghurt Griego
+CATG27763/Yoghurt-Griego
+
+[ ]
+  26  Marcas Tottus / Aseo y Limpieza / Aerosoles y Desinfectantes / Varillas y Otros
+CATG27465/Varillas-y-Otros
+
+[ ]
+  26  Marcas Tottus / Congelados / Helados / Helados de Agua y Fruta
+CATG27429/Helados-de-Agua-y-Fruta
+
+[ ]
+  26  Marcas Tottus / Congelados / Pollo Congelado / Trutos de Pollo
+CATG27346/Trutros-de-Pollo
+
+[ ]
+  26  Marcas Tottus / Cuidado Personal / Desodorantes / Clinical
+CATG27742/Clinical
+
+[ ]
+  26  Panadería y Pastelería / Pastelería / Pie, Kuchen y Tartaletas
+CATG27663/Pie-Kuchen-y-Tartaletas
+
+[ ]
+  26  Vinos y Licores / Otros Vinos / Late Harvest
+CATG27545/Late-Harvest
+
+[ ]
+  25  Lácteos y Quesos / Quesos / Queso Gauda y Rodda
+CATG27496/Queso-Gauda-y-Rodda
+
+[ ]
+  25  Marcas Tottus / Cuidado Personal / Depilación y Afeitado / Ceras y Otros
+CATG27746/Ceras-y-Otros
+
+[ ]
+  25  Marcas Tottus / Cuidado Personal / Protección Femenina / Tampones y Otros
+CATG27738/Tampones-y-otros
+
+[ ]
+  25  Mundo Bebé / Marcas Propias / Pañales Infantiles
+CATG27612/Panales-Infantiles
+
+[ ]
+  24  Marcas Tottus / Congelados / Pollo Congelado / Nuggets y Croquetas de Pollo
+CATG27417/Nuggets-y-Croquetas-de-pollo
+
+[ ]
+  24  Marcas Tottus / Frutas y Verduras / Verduras / Apio, Repollo y Hojas
+CATG27578/Apio-Repollo-y-Hojas
+
+[ ]
+  24  Marcas Tottus / Huevos y Fiambres / Huevos / Huevos de Color
+CATG27483/Huevos-de-Color
+
+[ ]
+  24  Marcas Tottus / Huevos y Fiambres / Salame y Cocktail / Jamones, Chorizos y Fiambres
+CATG27518/Jamones--Chorizos-y-Fiambres
+
+[ ]
+  24  Pescados y Mariscos / Apanados
+CATG27426/Apanados
+
+[ ]
+  23  Bebidas y Jugos / Té Líquido y Limonadas / Limonadas y Otros
+CATG27611/Limonadas-y-Otros
+
+[ ]
+  23  Belleza / Cuidado Capilar / Pack
+CATG27253/Pack
+
+[ ]
+  23  Lácteos y Quesos / Leches / Leches Descremadas
+CATG27526/Leches-Descremadas
+
+[ ]
+  23  Lácteos y Quesos / Leches / Leches Enteras
+CATG27524/Leches-Enteras
+
+[ ]
+  23  Marcas Tottus / Abarrotes / Postres y Repostería / Levaduras y Polvos de Hornear
+CATG27331/Levaduras-y-Polvos-de-Hornear
+
+[ ]
+  23  Marcas Tottus / Frutas y Verduras / Verduras / Cebollas y Zanahorias
+CATG27574/Cebollas-y-Zanahorias
+
+[ ]
+  23  Marcas Tottus / Huevos y Fiambres / Huevos / Huevos de Gallina Libre
+CATG27486/Huevos-de-Gallina-Libre
+
+[ ]
+  23  Panadería y Pastelería / Panadería / Pan Baguette y Barras
+CATG27655/Pan-Baguette-y-barras
+
+[ ]
+  22  Cervezas / Cervezas Clásicas
+CATG27205/Cervezas-Clasicas
+
+[ ]
+  22  Lácteos y Quesos / Quesos / Queso Chanco y Ranco
+CATG27498/Queso-Chanco-y-Ranco
+
+[ ]
+  22  Lácteos y Quesos / Quesos / Queso de Cabra
+CATG27504/Queso-de-Cabra
+
+[ ]
+  22  Lácteos y Quesos / Quesos / Queso Rallado y Granulado
+CATG27501/Queso-Rallado-y-Granulado
+
+[ ]
+  22  Marcas Tottus / Abarrotes / Harinas / Harinas Especiales
+CATG27308/Harinas-Especiales
+
+[ ]
+  22  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Pastas Instantáneas
+CATG27290/Pastas-Instantaneas
+
+[ ]
+  22  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores en Crema
+CATG27454/Limpiadores-en-Crema
+
+[ ]
+  22  Marcas Tottus / Carnes / Vacuno / La Gran Estancia
+CATG27336/La-Gran-Estancia
+
+[ ]
+  22  Marcas Tottus / Frutas y Verduras / Verduras / Tomates y Pimentones
+CATG27573/Tomates-y-Pimentones
+
+[ ]
+  22  Panadería y Pastelería / Panadería / Cóctel
+CATG27656/Coctel
+
+[ ]
+  21  Bebidas y Jugos / Té Líquido y Limonadas / Té Líquido
+CATG27610/Te-Liquido
+
+[ ]
+  21  Marcas Tottus / Cuidado Personal / Desodorantes / Roll on
+CATG27740/Roll-on
+
+[ ]
+  21  Marcas Tottus / Desayunos / Endulzantes / Líquidos
+CATG27376/Liquidos
+
+[ ]
+  21  Marcas Tottus / Frutas y Verduras / Verduras / Hierbas y Especias
+CATG27580/Hierbas-y-Especias
+
+[ ]
+  21  Marcas Tottus / Huevos y Fiambres / Jamonadas y Otros
+CATG27271/Jamonadas-y-Otros
+
+[ ]
+  21  Marcas Tottus / Platos Preparados / Pollo Asado / Combos de Pollo
+CATG27678/Combos-de-Pollo
+
+[ ]
+  20  Lácteos y Quesos / Quesos / Quesillos y Queso Fresco
+CATG27503/Quesillos-y-Queso-Fresco
+
+[ ]
+  20  Marcas Tottus / Abarrotes / Postres y Repostería / Leches Condensadas y Evaporadas
+CATG27329/Leches-Condensadas-y-Evaporadas
+
+[ ]
+  20  Marcas Tottus / Abarrotes / Postres y Repostería / Manjar, Cremas y Coberturas
+CATG27332/Manjar--Cremas-y-Coberturas
+
+[ ]
+  20  Marcas Tottus / Cuidado Personal / Depilación y Afeitado / Cremas de Afeitar y After Shave
+CATG27744/Cremas-de-Afeitar-y-After-Shave
+
+[ ]
+  20  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Almendras
+CATG27508/Bebidas-de-Almendras
+
+[ ]
+  20  Mundo Bebé / Alimentación y Lactancia / Colados, Picados y Compotas
+CATG27621/Colados-Picados-y-Compotas
+
+[ ]
+  20  Vinos y Licores / Destilados / Tequila
+CATG27565/Tequila
+
+[ ]
+  19  Lácteos y Quesos / Leches / Leches Semidescremadas
+CATG27525/Leches-Semidescremadas
+
+[ ]
+  19  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Toallas Desinfectantes
+CATG27476/Toallas-Desinfectantes
+
+[ ]
+  19  Marcas Tottus / Aseo y Limpieza / Papeles para el Hogar / Papeles Higiénicos
+CATG27445/Papeles-Higienicos
+
+[ ]
+  19  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Pollo
+CATG27404/Pollo
+
+[ ]
+  19  Marcas Tottus / Congelados / Pollo Congelado / Pechuga de Pollo
+CATG27344/Pechugas-de-Pollo
+
+[ ]
+  19  Marcas Tottus / Congelados / Vegetariano y Vegano / Hamburguesas Veggie
+CATG27415/Hamburguesas-Veggie
+
+[ ]
+  19  Marcas Tottus / Desayunos / Chocolates / Chocolate Bitter
+CATG27385/Chocolate-Bitter
+
+[ ]
+  19  Marcas Tottus / Frutas y Verduras / Verduras / Papas y Zapallos
+CATG27572/Papas-y-Zapallos
+
+[ ]
+  18  Marcas Tottus / Congelados / Verduras Congeladas / Choclo Congelado
+CATG27406/Choclo-Congelado
+
+[ ]
+  18  Marcas Tottus / Desayunos / Café / Cremas y Otros
+CATG27363/Cremas-y-Otros
+
+[ ]
+  18  Panadería y Pastelería / Masas y Tortillas / Masas
+CATG27666/Masas
+
+[ ]
+  18  Vinos y Licores / Espumantes / Rosé
+CATG27552/Espumantes-Rose
+
+[ ]
+  17  Bebidas y Jugos / Bebidas / Bebidas Retornables
+CATG29094/Bebidas-Retornables
+
+[ ]
+  17  Marcas Tottus / Carnes / Pollo / Alitas y Otros Cortes de Pollo
+CATG27348/Alitas-y-Otros-Cortes-de-Pollo
+
+[ ]
+  16  Belleza / Cuidado Corporal / Protección Solar
+CATG27717/Proteccion-Solar
+
+[ ]
+  16  Lácteos y Quesos / Leches / Leches Sin Lactosa
+CATG27528/Leches-sin-Lactosa
+
+[ ]
+  16  Marcas Tottus / Abarrotes / Pastas y Salsas / Pastas Sin Gluten, Integrales y Otros
+CATG27286/Pastas-sin-Gluten--Integrales-y-Otros
+
+[ ]
+  16  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Otros Limpiadores
+CATG27458/Otros-Limpiadores
+
+[ ]
+  16  Marcas Tottus / Carnes / Pollo / Filetitos de Pollo
+CATG27345/Filetitos-de-Pollo
+
+[ ]
+  16  Marcas Tottus / Platos Preparados / Platos Listos / Almuerzos Listos
+CATG27680/Almuerzos-Listos
+
+[ ]
+  16  Panadería y Pastelería / Pastelería / Donuts y Berlines
+CATG27664/Donuts-y-Berlines
+
+[ ]
+  15  Marcas Tottus / Carnes / Cerdo / Costillar y Costillitas
+CATG27340/Costillar-y-Costillitas
+
+[ ]
+  15  Marcas Tottus / Cuidado Personal / Salud / Pañuelos Desechables
+CATG27448/Panuelos-Desechables
+
+[ ]
+  15  Marcas Tottus / Frutas y Verduras / Frutos Secos y Deshidratados / Ciruelas y Otros Frutos
+CATG27597/Ciruelas-y-Otros-Frutos
+
+[ ]
+  15  Panadería y Pastelería / Panadería / Pan Precocido
+CATG27653/Pan-Precocido
+
+[ ]
+  15  Pescados y Mariscos / Salmón
+CATG27422/Salmon
+
+[ ]
+  14  Lácteos y Quesos / Postres Listos / Jaleas
+CATG27532/Jaleas
+
+[ ]
+  14  Marcas Tottus / Abarrotes / Aceites / Aceite Maravilla
+CATG27298/Aceite-Maravilla
+
+[ ]
+  14  Marcas Tottus / Congelados / Comida Congelada / Lasagñas y Pastas
+CATG27435/Lasagnas-y-Pastas
+
+[ ]
   14  Marcas Tottus / Congelados / Frutas Congeladas / Frutas en Trozos o Enteras Congeladas
 CATG27411/Frutas-en-trozos-o-enteras-congeladas
 
@@ -747,850 +1127,470 @@ CATG27411/Frutas-en-trozos-o-enteras-congeladas
 CATG27410/Pulpas-de-Frutas-congeladas
 
 [ ]
-  12  Marcas Tottus / Congelados / Frutas Congeladas / Smoothie
-CATG27412/Smoothie
-
-[ ]
-  27  Marcas Tottus / Congelados / Hamburguesas y Churrascos / Churrascos
-CATG27416/Churrascos
-
-[ ]
-  72  Marcas Tottus / Congelados / Hamburguesas y Churrascos / Hamburguesas de Carne
-CATG27413/Hamburguesas-Carne
-
-[ ]
-   5  Marcas Tottus / Congelados / Hamburguesas y Churrascos / Hamburguesas de Pollo
-CATG27414/Hamburguesas-Pollo
-
-[ ]
-   4  Marcas Tottus / Congelados / Helados / Conos y Waffles
-CATG28153/Conos-y-Waffles
-
-[ ]
-  26  Marcas Tottus / Congelados / Helados / Helados de Agua y Fruta
-CATG27429/Helados-de-Agua-y-Fruta
-
-[ ]
-  12  Marcas Tottus / Congelados / Helados / Helados de Yoghurt
-CATG28152/Helados-de-Yoghurt
-
-[ ]
-  39  Marcas Tottus / Congelados / Helados / Helados Light y Funcionales
-CATG28151/Helados-Light-y-Funcionales
-
-[ ]
-  72  Marcas Tottus / Congelados / Helados / Helados Multipack
-CATG27431/Helados-Multipack
-
-[ ]
-  58  Marcas Tottus / Congelados / Helados / Helados Premium
-CATG28150/Helados-Premium
-
-[ ]
-  83  Marcas Tottus / Congelados / Helados / Helados Tradicionales
-CATG27428/Helados-Tradicionales
-
-[ ]
-   6  Marcas Tottus / Congelados / Helados / Helados Veganos o Vegetales
-CATG27432/Helados-Veganos-o-Vegetales
-
-[ ]
-  45  Marcas Tottus / Congelados / Helados / Postres Helados
-CATG27430/Postres-Helados
-
-[ ]
-   4  Marcas Tottus / Congelados / Pollo Congelado / Filetes de Pollo
-CATG27420/Filetes-de-Pollo
-
-[ ]
-  24  Marcas Tottus / Congelados / Pollo Congelado / Nuggets y Croquetas de Pollo
-CATG27417/Nuggets-y-Croquetas-de-pollo
-
-[ ]
-  19  Marcas Tottus / Congelados / Pollo Congelado / Pechuga de Pollo
-CATG27344/Pechugas-de-Pollo
-
-[ ]
-  26  Marcas Tottus / Congelados / Pollo Congelado / Trutos de Pollo
-CATG27346/Trutros-de-Pollo
-
-[ ]
-  19  Marcas Tottus / Congelados / Vegetariano y Vegano / Hamburguesas Veggie
-CATG27415/Hamburguesas-Veggie
-
-[ ]
-   6  Marcas Tottus / Congelados / Vegetariano y Vegano / Nuggets Veggie
-CATG27433/Nuggets-Veggie
-
-[ ]
-  12  Marcas Tottus / Congelados / Vegetariano y Vegano / Otras Comidas Veggie
-CATG27434/Otras-Comidas-Veggie
-
-[ ]
-   8  Marcas Tottus / Congelados / Verduras Congeladas / Arvejas Congeladas
-CATG27408/Arvejas-Congeladas
-
-[ ]
-  18  Marcas Tottus / Congelados / Verduras Congeladas / Choclo Congelado
-CATG27406/Choclo-Congelado
-
-[ ]
-  84  Marcas Tottus / Congelados / Verduras Congeladas / Otras Verduras Congeladas
-CATG27409/Otras-Verduras-Congeladas
-
-[ ]
-  36  Marcas Tottus / Congelados / Verduras Congeladas / Papas Congeladas
-CATG27407/Papas-Congeladas
-
-[ ]
-  25  Marcas Tottus / Cuidado Personal / Depilación y Afeitado / Ceras y Otros
-CATG27746/Ceras-y-Otros
-
-[ ]
-  20  Marcas Tottus / Cuidado Personal / Depilación y Afeitado / Cremas de Afeitar y After Shave
-CATG27744/Cremas-de-Afeitar-y-After-Shave
-
-[ ]
-  88  Marcas Tottus / Cuidado Personal / Depilación y Afeitado / Rasuradoras y Repuestos
-CATG27743/Rasuradoras-y-Repuestos
-
-[ ]
-  71  Marcas Tottus / Cuidado Personal / Desodorantes / Barra
-CATG27741/Barra
-
-[ ]
-  26  Marcas Tottus / Cuidado Personal / Desodorantes / Clinical
-CATG27742/Clinical
-
-[ ]
-  21  Marcas Tottus / Cuidado Personal / Desodorantes / Roll on
-CATG27740/Roll-on
-
-[ ]
-  77  Marcas Tottus / Cuidado Personal / Desodorantes / Spray
-CATG27739/Spray
-
-[ ]
-   2  Marcas Tottus / Cuidado Personal / Higiene Bucal / Adhesivos Dentales
-CATG27732/Adhesivos-Dentales
-
-[ ]
-  55  Marcas Tottus / Cuidado Personal / Higiene Bucal / Cepillos
-CATG27730/Cepillos
-
-[ ]
-   9  Marcas Tottus / Cuidado Personal / Higiene Bucal / Cepillos Eléctricos
-CATG27731/Cepillos-Electricos
-
-[ ]
-  46  Marcas Tottus / Cuidado Personal / Higiene Bucal / Enjuagues e Hilo Dental
-CATG27729/Enjuagues-e-Hilo-Dental
-
-[ ]
-  77  Marcas Tottus / Cuidado Personal / Higiene Bucal / Pasta de Dientes
-CATG27728/Pasta-de-Dientes
-
-[ ]
-  37  Marcas Tottus / Cuidado Personal / Jabones / Barra
-CATG27734/Barra
-
-[ ]
-  63  Marcas Tottus / Cuidado Personal / Jabones / Líquidos
-CATG27733/Liquidos
-
-[ ]
-   8  Marcas Tottus / Cuidado Personal / Jabones / Otros
-CATG27735/Otros
-
-[ ]
-  31  Marcas Tottus / Cuidado Personal / Protección Femenina / Protectores Diarios
-CATG27737/Protectores-Diarios
-
-[ ]
-  25  Marcas Tottus / Cuidado Personal / Protección Femenina / Tampones y Otros
-CATG27738/Tampones-y-otros
-
-[ ]
-  59  Marcas Tottus / Cuidado Personal / Protección Femenina / Toallas Higiénicas
-CATG27736/Toallas-Higienicas
-
-[ ]
-  34  Marcas Tottus / Cuidado Personal / Salud / Artículos de Botiquín
-CATG27747/Articulos-de-Botiquin
-
-[ ]
-  11  Marcas Tottus / Cuidado Personal / Salud / Bienestar Sexual
-CATG27748/Bienestar-Sexual
-
-[ ]
-  42  Marcas Tottus / Cuidado Personal / Salud / Incontinencia y Pañales Adulto
-CATG27750/Incontinencia-y-Panales-Adulto
-
-[ ]
-   6  Marcas Tottus / Cuidado Personal / Salud / Multivitamínicos
-CATG27749/Multivitaminicos
-
-[ ]
-  15  Marcas Tottus / Cuidado Personal / Salud / Pañuelos Desechables
-CATG27448/Panuelos-Desechables
-
-[ ]
-  12  Marcas Tottus / Desayunos / Azúcar / Azúcar
-CATG27373/Azucar-Regular
-
-[ ]
-   2  Marcas Tottus / Desayunos / Azúcar / Azúcar Flor
-CATG27374/Azucar-Flor
-
-[ ]
-  12  Marcas Tottus / Desayunos / Azúcar / Otros
-CATG27375/Otros
-
-[ ]
-  20  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Almendras
-CATG27508/Bebidas-de-Almendras
-
-[ ]
-   9  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Avena
-CATG27509/Bebidas-de-Avena
-
-[ ]
-  11  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Coco
-CATG27507/Bebidas-de-Coco
-
-[ ]
-   6  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Soya
-CATG27506/Bebidas-de-Soya
-
-[ ]
-  31  Marcas Tottus / Desayunos / Bebidas Vegetales / Otras Bebidas Vegetales
-CATG27510/Otras-Bebidas-Vegetales
-
-[ ]
-  10  Marcas Tottus / Desayunos / Café / Café Descafeinado
-CATG27360/Cafe-Descafeinado
-
-[ ]
-  39  Marcas Tottus / Desayunos / Café / Café en Grano y Molido
-CATG27358/Cafe-en-Grano-y-Molido
-
-[ ]
-  50  Marcas Tottus / Desayunos / Café / Café Instantáneo
-CATG27361/Cafe-Instantaneo
-
-[ ]
-  35  Marcas Tottus / Desayunos / Café / Café Sabores
-CATG27362/Cafe-Sabores
-
-[ ]
-  18  Marcas Tottus / Desayunos / Café / Cremas y Otros
-CATG27363/Cremas-y-Otros
-
-[ ]
-  40  Marcas Tottus / Desayunos / Café / Cápsulas de Café
-CATG27359/Capsulas-de-Cafe
-
-[ ]
- 101  Marcas Tottus / Desayunos / Caramelos y Chicles / Caramelos
-CATG27395/Caramelos
-
-[ ]
-  44  Marcas Tottus / Desayunos / Caramelos y Chicles / Chicles
-CATG27396/Chicles
-
-[ ]
- 135  Marcas Tottus / Desayunos / Caramelos y Chicles / Gomitas y Masticables
-CATG27394/Gomitas-y-Masticables
-
-[ ]
-  38  Marcas Tottus / Desayunos / Caramelos y Chicles / Malvas
-CATG27397/Malvas
-
-[ ]
-  79  Marcas Tottus / Desayunos / Cereales / Avenas y Granolas
-CATG27370/Avenas-y-Granolas
-
-[ ]
- 109  Marcas Tottus / Desayunos / Cereales / Barras de Cereal y Proteicas
-CATG27371/Barras-de-Cereal-y-Proteicas
-
-[ ]
-  29  Marcas Tottus / Desayunos / Cereales / Cereales Azucarados
-CATG27369/Cereales-Azucarados
-
-[ ]
-  67  Marcas Tottus / Desayunos / Cereales / Cereales Chocolatados
-CATG27368/Cereales-Chocolatados
-
-[ ]
-   8  Marcas Tottus / Desayunos / Cereales / Cereales Individuales
-CATG27372/Cereales-Individuales
-
-[ ]
-  44  Marcas Tottus / Desayunos / Cereales / Cereales Saludables
-CATG27367/Cereales-Saludables
-
-[ ]
-  92  Marcas Tottus / Desayunos / Chocolates / Bombones
-CATG27386/Bombones
-
-[ ]
-  19  Marcas Tottus / Desayunos / Chocolates / Chocolate Bitter
-CATG27385/Chocolate-Bitter
-
-[ ]
- 185  Marcas Tottus / Desayunos / Chocolates / Chocolate en Barra
-CATG27383/Chocolate-en-Barra
-
-[ ]
-   3  Marcas Tottus / Desayunos / Chocolates / Chocolate Sin Azúcar
-CATG27384/Chocolate-Sin-Azucar
-
-[ ]
-  86  Marcas Tottus / Desayunos / Chocolates / Otros
-CATG27387/Otros-Chocolates
-
-[ ]
-  37  Marcas Tottus / Desayunos / Endulzantes / Alulosa, Sucralosa y Otros
-CATG27378/Alulosa--Sucralosa-y-Otros
-
-[ ]
-   6  Marcas Tottus / Desayunos / Endulzantes / En Polvo y Tabletas
-CATG27377/En-Polvo-y-Tabletas
-
-[ ]
-  21  Marcas Tottus / Desayunos / Endulzantes / Líquidos
-CATG27376/Liquidos
-
-[ ]
-  29  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas de Agua y Soda
-CATG27389/Galletas-de-Agua-y-Soda
-
-[ ]
- 321  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas Dulces
-CATG27391/Galletas-Dulces
-
-[ ]
-  13  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas Individuales
-CATG27393/Galletas-Individuales
-
-[ ]
- 102  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas Saludables
-CATG27392/Galletas-Saludables
-
-[ ]
-  60  Marcas Tottus / Desayunos / Manjar
-CATG27118/Manjar
-
-[ ]
-  56  Marcas Tottus / Desayunos / Mermeladas y Untables / Dulces Untables
-CATG27382/Dulces-Untables
-
-[ ]
-  92  Marcas Tottus / Desayunos / Mermeladas y Untables / Mermeladas
-CATG27379/Mermeladas
-
-[ ]
-  39  Marcas Tottus / Desayunos / Mermeladas y Untables / Mermeladas Light y sin Azúcar
-CATG27380/Mermeladas-Light-y-sin-Azucar
-
-[ ]
-  46  Marcas Tottus / Desayunos / Mermeladas y Untables / Miel
-CATG27381/Miel
-
-[ ]
-  98  Marcas Tottus / Desayunos / Té e Infusiones / Hierbas y Yerbas Mates
-CATG27366/Hierbas-y-Yerbas-Mates
-
-[ ]
-  45  Marcas Tottus / Desayunos / Té e Infusiones / Té
-CATG27364/Te
-
-[ ]
-  77  Marcas Tottus / Desayunos / Té e Infusiones / Té Especial e Infusiones
-CATG27365/Te-Especial-e-Infusiones
-
-[ ]
-   8  Marcas Tottus / Frutas y Verduras / Frutas / Frutas de Estación
-CATG27591/Frutas-de-Estacion
-
-[ ]
-   5  Marcas Tottus / Frutas y Verduras / Frutas / Frutillas, Uvas y Berries
-CATG27585/Frutillas-Uvas-y-Berries
-
-[ ]
-   2  Marcas Tottus / Frutas y Verduras / Frutas / Limón, Naranjas, Kiwi y Cítricos
-CATG27584/Limon-Naranjas-Kiwi-y-Citricos
-
-[ ]
-   5  Marcas Tottus / Frutas y Verduras / Frutas / Manzanas y Peras
-CATG27588/Manzanas-y-Peras
-
-[ ]
-   3  Marcas Tottus / Frutas y Verduras / Frutas / Otras Frutas
-CATG27593/Otras-Frutas
-
-[ ]
-   9  Marcas Tottus / Frutas y Verduras / Frutas / Paltas
-CATG27586/Paltas
-
-[ ]
-   1  Marcas Tottus / Frutas y Verduras / Frutas / Plátanos, Melón y Frutas Tropicales
-CATG27587/Platanos-Melon-y-Frutas-Tropicales
-
-[ ]
-   5  Marcas Tottus / Frutas y Verduras / Frutos Secos y Deshidratados / Almendras y Avellanas
-CATG27595/Almendras-y-Avellanas
-
-[ ]
-  15  Marcas Tottus / Frutas y Verduras / Frutos Secos y Deshidratados / Ciruelas y Otros Frutos
-CATG27597/Ciruelas-y-Otros-Frutos
-
-[ ]
-   4  Marcas Tottus / Frutas y Verduras / Frutos Secos y Deshidratados / Nueces y Castañas
-CATG27596/Nueces-y-Castanas
-
-[ ]
-   5  Marcas Tottus / Frutas y Verduras / Verduras / Ajo y Ají
-CATG27579/Ajo-y-Aji
-
-[ ]
-  24  Marcas Tottus / Frutas y Verduras / Verduras / Apio, Repollo y Hojas
-CATG27578/Apio-Repollo-y-Hojas
-
-[ ]
-   5  Marcas Tottus / Frutas y Verduras / Verduras / Brócoli, Pepino y Otras Verduras
-CATG27581/Brocoli-Pepino-y-Otras-Verduras
-
-[ ]
-  23  Marcas Tottus / Frutas y Verduras / Verduras / Cebollas y Zanahorias
-CATG27574/Cebollas-y-Zanahorias
-
-[ ]
-  10  Marcas Tottus / Frutas y Verduras / Verduras / Champiñones y Orientales
-CATG27575/Champinones-y-Orientales
-
-[ ]
-  42  Marcas Tottus / Frutas y Verduras / Verduras / Ensaladas Listas
-CATG27582/Ensaladas-Listas
-
-[ ]
-  21  Marcas Tottus / Frutas y Verduras / Verduras / Hierbas y Especias
-CATG27580/Hierbas-y-Especias
-
-[ ]
-   9  Marcas Tottus / Frutas y Verduras / Verduras / Lechugas
-CATG27577/Lechugas
-
-[ ]
-   4  Marcas Tottus / Frutas y Verduras / Verduras / Legumbres
-CATG27583/Legumbres
-
-[ ]
-  19  Marcas Tottus / Frutas y Verduras / Verduras / Papas y Zapallos
-CATG27572/Papas-y-Zapallos
-
-[ ]
-  22  Marcas Tottus / Frutas y Verduras / Verduras / Tomates y Pimentones
-CATG27573/Tomates-y-Pimentones
-
-[ ]
-  12  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Butifarras y Prietas
-CATG27490/Butifarras-y-Prietas
-
-[ ]
-  61  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Chorizos
-CATG27487/Chorizos
-
-[ ]
-  29  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Longanicillas
-CATG27489/Longanicillas
-
-[ ]
-  40  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Longanizas
-CATG27488/Longanizas
-
-[ ]
-  12  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Mix Parrilleros
-CATG27491/Mix-Parrilleros
-
-[ ]
-  27  Marcas Tottus / Huevos y Fiambres / Huevos / Huevos Blancos
-CATG27484/Huevos-Blancos
-
-[ ]
-  24  Marcas Tottus / Huevos y Fiambres / Huevos / Huevos de Color
-CATG27483/Huevos-de-Color
-
-[ ]
-  23  Marcas Tottus / Huevos y Fiambres / Huevos / Huevos de Gallina Libre
-CATG27486/Huevos-de-Gallina-Libre
-
-[ ]
-  21  Marcas Tottus / Huevos y Fiambres / Jamonadas y Otros
-CATG27271/Jamonadas-y-Otros
-
-[ ]
-   3  Marcas Tottus / Huevos y Fiambres / Jamón / Jamones a Granel
-CATG27477/Jamones-a-Granel
-
-[ ]
-  34  Marcas Tottus / Huevos y Fiambres / Jamón / Jamón de Cerdo
-CATG27481/Jamon-de-Cerdo
-
-[ ]
-  38  Marcas Tottus / Huevos y Fiambres / Jamón / Pechuga de Pavo y Pollo
-CATG27480/Pechuga-de-Pavo-y-Pollo
-
-[ ]
-  45  Marcas Tottus / Huevos y Fiambres / Pates
-CATG27270/Pates
-
-[ ]
-  88  Marcas Tottus / Huevos y Fiambres / Salame y Cocktail / Aceitunas y Pickles
-CATG27493/Aceitunas-y-Pickles
-
-[ ]
-  24  Marcas Tottus / Huevos y Fiambres / Salame y Cocktail / Jamones, Chorizos y Fiambres
-CATG27518/Jamones--Chorizos-y-Fiambres
-
-[ ]
-  49  Marcas Tottus / Huevos y Fiambres / Salame y Cocktail / Salame
-CATG27492/Salame
-
-[ ]
-  55  Marcas Tottus / Huevos y Fiambres / Salchichas y Vienesas / Cerdo
-CATG27761/Cerdo
-
-[ ]
   14  Marcas Tottus / Huevos y Fiambres / Salchichas y Vienesas / Pollo y Pavo
 CATG27762/Pollo-y-Pavo
-
-[ ]
- 677  Marcas Tottus / Lácteos
-CATG27139/Lacteos--y-Quesos
-
-[ ]
-  47  Marcas Tottus / Mascotas / Accesorios y Juguetes
-CATG27752/Accesorios-y-Juguetes
-
-[ ]
-   9  Marcas Tottus / Mascotas / Gatos / Alimentos Gatito
-CATG27757/Alimentos-Gatito
-
-[ ]
-  88  Marcas Tottus / Mascotas / Gatos / Alimentos Gato
-CATG27758/Alimentos-Gato
-
-[ ]
-  51  Marcas Tottus / Mascotas / Higiene y Cuidados
-CATG27168/Higiene-y-Cuidados
-
-[ ]
-  84  Marcas Tottus / Mascotas / Perros / Alimentos Adulto
-CATG27754/Alimentos-Adulto
-
-[ ]
-  27  Marcas Tottus / Mascotas / Perros / Alimentos Cachorro
-CATG27753/Alimentos-Cachorro
-
-[ ]
-  10  Marcas Tottus / Mascotas / Perros / Alimentos Senior
-CATG27755/Alimentos-Senior
-
-[ ]
-  87  Marcas Tottus / Mascotas / Snack y Huesos
-CATG27756/Snack-y-Huesos
-
-[ ]
- 321  Marcas Tottus / Mundo Bebé
-CATG27087/Mundo-Bebe
-
-[ ]
-   8  Marcas Tottus / Platos Preparados / Masas y Empanadas / Masas
-CATG27690/Masas
-
-[ ]
-  12  Marcas Tottus / Platos Preparados / Pizzas / Pizzas Refrigeradas
-CATG27676/Pizzas-Refrigeradas
-
-[ ]
-  16  Marcas Tottus / Platos Preparados / Platos Listos / Almuerzos Listos
-CATG27680/Almuerzos-Listos
-
-[ ]
-   3  Marcas Tottus / Platos Preparados / Platos Listos / Pastas Untables
-CATG27685/Pastas-Untables
-
-[ ]
-   8  Marcas Tottus / Platos Preparados / Platos Listos / Platos Fritos
-CATG27683/Platos-Fritos
-
-[ ]
-   6  Marcas Tottus / Platos Preparados / Platos Listos / Postres
-CATG27684/Postres
-
-[ ]
-  21  Marcas Tottus / Platos Preparados / Pollo Asado / Combos de Pollo
-CATG27678/Combos-de-Pollo
-
-[ ]
-   1  Marcas Tottus / Platos Preparados / Pollo Asado / Pollos Enteros
-CATG27679/Pollos-Enteros
-
-[ ]
- 213  Marcas Tottus / Recco
-CATG27088/Electro-y-Tecnologia
-
-[ ]
-  52  Marcas Tottus / Vinos y Licores
-CATG27084/Vinos-y-Licores
-
-[ ]
-  11  Mundo Bebé / Alimentación y Lactancia / Cereales, Jugos y Snack
-CATG27622/Cereales-Jugos-y-Snack
-
-[ ]
-   6  Mundo Bebé / Alimentación y Lactancia / Chupetes y Otros
-CATG27625/Chupetes-y-Otros
-
-[ ]
-  20  Mundo Bebé / Alimentación y Lactancia / Colados, Picados y Compotas
-CATG27621/Colados-Picados-y-Compotas
-
-[ ]
-   9  Mundo Bebé / Alimentación y Lactancia / Fórmulas y Suplementos
-CATG27620/Formulas-y-Suplementos
-
-[ ]
-   3  Mundo Bebé / Alimentación y Lactancia / Mamaderas, Tetinas y Vasos
-CATG27624/Mamaderas-Tetinas-y-Vasos
-
-[ ]
-  25  Mundo Bebé / Marcas Propias / Pañales Infantiles
-CATG27612/Panales-Infantiles
-
-[ ]
-   2  Mundo Bebé / Marcas Propias / Pañales Recién Nacido
-CATG27613/Panales-Recien-Nacido
-
-[ ]
-  13  Mundo Bebé / Marcas Propias / Toallas Húmedas
-CATG27614/Toallas-Humedas
-
-[ ]
-   9  Mundo Bebé / Perfumería Bebé / Colonias
-CATG27615/Colonias
 
 [ ]
   14  Mundo Bebé / Perfumería Bebé / Jabones, Cremas y Otros
 CATG27618/Jabones-Cremas-y-Otros
 
 [ ]
-  30  Mundo Bebé / Perfumería Bebé / Shampoo y Acondicionadores
-CATG27616/Shampoo-y-Acondicionadores
+  13  Belleza / Cosméticos / Desmaquillantes
+CATG27718/Desmaquillantes
 
 [ ]
-  18  Panadería y Pastelería / Masas y Tortillas / Masas
-CATG27666/Masas
+  13  Cervezas / Cervezas Sin Alcohol o Gluten
+CATG27209/Cervezas-Sin-Alcohol-o-Gluten
 
 [ ]
-  59  Panadería y Pastelería / Masas y Tortillas / Tortillas
-CATG27667/Tortillas
+  13  Lácteos y Quesos / Quesos / Tablas de Quesos
+CATG27505/Tablas-de-Quesos
 
 [ ]
-  22  Panadería y Pastelería / Panadería / Cóctel
-CATG27656/Coctel
+  13  Lácteos y Quesos / Yoghurt / Yoghurt Protein
+CATG27515/Yoghurt-Protein
 
 [ ]
-  39  Panadería y Pastelería / Panadería / Hot Dog y Hamburguesas
-CATG27651/Hot-Dog-y-Hamburguesas
+  13  Marcas Tottus / Abarrotes / Harinas / Féculas
+CATG27309/Feculas
 
 [ ]
-   6  Panadería y Pastelería / Panadería / Otros
-CATG27657/Otros
+  13  Marcas Tottus / Carnes / Cerdo / Pulpas, Lomos y Filetes
+CATG27341/Pulpas--Lomos-y-Filetes
 
 [ ]
-  23  Panadería y Pastelería / Panadería / Pan Baguette y Barras
-CATG27655/Pan-Baguette-y-barras
+  13  Marcas Tottus / Desayunos / Galletas y Colaciones / Galletas Individuales
+CATG27393/Galletas-Individuales
 
 [ ]
-   8  Panadería y Pastelería / Panadería / Pan Congelado
-CATG27654/Pan-Congelado
+  13  Mundo Bebé / Marcas Propias / Toallas Húmedas
+CATG27614/Toallas-Humedas
 
 [ ]
-  52  Panadería y Pastelería / Panadería / Pan de Molde
-CATG27649/Pan-de-Molde
+  12  Marcas Tottus / Abarrotes / Aceites / Aceite Vegetal
+CATG27297/Aceite-Vegetal
 
 [ ]
-  63  Panadería y Pastelería / Panadería / Pan Granel
-CATG27648/Pan-Granel
+  12  Marcas Tottus / Abarrotes / Arroz, Legumbres y Semillas / Otras Legumbres
+CATG27295/Otras-Legumbres
 
 [ ]
-  28  Panadería y Pastelería / Panadería / Pan Pita
-CATG27652/Pan-Pita
+  12  Marcas Tottus / Aseo y Limpieza / Accesorios de Aseo y Cocina / Fósforos y Velas
+CATG27474/Fosforos-y-Velas
 
 [ ]
-  15  Panadería y Pastelería / Panadería / Pan Precocido
-CATG27653/Pan-Precocido
+  12  Marcas Tottus / Carnes / Cerdo / Chuletas de Cerdo
+CATG27342/Chuletas-de-Cerdo
+
+[ ]
+  12  Marcas Tottus / Carnes / Vacuno / Tottus Importado
+CATG27334/Tottus-Importado
+
+[ ]
+  12  Marcas Tottus / Congelados / Comida Congelada / Comida Oriental
+CATG27436/Comida-Oriental
+
+[ ]
+  12  Marcas Tottus / Congelados / Frutas Congeladas / Smoothie
+CATG27412/Smoothie
+
+[ ]
+  12  Marcas Tottus / Congelados / Helados / Helados de Yoghurt
+CATG28152/Helados-de-Yoghurt
+
+[ ]
+  12  Marcas Tottus / Congelados / Vegetariano y Vegano / Otras Comidas Veggie
+CATG27434/Otras-Comidas-Veggie
+
+[ ]
+  12  Marcas Tottus / Desayunos / Azúcar / Azúcar
+CATG27373/Azucar-Regular
+
+[ ]
+  12  Marcas Tottus / Desayunos / Azúcar / Otros
+CATG27375/Otros
+
+[ ]
+  12  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Butifarras y Prietas
+CATG27490/Butifarras-y-Prietas
+
+[ ]
+  12  Marcas Tottus / Huevos y Fiambres / Chorizos y Longanizas / Mix Parrilleros
+CATG27491/Mix-Parrilleros
+
+[ ]
+  12  Marcas Tottus / Platos Preparados / Pizzas / Pizzas Refrigeradas
+CATG27676/Pizzas-Refrigeradas
 
 [ ]
   12  Panadería y Pastelería / Panadería / Pan Sin Gluten
 CATG27650/Pan-Sin-Gluten
 
 [ ]
-  16  Panadería y Pastelería / Pastelería / Donuts y Berlines
-CATG27664/Donuts-y-Berlines
-
-[ ]
-  30  Panadería y Pastelería / Pastelería / Dulces, Barquillos y Cuchuflís
-CATG27662/Dulces-Barquillos-y-Cuchuflis
-
-[ ]
-  62  Panadería y Pastelería / Pastelería / Galletas y Colaciones
-CATG27661/Galletas-y-Colaciones
-
-[ ]
-  51  Panadería y Pastelería / Pastelería / Masas y Hojaldres
-CATG27659/Masas-y-Hojaldres
-
-[ ]
   12  Panadería y Pastelería / Pastelería / Pan de Pascua y Panetones
 CATG27764/Pan-de-Pascua-y-Panetones
-
-[ ]
-  26  Panadería y Pastelería / Pastelería / Pie, Kuchen y Tartaletas
-CATG27663/Pie-Kuchen-y-Tartaletas
-
-[ ]
-  45  Panadería y Pastelería / Pastelería / Queques y Magdalenas
-CATG27660/Queques-y-Magdalenas
-
-[ ]
-  40  Panadería y Pastelería / Pastelería / Tortas y Pasteles
-CATG27658/Tortas-y-Pasteles
-
-[ ]
-  24  Pescados y Mariscos / Apanados
-CATG27426/Apanados
-
-[ ]
-  28  Pescados y Mariscos / Camarones
-CATG27421/Camarones
 
 [ ]
   12  Pescados y Mariscos / Mariscos Congelados
 CATG27425/Mariscos-Congelados
 
 [ ]
-   6  Pescados y Mariscos / Merluza, Reineta y Otros Pescados
-CATG27423/Merluza--Reineta-y-Otros-Pescados
+  11  Marcas Tottus / Abarrotes / Pastas y Salsas / Lasañas y Pastas Rellenas
+CATG27287/Lasanas-y-Pastas-Rellenas
 
 [ ]
-  15  Pescados y Mariscos / Salmón
-CATG27422/Salmon
+  11  Marcas Tottus / Abarrotes / Sopas e Instantáneos / Puré Instantáneo
+CATG27317/Pure-Instantaneo
 
 [ ]
-  69  Vinos y Licores / Destilados / Gin
-CATG27564/Gin
+  11  Marcas Tottus / Cuidado Personal / Salud / Bienestar Sexual
+CATG27748/Bienestar-Sexual
 
 [ ]
- 113  Vinos y Licores / Destilados / Pisco
-CATG27560/Pisco
+  11  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Coco
+CATG27507/Bebidas-de-Coco
 
 [ ]
-  37  Vinos y Licores / Destilados / Ron
-CATG27563/Ron
+  11  Mundo Bebé / Alimentación y Lactancia / Cereales, Jugos y Snack
+CATG27622/Cereales-Jugos-y-Snack
 
 [ ]
-  20  Vinos y Licores / Destilados / Tequila
-CATG27565/Tequila
+  10  Marcas Tottus / Carnes / Vacuno / Tottus Nacional
+CATG27338/Tottus-Nacional
 
 [ ]
-  42  Vinos y Licores / Destilados / Vodka
-CATG27562/Vodka
+  10  Marcas Tottus / Desayunos / Café / Café Descafeinado
+CATG27360/Cafe-Descafeinado
 
 [ ]
-  99  Vinos y Licores / Destilados / Whisky
-CATG27561/Whisky
+  10  Marcas Tottus / Frutas y Verduras / Verduras / Champiñones y Orientales
+CATG27575/Champinones-y-Orientales
 
 [ ]
-  73  Vinos y Licores / Espumantes / Brut y Extra Brut
-CATG27549/Brut-y-Extra-Brut
-
-[ ]
-  78  Vinos y Licores / Espumantes / Otros
-CATG27553/Otros
-
-[ ]
-  18  Vinos y Licores / Espumantes / Rosé
-CATG27552/Espumantes-Rose
+  10  Marcas Tottus / Mascotas / Perros / Alimentos Senior
+CATG27755/Alimentos-Senior
 
 [ ]
   10  Vinos y Licores / Espumantes / Sec y Demi Sec
 CATG27550/Sec-y-Demi-Sec
 
 [ ]
-   3  Vinos y Licores / Licores y Cócteles / Botánicos y Sales
-CATG27558/Botanicos-y-Sales
+  10  Vinos y Licores / Otros Vinos / Vinos Rosé
+CATG27546/Vinos-Rose
 
 [ ]
- 117  Vinos y Licores / Licores y Cócteles / Licores
-CATG27557/Licores
+   9  Belleza / Cosméticos / Uñas
+CATG27725/Unas
 
 [ ]
- 101  Vinos y Licores / Licores y Cócteles / Ready to Drink
-CATG27559/Ready-to-Drink
+   9  Belleza / Cuidado Capilar / Kids
+CATG27701/Kids
 
 [ ]
-  63  Vinos y Licores / Licores y Cócteles / Sour y Cócteles
-CATG27555/Sour-y-Cocteles
+   9  Lácteos y Quesos / Leches / Leches Cultivadas y Bebidas Lácteas
+CATG27529/Leches-Cultivadas-y-Bebidas-Lacteas
 
 [ ]
-  26  Vinos y Licores / Otros Vinos / Late Harvest
-CATG27545/Late-Harvest
+   9  Lácteos y Quesos / Mantequillas y Mantecas / Levaduras y Mantecas
+CATG27521/Levaduras-y-Mantecas
+
+[ ]
+   9  Lácteos y Quesos / Postres Listos / Flan
+CATG27531/Flan
+
+[ ]
+   9  Marcas Tottus / Cuidado Personal / Higiene Bucal / Cepillos Eléctricos
+CATG27731/Cepillos-Electricos
+
+[ ]
+   9  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Avena
+CATG27509/Bebidas-de-Avena
+
+[ ]
+   9  Marcas Tottus / Frutas y Verduras / Frutas / Paltas
+CATG27586/Paltas
+
+[ ]
+   9  Marcas Tottus / Frutas y Verduras / Verduras / Lechugas
+CATG27577/Lechugas
+
+[ ]
+   9  Marcas Tottus / Mascotas / Gatos / Alimentos Gatito
+CATG27757/Alimentos-Gatito
+
+[ ]
+   9  Mundo Bebé / Alimentación y Lactancia / Fórmulas y Suplementos
+CATG27620/Formulas-y-Suplementos
+
+[ ]
+   9  Mundo Bebé / Perfumería Bebé / Colonias
+CATG27615/Colonias
 
 [ ]
    9  Vinos y Licores / Otros Vinos / Sangría
 CATG27548/Sangria
 
 [ ]
-  10  Vinos y Licores / Otros Vinos / Vinos Rosé
-CATG27546/Vinos-Rose
+   8  Belleza / Cosméticos / Ojos, Pestañas y Cejas
+CATG27722/Ojos-Pestanas-y-Cejas
 
 [ ]
-  42  Vinos y Licores / Vino Blanco / Chardonnay
-CATG27543/Chardonnay
+   8  Marcas Tottus / Aseo y Limpieza / Pisos y Muebles / Limpiadores para Piso Flotante
+CATG27460/Limpiadores-para-Piso-Flotante
 
 [ ]
-  62  Vinos y Licores / Vino Blanco / Otros Blancos
-CATG27544/Otros-Blancos
+   8  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Cerdo
+CATG27403/Cerdo
 
 [ ]
-  68  Vinos y Licores / Vino Blanco / Sauvignon Blanc
-CATG27542/Sauvignon-Blanc
+   8  Marcas Tottus / Congelados / Verduras Congeladas / Arvejas Congeladas
+CATG27408/Arvejas-Congeladas
 
 [ ]
-  93  Vinos y Licores / Vino Tinto / Blend
-CATG27540/Blend
+   8  Marcas Tottus / Cuidado Personal / Jabones / Otros
+CATG27735/Otros
 
 [ ]
- 197  Vinos y Licores / Vino Tinto / Cabernet Sauvignon
-CATG27537/Cabernet-Sauvignon
+   8  Marcas Tottus / Desayunos / Cereales / Cereales Individuales
+CATG27372/Cereales-Individuales
 
 [ ]
- 158  Vinos y Licores / Vino Tinto / Carmenere
-CATG27536/Carmenere
+   8  Marcas Tottus / Frutas y Verduras / Frutas / Frutas de Estación
+CATG27591/Frutas-de-Estacion
 
 [ ]
-  76  Vinos y Licores / Vino Tinto / Merlot
-CATG27538/Merlot
+   8  Marcas Tottus / Platos Preparados / Masas y Empanadas / Masas
+CATG27690/Masas
 
 [ ]
-  90  Vinos y Licores / Vino Tinto / Otros Tintos
-CATG27541/Otros-Tintos
+   8  Marcas Tottus / Platos Preparados / Platos Listos / Platos Fritos
+CATG27683/Platos-Fritos
+
+[ ]
+   8  Panadería y Pastelería / Panadería / Pan Congelado
+CATG27654/Pan-Congelado
+
+[ ]
+   7  Belleza / Cosméticos / Rostro
+CATG27724/Rostro
+
+[ ]
+   7  Lácteos y Quesos / Yoghurt / Yoghurt Base Vegetal
+CATG27516/Yoghurt-Base-Vegetal
+
+[ ]
+   7  Lácteos y Quesos / Yoghurt / Yoghurt Sin Lactosa
+CATG27514/Yoghurt-Sin-Lactosa
+
+[ ]
+   7  Marcas Tottus / Aguas, Bebidas y Jugos
+CATG27085/Bebidas--Aguas-y-Jugos
+
+[ ]
+   6  Lácteos y Quesos / Quesos / Quesos Sin Lactosa
+CATG27502/Quesos-Sin-Lactosa
+
+[ ]
+   6  Marcas Tottus / Congelados / Comida Congelada / Empanadas y Quiches
+CATG27437/Empanadas-y-quiches
+
+[ ]
+   6  Marcas Tottus / Congelados / Helados / Helados Veganos o Vegetales
+CATG27432/Helados-Veganos-o-Vegetales
+
+[ ]
+   6  Marcas Tottus / Congelados / Vegetariano y Vegano / Nuggets Veggie
+CATG27433/Nuggets-Veggie
+
+[ ]
+   6  Marcas Tottus / Cuidado Personal / Salud / Multivitamínicos
+CATG27749/Multivitaminicos
+
+[ ]
+   6  Marcas Tottus / Desayunos / Bebidas Vegetales / Bebidas de Soya
+CATG27506/Bebidas-de-Soya
+
+[ ]
+   6  Marcas Tottus / Desayunos / Endulzantes / En Polvo y Tabletas
+CATG27377/En-Polvo-y-Tabletas
+
+[ ]
+   6  Marcas Tottus / Platos Preparados / Platos Listos / Postres
+CATG27684/Postres
+
+[ ]
+   6  Mundo Bebé / Alimentación y Lactancia / Chupetes y Otros
+CATG27625/Chupetes-y-Otros
+
+[ ]
+   6  Panadería y Pastelería / Panadería / Otros
+CATG27657/Otros
+
+[ ]
+   6  Pescados y Mariscos / Merluza, Reineta y Otros Pescados
+CATG27423/Merluza--Reineta-y-Otros-Pescados
 
 [ ]
    6  Vinos y Licores / Vino Tinto / Pinot Noir
 CATG27539/Pinot-Noir
+
+[ ]
+   5  Lácteos y Quesos / Quesos / Queso Crema y Untables
+CATG27499/Queso-Crema-y-untables
+
+[ ]
+   5  Lácteos y Quesos / Yoghurt / Probióticos
+CATG27517/Probioticos
+
+[ ]
+   5  Marcas Tottus / Carnes / Vacuno / Interiores de Vacuno
+CATG27356/Interiores-Vacuno
+
+[ ]
+   5  Marcas Tottus / Congelados / Hamburguesas y Churrascos / Hamburguesas de Pollo
+CATG27414/Hamburguesas-Pollo
+
+[ ]
+   5  Marcas Tottus / Frutas y Verduras / Frutas / Frutillas, Uvas y Berries
+CATG27585/Frutillas-Uvas-y-Berries
+
+[ ]
+   5  Marcas Tottus / Frutas y Verduras / Frutas / Manzanas y Peras
+CATG27588/Manzanas-y-Peras
+
+[ ]
+   5  Marcas Tottus / Frutas y Verduras / Frutos Secos y Deshidratados / Almendras y Avellanas
+CATG27595/Almendras-y-Avellanas
+
+[ ]
+   5  Marcas Tottus / Frutas y Verduras / Verduras / Ajo y Ají
+CATG27579/Ajo-y-Aji
+
+[ ]
+   5  Marcas Tottus / Frutas y Verduras / Verduras / Brócoli, Pepino y Otras Verduras
+CATG27581/Brocoli-Pepino-y-Otras-Verduras
+
+[ ]
+   4  Marcas Tottus / Carnes / Carbón
+CATG27285/Carbon
+
+[ ]
+   4  Marcas Tottus / Carnes / Carnes Molidas y Trozadas / Pavo
+CATG27405/Pavo
+
+[ ]
+   4  Marcas Tottus / Congelados / Helados / Conos y Waffles
+CATG28153/Conos-y-Waffles
+
+[ ]
+   4  Marcas Tottus / Congelados / Pollo Congelado / Filetes de Pollo
+CATG27420/Filetes-de-Pollo
+
+[ ]
+   4  Marcas Tottus / Frutas y Verduras / Frutos Secos y Deshidratados / Nueces y Castañas
+CATG27596/Nueces-y-Castanas
+
+[ ]
+   4  Marcas Tottus / Frutas y Verduras / Verduras / Legumbres
+CATG27583/Legumbres
+
+[ ]
+   3  Lácteos y Quesos / Postres Listos / Leche Asada y Arroz con Leche
+CATG27533/Leche-Asada-y-Arroz-con-Leche
+
+[ ]
+   3  Lácteos y Quesos / Quesos / Quesos Veganos
+CATG27500/Quesos-Veganos
+
+[ ]
+   3  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes para la Parrilla
+CATG27350/Carnes-para-la-Parrilla
+
+[ ]
+   3  Marcas Tottus / Desayunos / Chocolates / Chocolate Sin Azúcar
+CATG27384/Chocolate-Sin-Azucar
+
+[ ]
+   3  Marcas Tottus / Frutas y Verduras / Frutas / Otras Frutas
+CATG27593/Otras-Frutas
+
+[ ]
+   3  Marcas Tottus / Huevos y Fiambres / Jamón / Jamones a Granel
+CATG27477/Jamones-a-Granel
+
+[ ]
+   3  Marcas Tottus / Platos Preparados / Platos Listos / Pastas Untables
+CATG27685/Pastas-Untables
+
+[ ]
+   3  Mundo Bebé / Alimentación y Lactancia / Mamaderas, Tetinas y Vasos
+CATG27624/Mamaderas-Tetinas-y-Vasos
+
+[ ]
+   3  Vinos y Licores / Licores y Cócteles / Botánicos y Sales
+CATG27558/Botanicos-y-Sales
+
+[ ]
+   2  Lácteos y Quesos / Leches / Leches Protein
+CATG27527/Leches-Protein
+
+[ ]
+   2  Lácteos y Quesos / Yoghurt / Yoghurt Natural
+CATG27513/Yoghurt-Natural
+
+[ ]
+   2  Marcas Tottus / Aseo y Limpieza / Baño y Cocina / Limpiadores de Cocina
+CATG27451/Limpiadores-de-Cocina
+
+[ ]
+   2  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes para el Horno
+CATG27351/Carnes-para-el-Horno
+
+[ ]
+   2  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes para la Cacerola
+CATG27352/Carnes-para-la-Cacerola
+
+[ ]
+   2  Marcas Tottus / Carnes / Vacuno / Molidas, Bistec y Trozos
+CATG27355/Molidas--Bistec-y-Trozos
+
+[ ]
+   2  Marcas Tottus / Carnes / Vacuno / Tottus Black
+CATG27335/Tottus-Black
+
+[ ]
+   2  Marcas Tottus / Cuidado Personal / Higiene Bucal / Adhesivos Dentales
+CATG27732/Adhesivos-Dentales
+
+[ ]
+   2  Marcas Tottus / Desayunos / Azúcar / Azúcar Flor
+CATG27374/Azucar-Flor
+
+[ ]
+   2  Marcas Tottus / Frutas y Verduras / Frutas / Limón, Naranjas, Kiwi y Cítricos
+CATG27584/Limon-Naranjas-Kiwi-y-Citricos
+
+[ ]
+   2  Mundo Bebé / Marcas Propias / Pañales Recién Nacido
+CATG27613/Panales-Recien-Nacido
+
+[ ]
+   1  Lácteos y Quesos / Quesos / Quesos a Granel
+CATG27494/Quesos-a-Granel
+
+[ ]
+   1  Marcas Tottus / Carnes / Carnes para Toda Ocasión / Carnes Premium
+CATG27353/Carnes-Premium
+
+[ ]
+   1  Marcas Tottus / Carnes / Pollo / Parrillas y Saborizados
+CATG27349/Parrillas-y-Saborizados
+
+[ ]
+   1  Marcas Tottus / Frutas y Verduras / Frutas / Plátanos, Melón y Frutas Tropicales
+CATG27587/Platanos-Melon-y-Frutas-Tropicales
+
+[ ]
+   1  Marcas Tottus / Platos Preparados / Pollo Asado / Pollos Enteros
+CATG27679/Pollos-Enteros
 

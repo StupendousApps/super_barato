@@ -34,7 +34,23 @@ hash_id = fn path ->
   :crypto.hash(:sha256, path) |> binary_part(0, 4) |> Base.encode16(case: :lower)
 end
 
-# 1. Build {cat_slug, sub_slug} → %{chain => [chain_slug, ...]} from
+# 1. Build a lookup of id → {cat_slug, sub_slug} from the existing
+#    JSONL (if present). Used to resolve the `[x]: <id>` entries in
+#    the checklists into (category, subcategory) pairs.
+id_to_pair =
+  case File.read(jsonl_path) do
+    {:ok, body} ->
+      body
+      |> String.split("\n", trim: true)
+      |> Enum.map(&Jason.decode!/1)
+      |> Enum.filter(&(&1["kind"] == "subcategory"))
+      |> Map.new(fn r -> {r["id"], {r["category_slug"], r["slug"]}} end)
+
+    {:error, _} ->
+      %{}
+  end
+
+# 2. Build {cat_slug, sub_slug} → %{chain => [chain_slug, ...]} from
 #    the checklists. Ordering inside each chain list mirrors checklist
 #    file order so the YAML diff is deterministic.
 mappings =
@@ -46,10 +62,21 @@ mappings =
       |> CategoryChecklist.parse_file()
       |> Enum.filter(&(&1.status == :mapped))
       |> Enum.reduce(acc, fn e, a ->
-        key = {e.mapping.category, e.mapping.subcategory}
-        chain_map = Map.get(a, key, %{})
-        slugs = Map.get(chain_map, chain, []) ++ [e.slug]
-        Map.put(a, key, Map.put(chain_map, chain, slugs))
+        case Map.get(id_to_pair, e.mapping.id) do
+          nil ->
+            IO.puts(
+              :stderr,
+              "warning: [#{chain}] #{e.path} -> id #{e.mapping.id} not in JSONL; skipping"
+            )
+
+            a
+
+          {cat_slug, sub_slug} ->
+            key = {cat_slug, sub_slug}
+            chain_map = Map.get(a, key, %{})
+            slugs = Map.get(chain_map, chain, []) ++ [e.slug]
+            Map.put(a, key, Map.put(chain_map, chain, slugs))
+        end
       end)
     else
       acc

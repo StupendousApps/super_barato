@@ -1,242 +1,454 @@
+[x]: 8134061f
+ 207  Licores, Bebidas y Aguas / Vinos / Vinos Tintos
+licores-bebidas-y-aguas/vinos/vinos-tintos
+
 [ ]
  169  Carnes y Pescados
 carnes-y-pescados
 
 [ ]
-   8  Carnes y Pescados / Camarones / Camarones Cocidos
-carnes-y-pescados/camarones/camarones-cocidos
+ 140  Despensa / Aceites, Sal y Condimentos / Condimentos
+despensa/aceites-sal-y-condimentos/condimentos
 
 [ ]
-   6  Carnes y Pescados / Camarones / Camarones Crudos
-carnes-y-pescados/camarones/camarones-crudos
-
-[ ]
-   3  Carnes y Pescados / Cerdo y Cordero
-carnes-y-pescados/cerdo-y-cordero
-
-[ ]
-   2  Carnes y Pescados / Cerdo y Cordero / Cordero
-carnes-y-pescados/cerdo-y-cordero/cordero
-
-[ ]
-  10  Carnes y Pescados / Cerdo y Cordero / Costillar y Costillitas
-carnes-y-pescados/cerdo-y-cordero/costillar-y-costillitas
-
-[ ]
-   9  Carnes y Pescados / Cerdo y Cordero / Malaya y Otros Cortes
-carnes-y-pescados/cerdo-y-cordero/malaya-y-otros-cortes
-
-[ ]
-   5  Carnes y Pescados / Cerdo y Cordero / Pulpa y Lomo de Cerdo
-carnes-y-pescados/cerdo-y-cordero/pulpa-y-lomo-de-cerdo
-
-[ ]
-  10  Carnes y Pescados / Gourmet del Mar
-carnes-y-pescados/gourmet-del-mar
-
-[ ]
-   7  Carnes y Pescados / Mariscos / Mariscos Congelados
-carnes-y-pescados/mariscos/mariscos-congelados
-
-[ ]
-   2  Carnes y Pescados / Mariscos / Mariscos Frescos
-carnes-y-pescados/mariscos/mariscos-frescos
-
-[ ]
-   2  Carnes y Pescados / Pavo
-carnes-y-pescados/pavo
-
-[ ]
-  10  Carnes y Pescados / Pavo / Filetes y Pechugas de Pavo
-carnes-y-pescados/pavo/filetes-y-pechugas-de-pavo
-
-[ ]
-   4  Carnes y Pescados / Pavo / Pavo Entero
-carnes-y-pescados/pavo/pavo-entero
-
-[ ]
-   3  Carnes y Pescados / Pavo / Trutros y Bistec de Pavo
-carnes-y-pescados/pavo/trutros-y-bistec-de-pavo
-
-[ ]
-   7  Carnes y Pescados / Pescados / Pescados Apanados
-carnes-y-pescados/pescados/pescados-apanados
-
-[ ]
-  12  Carnes y Pescados / Pescados / Pescados Congelados
-carnes-y-pescados/pescados/pescados-congelados
-
-[ ]
-  10  Carnes y Pescados / Pescados / Pescados Frescos
-carnes-y-pescados/pescados/pescados-frescos
-
-[ ]
-   8  Carnes y Pescados / Pollo
-carnes-y-pescados/pollo
-
-[ ]
-  13  Carnes y Pescados / Pollo / Alitas y Trutros de Pollo
-carnes-y-pescados/pollo/alitas-y-trutros-de-pollo
-
-[ ]
-   1  Carnes y Pescados / Pollo / Menudencias de Pollo y Otros
-carnes-y-pescados/pollo/menudencias-de-pollo-y-otros
-
-[ ]
-   5  Carnes y Pescados / Pollo / Pollo Entero
-carnes-y-pescados/pollo/pollo-entero
-
-[ ]
-  26  Chocolates, Galletas y Snacks
-chocolates-galletas-y-snacks
-
-[ ]
-  38  Chocolates, Galletas y Snacks / Chocolates / Bombones y Trufas
-chocolates-galletas-y-snacks/chocolates/bombones-y-trufas
-
-[ ]
-  10  Chocolates, Galletas y Snacks / Chocolates / Chocolates de Navidad
-chocolates-galletas-y-snacks/chocolates/chocolates-de-navidad
-
-[ ]
-  65  Chocolates, Galletas y Snacks / Chocolates / Chocolates en Barra
-chocolates-galletas-y-snacks/chocolates/chocolates-en-barra
-
-[ ]
-  10  Chocolates, Galletas y Snacks / Chocolates / Chocolates sin Azúcar
-chocolates-galletas-y-snacks/chocolates/chocolates-sin-azucar
-
-[ ]
-   3  Chocolates, Galletas y Snacks / Chocolates / Chocolates Vegano, Sin Gluten, Orgánico
-chocolates-galletas-y-snacks/chocolates/chocolates-vegano-sin-gluten-organico
-
-[ ]
-  24  Chocolates, Galletas y Snacks / Chocolates / Chocolates y Tentaciones
-chocolates-galletas-y-snacks/chocolates/chocolates-y-tentaciones
-
-[ ]
-  18  Chocolates, Galletas y Snacks / Chocolates / Mazapán y Turrones
-chocolates-galletas-y-snacks/chocolates/mazapan-y-turrones
-
-[ ]
-  94  Chocolates, Galletas y Snacks / Dulces
-chocolates-galletas-y-snacks/dulces
-
-[ ]
-   9  Chocolates, Galletas y Snacks / Dulces / Malvas, Marshmallows y Merenguitos
-chocolates-galletas-y-snacks/dulces/malvas-marshmallows-y-merenguitos
-
-[ ]
-  58  Chocolates, Galletas y Snacks / Galletas Dulces
-chocolates-galletas-y-snacks/galletas-dulces
-
-[ ]
-  11  Chocolates, Galletas y Snacks / Galletas Dulces / Galletas de Arroz y Quinoa
-chocolates-galletas-y-snacks/galletas-dulces/galletas-de-arroz-y-quinoa
-
-[ ]
-   8  Chocolates, Galletas y Snacks / Galletas Dulces / Galletas de Navidad
-chocolates-galletas-y-snacks/galletas-dulces/galletas-de-navidad
-
-[ ]
-   6  Chocolates, Galletas y Snacks / Galletas Dulces / Galletones
-chocolates-galletas-y-snacks/galletas-dulces/galletones
-
-[ ]
-  31  Chocolates, Galletas y Snacks / Galletas Saladas
-chocolates-galletas-y-snacks/galletas-saladas
-
-[ ]
-  75  Chocolates, Galletas y Snacks / Snacks
-chocolates-galletas-y-snacks/snacks
-
-[ ]
-  12  Chocolates, Galletas y Snacks / Snacks / Cabritas
-chocolates-galletas-y-snacks/snacks/cabritas
-
-[ ]
-  10  Chocolates, Galletas y Snacks / Snacks / Doritos y Tortillas
-chocolates-galletas-y-snacks/snacks/doritos-y-tortillas
-
-[ ]
-  40  Chocolates, Galletas y Snacks / Snacks / Papas Fritas
-chocolates-galletas-y-snacks/snacks/papas-fritas
-
-[ ]
-  18  Chocolates, Galletas y Snacks / Snacks / Snacks Vegetales
-chocolates-galletas-y-snacks/snacks/snacks-vegetales
-
-[ ]
-  25  Cuidado Personal y Bebé / Bebé / Accesorios de Bebé
-cuidado-personal-y-bebe/bebe/accesorios-de-bebe
-
-[ ]
-  43  Cuidado Personal y Bebé / Bebé / Colados, Picados y Otros
-cuidado-personal-y-bebe/bebe/colados-picados-y-otros
-
-[ ]
-  18  Cuidado Personal y Bebé / Bebé / Leche y Suplementos Infantiles
-cuidado-personal-y-bebe/bebe/leche-y-suplementos-infantiles
-
-[ ]
-  33  Cuidado Personal y Bebé / Bebé / Pañales y Toallas Húmedas
-cuidado-personal-y-bebe/bebe/panales-y-toallas-humedas
-
-[ ]
-  71  Cuidado Personal y Bebé / Bebé / Perfumería Infantil
-cuidado-personal-y-bebe/bebe/perfumeria-infantil
+ 131  Panadería y Pastelería
+panaderia-y-pasteleria
 
 [ ]
   98  Cuidado Personal y Bebé / Cuidado Capilar
 cuidado-personal-y-bebe/cuidado-capilar
 
 [ ]
+  94  Chocolates, Galletas y Snacks / Dulces
+chocolates-galletas-y-snacks/dulces
+
+[ ]
+  94  Licores, Bebidas y Aguas / Jugos / Jugos y Néctar
+licores-bebidas-y-aguas/jugos/jugos-y-nectar
+
+[ ]
+  92  Frutas y Verduras / Verduras
+frutas-y-verduras/verduras
+
+[ ]
+  89  Limpieza / Accesorios de Limpieza / Guantes, Esponjas y Paños
+limpieza/accesorios-de-limpieza/guantes-esponjas-y-panos
+
+[ ]
+  80  Licores, Bebidas y Aguas / Cervezas / Cervezas Tradicionales
+licores-bebidas-y-aguas/cervezas/cervezas-tradicionales
+
+[ ]
+  76  Despensa / Fideos, Pastas y Salsas / Pastas y Fideos
+despensa/fideos-pastas-y-salsas/pastas-y-fideos
+
+[ ]
+  75  Chocolates, Galletas y Snacks / Snacks
+chocolates-galletas-y-snacks/snacks
+
+[ ]
+  72  Licores, Bebidas y Aguas
+licores-bebidas-y-aguas
+
+[ ]
+  71  Cuidado Personal y Bebé / Bebé / Perfumería Infantil
+cuidado-personal-y-bebe/bebe/perfumeria-infantil
+
+[ ]
+  69  Quesos y Fiambres / Quesos / Especiales y Tablas de Quesos
+quesos-y-fiambres/quesos/especiales-y-tablas-de-quesos
+
+[ ]
+  65  Chocolates, Galletas y Snacks / Chocolates / Chocolates en Barra
+chocolates-galletas-y-snacks/chocolates/chocolates-en-barra
+
+[ ]
+  64  Despensa / Aderezos y Salsas / Aderezos, Salsas Soya y Otros
+despensa/aderezos-y-salsas/aderezos-salsas-soya-y-otros
+
+[ ]
   63  Cuidado Personal y Bebé / Cuidado Capilar / Acondicionadores
 cuidado-personal-y-bebe/cuidado-capilar/acondicionadores
 
 [ ]
-  28  Cuidado Personal y Bebé / Cuidado Capilar / Cepillos de Pelo y Accesorios
-cuidado-personal-y-bebe/cuidado-capilar/cepillos-de-pelo-y-accesorios
+  58  Chocolates, Galletas y Snacks / Galletas Dulces
+chocolates-galletas-y-snacks/galletas-dulces
 
 [ ]
-  41  Cuidado Personal y Bebé / Cuidado Capilar / Coloración y Tintura de Pelo
-cuidado-personal-y-bebe/cuidado-capilar/coloracion-y-tintura-de-pelo
+  56  Licores, Bebidas y Aguas / Espumantes y Sidras
+licores-bebidas-y-aguas/espumantes-y-sidras
 
 [ ]
-   5  Cuidado Personal y Bebé / Cuidado Capilar / Fijadores, Lacas y Ceras
-cuidado-personal-y-bebe/cuidado-capilar/fijadores-lacas-y-ceras
+  56  Lácteos, Huevos y Congelados / Leches / Leche Líquida
+lacteos-huevos-y-congelados/leches/leche-liquida
+
+[ ]
+  56  Mascotas / Perros / Snacks, Salsas y Huesos
+mascotas/perros/snacks-salsas-y-huesos
+
+[ ]
+  55  Licores, Bebidas y Aguas / Cervezas / Cervezas Artesanales
+licores-bebidas-y-aguas/cervezas/cervezas-artesanales
+
+[ ]
+  54  Despensa / Cereales, Avenas y Barras / Cereales
+despensa/cereales-avenas-y-barras/cereales
+
+[ ]
+  53  Licores, Bebidas y Aguas / Jugos / Jugos Individuales
+licores-bebidas-y-aguas/jugos/jugos-individuales
+
+[ ]
+  50  Limpieza / Pisos y Muebles / Limpiadores Piso
+limpieza/pisos-y-muebles/limpiadores-piso
+
+[ ]
+  49  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Batido
+lacteos-huevos-y-congelados/yoghurt/yoghurt-batido
+
+[ ]
+  47  Despensa / Aceites, Sal y Condimentos
+despensa/aceites-sal-y-condimentos
+
+[ ]
+  47  Licores, Bebidas y Aguas / Vinos / Vinos Blancos
+licores-bebidas-y-aguas/vinos/vinos-blancos
+
+[ ]
+  46  Quesos y Fiambres / Fiambres / Jamones
+quesos-y-fiambres/fiambres/jamones
 
 [ ]
   45  Cuidado Personal y Bebé / Cuidado Capilar / Tratamiento Capilar
 cuidado-personal-y-bebe/cuidado-capilar/tratamiento-capilar
 
 [ ]
-  22  Cuidado Personal y Bebé / Cuidado Corporal / Accesorios Cuidado Corporal
-cuidado-personal-y-bebe/cuidado-corporal/accesorios-cuidado-corporal
+  45  Limpieza / Limpieza de Ropa / Prelavado, Quitamanchas y Aprestos
+limpieza/limpieza-de-ropa/prelavado-quitamanchas-y-aprestos
 
 [ ]
-   2  Cuidado Personal y Bebé / Cuidado Corporal / Bienestar
-cuidado-personal-y-bebe/cuidado-corporal/bienestar
+  44  Lácteos, Huevos y Congelados / Helados y Postres / Helados Premium
+lacteos-huevos-y-congelados/helados-y-postres/helados-premium
 
 [ ]
-  15  Cuidado Personal y Bebé / Cuidado Corporal / Colonias y Body Mist
-cuidado-personal-y-bebe/cuidado-corporal/colonias-y-body-mist
+  43  Cuidado Personal y Bebé / Bebé / Colados, Picados y Otros
+cuidado-personal-y-bebe/bebe/colados-picados-y-otros
 
 [ ]
-  15  Cuidado Personal y Bebé / Cuidado Corporal / Cremas para Manos
-cuidado-personal-y-bebe/cuidado-corporal/cremas-para-manos
+  41  Cuidado Personal y Bebé / Cuidado Capilar / Coloración y Tintura de Pelo
+cuidado-personal-y-bebe/cuidado-capilar/coloracion-y-tintura-de-pelo
+
+[ ]
+  41  Limpieza / Baño
+limpieza/bano
+
+[ ]
+  40  Chocolates, Galletas y Snacks / Snacks / Papas Fritas
+chocolates-galletas-y-snacks/snacks/papas-fritas
+
+[ ]
+  40  Cuidado Personal y Bebé / Higiene Bucal / Pasta Dental
+cuidado-personal-y-bebe/higiene-bucal/pasta-dental
+
+[ ]
+  39  Despensa / Fideos, Pastas y Salsas / Salsas para Pastas
+despensa/fideos-pastas-y-salsas/salsas-para-pastas
+
+[ ]
+  39  Quesos y Fiambres / Aceitunas, Pepinillos y Otros / Aceitunas
+quesos-y-fiambres/aceitunas-pepinillos-y-otros/aceitunas
+
+[ ]
+  38  Chocolates, Galletas y Snacks / Chocolates / Bombones y Trufas
+chocolates-galletas-y-snacks/chocolates/bombones-y-trufas
+
+[ ]
+  38  Cuidado Personal y Bebé / Protección Femenina / Toallas Higiénicas y Tampones
+cuidado-personal-y-bebe/proteccion-femenina/toallas-higienicas-y-tampones
+
+[ ]
+  38  Frutas y Verduras / Frutas
+frutas-y-verduras/frutas
+
+[ ]
+  37  Cuidado Personal y Bebé / Higiene Bucal / Cepillo Dental
+cuidado-personal-y-bebe/higiene-bucal/cepillo-dental
+
+[ ]
+  37  Despensa / Aderezos y Salsas / Mostazas
+despensa/aderezos-y-salsas/mostazas
+
+[ ]
+  37  Despensa / Cereales, Avenas y Barras / Barras de Cereal
+despensa/cereales-avenas-y-barras/barras-de-cereal
+
+[ ]
+  36  Farmacia / Dermocosmética
+farmacia/dermocosmetica
+
+[ ]
+  36  Frutas y Verduras / Frutos Secos y Semillas / Frutos Secos
+frutas-y-verduras/frutos-secos-y-semillas/frutos-secos
+
+[ ]
+  36  Frutas y Verduras / Verduras / Ensaladas
+frutas-y-verduras/verduras/ensaladas
+
+[ ]
+  36  Licores, Bebidas y Aguas / Aguas / Aguas Minerales
+licores-bebidas-y-aguas/aguas/aguas-minerales
+
+[ ]
+  36  Limpieza / Aerosoles y Aromatizantes / Desodorantes Ambientales
+limpieza/aerosoles-y-aromatizantes/desodorantes-ambientales
+
+[ ]
+  36  Limpieza / Pisos y Muebles / Traperos y Mopas
+limpieza/pisos-y-muebles/traperos-y-mopas
+
+[ ]
+  36  Quesos y Fiambres / Quesos / Mantecosos y Chanco
+quesos-y-fiambres/quesos/mantecosos-y-chanco
+
+[ ]
+  35  Despensa / Azúcar y Endulzantes / Endulzantes
+despensa/azucar-y-endulzantes/endulzantes
+
+[ ]
+  35  Despensa / Conservas / Fruta en Conserva
+despensa/conservas/fruta-en-conserva
+
+[ ]
+  35  Mascotas / Perros / Alimentos Secos Perros
+mascotas/perros/alimentos-secos-perros
 
 [ ]
   34  Cuidado Personal y Bebé / Cuidado Corporal / Cremas y Cuidado Corporal
 cuidado-personal-y-bebe/cuidado-corporal/cremas-y-cuidado-corporal
 
 [ ]
-  10  Cuidado Personal y Bebé / Cuidado Corporal / Talcos y Cremas para Pies
-cuidado-personal-y-bebe/cuidado-corporal/talcos-y-cremas-para-pies
+  34  Despensa / Conservas / Conservas de Mariscos
+despensa/conservas/conservas-de-mariscos
 
 [ ]
-  10  Cuidado Personal y Bebé / Cuidado Facial / Bálsamo y Protector Labial
-cuidado-personal-y-bebe/cuidado-facial/balsamo-y-protector-labial
+  34  Licores, Bebidas y Aguas / Aguas / Aguas Saborizadas
+licores-bebidas-y-aguas/aguas/aguas-saborizadas
+
+[ ]
+  34  Panadería y Pastelería / Pastelería / Muffins, Queques y Magdalenas
+panaderia-y-pasteleria/pasteleria/muffins-queques-y-magdalenas
+
+[ ]
+  33  Cuidado Personal y Bebé / Bebé / Pañales y Toallas Húmedas
+cuidado-personal-y-bebe/bebe/panales-y-toallas-humedas
+
+[ ]
+  33  Cuidado Personal y Bebé / Jabones / Jabones Líquidos
+cuidado-personal-y-bebe/jabones/jabones-liquidos
+
+[ ]
+  33  Experiencias Jumbo / Comidas Preparadas / Pastas Frescas y Salsas
+experiencias-jumbo/comidas-preparadas/pastas-frescas-y-salsas
+
+[ ]
+  32  Cuidado Personal y Bebé / Desodorantes / Desodorantes en Aerosol
+cuidado-personal-y-bebe/desodorantes/desodorantes-en-aerosol
+
+[ ]
+  32  Despensa / Café y Cafeteras / Café en Grano
+despensa/cafe-y-cafeteras/cafe-en-grano
+
+[ ]
+  32  Despensa / Conservas / Conservas de Verduras
+despensa/conservas/conservas-de-verduras
+
+[ ]
+  31  Chocolates, Galletas y Snacks / Galletas Saladas
+chocolates-galletas-y-snacks/galletas-saladas
+
+[ ]
+  31  Despensa / Conservas / Conservas de Pescado
+despensa/conservas/conservas-de-pescado
+
+[ ]
+  31  Limpieza / Accesorios de Limpieza / Escobas, Palas y Plumeros
+limpieza/accesorios-de-limpieza/escobas-palas-y-plumeros
+
+[ ]
+  31  Quesos y Fiambres / Fiambres / Salames y Tocinos
+quesos-y-fiambres/fiambres/salames-y-tocinos
+
+[ ]
+  30  Despensa / Aderezos y Salsas / Ají y Salsas Picantes
+despensa/aderezos-y-salsas/aji-y-salsas-picantes
+
+[ ]
+  30  Despensa / Cereales, Avenas y Barras / Avena y Granola
+despensa/cereales-avenas-y-barras/avena-y-granola
+
+[ ]
+  30  Limpieza / Limpieza de Ropa / Detergente Líquido
+limpieza/limpieza-de-ropa/detergente-liquido
+
+[ ]
+  30  Quesos y Fiambres / Fiambres / Pechuga de Pavo y Pollo
+quesos-y-fiambres/fiambres/pechuga-de-pavo-y-pollo
+
+[ ]
+  29  Despensa / Sopas, Cremas e Instantáneos / Cremas y Sopas
+despensa/sopas-cremas-e-instantaneos/cremas-y-sopas
+
+[ ]
+  29  Quesos y Fiambres / Salchichas y Parrilleros / Longanizas y Chorizos
+quesos-y-fiambres/salchichas-y-parrilleros/longanizas-y-chorizos
+
+[ ]
+  28  Cuidado Personal y Bebé / Cuidado Capilar / Cepillos de Pelo y Accesorios
+cuidado-personal-y-bebe/cuidado-capilar/cepillos-de-pelo-y-accesorios
+
+[ ]
+  28  Despensa / Aceites, Sal y Condimentos / Sal
+despensa/aceites-sal-y-condimentos/sal
+
+[ ]
+  28  Despensa / Aderezos y Salsas / Mayonesa
+despensa/aderezos-y-salsas/mayonesa
+
+[ ]
+  28  Despensa / Té, Infusiones y Mate / Té Negro Ceylán
+despensa/te-infusiones-y-mate/te-negro-ceylan
+
+[ ]
+  28  Farmacia / Higiene Bucal Especialidad / Cepillos Dentales
+farmacia/higiene-bucal-especialidad/cepillos-dentales
+
+[ ]
+  28  Licores, Bebidas y Aguas / Jugos / Jugos Frescos
+licores-bebidas-y-aguas/jugos/jugos-frescos
+
+[ ]
+  28  Limpieza / Accesorios de Limpieza / Bolsas de Basura y Bolsas Reutilizables
+limpieza/accesorios-de-limpieza/bolsas-de-basura-y-bolsas-reutilizables
+
+[ ]
+  28  Limpieza / Cocina / Limpiadores Cocina
+limpieza/cocina/limpiadores-cocina
+
+[ ]
+  28  Quesos y Fiambres / Quesos / Cabra y Oveja
+quesos-y-fiambres/quesos/cabra-y-oveja
+
+[ ]
+  27  Cuidado Personal y Bebé / Cuidado Masculino / Máquinas y Repuestos de Afeitar
+cuidado-personal-y-bebe/cuidado-masculino/maquinas-y-repuestos-de-afeitar
+
+[ ]
+  27  Frutas y Verduras
+frutas-y-verduras
+
+[ ]
+  27  Lácteos, Huevos y Congelados / Bebidas Vegetales
+lacteos-huevos-y-congelados/bebidas-vegetales
+
+[ ]
+  27  Lácteos, Huevos y Congelados / Leches Cultivadas y Bebidas Lácteas / Bebidas Lácteas y Probióticos
+lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas/bebidas-lacteas-y-probioticos
+
+[ ]
+  26  Chocolates, Galletas y Snacks
+chocolates-galletas-y-snacks
+
+[ ]
+  26  Cuidado Personal y Bebé / Solares y Autobronceantes
+cuidado-personal-y-bebe/solares-y-autobronceantes
+
+[ ]
+  26  Despensa / Cereales, Avenas y Barras / Barras de Proteína
+despensa/cereales-avenas-y-barras/barras-de-proteina
+
+[ ]
+  26  Despensa / Té, Infusiones y Mate / Té Saborizados y Especiales
+despensa/te-infusiones-y-mate/te-saborizados-y-especiales
+
+[ ]
+  26  Mascotas / Gatos / Alimentos Secos Gatos
+mascotas/gatos/alimentos-secos-gatos
+
+[ ]
+  26  Panadería y Pastelería / Pastelería / Pasteles, Galletas y Masas Dulces
+panaderia-y-pasteleria/pasteleria/pasteles-galletas-y-masas-dulces
+
+[ ]
+  26  Quesos y Fiambres / Aceitunas, Pepinillos y Otros / Pepinillos y Pickles
+quesos-y-fiambres/aceitunas-pepinillos-y-otros/pepinillos-y-pickles
+
+[ ]
+  25  Cuidado Personal y Bebé / Bebé / Accesorios de Bebé
+cuidado-personal-y-bebe/bebe/accesorios-de-bebe
+
+[ ]
+  25  Despensa / Mermeladas, Miel y Otros / Mermeladas
+despensa/mermeladas-miel-y-otros/mermeladas
+
+[ ]
+  25  Despensa / Sopas, Cremas e Instantáneos / Caldos
+despensa/sopas-cremas-e-instantaneos/caldos
+
+[ ]
+  25  Licores, Bebidas y Aguas / Jugos / Jugos en Polvo
+licores-bebidas-y-aguas/jugos/jugos-en-polvo
+
+[ ]
+  25  Limpieza / Aerosoles y Aromatizantes / Insecticidas
+limpieza/aerosoles-y-aromatizantes/insecticidas
+
+[ ]
+  25  Lácteos, Huevos y Congelados / Helados y Postres / Helados Tradicionales
+lacteos-huevos-y-congelados/helados-y-postres/helados-tradicionales
+
+[ ]
+  25  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Sin Lactosa
+lacteos-huevos-y-congelados/yoghurt/yoghurt-sin-lactosa
+
+[ ]
+  25  Panadería y Pastelería / Pastelería / Tortas
+panaderia-y-pasteleria/pasteleria/tortas
+
+[ ]
+  25  Quesos y Fiambres / Aceitunas, Pepinillos y Otros / Chucrut y Otros
+quesos-y-fiambres/aceitunas-pepinillos-y-otros/chucrut-y-otros
+
+[ ]
+  25  Quesos y Fiambres / Fiambres / Jamón Serrano, Lomo Kassler y Otros
+quesos-y-fiambres/fiambres/jamon-serrano-lomo-kassler-y-otros
+
+[ ]
+  25  Quesos y Fiambres / Quesos / Chacras, Frescos y Quesillos
+quesos-y-fiambres/quesos/chacras-frescos-y-quesillos
+
+[ ]
+  24  Chocolates, Galletas y Snacks / Chocolates / Chocolates y Tentaciones
+chocolates-galletas-y-snacks/chocolates/chocolates-y-tentaciones
+
+[ ]
+  24  Frutas y Verduras / Frutos Secos y Semillas / Frutas Deshidratadas
+frutas-y-verduras/frutos-secos-y-semillas/frutas-deshidratadas
+
+[ ]
+  24  Limpieza / Baño / Limpiadores de Baño
+limpieza/bano/limpiadores-de-bano
+
+[ ]
+  24  Lácteos, Huevos y Congelados / Hamburguesas / Hamburguesas de Vacuno
+lacteos-huevos-y-congelados/hamburguesas/hamburguesas-de-vacuno
+
+[ ]
+  24  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Natural y Griego
+lacteos-huevos-y-congelados/yoghurt/yoghurt-natural-y-griego
+
+[ ]
+  24  Mascotas / Perros
+mascotas/perros
 
 [ ]
   23  Cuidado Personal y Bebé / Cuidado Facial / Cremas e Hidratación Facial
@@ -247,752 +459,328 @@ cuidado-personal-y-bebe/cuidado-facial/cremas-e-hidratacion-facial
 cuidado-personal-y-bebe/cuidado-facial/limpieza-facial
 
 [ ]
-   1  Cuidado Personal y Bebé / Cuidado Facial / Protectores Solares
-cuidado-personal-y-bebe/cuidado-facial/protectores-solares
+  23  Licores, Bebidas y Aguas / Destilados / Gin
+licores-bebidas-y-aguas/destilados/gin
 
 [ ]
-   6  Cuidado Personal y Bebé / Cuidado Facial / Pétalos y Accesorios
-cuidado-personal-y-bebe/cuidado-facial/petalos-y-accesorios
+  23  Limpieza / Papeles Hogar / Papel Higiénico
+limpieza/papeles-hogar/papel-higienico
 
 [ ]
-  10  Cuidado Personal y Bebé / Cuidado Facial / Tratamientos Faciales
-cuidado-personal-y-bebe/cuidado-facial/tratamientos-faciales
+  23  Limpieza / Pisos y Muebles / Ceras y Virutillas
+limpieza/pisos-y-muebles/ceras-y-virutillas
 
 [ ]
-   6  Cuidado Personal y Bebé / Cuidado Masculino / Colonias para Hombres
-cuidado-personal-y-bebe/cuidado-masculino/colonias-para-hombres
-
-[ ]
-  11  Cuidado Personal y Bebé / Cuidado Masculino / Espuma y Crema para Afeitar
-cuidado-personal-y-bebe/cuidado-masculino/espuma-y-crema-para-afeitar
-
-[ ]
-  27  Cuidado Personal y Bebé / Cuidado Masculino / Máquinas y Repuestos de Afeitar
-cuidado-personal-y-bebe/cuidado-masculino/maquinas-y-repuestos-de-afeitar
-
-[ ]
-   5  Cuidado Personal y Bebé / Cuidado Masculino / Shampoo, Cremas y Ceras para Hombres
-cuidado-personal-y-bebe/cuidado-masculino/shampoo-cremas-y-ceras-para-hombres
-
-[ ]
-   2  Cuidado Personal y Bebé / Depilación / Bandas Depilatorias
-cuidado-personal-y-bebe/depilacion/bandas-depilatorias
-
-[ ]
-   5  Cuidado Personal y Bebé / Depilación / Ceras Depilatorias
-cuidado-personal-y-bebe/depilacion/ceras-depilatorias
-
-[ ]
-   4  Cuidado Personal y Bebé / Depilación / Cremas Depilatorias
-cuidado-personal-y-bebe/depilacion/cremas-depilatorias
-
-[ ]
-   2  Cuidado Personal y Bebé / Depilación / Gel o Espumas de Depilación
-cuidado-personal-y-bebe/depilacion/gel-o-espumas-de-depilacion
-
-[ ]
-  19  Cuidado Personal y Bebé / Depilación / Máquinas de Depilación
-cuidado-personal-y-bebe/depilacion/maquinas-de-depilacion
-
-[ ]
-   9  Cuidado Personal y Bebé / Desodorantes / Desodorantes Clinical
-cuidado-personal-y-bebe/desodorantes/desodorantes-clinical
-
-[ ]
-  32  Cuidado Personal y Bebé / Desodorantes / Desodorantes en Aerosol
-cuidado-personal-y-bebe/desodorantes/desodorantes-en-aerosol
-
-[ ]
-  20  Cuidado Personal y Bebé / Desodorantes / Desodorantes en Barra
-cuidado-personal-y-bebe/desodorantes/desodorantes-en-barra
-
-[ ]
-   5  Cuidado Personal y Bebé / Desodorantes / Desodorantes Gel y Crema
-cuidado-personal-y-bebe/desodorantes/desodorantes-gel-y-crema
-
-[ ]
-  16  Cuidado Personal y Bebé / Desodorantes / Desodorantes Roll-on
-cuidado-personal-y-bebe/desodorantes/desodorantes-roll-on
-
-[ ]
-  37  Cuidado Personal y Bebé / Higiene Bucal / Cepillo Dental
-cuidado-personal-y-bebe/higiene-bucal/cepillo-dental
-
-[ ]
-   7  Cuidado Personal y Bebé / Higiene Bucal / Cepillos y Pasta Dental Infantil
-cuidado-personal-y-bebe/higiene-bucal/cepillos-y-pasta-dental-infantil
-
-[ ]
-  17  Cuidado Personal y Bebé / Higiene Bucal / Enjuague Bucal
-cuidado-personal-y-bebe/higiene-bucal/enjuague-bucal
-
-[ ]
-   3  Cuidado Personal y Bebé / Higiene Bucal / Hilo Dental
-cuidado-personal-y-bebe/higiene-bucal/hilo-dental
-
-[ ]
-  40  Cuidado Personal y Bebé / Higiene Bucal / Pasta Dental
-cuidado-personal-y-bebe/higiene-bucal/pasta-dental
-
-[ ]
-  13  Cuidado Personal y Bebé / Incontinencia y Pañales Adulto / Incontinencia
-cuidado-personal-y-bebe/incontinencia-y-panales-adulto/incontinencia
-
-[ ]
-  16  Cuidado Personal y Bebé / Incontinencia y Pañales Adulto / Pañales Adulto
-cuidado-personal-y-bebe/incontinencia-y-panales-adulto/panales-adulto
-
-[ ]
-   7  Cuidado Personal y Bebé / Jabones / Gel de Ducha
-cuidado-personal-y-bebe/jabones/gel-de-ducha
-
-[ ]
-   9  Cuidado Personal y Bebé / Jabones / Jabones en Barra
-cuidado-personal-y-bebe/jabones/jabones-en-barra
-
-[ ]
-  33  Cuidado Personal y Bebé / Jabones / Jabones Líquidos
-cuidado-personal-y-bebe/jabones/jabones-liquidos
-
-[ ]
-   4  Cuidado Personal y Bebé / Maquillaje / Brochas y Accesorios de Maquillaje
-cuidado-personal-y-bebe/maquillaje/brochas-y-accesorios-de-maquillaje
-
-[ ]
-   8  Cuidado Personal y Bebé / Maquillaje / Esmaltes y Quitaesmaltes
-cuidado-personal-y-bebe/maquillaje/esmaltes-y-quitaesmaltes
-
-[ ]
-   3  Cuidado Personal y Bebé / Maquillaje / Maquillaje Labios
-cuidado-personal-y-bebe/maquillaje/maquillaje-labios
-
-[ ]
-  14  Cuidado Personal y Bebé / Maquillaje / Maquillaje Ojos
-cuidado-personal-y-bebe/maquillaje/maquillaje-ojos
-
-[ ]
-   7  Cuidado Personal y Bebé / Maquillaje / Maquillaje Rostro
-cuidado-personal-y-bebe/maquillaje/maquillaje-rostro
-
-[ ]
-   6  Cuidado Personal y Bebé / Packs de Cuidado y Belleza
-cuidado-personal-y-bebe/packs-de-cuidado-y-belleza
-
-[ ]
-  15  Cuidado Personal y Bebé / Protección Femenina / Calzones y Copas Menstruales
-cuidado-personal-y-bebe/proteccion-femenina/calzones-y-copas-menstruales
-
-[ ]
-   7  Cuidado Personal y Bebé / Protección Femenina / Jabones Íntimos y Pañitos Húmedos
-cuidado-personal-y-bebe/proteccion-femenina/jabones-intimos-y-panitos-humedos
-
-[ ]
-  13  Cuidado Personal y Bebé / Protección Femenina / Protectores Diarios
-cuidado-personal-y-bebe/proteccion-femenina/protectores-diarios
-
-[ ]
-  38  Cuidado Personal y Bebé / Protección Femenina / Toallas Higiénicas y Tampones
-cuidado-personal-y-bebe/proteccion-femenina/toallas-higienicas-y-tampones
-
-[ ]
-  26  Cuidado Personal y Bebé / Solares y Autobronceantes
-cuidado-personal-y-bebe/solares-y-autobronceantes
-
-[ ]
-  47  Despensa / Aceites, Sal y Condimentos
-despensa/aceites-sal-y-condimentos
-
-[ ]
-  14  Despensa / Aceites, Sal y Condimentos / Aceite
-despensa/aceites-sal-y-condimentos/aceite
-
-[ ]
-  11  Despensa / Aceites, Sal y Condimentos / Acetos Balsámicos
-despensa/aceites-sal-y-condimentos/acetos-balsamicos
-
-[ ]
- 140  Despensa / Aceites, Sal y Condimentos / Condimentos
-despensa/aceites-sal-y-condimentos/condimentos
-
-[ ]
-  28  Despensa / Aceites, Sal y Condimentos / Sal
-despensa/aceites-sal-y-condimentos/sal
-
-[ ]
-  14  Despensa / Aceites, Sal y Condimentos / Vinagres y Sucedáneos
-despensa/aceites-sal-y-condimentos/vinagres-y-sucedaneos
-
-[ ]
-  64  Despensa / Aderezos y Salsas / Aderezos, Salsas Soya y Otros
-despensa/aderezos-y-salsas/aderezos-salsas-soya-y-otros
-
-[ ]
-  30  Despensa / Aderezos y Salsas / Ají y Salsas Picantes
-despensa/aderezos-y-salsas/aji-y-salsas-picantes
-
-[ ]
-  19  Despensa / Aderezos y Salsas / Ketchup
-despensa/aderezos-y-salsas/ketchup
-
-[ ]
-  28  Despensa / Aderezos y Salsas / Mayonesa
-despensa/aderezos-y-salsas/mayonesa
-
-[ ]
-  37  Despensa / Aderezos y Salsas / Mostazas
-despensa/aderezos-y-salsas/mostazas
-
-[ ]
-  17  Despensa / Arroz, Quinoa, Cuscús / Arroz
-despensa/arroz-quinoa-cuscus/arroz
-
-[ ]
-  14  Despensa / Arroz, Quinoa, Cuscús / Arroz Preparado
-despensa/arroz-quinoa-cuscus/arroz-preparado
-
-[ ]
-  15  Despensa / Arroz, Quinoa, Cuscús / Quinoa, Cuscús y Semillas
-despensa/arroz-quinoa-cuscus/quinoa-cuscus-y-semillas
-
-[ ]
-  14  Despensa / Azúcar y Endulzantes / Azúcar
-despensa/azucar-y-endulzantes/azucar
-
-[ ]
-  35  Despensa / Azúcar y Endulzantes / Endulzantes
-despensa/azucar-y-endulzantes/endulzantes
-
-[ ]
-   1  Despensa / Café y Cafeteras / Cafeteras, Filtros y Tazas
-despensa/cafe-y-cafeteras/cafeteras-filtros-y-tazas
-
-[ ]
-   4  Despensa / Café y Cafeteras / Café Descafeinado
-despensa/cafe-y-cafeteras/cafe-descafeinado
-
-[ ]
-  32  Despensa / Café y Cafeteras / Café en Grano
-despensa/cafe-y-cafeteras/cafe-en-grano
-
-[ ]
-  15  Despensa / Café y Cafeteras / Café Instantáneo
-despensa/cafe-y-cafeteras/cafe-instantaneo
-
-[ ]
-  14  Despensa / Café y Cafeteras / Café Liofilizado
-despensa/cafe-y-cafeteras/cafe-liofilizado
-
-[ ]
-  21  Despensa / Café y Cafeteras / Café Saborizados y Cremas
-despensa/cafe-y-cafeteras/cafe-saborizados-y-cremas
+  22  Cuidado Personal y Bebé / Cuidado Corporal / Accesorios Cuidado Corporal
+cuidado-personal-y-bebe/cuidado-corporal/accesorios-cuidado-corporal
 
 [ ]
   22  Despensa / Café y Cafeteras / Cápsulas de Café
 despensa/cafe-y-cafeteras/capsulas-de-cafe
 
 [ ]
-  30  Despensa / Cereales, Avenas y Barras / Avena y Granola
-despensa/cereales-avenas-y-barras/avena-y-granola
+  22  Licores, Bebidas y Aguas / Destilados / Pisco
+licores-bebidas-y-aguas/destilados/pisco
 
 [ ]
-  37  Despensa / Cereales, Avenas y Barras / Barras de Cereal
-despensa/cereales-avenas-y-barras/barras-de-cereal
+  22  Limpieza / Cocina / Lavalozas
+limpieza/cocina/lavalozas
 
 [ ]
-  26  Despensa / Cereales, Avenas y Barras / Barras de Proteína
-despensa/cereales-avenas-y-barras/barras-de-proteina
+  22  Lácteos, Huevos y Congelados / Helados y Postres / Helados Multipack
+lacteos-huevos-y-congelados/helados-y-postres/helados-multipack
 
 [ ]
-  54  Despensa / Cereales, Avenas y Barras / Cereales
-despensa/cereales-avenas-y-barras/cereales
+  22  Mascotas / Gatos / Alimentos Húmedos Gatos
+mascotas/gatos/alimentos-humedos-gatos
 
 [ ]
-  17  Despensa / Conservas / Comidas Listas
-despensa/conservas/comidas-listas
-
-[ ]
-  19  Despensa / Conservas / Compotas y Pouch
-despensa/conservas/compotas-y-pouch
-
-[ ]
-   3  Despensa / Conservas / Conservas de Carne
-despensa/conservas/conservas-de-carne
-
-[ ]
-  34  Despensa / Conservas / Conservas de Mariscos
-despensa/conservas/conservas-de-mariscos
-
-[ ]
-  31  Despensa / Conservas / Conservas de Pescado
-despensa/conservas/conservas-de-pescado
-
-[ ]
-  32  Despensa / Conservas / Conservas de Verduras
-despensa/conservas/conservas-de-verduras
-
-[ ]
-  35  Despensa / Conservas / Fruta en Conserva
-despensa/conservas/fruta-en-conserva
-
-[ ]
-   1  Despensa / Fideos, Pastas y Salsas
-despensa/fideos-pastas-y-salsas
-
-[ ]
-  15  Despensa / Fideos, Pastas y Salsas / Fideos de Arroz y Legumbres
-despensa/fideos-pastas-y-salsas/fideos-de-arroz-y-legumbres
-
-[ ]
-  13  Despensa / Fideos, Pastas y Salsas / Fideos Integrales, Sin Gluten y Otros
-despensa/fideos-pastas-y-salsas/fideos-integrales-sin-gluten-y-otros
-
-[ ]
-  18  Despensa / Fideos, Pastas y Salsas / Lasañas y Rellenos
-despensa/fideos-pastas-y-salsas/lasanas-y-rellenos
-
-[ ]
-  76  Despensa / Fideos, Pastas y Salsas / Pastas y Fideos
-despensa/fideos-pastas-y-salsas/pastas-y-fideos
-
-[ ]
-  39  Despensa / Fideos, Pastas y Salsas / Salsas para Pastas
-despensa/fideos-pastas-y-salsas/salsas-para-pastas
-
-[ ]
-  16  Despensa / Harinas, Postres y Repostería
-despensa/harinas-postres-y-reposteria
-
-[ ]
-   8  Despensa / Harinas, Postres y Repostería / Bizcocho, Bases y Coberturas de Chocolate
-despensa/harinas-postres-y-reposteria/bizcocho-bases-y-coberturas-de-chocolate
-
-[ ]
-   7  Despensa / Harinas, Postres y Repostería / Cacaos y Premezclas
-despensa/harinas-postres-y-reposteria/cacaos-y-premezclas
-
-[ ]
-   4  Despensa / Harinas, Postres y Repostería / Decoraciones y Toppings
-despensa/harinas-postres-y-reposteria/decoraciones-y-toppings
-
-[ ]
-  11  Despensa / Harinas, Postres y Repostería / Gelatinas y Flanes
-despensa/harinas-postres-y-reposteria/gelatinas-y-flanes
-
-[ ]
-   9  Despensa / Harinas, Postres y Repostería / Harina Blanca
-despensa/harinas-postres-y-reposteria/harina-blanca
-
-[ ]
-   7  Despensa / Harinas, Postres y Repostería / Harina de Maíz, Semóla y Polenta
-despensa/harinas-postres-y-reposteria/harina-de-maiz-semola-y-polenta
-
-[ ]
-   5  Despensa / Harinas, Postres y Repostería / Harina Integral y Otras
-despensa/harinas-postres-y-reposteria/harina-integral-y-otras
-
-[ ]
-   5  Despensa / Harinas, Postres y Repostería / Leches Condensadas y Evaporadas
-despensa/harinas-postres-y-reposteria/leches-condensadas-y-evaporadas
-
-[ ]
-   1  Despensa / Harinas, Postres y Repostería / Polvo de Hornear y Levadura
-despensa/harinas-postres-y-reposteria/polvo-de-hornear-y-levadura
-
-[ ]
-   6  Despensa / Harinas, Postres y Repostería / Salsas para Postres y Esencias
-despensa/harinas-postres-y-reposteria/salsas-para-postres-y-esencias
-
-[ ]
-   9  Despensa / Legumbres / Garbanzos y Arvejas
-despensa/legumbres/garbanzos-y-arvejas
-
-[ ]
-  13  Despensa / Legumbres / Lentejas
-despensa/legumbres/lentejas
-
-[ ]
-  11  Despensa / Legumbres / Porotos
-despensa/legumbres/porotos
-
-[ ]
-   2  Despensa / Mermeladas, Miel y Otros / Dulce Membrillo
-despensa/mermeladas-miel-y-otros/dulce-membrillo
-
-[ ]
-   8  Despensa / Mermeladas, Miel y Otros / Mantequilla de Maní y Cremas Dulces
-despensa/mermeladas-miel-y-otros/mantequilla-de-mani-y-cremas-dulces
-
-[ ]
-  25  Despensa / Mermeladas, Miel y Otros / Mermeladas
-despensa/mermeladas-miel-y-otros/mermeladas
-
-[ ]
-   8  Despensa / Mermeladas, Miel y Otros / Miel
-despensa/mermeladas-miel-y-otros/miel
-
-[ ]
-   4  Despensa / Mermeladas, Miel y Otros / Syrups
-despensa/mermeladas-miel-y-otros/syrups
+  21  Despensa / Café y Cafeteras / Café Saborizados y Cremas
+despensa/cafe-y-cafeteras/cafe-saborizados-y-cremas
 
 [ ]
   21  Despensa / Sopas, Cremas e Instantáneos / Bases y Salsas
 despensa/sopas-cremas-e-instantaneos/bases-y-salsas
 
 [ ]
-  25  Despensa / Sopas, Cremas e Instantáneos / Caldos
-despensa/sopas-cremas-e-instantaneos/caldos
-
-[ ]
-   9  Despensa / Sopas, Cremas e Instantáneos / Comida Instantánea
-despensa/sopas-cremas-e-instantaneos/comida-instantanea
-
-[ ]
-  29  Despensa / Sopas, Cremas e Instantáneos / Cremas y Sopas
-despensa/sopas-cremas-e-instantaneos/cremas-y-sopas
-
-[ ]
-   4  Despensa / Sopas, Cremas e Instantáneos / Puré Instantáneo
-despensa/sopas-cremas-e-instantaneos/pure-instantaneo
-
-[ ]
-  18  Despensa / Té, Infusiones y Mate / Infusiones y Hierbas
-despensa/te-infusiones-y-mate/infusiones-y-hierbas
-
-[ ]
-  28  Despensa / Té, Infusiones y Mate / Té Negro Ceylán
-despensa/te-infusiones-y-mate/te-negro-ceylan
-
-[ ]
-  26  Despensa / Té, Infusiones y Mate / Té Saborizados y Especiales
-despensa/te-infusiones-y-mate/te-saborizados-y-especiales
-
-[ ]
-   7  Despensa / Té, Infusiones y Mate / Té Verde
-despensa/te-infusiones-y-mate/te-verde
-
-[ ]
-  12  Despensa / Té, Infusiones y Mate / Yerba Mate
-despensa/te-infusiones-y-mate/yerba-mate
-
-[ ]
-  10  Experiencias Jumbo / Comidas Preparadas / Empanadas y Sándwiches
-experiencias-jumbo/comidas-preparadas/empanadas-y-sandwiches
-
-[ ]
-  12  Experiencias Jumbo / Comidas Preparadas / Entradas y Ensaladas
-experiencias-jumbo/comidas-preparadas/entradas-y-ensaladas
-
-[ ]
-   1  Experiencias Jumbo / Comidas Preparadas / Humitas y Pastel de Choclo
-experiencias-jumbo/comidas-preparadas/humitas-y-pastel-de-choclo
-
-[ ]
-  10  Experiencias Jumbo / Comidas Preparadas / Pascualinas y Quiches
-experiencias-jumbo/comidas-preparadas/pascualinas-y-quiches
-
-[ ]
-  33  Experiencias Jumbo / Comidas Preparadas / Pastas Frescas y Salsas
-experiencias-jumbo/comidas-preparadas/pastas-frescas-y-salsas
-
-[ ]
-   5  Experiencias Jumbo / Comidas Preparadas / Pizzas y Focaccias
-experiencias-jumbo/comidas-preparadas/pizzas-y-focaccias
-
-[ ]
-   1  Experiencias Jumbo / Comidas Preparadas / Postres
-experiencias-jumbo/comidas-preparadas/postres
-
-[ ]
-   5  Experiencias Jumbo / Comidas Preparadas / Proteínas y Acompañamientos
-experiencias-jumbo/comidas-preparadas/proteinas-y-acompanamientos
-
-[ ]
-   2  Farmacia / Accesorios Médicos / Anteojos, Descanso y Protección
-farmacia/accesorios-medicos/anteojos-descanso-y-proteccion
-
-[ ]
-   1  Farmacia / Accesorios Médicos / Monitoreo y Test de Diagnósticos
-farmacia/accesorios-medicos/monitoreo-y-test-de-diagnosticos
-
-[ ]
-   1  Farmacia / Accesorios Médicos / Organización de Medicamentos
-farmacia/accesorios-medicos/organizacion-de-medicamentos
-
-[ ]
-   4  Farmacia / Bienestar Íntimo / Lubricantes Íntimos
-farmacia/bienestar-intimo/lubricantes-intimos
-
-[ ]
-  36  Farmacia / Dermocosmética
-farmacia/dermocosmetica
-
-[ ]
-   6  Farmacia / Dermocosmética / Cuidado Corporal
-farmacia/dermocosmetica/cuidado-corporal
-
-[ ]
-   3  Farmacia / Dermocosmética / Cuidado Dermocosmético Bebé
-farmacia/dermocosmetica/cuidado-dermocosmetico-bebe
-
-[ ]
-   7  Farmacia / Dermocosmética / Protección Solar
-farmacia/dermocosmetica/proteccion-solar
-
-[ ]
-  28  Farmacia / Higiene Bucal Especialidad / Cepillos Dentales
-farmacia/higiene-bucal-especialidad/cepillos-dentales
-
-[ ]
-  11  Farmacia / Higiene Bucal Especialidad / Enjuagues, Hilos y Sedas Dentales
-farmacia/higiene-bucal-especialidad/enjuagues-hilos-y-sedas-dentales
-
-[ ]
-   7  Farmacia / Higiene Bucal Especialidad / Pastas Dentales
-farmacia/higiene-bucal-especialidad/pastas-dentales
-
-[ ]
-   1  Farmacia / Primeros Auxilios / Algodones
-farmacia/primeros-auxilios/algodones
-
-[ ]
-  11  Farmacia / Primeros Auxilios / Curación y Botiquines
-farmacia/primeros-auxilios/curacion-y-botiquines
-
-[ ]
-   6  Farmacia / Primeros Auxilios / Desinfectantes y Repelentes
-farmacia/primeros-auxilios/desinfectantes-y-repelentes
-
-[ ]
-  16  Farmacia / Suplementos y Vitaminas / Suplementos Alimenticios
-farmacia/suplementos-y-vitaminas/suplementos-alimenticios
-
-[ ]
-   1  Farmacia / Suplementos y Vitaminas / Suplementos Deportivos
-farmacia/suplementos-y-vitaminas/suplementos-deportivos
-
-[ ]
-  13  Farmacia / Suplementos y Vitaminas / Vitaminas y Multivitamínicos
-farmacia/suplementos-y-vitaminas/vitaminas-y-multivitaminicos
-
-[ ]
-  27  Frutas y Verduras
-frutas-y-verduras
-
-[ ]
-  38  Frutas y Verduras / Frutas
-frutas-y-verduras/frutas
-
-[ ]
-  24  Frutas y Verduras / Frutos Secos y Semillas / Frutas Deshidratadas
-frutas-y-verduras/frutos-secos-y-semillas/frutas-deshidratadas
-
-[ ]
-  36  Frutas y Verduras / Frutos Secos y Semillas / Frutos Secos
-frutas-y-verduras/frutos-secos-y-semillas/frutos-secos
-
-[ ]
-   8  Frutas y Verduras / Frutos Secos y Semillas / Semillas y Granos
-frutas-y-verduras/frutos-secos-y-semillas/semillas-y-granos
-
-[ ]
-  92  Frutas y Verduras / Verduras
-frutas-y-verduras/verduras
-
-[ ]
-   2  Frutas y Verduras / Verduras / Aderezos
-frutas-y-verduras/verduras/aderezos
-
-[ ]
-  36  Frutas y Verduras / Verduras / Ensaladas
-frutas-y-verduras/verduras/ensaladas
-
-[ ]
-   4  Frutas y Verduras / Verduras / Hierbas y Especias
-frutas-y-verduras/verduras/hierbas-y-especias
-
-[ ]
-  72  Licores, Bebidas y Aguas
-licores-bebidas-y-aguas
-
-[ ]
-  19  Licores, Bebidas y Aguas / Agua Tónica y Ginger Beer / Agua Tónica
-licores-bebidas-y-aguas/agua-tonica-y-ginger-beer/agua-tonica
-
-[ ]
-   7  Licores, Bebidas y Aguas / Agua Tónica y Ginger Beer / Ginger Beer
-licores-bebidas-y-aguas/agua-tonica-y-ginger-beer/ginger-beer
-
-[ ]
-  36  Licores, Bebidas y Aguas / Aguas / Aguas Minerales
-licores-bebidas-y-aguas/aguas/aguas-minerales
-
-[ ]
-  13  Licores, Bebidas y Aguas / Aguas / Aguas Purificadas
-licores-bebidas-y-aguas/aguas/aguas-purificadas
-
-[ ]
-  34  Licores, Bebidas y Aguas / Aguas / Aguas Saborizadas
-licores-bebidas-y-aguas/aguas/aguas-saborizadas
-
-[ ]
-  13  Licores, Bebidas y Aguas / Bebidas Energéticas
-licores-bebidas-y-aguas/bebidas-energeticas
-
-[ ]
   21  Licores, Bebidas y Aguas / Bebidas Isotónicas y Sueros / Bebidas Isotónicas
 licores-bebidas-y-aguas/bebidas-isotonicas-y-sueros/bebidas-isotonicas
 
 [ ]
-  10  Licores, Bebidas y Aguas / Bebidas Isotónicas y Sueros / Sueros
-licores-bebidas-y-aguas/bebidas-isotonicas-y-sueros/sueros
-
-[ ]
-  17  Licores, Bebidas y Aguas / Cervezas
-licores-bebidas-y-aguas/cervezas
-
-[ ]
-  55  Licores, Bebidas y Aguas / Cervezas / Cervezas Artesanales
-licores-bebidas-y-aguas/cervezas/cervezas-artesanales
-
-[ ]
-  80  Licores, Bebidas y Aguas / Cervezas / Cervezas Tradicionales
-licores-bebidas-y-aguas/cervezas/cervezas-tradicionales
-
-[ ]
-  13  Licores, Bebidas y Aguas / Cócteles
-licores-bebidas-y-aguas/cocteles
-
-[ ]
-   8  Licores, Bebidas y Aguas / Cócteles / Cóctel Ice y Ready to Drink
-licores-bebidas-y-aguas/cocteles/coctel-ice-y-ready-to-drink
-
-[ ]
-   3  Licores, Bebidas y Aguas / Cócteles / Mojitos y Margaritas
-licores-bebidas-y-aguas/cocteles/mojitos-y-margaritas
-
-[ ]
-   8  Licores, Bebidas y Aguas / Cócteles / Piña Colada y Otros
-licores-bebidas-y-aguas/cocteles/pina-colada-y-otros
-
-[ ]
-   3  Licores, Bebidas y Aguas / Destilados / Aguardiente y Cachaza
-licores-bebidas-y-aguas/destilados/aguardiente-y-cachaza
-
-[ ]
-   4  Licores, Bebidas y Aguas / Destilados / Brandy y Cognac
-licores-bebidas-y-aguas/destilados/brandy-y-cognac
-
-[ ]
-  23  Licores, Bebidas y Aguas / Destilados / Gin
-licores-bebidas-y-aguas/destilados/gin
-
-[ ]
-  22  Licores, Bebidas y Aguas / Destilados / Pisco
-licores-bebidas-y-aguas/destilados/pisco
-
-[ ]
-   7  Licores, Bebidas y Aguas / Destilados / Ron
-licores-bebidas-y-aguas/destilados/ron
-
-[ ]
-   3  Licores, Bebidas y Aguas / Destilados / Tequila y Mezcal
-licores-bebidas-y-aguas/destilados/tequila-y-mezcal
-
-[ ]
-   6  Licores, Bebidas y Aguas / Destilados / Vodka
-licores-bebidas-y-aguas/destilados/vodka
-
-[ ]
-  18  Licores, Bebidas y Aguas / Destilados / Whisky
-licores-bebidas-y-aguas/destilados/whisky
-
-[ ]
-  56  Licores, Bebidas y Aguas / Espumantes y Sidras
-licores-bebidas-y-aguas/espumantes-y-sidras
-
-[ ]
-  12  Licores, Bebidas y Aguas / Infusiones Frías / Kombucha
-licores-bebidas-y-aguas/infusiones-frias/kombucha
+  20  Cuidado Personal y Bebé / Desodorantes / Desodorantes en Barra
+cuidado-personal-y-bebe/desodorantes/desodorantes-en-barra
 
 [ ]
   20  Licores, Bebidas y Aguas / Infusiones Frías / Té Helado
 licores-bebidas-y-aguas/infusiones-frias/te-helado
 
 [ ]
-  25  Licores, Bebidas y Aguas / Jugos / Jugos en Polvo
-licores-bebidas-y-aguas/jugos/jugos-en-polvo
+  20  Limpieza / Limpieza de Ropa / Suavizantes y Aromatizantes Tela
+limpieza/limpieza-de-ropa/suavizantes-y-aromatizantes-tela
 
 [ ]
-  28  Licores, Bebidas y Aguas / Jugos / Jugos Frescos
-licores-bebidas-y-aguas/jugos/jugos-frescos
+  20  Quesos y Fiambres / Quesos
+quesos-y-fiambres/quesos
 
 [ ]
-  53  Licores, Bebidas y Aguas / Jugos / Jugos Individuales
-licores-bebidas-y-aguas/jugos/jugos-individuales
+  19  Cuidado Personal y Bebé / Depilación / Máquinas de Depilación
+cuidado-personal-y-bebe/depilacion/maquinas-de-depilacion
 
 [ ]
-  94  Licores, Bebidas y Aguas / Jugos / Jugos y Néctar
-licores-bebidas-y-aguas/jugos/jugos-y-nectar
+  19  Despensa / Aderezos y Salsas / Ketchup
+despensa/aderezos-y-salsas/ketchup
 
 [ ]
-   8  Licores, Bebidas y Aguas / Jugos / Limonadas
-licores-bebidas-y-aguas/jugos/limonadas
+  19  Despensa / Conservas / Compotas y Pouch
+despensa/conservas/compotas-y-pouch
 
 [ ]
-   2  Licores, Bebidas y Aguas / Licores y Spritz / Bajativos
-licores-bebidas-y-aguas/licores-y-spritz/bajativos
+  19  Licores, Bebidas y Aguas / Agua Tónica y Ginger Beer / Agua Tónica
+licores-bebidas-y-aguas/agua-tonica-y-ginger-beer/agua-tonica
 
 [ ]
-  12  Licores, Bebidas y Aguas / Licores y Spritz / Fernet y Licores de Hierba
-licores-bebidas-y-aguas/licores-y-spritz/fernet-y-licores-de-hierba
+  19  Limpieza / Cocina / Lavavajillas
+limpieza/cocina/lavavajillas
 
 [ ]
-   3  Licores, Bebidas y Aguas / Licores y Spritz / Licores de Crema
-licores-bebidas-y-aguas/licores-y-spritz/licores-de-crema
+  19  Limpieza / Pisos y Muebles
+limpieza/pisos-y-muebles
 
 [ ]
-   7  Licores, Bebidas y Aguas / Licores y Spritz / Spritz
-licores-bebidas-y-aguas/licores-y-spritz/spritz
+  19  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Light y Sin Azúcar
+lacteos-huevos-y-congelados/yoghurt/yoghurt-light-y-sin-azucar
 
 [ ]
-   4  Licores, Bebidas y Aguas / Licores y Spritz / Vermouth
-licores-bebidas-y-aguas/licores-y-spritz/vermouth
+  19  Quesos y Fiambres / Salchichas y Parrilleros / Salchichas
+quesos-y-fiambres/salchichas-y-parrilleros/salchichas
+
+[ ]
+  18  Chocolates, Galletas y Snacks / Chocolates / Mazapán y Turrones
+chocolates-galletas-y-snacks/chocolates/mazapan-y-turrones
+
+[ ]
+  18  Chocolates, Galletas y Snacks / Snacks / Snacks Vegetales
+chocolates-galletas-y-snacks/snacks/snacks-vegetales
+
+[ ]
+  18  Cuidado Personal y Bebé / Bebé / Leche y Suplementos Infantiles
+cuidado-personal-y-bebe/bebe/leche-y-suplementos-infantiles
+
+[ ]
+  18  Despensa / Fideos, Pastas y Salsas / Lasañas y Rellenos
+despensa/fideos-pastas-y-salsas/lasanas-y-rellenos
+
+[ ]
+  18  Despensa / Té, Infusiones y Mate / Infusiones y Hierbas
+despensa/te-infusiones-y-mate/infusiones-y-hierbas
+
+[ ]
+  18  Licores, Bebidas y Aguas / Destilados / Whisky
+licores-bebidas-y-aguas/destilados/whisky
+
+[ ]
+  17  Cuidado Personal y Bebé / Higiene Bucal / Enjuague Bucal
+cuidado-personal-y-bebe/higiene-bucal/enjuague-bucal
+
+[ ]
+  17  Despensa / Arroz, Quinoa, Cuscús / Arroz
+despensa/arroz-quinoa-cuscus/arroz
+
+[ ]
+  17  Despensa / Conservas / Comidas Listas
+despensa/conservas/comidas-listas
+
+[ ]
+  17  Licores, Bebidas y Aguas / Cervezas
+licores-bebidas-y-aguas/cervezas
+
+[ ]
+  17  Lácteos, Huevos y Congelados / Verduras Congeladas / Choclos, Arvejas y Primaveras
+lacteos-huevos-y-congelados/verduras-congeladas/choclos-arvejas-y-primaveras
+
+[ ]
+  17  Lácteos, Huevos y Congelados / Verduras Congeladas / Otras Verduras
+lacteos-huevos-y-congelados/verduras-congeladas/otras-verduras
+
+[ ]
+  16  Cuidado Personal y Bebé / Desodorantes / Desodorantes Roll-on
+cuidado-personal-y-bebe/desodorantes/desodorantes-roll-on
+
+[ ]
+  16  Cuidado Personal y Bebé / Incontinencia y Pañales Adulto / Pañales Adulto
+cuidado-personal-y-bebe/incontinencia-y-panales-adulto/panales-adulto
+
+[ ]
+  16  Despensa / Harinas, Postres y Repostería
+despensa/harinas-postres-y-reposteria
+
+[ ]
+  16  Farmacia / Suplementos y Vitaminas / Suplementos Alimenticios
+farmacia/suplementos-y-vitaminas/suplementos-alimenticios
 
 [ ]
   16  Licores, Bebidas y Aguas / Vinos / Sangría, Cóctel de Vino y Coolers
 licores-bebidas-y-aguas/vinos/sangria-coctel-de-vino-y-coolers
 
 [ ]
-  47  Licores, Bebidas y Aguas / Vinos / Vinos Blancos
-licores-bebidas-y-aguas/vinos/vinos-blancos
+  16  Limpieza / Papeles Hogar / Servilletas
+limpieza/papeles-hogar/servilletas
 
 [ ]
-   3  Licores, Bebidas y Aguas / Vinos / Vinos Late Harvest
-licores-bebidas-y-aguas/vinos/vinos-late-harvest
+  16  Lácteos, Huevos y Congelados / Leches / Saborizantes
+lacteos-huevos-y-congelados/leches/saborizantes
 
 [ ]
-   7  Licores, Bebidas y Aguas / Vinos / Vinos Rosé
-licores-bebidas-y-aguas/vinos/vinos-rose
+  16  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt con Proteínas
+lacteos-huevos-y-congelados/yoghurt/yoghurt-con-proteinas
 
 [ ]
- 207  Licores, Bebidas y Aguas / Vinos / Vinos Tintos
-licores-bebidas-y-aguas/vinos/vinos-tintos
+  16  Quesos y Fiambres / Fiambres / Paté
+quesos-y-fiambres/fiambres/pate
 
 [ ]
-  28  Limpieza / Accesorios de Limpieza / Bolsas de Basura y Bolsas Reutilizables
-limpieza/accesorios-de-limpieza/bolsas-de-basura-y-bolsas-reutilizables
+  15  Cuidado Personal y Bebé / Cuidado Corporal / Colonias y Body Mist
+cuidado-personal-y-bebe/cuidado-corporal/colonias-y-body-mist
 
 [ ]
-  31  Limpieza / Accesorios de Limpieza / Escobas, Palas y Plumeros
-limpieza/accesorios-de-limpieza/escobas-palas-y-plumeros
+  15  Cuidado Personal y Bebé / Cuidado Corporal / Cremas para Manos
+cuidado-personal-y-bebe/cuidado-corporal/cremas-para-manos
 
 [ ]
-  10  Limpieza / Accesorios de Limpieza / Fósforos y Velas
-limpieza/accesorios-de-limpieza/fosforos-y-velas
+  15  Cuidado Personal y Bebé / Protección Femenina / Calzones y Copas Menstruales
+cuidado-personal-y-bebe/proteccion-femenina/calzones-y-copas-menstruales
 
 [ ]
-  89  Limpieza / Accesorios de Limpieza / Guantes, Esponjas y Paños
-limpieza/accesorios-de-limpieza/guantes-esponjas-y-panos
+  15  Despensa / Arroz, Quinoa, Cuscús / Quinoa, Cuscús y Semillas
+despensa/arroz-quinoa-cuscus/quinoa-cuscus-y-semillas
+
+[ ]
+  15  Despensa / Café y Cafeteras / Café Instantáneo
+despensa/cafe-y-cafeteras/cafe-instantaneo
+
+[ ]
+  15  Despensa / Fideos, Pastas y Salsas / Fideos de Arroz y Legumbres
+despensa/fideos-pastas-y-salsas/fideos-de-arroz-y-legumbres
+
+[ ]
+  15  Lácteos, Huevos y Congelados / Frutas y Pulpas Congeladas / Frutas Congeladas
+lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/frutas-congeladas
+
+[ ]
+  15  Lácteos, Huevos y Congelados / Leches / Leche en Polvo
+lacteos-huevos-y-congelados/leches/leche-en-polvo
+
+[ ]
+  15  Panadería y Pastelería / Pastelería / Pan de Pascua
+panaderia-y-pasteleria/pasteleria/pan-de-pascua
+
+[ ]
+  15  Quesos y Fiambres / Quesos / Gauda
+quesos-y-fiambres/quesos/gauda
+
+[ ]
+  15  Quesos y Fiambres / Quesos / Rallados y Granulados
+quesos-y-fiambres/quesos/rallados-y-granulados
+
+[ ]
+  14  Cuidado Personal y Bebé / Maquillaje / Maquillaje Ojos
+cuidado-personal-y-bebe/maquillaje/maquillaje-ojos
+
+[ ]
+  14  Despensa / Aceites, Sal y Condimentos / Aceite
+despensa/aceites-sal-y-condimentos/aceite
+
+[ ]
+  14  Despensa / Aceites, Sal y Condimentos / Vinagres y Sucedáneos
+despensa/aceites-sal-y-condimentos/vinagres-y-sucedaneos
+
+[ ]
+  14  Despensa / Arroz, Quinoa, Cuscús / Arroz Preparado
+despensa/arroz-quinoa-cuscus/arroz-preparado
+
+[ ]
+  14  Despensa / Azúcar y Endulzantes / Azúcar
+despensa/azucar-y-endulzantes/azucar
+
+[ ]
+  14  Despensa / Café y Cafeteras / Café Liofilizado
+despensa/cafe-y-cafeteras/cafe-liofilizado
+
+[ ]
+  14  Limpieza / Papeles Hogar / Toallas de Papel
+limpieza/papeles-hogar/toallas-de-papel
+
+[ ]
+  14  Panadería y Pastelería / Masas y Tortillas / Tortillas
+panaderia-y-pasteleria/masas-y-tortillas/tortillas
+
+[ ]
+  13  Carnes y Pescados / Pollo / Alitas y Trutros de Pollo
+carnes-y-pescados/pollo/alitas-y-trutros-de-pollo
+
+[ ]
+  13  Cuidado Personal y Bebé / Incontinencia y Pañales Adulto / Incontinencia
+cuidado-personal-y-bebe/incontinencia-y-panales-adulto/incontinencia
+
+[ ]
+  13  Cuidado Personal y Bebé / Protección Femenina / Protectores Diarios
+cuidado-personal-y-bebe/proteccion-femenina/protectores-diarios
+
+[ ]
+  13  Despensa / Fideos, Pastas y Salsas / Fideos Integrales, Sin Gluten y Otros
+despensa/fideos-pastas-y-salsas/fideos-integrales-sin-gluten-y-otros
+
+[ ]
+  13  Despensa / Legumbres / Lentejas
+despensa/legumbres/lentejas
+
+[ ]
+  13  Farmacia / Suplementos y Vitaminas / Vitaminas y Multivitamínicos
+farmacia/suplementos-y-vitaminas/vitaminas-y-multivitaminicos
+
+[ ]
+  13  Licores, Bebidas y Aguas / Aguas / Aguas Purificadas
+licores-bebidas-y-aguas/aguas/aguas-purificadas
+
+[ ]
+  13  Licores, Bebidas y Aguas / Bebidas Energéticas
+licores-bebidas-y-aguas/bebidas-energeticas
+
+[ ]
+  13  Licores, Bebidas y Aguas / Cócteles
+licores-bebidas-y-aguas/cocteles
+
+[ ]
+  13  Mascotas / Perros / Alimentos Húmedos Perros
+mascotas/perros/alimentos-humedos-perros
+
+[ ]
+  13  Quesos y Fiambres / Fiambres / Mortadelas, Arrollados y Otros
+quesos-y-fiambres/fiambres/mortadelas-arrollados-y-otros
+
+[ ]
+  12  Carnes y Pescados / Pescados / Pescados Congelados
+carnes-y-pescados/pescados/pescados-congelados
+
+[ ]
+  12  Chocolates, Galletas y Snacks / Snacks / Cabritas
+chocolates-galletas-y-snacks/snacks/cabritas
+
+[ ]
+  12  Despensa / Té, Infusiones y Mate / Yerba Mate
+despensa/te-infusiones-y-mate/yerba-mate
+
+[ ]
+  12  Experiencias Jumbo / Comidas Preparadas / Entradas y Ensaladas
+experiencias-jumbo/comidas-preparadas/entradas-y-ensaladas
+
+[ ]
+  12  Licores, Bebidas y Aguas / Infusiones Frías / Kombucha
+licores-bebidas-y-aguas/infusiones-frias/kombucha
+
+[ ]
+  12  Licores, Bebidas y Aguas / Licores y Spritz / Fernet y Licores de Hierba
+licores-bebidas-y-aguas/licores-y-spritz/fernet-y-licores-de-hierba
 
 [ ]
   12  Limpieza / Accesorios de Limpieza / Limpiadores de Calzado
@@ -1003,388 +791,444 @@ limpieza/accesorios-de-limpieza/limpiadores-de-calzado
 limpieza/accesorios-de-limpieza/otros-accesorios-de-limpieza
 
 [ ]
-   3  Limpieza / Aerosoles y Aromatizantes
-limpieza/aerosoles-y-aromatizantes
-
-[ ]
-   1  Limpieza / Aerosoles y Aromatizantes / Aromatizantes
-limpieza/aerosoles-y-aromatizantes/aromatizantes
-
-[ ]
-   6  Limpieza / Aerosoles y Aromatizantes / Desinfectantes
-limpieza/aerosoles-y-aromatizantes/desinfectantes
-
-[ ]
-  36  Limpieza / Aerosoles y Aromatizantes / Desodorantes Ambientales
-limpieza/aerosoles-y-aromatizantes/desodorantes-ambientales
-
-[ ]
-  25  Limpieza / Aerosoles y Aromatizantes / Insecticidas
-limpieza/aerosoles-y-aromatizantes/insecticidas
-
-[ ]
-  41  Limpieza / Baño
-limpieza/bano
-
-[ ]
-  24  Limpieza / Baño / Limpiadores de Baño
-limpieza/bano/limpiadores-de-bano
-
-[ ]
-   9  Limpieza / Baño / Toallas Desinfectantes
-limpieza/bano/toallas-desinfectantes
-
-[ ]
-  22  Limpieza / Cocina / Lavalozas
-limpieza/cocina/lavalozas
-
-[ ]
-  19  Limpieza / Cocina / Lavavajillas
-limpieza/cocina/lavavajillas
-
-[ ]
-  28  Limpieza / Cocina / Limpiadores Cocina
-limpieza/cocina/limpiadores-cocina
-
-[ ]
-  11  Limpieza / Limpieza de Ropa / Detergente en Polvo
-limpieza/limpieza-de-ropa/detergente-en-polvo
-
-[ ]
-  30  Limpieza / Limpieza de Ropa / Detergente Líquido
-limpieza/limpieza-de-ropa/detergente-liquido
-
-[ ]
-   4  Limpieza / Limpieza de Ropa / Detergente para Diluir
-limpieza/limpieza-de-ropa/detergente-para-diluir
-
-[ ]
-   6  Limpieza / Limpieza de Ropa / Jabones para Ropa
-limpieza/limpieza-de-ropa/jabones-para-ropa
-
-[ ]
-  45  Limpieza / Limpieza de Ropa / Prelavado, Quitamanchas y Aprestos
-limpieza/limpieza-de-ropa/prelavado-quitamanchas-y-aprestos
-
-[ ]
-  20  Limpieza / Limpieza de Ropa / Suavizantes y Aromatizantes Tela
-limpieza/limpieza-de-ropa/suavizantes-y-aromatizantes-tela
-
-[ ]
-  23  Limpieza / Papeles Hogar / Papel Higiénico
-limpieza/papeles-hogar/papel-higienico
-
-[ ]
-   6  Limpieza / Papeles Hogar / Pañuelos
-limpieza/papeles-hogar/panuelos
-
-[ ]
-  16  Limpieza / Papeles Hogar / Servilletas
-limpieza/papeles-hogar/servilletas
-
-[ ]
-  14  Limpieza / Papeles Hogar / Toallas de Papel
-limpieza/papeles-hogar/toallas-de-papel
-
-[ ]
-  19  Limpieza / Pisos y Muebles
-limpieza/pisos-y-muebles
-
-[ ]
-  23  Limpieza / Pisos y Muebles / Ceras y Virutillas
-limpieza/pisos-y-muebles/ceras-y-virutillas
-
-[ ]
-   2  Limpieza / Pisos y Muebles / Limpia Alfombras y Tapices
-limpieza/pisos-y-muebles/limpia-alfombras-y-tapices
-
-[ ]
-  50  Limpieza / Pisos y Muebles / Limpiadores Piso
-limpieza/pisos-y-muebles/limpiadores-piso
-
-[ ]
-  36  Limpieza / Pisos y Muebles / Traperos y Mopas
-limpieza/pisos-y-muebles/traperos-y-mopas
-
-[ ]
-  27  Lácteos, Huevos y Congelados / Bebidas Vegetales
-lacteos-huevos-y-congelados/bebidas-vegetales
-
-[ ]
-   1  Lácteos, Huevos y Congelados / Churrascos, Lomitos y Otros / Carpaccios y Otros
-lacteos-huevos-y-congelados/churrascos-lomitos-y-otros/carpaccios-y-otros
-
-[ ]
-   7  Lácteos, Huevos y Congelados / Churrascos, Lomitos y Otros / Churrascos y Lomitos
-lacteos-huevos-y-congelados/churrascos-lomitos-y-otros/churrascos-y-lomitos
-
-[ ]
   12  Lácteos, Huevos y Congelados / Comidas Congeladas / Comida Chilena
 lacteos-huevos-y-congelados/comidas-congeladas/comida-chilena
-
-[ ]
-   7  Lácteos, Huevos y Congelados / Comidas Congeladas / Empanadas Congeladas
-lacteos-huevos-y-congelados/comidas-congeladas/empanadas-congeladas
-
-[ ]
-   2  Lácteos, Huevos y Congelados / Comidas Congeladas / Gyozas y Arrollado Primaveras
-lacteos-huevos-y-congelados/comidas-congeladas/gyosas-y-arrollado-primaveras
-
-[ ]
-   9  Lácteos, Huevos y Congelados / Comidas Congeladas / Pizzas y Pastas Congeladas
-lacteos-huevos-y-congelados/comidas-congeladas/pizzas-y-pastas-congeladas
 
 [ ]
   12  Lácteos, Huevos y Congelados / Comidas Congeladas / Quiches, Sopaipillas y Otros
 lacteos-huevos-y-congelados/comidas-congeladas/quiches-sopaipillas-y-otros
 
 [ ]
-  15  Lácteos, Huevos y Congelados / Frutas y Pulpas Congeladas / Frutas Congeladas
-lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/frutas-congeladas
-
-[ ]
-   3  Lácteos, Huevos y Congelados / Frutas y Pulpas Congeladas / Pulpa de Fruta
-lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/pulpa-de-fruta
-
-[ ]
-   1  Lácteos, Huevos y Congelados / Frutas y Pulpas Congeladas / Smoothies y Acai
-lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/smoothies-y-acai
-
-[ ]
-   3  Lácteos, Huevos y Congelados / Hamburguesas / Hamburguesas de Pollo
-lacteos-huevos-y-congelados/hamburguesas/hamburguesas-de-pollo
-
-[ ]
-  24  Lácteos, Huevos y Congelados / Hamburguesas / Hamburguesas de Vacuno
-lacteos-huevos-y-congelados/hamburguesas/hamburguesas-de-vacuno
-
-[ ]
   12  Lácteos, Huevos y Congelados / Hamburguesas / Hamburguesas Vegetales
 lacteos-huevos-y-congelados/hamburguesas/hamburguesas-vegetales
-
-[ ]
-   7  Lácteos, Huevos y Congelados / Helados y Postres / Churros, Waffles y Pancakes
-lacteos-huevos-y-congelados/helados-y-postres/churros-waffles-y-pancakes
-
-[ ]
-   5  Lácteos, Huevos y Congelados / Helados y Postres / Helados de Agua
-lacteos-huevos-y-congelados/helados-y-postres/helados-de-agua
-
-[ ]
-   9  Lácteos, Huevos y Congelados / Helados y Postres / Helados Light y Sin Azúcar
-lacteos-huevos-y-congelados/helados-y-postres/helados-light-y-sin-azucar
-
-[ ]
-  22  Lácteos, Huevos y Congelados / Helados y Postres / Helados Multipack
-lacteos-huevos-y-congelados/helados-y-postres/helados-multipack
-
-[ ]
-  44  Lácteos, Huevos y Congelados / Helados y Postres / Helados Premium
-lacteos-huevos-y-congelados/helados-y-postres/helados-premium
-
-[ ]
-  25  Lácteos, Huevos y Congelados / Helados y Postres / Helados Tradicionales
-lacteos-huevos-y-congelados/helados-y-postres/helados-tradicionales
 
 [ ]
   12  Lácteos, Huevos y Congelados / Helados y Postres / Postres y Tortas Heladas
 lacteos-huevos-y-congelados/helados-y-postres/postres-y-tortas-heladas
 
 [ ]
-   1  Lácteos, Huevos y Congelados / Hielo
-lacteos-huevos-y-congelados/hielo
+  11  Chocolates, Galletas y Snacks / Galletas Dulces / Galletas de Arroz y Quinoa
+chocolates-galletas-y-snacks/galletas-dulces/galletas-de-arroz-y-quinoa
 
 [ ]
-   8  Lácteos, Huevos y Congelados / Huevos / Huevos de Campo y Gallina Libre
-lacteos-huevos-y-congelados/huevos/huevos-de-campo-y-gallina-libre
+  11  Cuidado Personal y Bebé / Cuidado Masculino / Espuma y Crema para Afeitar
+cuidado-personal-y-bebe/cuidado-masculino/espuma-y-crema-para-afeitar
 
 [ ]
-   1  Lácteos, Huevos y Congelados / Huevos / Huevos de Codorniz
-lacteos-huevos-y-congelados/huevos/huevos-de-codorniz
+  11  Despensa / Aceites, Sal y Condimentos / Acetos Balsámicos
+despensa/aceites-sal-y-condimentos/acetos-balsamicos
 
 [ ]
-  10  Lácteos, Huevos y Congelados / Huevos / Huevos Tradicionales
-lacteos-huevos-y-congelados/huevos/tradicionales
+  11  Despensa / Harinas, Postres y Repostería / Gelatinas y Flanes
+despensa/harinas-postres-y-reposteria/gelatinas-y-flanes
 
 [ ]
-  15  Lácteos, Huevos y Congelados / Leches / Leche en Polvo
-lacteos-huevos-y-congelados/leches/leche-en-polvo
+  11  Despensa / Legumbres / Porotos
+despensa/legumbres/porotos
 
 [ ]
-  56  Lácteos, Huevos y Congelados / Leches / Leche Líquida
-lacteos-huevos-y-congelados/leches/leche-liquida
+  11  Farmacia / Higiene Bucal Especialidad / Enjuagues, Hilos y Sedas Dentales
+farmacia/higiene-bucal-especialidad/enjuagues-hilos-y-sedas-dentales
 
 [ ]
-  16  Lácteos, Huevos y Congelados / Leches / Saborizantes
-lacteos-huevos-y-congelados/leches/saborizantes
+  11  Farmacia / Primeros Auxilios / Curación y Botiquines
+farmacia/primeros-auxilios/curacion-y-botiquines
 
 [ ]
-  27  Lácteos, Huevos y Congelados / Leches Cultivadas y Bebidas Lácteas / Bebidas Lácteas y Probióticos
-lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas/bebidas-lacteas-y-probioticos
-
-[ ]
-   1  Lácteos, Huevos y Congelados / Leches Cultivadas y Bebidas Lácteas / Leches Cultivadas
-lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas/leches-cultivadas
-
-[ ]
-   4  Lácteos, Huevos y Congelados / Manjar y Dulce de Leche / Dulce de Leche
-lacteos-huevos-y-congelados/manjar-y-dulce-de-leche/dulce-de-leche
-
-[ ]
-   8  Lácteos, Huevos y Congelados / Manjar y Dulce de Leche / Manjar
-lacteos-huevos-y-congelados/manjar-y-dulce-de-leche/manjar
-
-[ ]
-   1  Lácteos, Huevos y Congelados / Mantequillas y Margarinas / Mantecas
-lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantecas
-
-[ ]
-  10  Lácteos, Huevos y Congelados / Mantequillas y Margarinas / Mantequillas
-lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantequillas
-
-[ ]
-   5  Lácteos, Huevos y Congelados / Mantequillas y Margarinas / Margarinas
-lacteos-huevos-y-congelados/mantequillas-y-margarinas/margarinas
-
-[ ]
-   8  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Apanados
-lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/apanados
-
-[ ]
-   1  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Embutidos y Otros
-lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-apanados-de-verduras/embutidos-y-otros
-
-[ ]
-  10  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Nuggets y Alitas de Pollo
-lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-alitas-de-pollo
-
-[ ]
-   6  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Nuggets y Apanados de Verduras
-lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-apanados-de-verduras
-
-[ ]
-   3  Lácteos, Huevos y Congelados / Postres Refrigerados / Flanes
-lacteos-huevos-y-congelados/postres-refrigerados/flanes
-
-[ ]
-   4  Lácteos, Huevos y Congelados / Postres Refrigerados / Jaleas y Compotas
-lacteos-huevos-y-congelados/postres-refrigerados/jaleas-y-compotas
-
-[ ]
-   7  Lácteos, Huevos y Congelados / Postres Refrigerados / Postres
-lacteos-huevos-y-congelados/postres-refrigerados/postres
-
-[ ]
-  17  Lácteos, Huevos y Congelados / Verduras Congeladas / Choclos, Arvejas y Primaveras
-lacteos-huevos-y-congelados/verduras-congeladas/choclos-arvejas-y-primaveras
-
-[ ]
-   7  Lácteos, Huevos y Congelados / Verduras Congeladas / Legumbres Congeladas
-lacteos-huevos-y-congelados/verduras-congeladas/legumbres-congeladas
-
-[ ]
-  17  Lácteos, Huevos y Congelados / Verduras Congeladas / Otras Verduras
-lacteos-huevos-y-congelados/verduras-congeladas/otras-verduras
-
-[ ]
-   9  Lácteos, Huevos y Congelados / Verduras Congeladas / Papas
-lacteos-huevos-y-congelados/verduras-congeladas/papas
-
-[ ]
-   7  Lácteos, Huevos y Congelados / Verduras Congeladas / Sofritos y Mix de Verduras
-lacteos-huevos-y-congelados/verduras-congeladas/sofritos-y-mix-de-verduras
-
-[ ]
-  49  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Batido
-lacteos-huevos-y-congelados/yoghurt/yoghurt-batido
-
-[ ]
-  10  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt con Cereales
-lacteos-huevos-y-congelados/yoghurt/yoghurt-con-cereales
-
-[ ]
-  16  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt con Proteínas
-lacteos-huevos-y-congelados/yoghurt/yoghurt-con-proteinas
-
-[ ]
-  19  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Light y Sin Azúcar
-lacteos-huevos-y-congelados/yoghurt/yoghurt-light-y-sin-azucar
-
-[ ]
-  24  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Natural y Griego
-lacteos-huevos-y-congelados/yoghurt/yoghurt-natural-y-griego
-
-[ ]
-  25  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Sin Lactosa
-lacteos-huevos-y-congelados/yoghurt/yoghurt-sin-lactosa
-
-[ ]
-   8  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Trozos y Frutas
-lacteos-huevos-y-congelados/yoghurt/yoghurt-trozos-y-frutas
-
-[ ]
-   2  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Vegetal
-lacteos-huevos-y-congelados/yoghurt/yoghurt-vegetal
-
-[ ]
-   9  Mascotas / Gatos
-mascotas/gatos
-
-[ ]
-   1  Mascotas / Gatos / Accesorios y Juguetes Gatos
-mascotas/gatos/accesorios-y-juguetes-gatos
-
-[ ]
-  22  Mascotas / Gatos / Alimentos Húmedos Gatos
-mascotas/gatos/alimentos-humedos-gatos
-
-[ ]
-  26  Mascotas / Gatos / Alimentos Secos Gatos
-mascotas/gatos/alimentos-secos-gatos
-
-[ ]
-   9  Mascotas / Gatos / Arenas e Higiene Gatos
-mascotas/gatos/arenas-e-higiene-gatos
-
-[ ]
-   6  Mascotas / Otras Mascotas / Aves
-mascotas/otras-mascotas/aves
-
-[ ]
-   2  Mascotas / Otras Mascotas / Peces
-mascotas/otras-mascotas/peces
-
-[ ]
-   3  Mascotas / Otras Mascotas / Roedores
-mascotas/otras-mascotas/roedores
-
-[ ]
-  24  Mascotas / Perros
-mascotas/perros
+  11  Limpieza / Limpieza de Ropa / Detergente en Polvo
+limpieza/limpieza-de-ropa/detergente-en-polvo
 
 [ ]
   11  Mascotas / Perros / Accesorios y Juguetes Perros
 mascotas/perros/accesorios-y-juguetes-perros
 
 [ ]
-  13  Mascotas / Perros / Alimentos Húmedos Perros
-mascotas/perros/alimentos-humedos-perros
+  11  Quesos y Fiambres / Quesos / Vegano y Tofu
+quesos-y-fiambres/quesos/vegano-y-tofu
 
 [ ]
-  35  Mascotas / Perros / Alimentos Secos Perros
-mascotas/perros/alimentos-secos-perros
+  10  Carnes y Pescados / Cerdo y Cordero / Costillar y Costillitas
+carnes-y-pescados/cerdo-y-cordero/costillar-y-costillitas
 
 [ ]
-  56  Mascotas / Perros / Snacks, Salsas y Huesos
-mascotas/perros/snacks-salsas-y-huesos
+  10  Carnes y Pescados / Gourmet del Mar
+carnes-y-pescados/gourmet-del-mar
 
 [ ]
- 131  Panadería y Pastelería
-panaderia-y-pasteleria
+  10  Carnes y Pescados / Pavo / Filetes y Pechugas de Pavo
+carnes-y-pescados/pavo/filetes-y-pechugas-de-pavo
+
+[ ]
+  10  Carnes y Pescados / Pescados / Pescados Frescos
+carnes-y-pescados/pescados/pescados-frescos
+
+[ ]
+  10  Chocolates, Galletas y Snacks / Chocolates / Chocolates de Navidad
+chocolates-galletas-y-snacks/chocolates/chocolates-de-navidad
+
+[ ]
+  10  Chocolates, Galletas y Snacks / Chocolates / Chocolates sin Azúcar
+chocolates-galletas-y-snacks/chocolates/chocolates-sin-azucar
+
+[ ]
+  10  Chocolates, Galletas y Snacks / Snacks / Doritos y Tortillas
+chocolates-galletas-y-snacks/snacks/doritos-y-tortillas
+
+[ ]
+  10  Cuidado Personal y Bebé / Cuidado Corporal / Talcos y Cremas para Pies
+cuidado-personal-y-bebe/cuidado-corporal/talcos-y-cremas-para-pies
+
+[ ]
+  10  Cuidado Personal y Bebé / Cuidado Facial / Bálsamo y Protector Labial
+cuidado-personal-y-bebe/cuidado-facial/balsamo-y-protector-labial
+
+[ ]
+  10  Cuidado Personal y Bebé / Cuidado Facial / Tratamientos Faciales
+cuidado-personal-y-bebe/cuidado-facial/tratamientos-faciales
+
+[ ]
+  10  Experiencias Jumbo / Comidas Preparadas / Empanadas y Sándwiches
+experiencias-jumbo/comidas-preparadas/empanadas-y-sandwiches
+
+[ ]
+  10  Experiencias Jumbo / Comidas Preparadas / Pascualinas y Quiches
+experiencias-jumbo/comidas-preparadas/pascualinas-y-quiches
+
+[ ]
+  10  Licores, Bebidas y Aguas / Bebidas Isotónicas y Sueros / Sueros
+licores-bebidas-y-aguas/bebidas-isotonicas-y-sueros/sueros
+
+[ ]
+  10  Limpieza / Accesorios de Limpieza / Fósforos y Velas
+limpieza/accesorios-de-limpieza/fosforos-y-velas
+
+[ ]
+  10  Lácteos, Huevos y Congelados / Huevos / Huevos Tradicionales
+lacteos-huevos-y-congelados/huevos/tradicionales
+
+[ ]
+  10  Lácteos, Huevos y Congelados / Mantequillas y Margarinas / Mantequillas
+lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantequillas
+
+[ ]
+  10  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Nuggets y Alitas de Pollo
+lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-alitas-de-pollo
+
+[ ]
+  10  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt con Cereales
+lacteos-huevos-y-congelados/yoghurt/yoghurt-con-cereales
+
+[ ]
+   9  Carnes y Pescados / Cerdo y Cordero / Malaya y Otros Cortes
+carnes-y-pescados/cerdo-y-cordero/malaya-y-otros-cortes
+
+[ ]
+   9  Chocolates, Galletas y Snacks / Dulces / Malvas, Marshmallows y Merenguitos
+chocolates-galletas-y-snacks/dulces/malvas-marshmallows-y-merenguitos
+
+[ ]
+   9  Cuidado Personal y Bebé / Desodorantes / Desodorantes Clinical
+cuidado-personal-y-bebe/desodorantes/desodorantes-clinical
+
+[ ]
+   9  Cuidado Personal y Bebé / Jabones / Jabones en Barra
+cuidado-personal-y-bebe/jabones/jabones-en-barra
+
+[ ]
+   9  Despensa / Harinas, Postres y Repostería / Harina Blanca
+despensa/harinas-postres-y-reposteria/harina-blanca
+
+[ ]
+   9  Despensa / Legumbres / Garbanzos y Arvejas
+despensa/legumbres/garbanzos-y-arvejas
+
+[ ]
+   9  Despensa / Sopas, Cremas e Instantáneos / Comida Instantánea
+despensa/sopas-cremas-e-instantaneos/comida-instantanea
+
+[ ]
+   9  Limpieza / Baño / Toallas Desinfectantes
+limpieza/bano/toallas-desinfectantes
+
+[ ]
+   9  Lácteos, Huevos y Congelados / Comidas Congeladas / Pizzas y Pastas Congeladas
+lacteos-huevos-y-congelados/comidas-congeladas/pizzas-y-pastas-congeladas
+
+[ ]
+   9  Lácteos, Huevos y Congelados / Helados y Postres / Helados Light y Sin Azúcar
+lacteos-huevos-y-congelados/helados-y-postres/helados-light-y-sin-azucar
+
+[ ]
+   9  Lácteos, Huevos y Congelados / Verduras Congeladas / Papas
+lacteos-huevos-y-congelados/verduras-congeladas/papas
+
+[ ]
+   9  Mascotas / Gatos
+mascotas/gatos
+
+[ ]
+   9  Mascotas / Gatos / Arenas e Higiene Gatos
+mascotas/gatos/arenas-e-higiene-gatos
 
 [ ]
    9  Panadería y Pastelería / Masas y Tortillas
 panaderia-y-pasteleria/masas-y-tortillas
+
+[ ]
+   9  Panadería y Pastelería / Pastelería / Kuchen, Pie y Tartaletas
+panaderia-y-pasteleria/pasteleria/kuchen-pie-y-tartaletas
+
+[ ]
+   9  Quesos y Fiambres / Salchichas y Parrilleros / Butifarras y Longanicillas
+quesos-y-fiambres/salchichas-y-parrilleros/butifarras-y-longanicillas
+
+[ ]
+   8  Carnes y Pescados / Camarones / Camarones Cocidos
+carnes-y-pescados/camarones/camarones-cocidos
+
+[ ]
+   8  Carnes y Pescados / Pollo
+carnes-y-pescados/pollo
+
+[ ]
+   8  Chocolates, Galletas y Snacks / Galletas Dulces / Galletas de Navidad
+chocolates-galletas-y-snacks/galletas-dulces/galletas-de-navidad
+
+[ ]
+   8  Cuidado Personal y Bebé / Maquillaje / Esmaltes y Quitaesmaltes
+cuidado-personal-y-bebe/maquillaje/esmaltes-y-quitaesmaltes
+
+[ ]
+   8  Despensa / Harinas, Postres y Repostería / Bizcocho, Bases y Coberturas de Chocolate
+despensa/harinas-postres-y-reposteria/bizcocho-bases-y-coberturas-de-chocolate
+
+[ ]
+   8  Despensa / Mermeladas, Miel y Otros / Mantequilla de Maní y Cremas Dulces
+despensa/mermeladas-miel-y-otros/mantequilla-de-mani-y-cremas-dulces
+
+[ ]
+   8  Despensa / Mermeladas, Miel y Otros / Miel
+despensa/mermeladas-miel-y-otros/miel
+
+[ ]
+   8  Frutas y Verduras / Frutos Secos y Semillas / Semillas y Granos
+frutas-y-verduras/frutos-secos-y-semillas/semillas-y-granos
+
+[ ]
+   8  Licores, Bebidas y Aguas / Cócteles / Cóctel Ice y Ready to Drink
+licores-bebidas-y-aguas/cocteles/coctel-ice-y-ready-to-drink
+
+[ ]
+   8  Licores, Bebidas y Aguas / Cócteles / Piña Colada y Otros
+licores-bebidas-y-aguas/cocteles/pina-colada-y-otros
+
+[ ]
+   8  Licores, Bebidas y Aguas / Jugos / Limonadas
+licores-bebidas-y-aguas/jugos/limonadas
+
+[ ]
+   8  Lácteos, Huevos y Congelados / Huevos / Huevos de Campo y Gallina Libre
+lacteos-huevos-y-congelados/huevos/huevos-de-campo-y-gallina-libre
+
+[ ]
+   8  Lácteos, Huevos y Congelados / Manjar y Dulce de Leche / Manjar
+lacteos-huevos-y-congelados/manjar-y-dulce-de-leche/manjar
+
+[ ]
+   8  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Apanados
+lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/apanados
+
+[ ]
+   8  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Trozos y Frutas
+lacteos-huevos-y-congelados/yoghurt/yoghurt-trozos-y-frutas
+
+[ ]
+   7  Carnes y Pescados / Mariscos / Mariscos Congelados
+carnes-y-pescados/mariscos/mariscos-congelados
+
+[ ]
+   7  Carnes y Pescados / Pescados / Pescados Apanados
+carnes-y-pescados/pescados/pescados-apanados
+
+[ ]
+   7  Cuidado Personal y Bebé / Higiene Bucal / Cepillos y Pasta Dental Infantil
+cuidado-personal-y-bebe/higiene-bucal/cepillos-y-pasta-dental-infantil
+
+[ ]
+   7  Cuidado Personal y Bebé / Jabones / Gel de Ducha
+cuidado-personal-y-bebe/jabones/gel-de-ducha
+
+[ ]
+   7  Cuidado Personal y Bebé / Maquillaje / Maquillaje Rostro
+cuidado-personal-y-bebe/maquillaje/maquillaje-rostro
+
+[ ]
+   7  Cuidado Personal y Bebé / Protección Femenina / Jabones Íntimos y Pañitos Húmedos
+cuidado-personal-y-bebe/proteccion-femenina/jabones-intimos-y-panitos-humedos
+
+[ ]
+   7  Despensa / Harinas, Postres y Repostería / Cacaos y Premezclas
+despensa/harinas-postres-y-reposteria/cacaos-y-premezclas
+
+[ ]
+   7  Despensa / Harinas, Postres y Repostería / Harina de Maíz, Semóla y Polenta
+despensa/harinas-postres-y-reposteria/harina-de-maiz-semola-y-polenta
+
+[ ]
+   7  Despensa / Té, Infusiones y Mate / Té Verde
+despensa/te-infusiones-y-mate/te-verde
+
+[ ]
+   7  Farmacia / Dermocosmética / Protección Solar
+farmacia/dermocosmetica/proteccion-solar
+
+[ ]
+   7  Farmacia / Higiene Bucal Especialidad / Pastas Dentales
+farmacia/higiene-bucal-especialidad/pastas-dentales
+
+[ ]
+   7  Licores, Bebidas y Aguas / Agua Tónica y Ginger Beer / Ginger Beer
+licores-bebidas-y-aguas/agua-tonica-y-ginger-beer/ginger-beer
+
+[ ]
+   7  Licores, Bebidas y Aguas / Destilados / Ron
+licores-bebidas-y-aguas/destilados/ron
+
+[ ]
+   7  Licores, Bebidas y Aguas / Licores y Spritz / Spritz
+licores-bebidas-y-aguas/licores-y-spritz/spritz
+
+[ ]
+   7  Licores, Bebidas y Aguas / Vinos / Vinos Rosé
+licores-bebidas-y-aguas/vinos/vinos-rose
+
+[ ]
+   7  Lácteos, Huevos y Congelados / Churrascos, Lomitos y Otros / Churrascos y Lomitos
+lacteos-huevos-y-congelados/churrascos-lomitos-y-otros/churrascos-y-lomitos
+
+[ ]
+   7  Lácteos, Huevos y Congelados / Comidas Congeladas / Empanadas Congeladas
+lacteos-huevos-y-congelados/comidas-congeladas/empanadas-congeladas
+
+[ ]
+   7  Lácteos, Huevos y Congelados / Helados y Postres / Churros, Waffles y Pancakes
+lacteos-huevos-y-congelados/helados-y-postres/churros-waffles-y-pancakes
+
+[ ]
+   7  Lácteos, Huevos y Congelados / Postres Refrigerados / Postres
+lacteos-huevos-y-congelados/postres-refrigerados/postres
+
+[ ]
+   7  Lácteos, Huevos y Congelados / Verduras Congeladas / Legumbres Congeladas
+lacteos-huevos-y-congelados/verduras-congeladas/legumbres-congeladas
+
+[ ]
+   7  Lácteos, Huevos y Congelados / Verduras Congeladas / Sofritos y Mix de Verduras
+lacteos-huevos-y-congelados/verduras-congeladas/sofritos-y-mix-de-verduras
+
+[ ]
+   6  Carnes y Pescados / Camarones / Camarones Crudos
+carnes-y-pescados/camarones/camarones-crudos
+
+[ ]
+   6  Chocolates, Galletas y Snacks / Galletas Dulces / Galletones
+chocolates-galletas-y-snacks/galletas-dulces/galletones
+
+[ ]
+   6  Cuidado Personal y Bebé / Cuidado Facial / Pétalos y Accesorios
+cuidado-personal-y-bebe/cuidado-facial/petalos-y-accesorios
+
+[ ]
+   6  Cuidado Personal y Bebé / Cuidado Masculino / Colonias para Hombres
+cuidado-personal-y-bebe/cuidado-masculino/colonias-para-hombres
+
+[ ]
+   6  Cuidado Personal y Bebé / Packs de Cuidado y Belleza
+cuidado-personal-y-bebe/packs-de-cuidado-y-belleza
+
+[ ]
+   6  Despensa / Harinas, Postres y Repostería / Salsas para Postres y Esencias
+despensa/harinas-postres-y-reposteria/salsas-para-postres-y-esencias
+
+[ ]
+   6  Farmacia / Dermocosmética / Cuidado Corporal
+farmacia/dermocosmetica/cuidado-corporal
+
+[ ]
+   6  Farmacia / Primeros Auxilios / Desinfectantes y Repelentes
+farmacia/primeros-auxilios/desinfectantes-y-repelentes
+
+[ ]
+   6  Licores, Bebidas y Aguas / Destilados / Vodka
+licores-bebidas-y-aguas/destilados/vodka
+
+[ ]
+   6  Limpieza / Aerosoles y Aromatizantes / Desinfectantes
+limpieza/aerosoles-y-aromatizantes/desinfectantes
+
+[ ]
+   6  Limpieza / Limpieza de Ropa / Jabones para Ropa
+limpieza/limpieza-de-ropa/jabones-para-ropa
+
+[ ]
+   6  Limpieza / Papeles Hogar / Pañuelos
+limpieza/papeles-hogar/panuelos
+
+[ ]
+   6  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Nuggets y Apanados de Verduras
+lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-apanados-de-verduras
+
+[ ]
+   6  Mascotas / Otras Mascotas / Aves
+mascotas/otras-mascotas/aves
+
+[ ]
+   5  Carnes y Pescados / Cerdo y Cordero / Pulpa y Lomo de Cerdo
+carnes-y-pescados/cerdo-y-cordero/pulpa-y-lomo-de-cerdo
+
+[ ]
+   5  Carnes y Pescados / Pollo / Pollo Entero
+carnes-y-pescados/pollo/pollo-entero
+
+[ ]
+   5  Cuidado Personal y Bebé / Cuidado Capilar / Fijadores, Lacas y Ceras
+cuidado-personal-y-bebe/cuidado-capilar/fijadores-lacas-y-ceras
+
+[ ]
+   5  Cuidado Personal y Bebé / Cuidado Masculino / Shampoo, Cremas y Ceras para Hombres
+cuidado-personal-y-bebe/cuidado-masculino/shampoo-cremas-y-ceras-para-hombres
+
+[ ]
+   5  Cuidado Personal y Bebé / Depilación / Ceras Depilatorias
+cuidado-personal-y-bebe/depilacion/ceras-depilatorias
+
+[ ]
+   5  Cuidado Personal y Bebé / Desodorantes / Desodorantes Gel y Crema
+cuidado-personal-y-bebe/desodorantes/desodorantes-gel-y-crema
+
+[ ]
+   5  Despensa / Harinas, Postres y Repostería / Harina Integral y Otras
+despensa/harinas-postres-y-reposteria/harina-integral-y-otras
+
+[ ]
+   5  Despensa / Harinas, Postres y Repostería / Leches Condensadas y Evaporadas
+despensa/harinas-postres-y-reposteria/leches-condensadas-y-evaporadas
+
+[ ]
+   5  Experiencias Jumbo / Comidas Preparadas / Pizzas y Focaccias
+experiencias-jumbo/comidas-preparadas/pizzas-y-focaccias
+
+[ ]
+   5  Experiencias Jumbo / Comidas Preparadas / Proteínas y Acompañamientos
+experiencias-jumbo/comidas-preparadas/proteinas-y-acompanamientos
+
+[ ]
+   5  Lácteos, Huevos y Congelados / Helados y Postres / Helados de Agua
+lacteos-huevos-y-congelados/helados-y-postres/helados-de-agua
+
+[ ]
+   5  Lácteos, Huevos y Congelados / Mantequillas y Margarinas / Margarinas
+lacteos-huevos-y-congelados/mantequillas-y-margarinas/margarinas
 
 [ ]
    5  Panadería y Pastelería / Masas y Tortillas / Masas para Pizza
@@ -1395,114 +1239,269 @@ panaderia-y-pasteleria/masas-y-tortillas/masas-para-pizza
 panaderia-y-pasteleria/masas-y-tortillas/otras-masas
 
 [ ]
-  14  Panadería y Pastelería / Masas y Tortillas / Tortillas
-panaderia-y-pasteleria/masas-y-tortillas/tortillas
+   4  Carnes y Pescados / Pavo / Pavo Entero
+carnes-y-pescados/pavo/pavo-entero
 
 [ ]
-   9  Panadería y Pastelería / Pastelería / Kuchen, Pie y Tartaletas
-panaderia-y-pasteleria/pasteleria/kuchen-pie-y-tartaletas
+   4  Cuidado Personal y Bebé / Depilación / Cremas Depilatorias
+cuidado-personal-y-bebe/depilacion/cremas-depilatorias
 
 [ ]
-   2  Panadería y Pastelería / Pastelería / Media Lunas y Bollería
-panaderia-y-pasteleria/pasteleria/media-lunas-y-bolleria
+   4  Cuidado Personal y Bebé / Maquillaje / Brochas y Accesorios de Maquillaje
+cuidado-personal-y-bebe/maquillaje/brochas-y-accesorios-de-maquillaje
 
 [ ]
-  34  Panadería y Pastelería / Pastelería / Muffins, Queques y Magdalenas
-panaderia-y-pasteleria/pasteleria/muffins-queques-y-magdalenas
+   4  Despensa / Café y Cafeteras / Café Descafeinado
+despensa/cafe-y-cafeteras/cafe-descafeinado
 
 [ ]
-  15  Panadería y Pastelería / Pastelería / Pan de Pascua
-panaderia-y-pasteleria/pasteleria/pan-de-pascua
+   4  Despensa / Harinas, Postres y Repostería / Decoraciones y Toppings
+despensa/harinas-postres-y-reposteria/decoraciones-y-toppings
 
 [ ]
-  26  Panadería y Pastelería / Pastelería / Pasteles, Galletas y Masas Dulces
-panaderia-y-pasteleria/pasteleria/pasteles-galletas-y-masas-dulces
+   4  Despensa / Mermeladas, Miel y Otros / Syrups
+despensa/mermeladas-miel-y-otros/syrups
 
 [ ]
-  25  Panadería y Pastelería / Pastelería / Tortas
-panaderia-y-pasteleria/pasteleria/tortas
+   4  Despensa / Sopas, Cremas e Instantáneos / Puré Instantáneo
+despensa/sopas-cremas-e-instantaneos/pure-instantaneo
 
 [ ]
-  39  Quesos y Fiambres / Aceitunas, Pepinillos y Otros / Aceitunas
-quesos-y-fiambres/aceitunas-pepinillos-y-otros/aceitunas
+   4  Farmacia / Bienestar Íntimo / Lubricantes Íntimos
+farmacia/bienestar-intimo/lubricantes-intimos
 
 [ ]
-  25  Quesos y Fiambres / Aceitunas, Pepinillos y Otros / Chucrut y Otros
-quesos-y-fiambres/aceitunas-pepinillos-y-otros/chucrut-y-otros
+   4  Frutas y Verduras / Verduras / Hierbas y Especias
+frutas-y-verduras/verduras/hierbas-y-especias
 
 [ ]
-  26  Quesos y Fiambres / Aceitunas, Pepinillos y Otros / Pepinillos y Pickles
-quesos-y-fiambres/aceitunas-pepinillos-y-otros/pepinillos-y-pickles
+   4  Licores, Bebidas y Aguas / Destilados / Brandy y Cognac
+licores-bebidas-y-aguas/destilados/brandy-y-cognac
 
 [ ]
-  46  Quesos y Fiambres / Fiambres / Jamones
-quesos-y-fiambres/fiambres/jamones
+   4  Licores, Bebidas y Aguas / Licores y Spritz / Vermouth
+licores-bebidas-y-aguas/licores-y-spritz/vermouth
 
 [ ]
-  25  Quesos y Fiambres / Fiambres / Jamón Serrano, Lomo Kassler y Otros
-quesos-y-fiambres/fiambres/jamon-serrano-lomo-kassler-y-otros
+   4  Limpieza / Limpieza de Ropa / Detergente para Diluir
+limpieza/limpieza-de-ropa/detergente-para-diluir
 
 [ ]
-  13  Quesos y Fiambres / Fiambres / Mortadelas, Arrollados y Otros
-quesos-y-fiambres/fiambres/mortadelas-arrollados-y-otros
+   4  Lácteos, Huevos y Congelados / Manjar y Dulce de Leche / Dulce de Leche
+lacteos-huevos-y-congelados/manjar-y-dulce-de-leche/dulce-de-leche
 
 [ ]
-  16  Quesos y Fiambres / Fiambres / Paté
-quesos-y-fiambres/fiambres/pate
+   4  Lácteos, Huevos y Congelados / Postres Refrigerados / Jaleas y Compotas
+lacteos-huevos-y-congelados/postres-refrigerados/jaleas-y-compotas
 
 [ ]
-  30  Quesos y Fiambres / Fiambres / Pechuga de Pavo y Pollo
-quesos-y-fiambres/fiambres/pechuga-de-pavo-y-pollo
+   3  Carnes y Pescados / Cerdo y Cordero
+carnes-y-pescados/cerdo-y-cordero
 
 [ ]
-  31  Quesos y Fiambres / Fiambres / Salames y Tocinos
-quesos-y-fiambres/fiambres/salames-y-tocinos
+   3  Carnes y Pescados / Pavo / Trutros y Bistec de Pavo
+carnes-y-pescados/pavo/trutros-y-bistec-de-pavo
 
 [ ]
-  20  Quesos y Fiambres / Quesos
-quesos-y-fiambres/quesos
+   3  Chocolates, Galletas y Snacks / Chocolates / Chocolates Vegano, Sin Gluten, Orgánico
+chocolates-galletas-y-snacks/chocolates/chocolates-vegano-sin-gluten-organico
 
 [ ]
-  28  Quesos y Fiambres / Quesos / Cabra y Oveja
-quesos-y-fiambres/quesos/cabra-y-oveja
+   3  Cuidado Personal y Bebé / Higiene Bucal / Hilo Dental
+cuidado-personal-y-bebe/higiene-bucal/hilo-dental
 
 [ ]
-  25  Quesos y Fiambres / Quesos / Chacras, Frescos y Quesillos
-quesos-y-fiambres/quesos/chacras-frescos-y-quesillos
+   3  Cuidado Personal y Bebé / Maquillaje / Maquillaje Labios
+cuidado-personal-y-bebe/maquillaje/maquillaje-labios
 
 [ ]
-  69  Quesos y Fiambres / Quesos / Especiales y Tablas de Quesos
-quesos-y-fiambres/quesos/especiales-y-tablas-de-quesos
+   3  Despensa / Conservas / Conservas de Carne
+despensa/conservas/conservas-de-carne
 
 [ ]
-  15  Quesos y Fiambres / Quesos / Gauda
-quesos-y-fiambres/quesos/gauda
+   3  Farmacia / Dermocosmética / Cuidado Dermocosmético Bebé
+farmacia/dermocosmetica/cuidado-dermocosmetico-bebe
 
 [ ]
-  36  Quesos y Fiambres / Quesos / Mantecosos y Chanco
-quesos-y-fiambres/quesos/mantecosos-y-chanco
+   3  Licores, Bebidas y Aguas / Cócteles / Mojitos y Margaritas
+licores-bebidas-y-aguas/cocteles/mojitos-y-margaritas
 
 [ ]
-  15  Quesos y Fiambres / Quesos / Rallados y Granulados
-quesos-y-fiambres/quesos/rallados-y-granulados
+   3  Licores, Bebidas y Aguas / Destilados / Aguardiente y Cachaza
+licores-bebidas-y-aguas/destilados/aguardiente-y-cachaza
 
 [ ]
-  11  Quesos y Fiambres / Quesos / Vegano y Tofu
-quesos-y-fiambres/quesos/vegano-y-tofu
+   3  Licores, Bebidas y Aguas / Destilados / Tequila y Mezcal
+licores-bebidas-y-aguas/destilados/tequila-y-mezcal
 
 [ ]
-   9  Quesos y Fiambres / Salchichas y Parrilleros / Butifarras y Longanicillas
-quesos-y-fiambres/salchichas-y-parrilleros/butifarras-y-longanicillas
+   3  Licores, Bebidas y Aguas / Licores y Spritz / Licores de Crema
+licores-bebidas-y-aguas/licores-y-spritz/licores-de-crema
 
 [ ]
-  29  Quesos y Fiambres / Salchichas y Parrilleros / Longanizas y Chorizos
-quesos-y-fiambres/salchichas-y-parrilleros/longanizas-y-chorizos
+   3  Licores, Bebidas y Aguas / Vinos / Vinos Late Harvest
+licores-bebidas-y-aguas/vinos/vinos-late-harvest
+
+[ ]
+   3  Limpieza / Aerosoles y Aromatizantes
+limpieza/aerosoles-y-aromatizantes
+
+[ ]
+   3  Lácteos, Huevos y Congelados / Frutas y Pulpas Congeladas / Pulpa de Fruta
+lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/pulpa-de-fruta
+
+[ ]
+   3  Lácteos, Huevos y Congelados / Hamburguesas / Hamburguesas de Pollo
+lacteos-huevos-y-congelados/hamburguesas/hamburguesas-de-pollo
+
+[ ]
+   3  Lácteos, Huevos y Congelados / Postres Refrigerados / Flanes
+lacteos-huevos-y-congelados/postres-refrigerados/flanes
+
+[ ]
+   3  Mascotas / Otras Mascotas / Roedores
+mascotas/otras-mascotas/roedores
 
 [ ]
    3  Quesos y Fiambres / Salchichas y Parrilleros / Prietas
 quesos-y-fiambres/salchichas-y-parrilleros/prietas
 
 [ ]
-  19  Quesos y Fiambres / Salchichas y Parrilleros / Salchichas
-quesos-y-fiambres/salchichas-y-parrilleros/salchichas
+   2  Carnes y Pescados / Cerdo y Cordero / Cordero
+carnes-y-pescados/cerdo-y-cordero/cordero
 
+[ ]
+   2  Carnes y Pescados / Mariscos / Mariscos Frescos
+carnes-y-pescados/mariscos/mariscos-frescos
+
+[ ]
+   2  Carnes y Pescados / Pavo
+carnes-y-pescados/pavo
+
+[ ]
+   2  Cuidado Personal y Bebé / Cuidado Corporal / Bienestar
+cuidado-personal-y-bebe/cuidado-corporal/bienestar
+
+[ ]
+   2  Cuidado Personal y Bebé / Depilación / Bandas Depilatorias
+cuidado-personal-y-bebe/depilacion/bandas-depilatorias
+
+[ ]
+   2  Cuidado Personal y Bebé / Depilación / Gel o Espumas de Depilación
+cuidado-personal-y-bebe/depilacion/gel-o-espumas-de-depilacion
+
+[ ]
+   2  Despensa / Mermeladas, Miel y Otros / Dulce Membrillo
+despensa/mermeladas-miel-y-otros/dulce-membrillo
+
+[ ]
+   2  Farmacia / Accesorios Médicos / Anteojos, Descanso y Protección
+farmacia/accesorios-medicos/anteojos-descanso-y-proteccion
+
+[ ]
+   2  Frutas y Verduras / Verduras / Aderezos
+frutas-y-verduras/verduras/aderezos
+
+[ ]
+   2  Licores, Bebidas y Aguas / Licores y Spritz / Bajativos
+licores-bebidas-y-aguas/licores-y-spritz/bajativos
+
+[ ]
+   2  Limpieza / Pisos y Muebles / Limpia Alfombras y Tapices
+limpieza/pisos-y-muebles/limpia-alfombras-y-tapices
+
+[ ]
+   2  Lácteos, Huevos y Congelados / Comidas Congeladas / Gyozas y Arrollado Primaveras
+lacteos-huevos-y-congelados/comidas-congeladas/gyosas-y-arrollado-primaveras
+
+[ ]
+   2  Lácteos, Huevos y Congelados / Yoghurt / Yoghurt Vegetal
+lacteos-huevos-y-congelados/yoghurt/yoghurt-vegetal
+
+[ ]
+   2  Mascotas / Otras Mascotas / Peces
+mascotas/otras-mascotas/peces
+
+[ ]
+   2  Panadería y Pastelería / Pastelería / Media Lunas y Bollería
+panaderia-y-pasteleria/pasteleria/media-lunas-y-bolleria
+
+[ ]
+   1  Carnes y Pescados / Pollo / Menudencias de Pollo y Otros
+carnes-y-pescados/pollo/menudencias-de-pollo-y-otros
+
+[ ]
+   1  Cuidado Personal y Bebé / Cuidado Facial / Protectores Solares
+cuidado-personal-y-bebe/cuidado-facial/protectores-solares
+
+[ ]
+   1  Despensa / Café y Cafeteras / Cafeteras, Filtros y Tazas
+despensa/cafe-y-cafeteras/cafeteras-filtros-y-tazas
+
+[ ]
+   1  Despensa / Fideos, Pastas y Salsas
+despensa/fideos-pastas-y-salsas
+
+[ ]
+   1  Despensa / Harinas, Postres y Repostería / Polvo de Hornear y Levadura
+despensa/harinas-postres-y-reposteria/polvo-de-hornear-y-levadura
+
+[ ]
+   1  Experiencias Jumbo / Comidas Preparadas / Humitas y Pastel de Choclo
+experiencias-jumbo/comidas-preparadas/humitas-y-pastel-de-choclo
+
+[ ]
+   1  Experiencias Jumbo / Comidas Preparadas / Postres
+experiencias-jumbo/comidas-preparadas/postres
+
+[ ]
+   1  Farmacia / Accesorios Médicos / Monitoreo y Test de Diagnósticos
+farmacia/accesorios-medicos/monitoreo-y-test-de-diagnosticos
+
+[ ]
+   1  Farmacia / Accesorios Médicos / Organización de Medicamentos
+farmacia/accesorios-medicos/organizacion-de-medicamentos
+
+[ ]
+   1  Farmacia / Primeros Auxilios / Algodones
+farmacia/primeros-auxilios/algodones
+
+[ ]
+   1  Farmacia / Suplementos y Vitaminas / Suplementos Deportivos
+farmacia/suplementos-y-vitaminas/suplementos-deportivos
+
+[ ]
+   1  Limpieza / Aerosoles y Aromatizantes / Aromatizantes
+limpieza/aerosoles-y-aromatizantes/aromatizantes
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Churrascos, Lomitos y Otros / Carpaccios y Otros
+lacteos-huevos-y-congelados/churrascos-lomitos-y-otros/carpaccios-y-otros
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Frutas y Pulpas Congeladas / Smoothies y Acai
+lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/smoothies-y-acai
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Hielo
+lacteos-huevos-y-congelados/hielo
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Huevos / Huevos de Codorniz
+lacteos-huevos-y-congelados/huevos/huevos-de-codorniz
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Leches Cultivadas y Bebidas Lácteas / Leches Cultivadas
+lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas/leches-cultivadas
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Mantequillas y Margarinas / Mantecas
+lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantecas
+
+[ ]
+   1  Lácteos, Huevos y Congelados / Nuggets, Apanados y Embutidos / Embutidos y Otros
+lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-apanados-de-verduras/embutidos-y-otros
+
+[ ]
+   1  Mascotas / Gatos / Accesorios y Juguetes Gatos
+mascotas/gatos/accesorios-y-juguetes-gatos

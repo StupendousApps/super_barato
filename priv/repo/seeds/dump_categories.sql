@@ -53,4 +53,4 @@ SELECT
 FROM full_path fp
 JOIN counts c ON c.slug = fp.slug
 WHERE c.n > 0
-ORDER BY LOWER(fp.path);
+ORDER BY c.n DESC, LOWER(fp.path);

@@ -17,7 +17,7 @@ defmodule SuperBarato.Catalog.CategoryChecklistTest do
        3  Marcas Tottus / Recco
     CATG27088/Electro-y-Tecnologia
 
-    [x]: {category: "frutas-y-verduras", subcategory: "verduras"}
+    [x]: 3c84119d
      123  Frutas y Verduras / Verduras
     frutas-y-verduras/verduras
     """
@@ -47,7 +47,7 @@ defmodule SuperBarato.Catalog.CategoryChecklistTest do
              count: 123,
              path: "Frutas y Verduras / Verduras",
              slug: "frutas-y-verduras/verduras",
-             mapping: %{category: "frutas-y-verduras", subcategory: "verduras"}
+             mapping: %{id: "3c84119d"}
            }
   end
 
@@ -57,9 +57,9 @@ defmodule SuperBarato.Catalog.CategoryChecklistTest do
     end
   end
 
-  test "raises when [x] is missing category/subcategory" do
-    assert_raise ArgumentError, ~r/missing subcategory/, fn ->
-      CategoryChecklist.parse(~s/[x]: {category: "foo"}\n   0  X\nx\n/)
+  test "raises when [x] payload is not an 8-char hex id" do
+    assert_raise ArgumentError, ~r/expected 8-char hex id/, fn ->
+      CategoryChecklist.parse(~s/[x]: notanid\n   0  X\nx\n/)
     end
   end
 
@@ -84,7 +84,7 @@ defmodule SuperBarato.Catalog.CategoryChecklistTest do
        3  Marcas Tottus / Recco
     CATG27088/Electro-y-Tecnologia
 
-    [x]: {category: "frutas-y-verduras", subcategory: "verduras"}
+    [x]: 3c84119d
      123  Frutas y Verduras / Verduras
     frutas-y-verduras/verduras
     """

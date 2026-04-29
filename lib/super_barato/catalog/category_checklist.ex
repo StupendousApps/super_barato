@@ -11,10 +11,11 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
 
   Status syntax:
 
-      [ ]                                              unchecked
-      [-]                                              checked, no chain category fits
-      [N]                                              checked, no 1:1 mapping is possible
-      [x]: {category: "<cat>", subcategory: "<sub>"}   mapped to a unified subcategory
+      [ ]            unchecked
+      [-]            checked, no chain category fits
+      [N]            checked, no 1:1 mapping is possible
+      [x]: <id>      mapped to a unified subcategory; <id> is the
+                     8-char path-derived id from categories.jsonl
 
   An entry parses into:
 
@@ -23,13 +24,17 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
         count:   non_neg_integer,
         path:    String.t,
         slug:    String.t,
-        mapping: nil | %{category: String.t, subcategory: String.t}
+        mapping: nil | %{id: String.t}
       }
+
+  Resolving the id back to a `(category, subcategory)` pair is the
+  consumer's job (e.g. sync_yaml.exs does the lookup against the
+  flattened JSONL when regenerating the YAML).
   """
 
   @type status :: :unchecked | :no_match | :no_mapping | :mapped
 
-  @type mapping :: %{category: String.t(), subcategory: String.t()}
+  @type mapping :: %{id: String.t()}
 
   @type entry :: %{
           status: status,
@@ -55,17 +60,15 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
   end
 
   defp serialize_entry(%{status: status, count: count, path: path, slug: slug, mapping: mapping}) do
-    status_line(status, mapping) <> "\n" <>
-      String.pad_leading(Integer.to_string(count), 4) <> "  " <> path <> "\n" <>
-      slug <> "\n"
+    status_line(status, mapping) <>
+      "\n" <>
+      String.pad_leading(Integer.to_string(count), 4) <> "  " <> path <> "\n" <> slug <> "\n"
   end
 
   defp status_line(:unchecked, _), do: "[ ]"
   defp status_line(:no_match, _), do: "[-]"
   defp status_line(:no_mapping, _), do: "[N]"
-
-  defp status_line(:mapped, %{category: cat, subcategory: sub}),
-    do: ~s/[x]: {category: "#{cat}", subcategory: "#{sub}"}/
+  defp status_line(:mapped, %{id: id}), do: "[x]: #{id}"
 
   @spec parse(String.t()) :: [entry]
   def parse(text) do
@@ -95,9 +98,13 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
   defp parse_status("[N]"), do: {:no_mapping, nil}
 
   defp parse_status("[x]:" <> rest) do
-    cat = capture!(rest, ~r/category:\s*"([^"]+)"/, "category")
-    sub = capture!(rest, ~r/subcategory:\s*"([^"]+)"/, "subcategory")
-    {:mapped, %{category: cat, subcategory: sub}}
+    id = String.trim(rest)
+
+    if Regex.match?(~r/^[0-9a-f]{8}$/, id) do
+      {:mapped, %{id: id}}
+    else
+      raise ArgumentError, "expected 8-char hex id after `[x]:`, got: #{inspect(id)}"
+    end
   end
 
   defp parse_status(other),
@@ -107,13 +114,6 @@ defmodule SuperBarato.Catalog.CategoryChecklist do
     case Regex.run(~r/^\s*(\d+)\s+(.+)$/, line) do
       [_, n, path] -> {String.to_integer(n), path}
       _ -> raise ArgumentError, "expected '<count>  <path>', got: #{inspect(line)}"
-    end
-  end
-
-  defp capture!(s, regex, label) do
-    case Regex.run(regex, s) do
-      [_, value] -> value
-      _ -> raise ArgumentError, "missing #{label} in mapped entry: #{inspect(s)}"
     end
   end
 end
