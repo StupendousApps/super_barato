@@ -1,0 +1,30 @@
+#!/bin/sh
+# Production equivalent of `mix ecto.reset` — drops the SQLite file,
+# re-runs migrations, evaluates priv/repo/seeds.exs. Mirrors the
+# `mix.exs` aliases:
+#
+#     "ecto.reset": ["ecto.drop", "ecto.setup"]
+#     "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"]
+#
+# Stop the app first so no BEAM has an open SQLite handle on the
+# file we're about to delete:
+#
+#     kamal app stop
+#     kamal reset
+#     kamal app start
+set -eu
+
+cd -P -- "$(dirname -- "$0")"
+
+DB="${DATABASE_PATH:-/data/db/super_barato.db}"
+
+echo ">> dropping $DB (and WAL/shm sidecars)"
+rm -f "$DB" "$DB-wal" "$DB-shm"
+
+echo ">> migrating"
+./super_barato eval 'SuperBarato.Release.migrate()'
+
+echo ">> seeding"
+./super_barato eval 'Code.eval_file(Application.app_dir(:super_barato, "priv/repo/seeds.exs"))'
+
+echo ">> done"
