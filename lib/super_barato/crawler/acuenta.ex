@@ -377,10 +377,19 @@ defmodule SuperBarato.Crawler.Acuenta do
     Jason.encode!(%{query: query, variables: variables})
   end
 
+  # Instaleap's GraphQL edge enforces a browser-shaped User-Agent +
+  # storefront Origin/Referer; without them the response is HTTP 200
+  # carrying `{"errors": [{"message": "INVALID_HEADERS", ...}]}` and
+  # an HTTP 403 in the extension. The UA is filled in by the
+  # curl-impersonate wrapper (see Http.request/3) so it stays in
+  # lockstep with the TLS fingerprint of the active profile;
+  # Origin/Referer are plain CORS-shaped headers we can hard-set.
   defp json_headers do
     [
       {"content-type", "application/json"},
-      {"accept", "application/json"}
+      {"accept", "application/json"},
+      {"origin", "https://www.acuenta.cl"},
+      {"referer", "https://www.acuenta.cl/"}
     ]
   end
 end
