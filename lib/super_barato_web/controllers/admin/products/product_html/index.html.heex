@@ -10,18 +10,11 @@
         placeholder="Prefix, e.g. 78025"
       />
       <.input
-        name="app_category"
+        name="taxonomy"
         type="select"
-        value={@filters.app_category}
+        value={@filters.taxonomy}
         label="Category"
-        options={@app_category_options}
-      />
-      <.input
-        name="app_subcategory"
-        type="select"
-        value={@filters.app_subcategory}
-        label="Subcategory"
-        options={@app_subcategory_options}
+        options={@taxonomy_options}
       />
       <.input
         name="per_page"
@@ -79,10 +72,10 @@
           <span class="cell-secondary">—</span>
         <% c -> %>
           <div>
-            <.link href={~p"/products?#{[app_subcategory: c.sub_slug]}"}>{c.sub_name}</.link>
+            <.link href={~p"/products?#{[taxonomy: "s:" <> c.sub_slug]}"}>{c.sub_name}</.link>
           </div>
           <div class="cell-secondary">
-            <.link href={~p"/products?#{[app_category: c.cat_slug]}"}>{c.cat_name}</.link>
+            <.link href={~p"/products?#{[taxonomy: "c:" <> c.cat_slug]}"}>{c.cat_name}</.link>
           </div>
       <% end %>
     </:col>

@@ -14,8 +14,7 @@ defmodule SuperBaratoWeb.Admin.ProductController do
   def index(conn, params) do
     q = params["q"] || ""
     ean = params["ean"] || ""
-    app_category = params["app_category"] || ""
-    app_subcategory = params["app_subcategory"] || ""
+    {app_category, app_subcategory} = parse_taxonomy(params["taxonomy"])
     sort = params["sort"] || "-updated_at"
     page = parse_int(params["page"], 1)
     per_page = parse_int(params["per_page"], 25)
@@ -36,13 +35,11 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     listings_by_product_id = Linker.listings_by_product_ids(product_ids)
     eans_by_product_id = Catalog.eans_by_product_ids(product_ids)
     categories_by_product_id = Catalog.categories_by_product_ids(product_ids)
-    {app_category_options, app_subcategory_options} = app_taxonomy_options(app_category)
 
     filters = %{
       q: q,
       ean: ean,
-      app_category: app_category,
-      app_subcategory: app_subcategory,
+      taxonomy: params["taxonomy"] || "",
       per_page: params["per_page"] || ""
     }
 
@@ -52,8 +49,7 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     |> assign(:listings_by_product_id, listings_by_product_id)
     |> assign(:eans_by_product_id, eans_by_product_id)
     |> assign(:categories_by_product_id, categories_by_product_id)
-    |> assign(:app_category_options, app_category_options)
-    |> assign(:app_subcategory_options, app_subcategory_options)
+    |> assign(:taxonomy_options, taxonomy_options())
     |> assign(:chains, Crawler.known_chains())
     |> assign(:filters, filters)
     |> assign(:sort, sort)
@@ -178,50 +174,51 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     |> Enum.into(%{})
   end
 
-  # Builds the two `<.input type="select">` option lists for the
-  # category / subcategory filter dropdowns. Subcategory options cascade
-  # off the currently-selected category — show every subcategory when
-  # no category is picked, scope to the category's children when one
-  # is. Each option is `{label, value}` per the StupendousAdmin select
-  # input's contract.
-  defp app_taxonomy_options(selected_cat_slug) do
+  # Single flat option list for the combined category/subcategory
+  # dropdown. Each AppCategory becomes a selectable header (value
+  # `c:<slug>`) and each AppSubcategory beneath it becomes a
+  # subordinate row (value `s:<slug>`, indented label) — picking the
+  # header filters by category, picking a child filters by
+  # subcategory. parse_taxonomy/1 inverts this back into the
+  # (category_slug, subcategory_slug) pair the Catalog expects.
+  defp taxonomy_options do
     import Ecto.Query
 
     cats =
       SuperBarato.Repo.all(
         from c in SuperBarato.Catalog.AppCategory,
           order_by: [asc: c.position, asc: c.name],
-          select: %{slug: c.slug, name: c.name}
+          preload: [
+            subcategories:
+              ^from(s in SuperBarato.Catalog.AppSubcategory,
+                order_by: [asc: s.position, asc: s.name]
+              )
+          ],
+          select: c
       )
 
-    cat_options = [{"All", ""} | Enum.map(cats, &{&1.name, &1.slug})]
+    rows =
+      Enum.flat_map(cats, fn cat ->
+        [{cat.name, "c:" <> cat.slug}] ++
+          Enum.map(cat.subcategories, fn sub ->
+            # Indent with a real non-breaking space — most browsers
+            # collapse leading whitespace inside <option>.
+            {"   " <> sub.name, "s:" <> sub.slug}
+          end)
+      end)
 
-    sub_query =
-      from s in SuperBarato.Catalog.AppSubcategory,
-        join: c in assoc(s, :app_category),
-        order_by: [asc: c.position, asc: c.name, asc: s.position, asc: s.name],
-        select: %{slug: s.slug, name: s.name, cat_slug: c.slug, cat_name: c.name}
-
-    sub_query =
-      if selected_cat_slug in [nil, ""] do
-        sub_query
-      else
-        from [s, c] in sub_query, where: c.slug == ^selected_cat_slug
-      end
-
-    sub_options =
-      [{"All", ""}] ++
-        Enum.map(SuperBarato.Repo.all(sub_query), fn s ->
-          label =
-            if selected_cat_slug in [nil, ""],
-              do: "#{s.cat_name} / #{s.name}",
-              else: s.name
-
-          {label, s.slug}
-        end)
-
-    {cat_options, sub_options}
+    [{"All", ""} | rows]
   end
+
+  # Translate the combined dropdown's value back into a
+  # (category, subcategory) pair. Unknown / empty inputs collapse to
+  # {"", ""} which `Catalog.list_products_page/1` treats as no
+  # filter.
+  defp parse_taxonomy(nil), do: {"", ""}
+  defp parse_taxonomy(""), do: {"", ""}
+  defp parse_taxonomy("c:" <> slug), do: {slug, ""}
+  defp parse_taxonomy("s:" <> slug), do: {"", slug}
+  defp parse_taxonomy(_), do: {"", ""}
 
   defp parse_chain(nil), do: nil
   defp parse_chain(""), do: nil
