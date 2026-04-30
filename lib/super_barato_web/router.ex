@@ -36,6 +36,9 @@ defmodule SuperBaratoWeb.Router do
     get "/", DashboardController, :index
     get "/products", ProductController, :index
     get "/products/:id", ProductController, :show
+    get "/products/:id/edit", ProductController, :edit
+    patch "/products/:id", ProductController, :update
+    put "/products/:id", ProductController, :update
     get "/products/:id/merge", ProductController, :merge_new
     post "/products/:id/merge", ProductController, :merge_create
     post "/products/:id/listings", ProductController, :link_listing

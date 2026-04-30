@@ -229,6 +229,17 @@ defmodule SuperBarato.Repo.Migrations.Init do
     create unique_index(:category_mappings, [:chain_category_id])
     create index(:category_mappings, [:app_subcategory_id])
 
+    # Optional manual override on a Product. When set it wins over the
+    # consensus categorization derived from listings → category_mappings.
+    # Nullable — most products inherit categorization from their chain
+    # listings and never get a manual touch.
+    alter table(:products) do
+      add :app_subcategory_id,
+          references(:app_subcategories, on_delete: :nilify_all)
+    end
+
+    create index(:products, [:app_subcategory_id])
+
     # ---- Linker: product ↔ chain_listing join ---------------------
 
     create table(:product_listings) do

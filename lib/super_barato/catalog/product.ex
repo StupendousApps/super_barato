@@ -2,12 +2,18 @@ defmodule SuperBarato.Catalog.Product do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias SuperBarato.Catalog.ProductIdentifier
+  alias SuperBarato.Catalog.{AppSubcategory, ProductIdentifier}
 
   schema "products" do
     field :canonical_name, :string
     field :brand, :string
     field :image_url, :string
+
+    # Optional manual taxonomy override. When set it wins over the
+    # consensus categorization derived from the product's chain
+    # listings (see Catalog.categories_by_product_ids/1). The category
+    # follows from the subcategory's `app_category` parent.
+    belongs_to :app_subcategory, AppSubcategory
 
     # Typed identifiers anchoring this Product. A single Product can
     # carry many — cross-country GTIN dupes (`ean_13`/`ean_8`), and
@@ -26,7 +32,7 @@ defmodule SuperBarato.Catalog.Product do
 
   def changeset(product, attrs) do
     product
-    |> cast(attrs, [:canonical_name, :brand, :image_url])
+    |> cast(attrs, [:canonical_name, :brand, :image_url, :app_subcategory_id])
     |> validate_required([:canonical_name])
   end
 end

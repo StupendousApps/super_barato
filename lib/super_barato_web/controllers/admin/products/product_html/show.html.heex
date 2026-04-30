@@ -2,8 +2,8 @@
   <.page_header title={@product.canonical_name}>
     <:back href={~p"/products"}>All products</:back>
     <:actions>
-      <.button href={~p"/products/#{@product.id}?#{[mode: "products"]}"} variant={:subtle}>
-        Merge into another product…
+      <.button href={~p"/products/#{@product.id}/edit"} variant={:subtle}>
+        Edit
       </.button>
     </:actions>
   </.page_header>

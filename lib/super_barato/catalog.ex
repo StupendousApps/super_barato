@@ -590,6 +590,7 @@ defmodule SuperBarato.Catalog do
       |> apply_product_ean_filter(opts[:ean])
       |> apply_product_app_category_filter(opts[:app_category])
       |> apply_product_app_subcategory_filter(opts[:app_subcategory])
+      |> apply_product_uncategorized_filter(opts[:uncategorized])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -646,6 +647,23 @@ defmodule SuperBarato.Catalog do
       where: s.slug == ^slug,
       distinct: true
   end
+
+  # "Uncategorized" filter — products with no ChainListing whose
+  # ChainCategory has a CategoryMapping. Useful for triaging the
+  # long tail.
+  defp apply_product_uncategorized_filter(query, true) do
+    mapped =
+      from pl in ProductListing,
+        join: clc in ChainListingCategory,
+        on: clc.chain_listing_id == pl.chain_listing_id,
+        join: cm in CategoryMapping,
+        on: cm.chain_category_id == clc.chain_category_id,
+        select: pl.product_id
+
+    from p in query, where: p.id not in subquery(mapped)
+  end
+
+  defp apply_product_uncategorized_filter(query, _), do: query
 
   defp apply_product_app_category_filter(query, slug) when slug in [nil, ""], do: query
 
@@ -724,45 +742,100 @@ defmodule SuperBarato.Catalog do
   broken alphabetically on subcategory name (stable + cheap).
   """
   def categories_by_product_ids(product_ids) when is_list(product_ids) do
-    rows =
+    # Manual overrides win — fetch them first.
+    overrides =
       Repo.all(
-        from pl in ProductListing,
-          join: clc in ChainListingCategory,
-          on: clc.chain_listing_id == pl.chain_listing_id,
-          join: cm in CategoryMapping,
-          on: cm.chain_category_id == clc.chain_category_id,
+        from p in Product,
           join: s in AppSubcategory,
-          on: s.id == cm.app_subcategory_id,
+          on: s.id == p.app_subcategory_id,
           join: ac in AppCategory,
           on: ac.id == s.app_category_id,
-          where: pl.product_id in ^product_ids,
-          group_by: [pl.product_id, ac.slug, ac.name, s.slug, s.name],
+          where: p.id in ^product_ids,
           select: %{
-            product_id: pl.product_id,
+            product_id: p.id,
             cat_slug: ac.slug,
             cat_name: ac.name,
             sub_slug: s.slug,
-            sub_name: s.name,
-            count: count()
+            sub_name: s.name
           }
       )
+      |> Map.new(fn r ->
+        {r.product_id,
+         %{
+           cat_slug: r.cat_slug,
+           cat_name: r.cat_name,
+           sub_slug: r.sub_slug,
+           sub_name: r.sub_name
+         }}
+      end)
 
-    rows
-    |> Enum.group_by(& &1.product_id)
-    |> Map.new(fn {pid, group} ->
-      best =
-        group
-        |> Enum.sort_by(&{-&1.count, &1.sub_name})
-        |> List.first()
+    # Derive consensus only for products without a manual override.
+    derive_for = product_ids -- Map.keys(overrides)
 
-      {pid,
-       %{
-         cat_slug: best.cat_slug,
-         cat_name: best.cat_name,
-         sub_slug: best.sub_slug,
-         sub_name: best.sub_name
-       }}
-    end)
+    rows =
+      if derive_for == [] do
+        []
+      else
+        Repo.all(
+          from pl in ProductListing,
+            join: clc in ChainListingCategory,
+            on: clc.chain_listing_id == pl.chain_listing_id,
+            join: cm in CategoryMapping,
+            on: cm.chain_category_id == clc.chain_category_id,
+            join: s in AppSubcategory,
+            on: s.id == cm.app_subcategory_id,
+            join: ac in AppCategory,
+            on: ac.id == s.app_category_id,
+            where: pl.product_id in ^derive_for,
+            group_by: [pl.product_id, ac.slug, ac.name, s.slug, s.name],
+            select: %{
+              product_id: pl.product_id,
+              cat_slug: ac.slug,
+              cat_name: ac.name,
+              sub_slug: s.slug,
+              sub_name: s.name,
+              count: count()
+            }
+        )
+      end
+
+    derived =
+      rows
+      |> Enum.group_by(& &1.product_id)
+      |> Map.new(fn {pid, group} ->
+        best =
+          group
+          |> Enum.sort_by(&{-&1.count, &1.sub_name})
+          |> List.first()
+
+        {pid,
+         %{
+           cat_slug: best.cat_slug,
+           cat_name: best.cat_name,
+           sub_slug: best.sub_slug,
+           sub_name: best.sub_name
+         }}
+      end)
+
+    Map.merge(derived, overrides)
+  end
+
+  @doc """
+  Loads every AppCategory with its subcategories preloaded, in
+  display order. Powers the cascading category/subcategory dropdowns
+  on the product edit form.
+  """
+  def app_categories_with_subcategories do
+    Repo.all(
+      from c in AppCategory,
+        order_by: [asc: c.position, asc: c.name],
+        preload: [
+          subcategories:
+            ^from(s in AppSubcategory,
+              order_by: [asc: s.position, asc: s.name]
+            )
+        ]
+    )
   end
 
   @doc """

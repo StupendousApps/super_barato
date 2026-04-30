@@ -14,7 +14,7 @@ defmodule SuperBaratoWeb.Admin.ProductController do
   def index(conn, params) do
     q = params["q"] || ""
     ean = params["ean"] || ""
-    {app_category, app_subcategory} = parse_taxonomy(params["taxonomy"])
+    {app_category, app_subcategory, uncategorized} = parse_taxonomy(params["taxonomy"])
     sort = params["sort"] || "-updated_at"
     page = parse_int(params["page"], 1)
     per_page = parse_int(params["per_page"], 25)
@@ -25,6 +25,7 @@ defmodule SuperBaratoWeb.Admin.ProductController do
         ean: ean,
         app_category: app_category,
         app_subcategory: app_subcategory,
+        uncategorized: uncategorized,
         sort: sort,
         page: page,
         per_page: per_page
@@ -148,6 +149,48 @@ defmodule SuperBaratoWeb.Admin.ProductController do
     |> render(:show)
   end
 
+  def edit(conn, %{"id" => id}) do
+    product = SuperBarato.Repo.get!(SuperBarato.Catalog.Product, id)
+    changeset = SuperBarato.Catalog.Product.changeset(product, %{})
+
+    conn
+    |> assign(:top_nav, :products)
+    |> assign(:product, product)
+    |> assign(:changeset, changeset)
+    |> assign(:categories, Catalog.app_categories_with_subcategories())
+    |> assign(:page_title, "Edit · #{product.canonical_name}")
+    |> render(:edit)
+  end
+
+  def update(conn, %{"id" => id, "product" => attrs}) do
+    product = SuperBarato.Repo.get!(SuperBarato.Catalog.Product, id)
+
+    # Empty subcategory_id from the form clears the override.
+    attrs =
+      case Map.get(attrs, "app_subcategory_id") do
+        "" -> Map.put(attrs, "app_subcategory_id", nil)
+        _ -> attrs
+      end
+
+    changeset = SuperBarato.Catalog.Product.changeset(product, attrs)
+
+    case SuperBarato.Repo.update(changeset) do
+      {:ok, _product} ->
+        conn
+        |> put_flash(:info, "Updated.")
+        |> redirect(to: ~p"/products/#{id}")
+
+      {:error, changeset} ->
+        conn
+        |> assign(:top_nav, :products)
+        |> assign(:product, product)
+        |> assign(:changeset, changeset)
+        |> assign(:categories, Catalog.app_categories_with_subcategories())
+        |> assign(:page_title, "Edit · #{product.canonical_name}")
+        |> render(:edit)
+    end
+  end
+
   def link_listing(conn, %{"id" => id, "listing_id" => listing_id} = params) do
     SuperBarato.Repo.get!(SuperBarato.Catalog.Product, id)
     SuperBarato.Repo.get!(SuperBarato.Catalog.ChainListing, listing_id)
@@ -207,18 +250,19 @@ defmodule SuperBaratoWeb.Admin.ProductController do
           end)
       end)
 
-    [{"All", ""} | rows]
+    [{"All", ""}, {"Uncategorized", "none"} | rows]
   end
 
   # Translate the combined dropdown's value back into a
-  # (category, subcategory) pair. Unknown / empty inputs collapse to
-  # {"", ""} which `Catalog.list_products_page/1` treats as no
-  # filter.
-  defp parse_taxonomy(nil), do: {"", ""}
-  defp parse_taxonomy(""), do: {"", ""}
-  defp parse_taxonomy("c:" <> slug), do: {slug, ""}
-  defp parse_taxonomy("s:" <> slug), do: {"", slug}
-  defp parse_taxonomy(_), do: {"", ""}
+  # (category, subcategory, uncategorized?) tuple. Unknown / empty
+  # inputs collapse to {"", "", false} which
+  # `Catalog.list_products_page/1` treats as no filter.
+  defp parse_taxonomy(nil), do: {"", "", false}
+  defp parse_taxonomy(""), do: {"", "", false}
+  defp parse_taxonomy("none"), do: {"", "", true}
+  defp parse_taxonomy("c:" <> slug), do: {slug, "", false}
+  defp parse_taxonomy("s:" <> slug), do: {"", slug, false}
+  defp parse_taxonomy(_), do: {"", "", false}
 
   defp parse_chain(nil), do: nil
   defp parse_chain(""), do: nil

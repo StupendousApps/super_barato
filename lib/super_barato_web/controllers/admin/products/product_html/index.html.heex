@@ -47,20 +47,12 @@
       sort_href={sort_href(~p"/products", @filters, "canonical_name", @sort)}
     >
       <div><.link href={~p"/products/#{p.id}"}>{p.canonical_name}</.link></div>
-      <div :if={p.brand} class="cell-secondary">{p.brand}</div>
-    </:col>
-
-    <:col :let={p} label="EAN(s)" nowrap>
       <% eans = Map.get(@eans_by_product_id, p.id, []) %>
-      <%= case eans do %>
-        <% [] -> %>
-          —
-        <% [one] -> %>
-          {one}
-        <% [first | rest] -> %>
-          <div>{first}</div>
-          <div class="cell-secondary">+{length(rest)} more</div>
-      <% end %>
+      <% secondary =
+        [p.brand | eans]
+        |> Enum.reject(&(&1 in [nil, ""]))
+        |> Enum.join(" · ") %>
+      <div :if={secondary != ""} class="cell-secondary">{secondary}</div>
     </:col>
 
     <%!-- Category drilldown — top line is the (most-common) app
@@ -80,25 +72,28 @@
       <% end %>
     </:col>
 
-    <:col :let={p} label="Listings" nowrap align={:right}>
-      {length(Map.get(@listings_by_product_id, p.id, []))}
-    </:col>
-
-    <%!-- One column per known chain — current effective price, or "—" if
-         the product isn't linked on that chain. Same struck-regular +
-         promo treatment as the listings table when a promo applies. --%>
-    <:col :let={p} :for={chain <- @chains} label={chain_label(chain)} nowrap align={:right}>
+    <%!-- One row per linked chain — small chain badge alongside the
+         current effective price. Same struck-regular + promo treatment
+         as the listings table when a promo applies. --%>
+    <:col :let={p} label="Prices" nowrap>
       <% listings = Map.get(@listings_by_product_id, p.id, []) %>
-      <%= case listing_for_chain(listings, chain) do %>
-        <% nil -> %>
+      <%= case listings do %>
+        <% [] -> %>
           <span class="cell-secondary">—</span>
-        <% l -> %>
-          <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
-            <div class="listings-table__price-promo">{format_clp(l.current_promo_price)}</div>
-            <div class="listings-table__price">{format_clp(l.current_regular_price)}</div>
-          <% else %>
-            <div class="listings-table__price-promo">{format_clp(l.current_regular_price)}</div>
-          <% end %>
+        <% _ -> %>
+          <div style="display: grid; grid-template-columns: auto auto; gap: 0.15rem 0.5rem; align-items: baseline;">
+            <%= for chain <- @chains, l = listing_for_chain(listings, chain), not is_nil(l) do %>
+              <.chain_badge chain={chain} />
+              <%= if l.current_promo_price && l.current_regular_price && l.current_promo_price < l.current_regular_price do %>
+                <div>
+                  <span class="listings-table__price-promo">{format_clp(l.current_promo_price)}</span>
+                  <span class="listings-table__price">{format_clp(l.current_regular_price)}</span>
+                </div>
+              <% else %>
+                <span class="listings-table__price-promo">{format_clp(l.current_regular_price)}</span>
+              <% end %>
+            <% end %>
+          </div>
       <% end %>
     </:col>
   </.table>

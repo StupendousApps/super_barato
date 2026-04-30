@@ -1,0 +1,82 @@
+<.admin_container>
+  <.page_header title={"Edit · " <> @product.canonical_name}>
+    <:back href={~p"/products/#{@product.id}"}>Back to product</:back>
+  </.page_header>
+
+  <% form = to_form(@changeset, as: :product) %>
+  <% selected_sub = form[:app_subcategory_id].value %>
+  <% selected_cat_slug =
+    case Enum.find(
+           @categories,
+           fn c -> Enum.any?(c.subcategories, &(to_string(&1.id) == to_string(selected_sub))) end
+         ) do
+      nil -> ""
+      c -> c.slug
+    end %>
+
+  <.stupendous_form for={form} action={~p"/products/#{@product.id}"} method="put" width={:regular}>
+    <.form_errors form={form} />
+
+    <.input field={form[:canonical_name]} label="Name" />
+    <.input field={form[:brand]} label="Brand" />
+
+    <%!-- Category dropdown — not a real form field; only used as a
+         filter for the subcategory <select>. The actual persisted
+         value is `app_subcategory_id`. Inline JS below hides
+         subcategory <option>s whose `data-cat-slug` doesn't match. --%>
+    <.input
+      name="category_filter"
+      type="select"
+      value={selected_cat_slug}
+      label="Category"
+      id="product-category-filter"
+      options={[{"—", ""} | Enum.map(@categories, &{&1.name, &1.slug})]}
+    />
+
+    <.input
+      field={form[:app_subcategory_id]}
+      type="select"
+      label="Subcategory"
+      id="product-subcategory-select"
+      prompt="—"
+      options={
+        Enum.flat_map(@categories, fn cat ->
+          Enum.map(cat.subcategories, fn sub ->
+            [key: sub.name, value: sub.id, "data-cat-slug": cat.slug]
+          end)
+        end)
+      }
+    />
+
+    <:footer>
+      <.button type="submit" variant={:primary}>Save</.button>
+      <.button href={~p"/products/#{@product.id}"} variant={:subtle}>Cancel</.button>
+    </:footer>
+  </.stupendous_form>
+</.admin_container>
+
+<script>
+  (() => {
+    const cat = document.getElementById('product-category-filter');
+    const sub = document.getElementById('product-subcategory-select');
+    if (!cat || !sub) return;
+
+    const update = () => {
+      const wanted = cat.value;
+      let cleared = false;
+      Array.from(sub.options).forEach((opt) => {
+        const slug = opt.dataset.catSlug;
+        // Always allow the empty/prompt option.
+        if (!slug) return;
+        const show = !wanted || slug === wanted;
+        opt.hidden = !show;
+        opt.disabled = !show;
+        if (!show && opt.selected) cleared = true;
+      });
+      if (cleared) sub.value = '';
+    };
+
+    cat.addEventListener('change', update);
+    update();
+  })();
+</script>
