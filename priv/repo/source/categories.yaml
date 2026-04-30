@@ -25,6 +25,9 @@
           - frutas-y-verduras/frutas/otras-frutas/22884697_93034836_18835024
           - frutas-y-verduras/frutas/platanos-y-tropicales/22884697_93034836_25986881
           - frutas-y-verduras/frutas/uvas-y-berries/22884697_93034836_71576040
+        santa_isabel:
+          - frutas-y-verduras/frutas/fruta
+          - frutas-y-verduras/frutas
         tottus:
           - CATG27586/Paltas
           - CATG27591/Frutas-de-Estacion
@@ -58,6 +61,10 @@
           - frutas-y-verduras/verduras/tomates/22884697_56981658_49906391
           - frutas-y-verduras/verduras/zapallos-zanahorias-y-berenjena/22884697_56981658_21660014
           - frutas-y-verduras/verduras/repollo-brocoli-y-coliflor/22884697_56981658_85528760
+        santa_isabel:
+          - frutas-y-verduras/verduras/verdura
+          - frutas-y-verduras/verduras/ensaladas
+          - frutas-y-verduras/verduras
         tottus:
           - CATG27578/Apio-Repollo-y-Hojas
           - CATG27574/Cebollas-y-Zanahorias
@@ -86,6 +93,12 @@
         lider:
           - marcas-propias/complementos-y-snacks/frutos-secos/69507955_82726189_29583494
           - frutas-y-verduras/frutos-secos/22884697_77940868
+        santa_isabel:
+          - chocolates-galletas-y-snacks/snacks/mani-y-frutos-secos
+          - frutas-y-verduras/frutos-secos-y-semillas/frutos-secos
+          - frutas-y-verduras/frutos-secos-y-semillas/frutas-deshidratadas
+          - frutas-y-verduras/frutos-secos-y-semillas
+          - frutas-y-verduras/frutos-secos-y-semillas/semillas-y-granos
         tottus:
           - CATG27672/Frutos-Secos-y-Deshidratados
           - CATG27597/Ciruelas-y-Otros-Frutos
@@ -120,6 +133,9 @@
           - carnes-y-pescados/vacuno/carnes-para-parrilla/21856785_29265944_50526969
           - marcas-propias/hay-carnes/vacuno/69507955_18040839_50364342
           - carnes-y-pescados/vacuno/carnes-molidas/21856785_29265944_68501092
+        santa_isabel:
+          - lacteos-huevos-y-congelados/churrascos-lomitos-y-otros/churrascos-y-lomitos
+          - lacteos-huevos-y-congelados/churrascos-lomitos-y-otros/carpaccios-y-otros
         tottus:
           - CATG27402/Vacuno
           - CATG27416/Churrascos
@@ -160,6 +176,11 @@
           - carnes-y-pescados/pollo/pechuga-y-filetitos-de-pollo/21856785_36612818_49820290
           - carnes-y-pescados/pollo/pollo-sin-marinar/21856785_36612818_73535774
           - carnes-y-pescados/pollo/pollo-asado/21856785_36612818_85138768
+        santa_isabel:
+          - carnes-y-pescados/pollo/filetes-y-pechugas-de-pollo
+          - carnes-y-pescados/pollo/alitas-y-trutros-de-pollo
+          - carnes-y-pescados/pollo/pollo-entero
+          - carnes-y-pescados/pollo
         tottus:
           - CATG27346/Trutros-de-Pollo
           - CATG27404/Pollo
@@ -194,6 +215,13 @@
           - carnes-y-pescados/cerdo/pulpa/21856785_97025819_35224679
           - carnes-y-pescados/cordero/21856785_32675613
           - marcas-propias/hay-carnes/cerdo-y-pollo/69507955_18040839_40233530
+        santa_isabel:
+          - carnes-y-pescados/cerdo-y-cordero/pulpa-y-lomo-de-cerdo
+          - carnes-y-pescados/cerdo-y-cordero/chuletas-y-filetes
+          - carnes-y-pescados/cerdo-y-cordero/costillar-y-costillitas
+          - carnes-y-pescados/cerdo-y-cordero/malaya-y-otros-cortes
+          - carnes-y-pescados/cerdo-y-cordero
+          - carnes-y-pescados/cerdo-y-cordero/cordero
         tottus:
           - CATG27343/Cortes-Parrilleros-de-Cerdo
           - CATG27340/Costillar-y-Costillitas
@@ -220,6 +248,9 @@
           - carnes-y-pescados/pavo
         lider:
           - carnes-y-pescados/pavo/21856785_66365889
+        santa_isabel:
+          - carnes-y-pescados/pavo/carne-molida-y-albondigas-de-pavo
+          - carnes-y-pescados/pavo/trutros-y-bistec-de-pavo
         tottus:
           - CATG27405/Pavo
         unimarc:
@@ -248,6 +279,9 @@
           - carnes-y-pescados/pescados-y-mariscos/otros-pescados/21856785_89519682_38823790
           - carnes-y-pescados/pescados-y-mariscos/atun/21856785_89519682_12298061
           - carnes-y-pescados/pescados-y-mariscos/camaron/21856785_89519682_92610187
+        santa_isabel:
+          - carnes-y-pescados/camarones/camarones-cocidos
+          - carnes-y-pescados/gourmet-del-mar
         tottus:
           - CATG27422/Salmon
           - CATG27423/Merluza--Reineta-y-Otros-Pescados
@@ -273,6 +307,10 @@
           - marcas-propias/hay-carnes/parrilleros-y-salchichas/69507955_18040839_53169836
           - carnes-y-pescados/para-parrilla/salchichas/21856785_96130591_17828745
           - carnes-y-pescados/para-parrilla/parrilleros/21856785_96130591_58087468
+        santa_isabel:
+          - quesos-y-fiambres/salchichas-y-parrilleros/salchichas
+          - quesos-y-fiambres/salchichas-y-parrilleros/butifarras-y-longanicillas
+          - quesos-y-fiambres/salchichas-y-parrilleros/prietas
         tottus:
           - CATG27487/Chorizos
           - CATG27761/Cerdo
@@ -312,6 +350,10 @@
           - salud-y-estilos-de-vida/sin-lactosa/leches-sin-lactosa/60967524_83861841_28309684
           - colaciones/leches-colacion/49858221_52536805
           - marcas-propias/lacteos/saborizantes/69507955_81156032_59213502
+        santa_isabel:
+          - lacteos-huevos-y-congelados/leches/leche-liquida
+          - lacteos-huevos-y-congelados/leches/leche-en-polvo
+          - despensa/harinas-postres-y-reposteria/leches-condensadas-y-evaporadas
         tottus:
           - CATG27522/Leches-Individuales
           - CATG27530/Leche-en-Polvo-y-Saborizante
@@ -359,6 +401,17 @@
           - colaciones/yoghurt/49858221_10191488
           - frescos-y-lacteos/yoghurt/trozos/45669105_59066660_12258832
           - salud-y-estilos-de-vida/proteina/lacteos-proteicos/60967524_94901070_53830647
+        santa_isabel:
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-batido
+          - lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas/bebidas-lacteas-y-probioticos
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-con-proteinas
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-light-y-sin-azucar
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-natural-y-griego
+          - lacteos-huevos-y-congelados/leches-cultivadas-y-bebidas-lacteas/leches-cultivadas
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-sin-lactosa
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-con-cereales
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-trozos-y-frutas
+          - lacteos-huevos-y-congelados/yoghurt
         tottus:
           - CATG27511/Yoghurt-Individual
           - CATG27512/Yoghurt-Familiares
@@ -392,6 +445,10 @@
           - lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantecas
         lider:
           - frescos-y-lacteos/mantequillas-y-margarinas/45669105_15064481
+        santa_isabel:
+          - lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantequillas
+          - lacteos-huevos-y-congelados/mantequillas-y-margarinas/margarinas
+          - lacteos-huevos-y-congelados/mantequillas-y-margarinas/mantecas
         tottus:
           - CATG27519/Mantequillas
           - CATG27520/Margarinas
@@ -407,6 +464,8 @@
           - frescos-y-lacteos/07/leches-y-cremas/0703/cremas/070308
         lider:
           - frescos-y-lacteos/cremas/45669105_27824002
+        santa_isabel:
+          - despensa/harinas-postres-y-reposteria/cremas
         tottus:
           - CATG27192/Cremas
         unimarc:
@@ -436,6 +495,10 @@
           - frescos-y-lacteos/postres-refrigerados/postres-cremosos/45669105_15349134_39105273
           - frescos-y-lacteos/postres-refrigerados/leche-asada-y-arroz-con-leche/45669105_15349134_75960253
           - frescos-y-lacteos/postres-refrigerados/semola/45669105_15349134_41710927
+        santa_isabel:
+          - lacteos-huevos-y-congelados/postres-refrigerados/postres
+          - lacteos-huevos-y-congelados/postres-refrigerados/jaleas-y-compotas
+          - lacteos-huevos-y-congelados/postres-refrigerados/flanes
         tottus:
           - CATG27535/Otros-Postres
           - CATG27532/Jaleas
@@ -462,6 +525,9 @@
           - salud-y-estilos-de-vida/a-base-de-plantas/bebidas-vegetales/60967524_91601784_39918887
           - salud-y-estilos-de-vida/a-base-de-plantas/sucedaneos-de-lacteos/60967524_91601784_53904357
           - frescos-y-lacteos/quesos/veganos/45669105_72564080_93322279
+        santa_isabel:
+          - lacteos-huevos-y-congelados/bebidas-vegetales
+          - lacteos-huevos-y-congelados/yoghurt/yoghurt-vegetal
         tottus:
           - CATG27510/Otras-Bebidas-Vegetales
           - CATG27508/Bebidas-de-Almendras
@@ -509,6 +575,14 @@
           - frescos-y-lacteos/quesos/cheddar/45669105_72564080_52422189
           - marcas-propias/lacteos/queso-mantecoso-y-gauda/69507955_81156032_26642716
           - salud-y-estilos-de-vida/sin-lactosa/quesos-sin-lactosa/60967524_83861841_36402149
+        santa_isabel:
+          - quesos-y-fiambres/quesos/mantecosos-y-chanco
+          - quesos-y-fiambres/quesos/especiales-y-tablas-de-quesos
+          - quesos-y-fiambres/quesos/gauda
+          - quesos-y-fiambres/quesos/rallados-y-granulados
+          - quesos-y-fiambres/quesos/chacras-frescos-y-quesillos
+          - quesos-y-fiambres/quesos/crema-y-untables
+          - quesos-y-fiambres/quesos/vegano-y-tofu
         tottus:
           - CATG27497/Quesos-Especiales
           - CATG27495/Queso-Mantecoso
@@ -554,6 +628,14 @@
           - frescos-y-lacteos/fiambres-y-embutidos/pates/45669105_22196003_13863897
           - frescos-y-lacteos/fiambres-y-embutidos/mortadela-y-otros/45669105_22196003_85629212
           - marcas-propias/desayuno/fiambreria/69507955_77670911_50822530
+        santa_isabel:
+          - quesos-y-fiambres/fiambres/jamones
+          - quesos-y-fiambres/salchichas-y-parrilleros/longanizas-y-chorizos
+          - quesos-y-fiambres/fiambres/salames-y-tocinos
+          - quesos-y-fiambres/fiambres/pate
+          - quesos-y-fiambres/fiambres/mortadelas-arrollados-y-otros
+          - quesos-y-fiambres/fiambres/pechuga-de-pavo-y-pollo
+          - quesos-y-fiambres/fiambres/jamon-serrano-lomo-kassler-y-otros
         tottus:
           - CATG27492/Salame
           - CATG27270/Pates
@@ -589,6 +671,10 @@
           - bebidas-y-snacks/aguas/mineral-o-purificada/13901022_67311042_94721204
           - bebidas-y-snacks/aguas/saborizadas/13901022_67311042_23922996
           - bebidas-y-snacks/aguas/individuales/13901022_67311042_63260507
+        santa_isabel:
+          - botilleria/aguas/agua-saborizada
+          - botilleria/aguas/agua-purificada
+          - botilleria/aguas/aguas-minerales
         tottus:
           - CATG27600/Aguas-Saborizadas-y-Especiales
           - CATG27598/Agua-Mineral
@@ -614,6 +700,10 @@
           - bebidas-y-snacks/bebidas/regulares/13901022_56657077_93029006
           - bebidas-y-snacks/bebidas/light-y-zero/13901022_56657077_36914852
           - bebidas-y-snacks/bebidas/retornables/13901022_56657077_33265335
+        santa_isabel:
+          - botilleria/bebidas-gaseosas/bebidas-en-lata-e-individuales
+          - botilleria/bebidas-gaseosas/bebidas-regulares
+          - botilleria/bebidas-gaseosas/bebidas-light-o-zero-azucar
         tottus:
           - CATG27605/Bebidas-Regulares
           - CATG27606/Bebidas-Light-y-Zero
@@ -649,6 +739,11 @@
           - marcas-propias/dulce-momento/jugos-y-aguas/69507955_60951885_26113337
           - bebidas-y-snacks/jugos/colaciones/13901022_61163586_54484975
           - bebidas-y-snacks/refrigerados/jugos-prensados/13901022_41934663_28248986
+        santa_isabel:
+          - botilleria/jugos/jugos-y-nectar
+          - botilleria/jugos/jugos-individuales
+          - botilleria/jugos/jugos-en-polvo
+          - botilleria/jugos/jugos-frescos
         tottus:
           - CATG27602/Jugos-Naturales-y-Refrigerados
           - CATG27603/Colaciones
@@ -675,6 +770,10 @@
           - bebidas-y-snacks/bebidas-funcionales/13901022_63687960
           - bebidas-y-snacks/bebidas-funcionales/isotonicas-y-sueros/13901022_63687960_19981018
           - bebidas-y-snacks/bebidas-funcionales/energeticas/13901022_63687960_66329784
+        santa_isabel:
+          - botilleria/bebidas-energeticas
+          - botilleria/bebidas-isotonicas-y-sueros/bebidas-isotonicas
+          - botilleria/bebidas-isotonicas-y-sueros/sueros
         tottus:
           - CATG27608/Isotonicas
           - CATG27609/Energeticas
@@ -691,6 +790,10 @@
           - licores-bebidas-y-aguas/infusiones-frias/kombucha
         lider:
           - bebidas-y-snacks/bebidas-funcionales/te-helado/13901022_63687960_65545662
+        santa_isabel:
+          - botilleria/infusiones-frias/te-helado
+          - botilleria/jugos/limonadas
+          - botilleria/infusiones-frias/kombucha
         tottus:
           - CATG27611/Limonadas-y-Otros
           - CATG27610/Te-Liquido
@@ -719,6 +822,10 @@
         lider:
           - la-boti/cerveza/60338008_25254512
           - la-boti/preparalo-tu-mismo/michelada/60338008_59156238_71316960
+        santa_isabel:
+          - botilleria/cervezas/cervezas-tradicionales
+          - botilleria/cervezas/cervezas-artesanales
+          - botilleria/cervezas/cervezas-destacadas
         tottus:
           - CATG27206/Cervezas-Artesanales
           - CATG27207/Cervezas-Premium
@@ -761,6 +868,12 @@
           - la-boti/vinos-y-espumantes-3x/combina-3x-6990/60338008_77596990_78909989
           - la-boti/preparalo-tu-mismo/sangria/60338008_59156238_24978901
           - la-boti/vinos/individuales/60338008_85836428_91269168
+        santa_isabel:
+          - botilleria/vinos/vinos-tintos
+          - botilleria/vinos/vinos-blancos
+          - botilleria/vinos/sangria-coctel-de-vino-y-coolers
+          - botilleria/vinos/vinos-late-harvest
+          - botilleria/vinos/vinos-rose
         tottus:
           - CATG27537/Cabernet-Sauvignon
           - CATG27536/Carmenere
@@ -799,6 +912,8 @@
           - la-boti/espumantes/demi-sec/60338008_75569554_36906818
           - la-boti/espumantes/saborizados/60338008_75569554_56792112
           - la-boti/vinos/sangria-y-sidra/60338008_85836428_70471944
+        santa_isabel:
+          - botilleria/espumantes-y-sidras
         tottus:
           - CATG27553/Otros
           - CATG27549/Brut-y-Extra-Brut
@@ -857,6 +972,23 @@
           - la-boti/preparalo-tu-mismo/mojito/60338008_59156238_86016342
           - la-boti/coctel/vermouth/60338008_30587707_12773651
           - soy-pyme/aguas-bebidas-y-licores/licores-y-espumantes/52660800_37604048_16055025
+        santa_isabel:
+          - botilleria/destilados/pisco
+          - botilleria/cocteles/mango-y-pisco-sour
+          - botilleria/destilados/whisky
+          - botilleria/cocteles/coctel-ice-y-ready-to-drink
+          - botilleria/destilados/ron
+          - botilleria/destilados/gin
+          - botilleria/destilados/vodka
+          - botilleria/cocteles/pina-colada-y-otros
+          - botilleria/licores-y-spritz/spritz
+          - botilleria/licores-y-spritz/bajativos
+          - botilleria/licores-y-spritz/fernet-y-licores-de-hierba
+          - botilleria/destilados/tequila-y-mezcal
+          - botilleria/cocteles/mojitos-y-margaritas
+          - botilleria/licores-y-spritz/licores-de-crema
+          - botilleria/licores-y-spritz/vermouth
+          - botilleria/destilados/aguardiente-y-cachaza
         tottus:
           - CATG27557/Licores
           - CATG27560/Pisco
@@ -886,6 +1018,9 @@
         lider:
           - la-boti/preparalo-tu-mismo/gin-tonic/60338008_59156238_84982572
           - bebidas-y-snacks/bebidas/mixer/13901022_56657077_35603134
+        santa_isabel:
+          - botilleria/agua-tonica-y-ginger-beer/agua-tonica
+          - botilleria/agua-tonica-y-ginger-beer/ginger-beer
     - name: Sin Alcohol
       slug: sin-alcohol
       id: e92dac25
@@ -895,6 +1030,8 @@
           - el-bar/80/sin-alcohol/8004
         lider:
           - la-boti/sin-alcohol/60338008_15483971
+        santa_isabel:
+          - botilleria/cervezas/cervezas-sin-alcohol
 
 - name: Despensa
   slug: despensa
@@ -919,6 +1056,9 @@
           - marcas-propias/despensa/aceites/69507955_88445154_48979390
           - despensa/aceites-y-aderezos/aceites/46589040_87511978_20015838
           - marcas-propias/complementos-y-snacks/alinos/69507955_82726189_74596728
+        santa_isabel:
+          - despensa/aceites-sal-y-condimentos/aceites-de-oliva
+          - despensa/aceites-sal-y-condimentos/aceite
         tottus:
           - CATG27299/Aceites-de-Oliva
           - CATG27321/Vinagres-y-Sucedaneos
@@ -947,6 +1087,10 @@
           - marcas-propias/complementos-y-snacks/condimentos/69507955_82726189_70356718
           - despensa/aceites-y-aderezos/46589040_87511978
           - despensa/aceites-y-aderezos/condimentos/46589040_87511978_89739338
+        santa_isabel:
+          - despensa/aceites-sal-y-condimentos/condimentos
+          - despensa/aceites-sal-y-condimentos/sal
+          - despensa/aceites-sal-y-condimentos/acetos-balsamicos
         tottus:
           - CATG27320/Condimentos
           - CATG27318/Sal
@@ -986,6 +1130,16 @@
           - despensa/salsas/ketchup/46589040_47278253_63766474
           - despensa/salsas/mostaza/46589040_47278253_31552960
           - marcas-americanas/complementos/aderezos/27359988_46428809_14539722
+        santa_isabel:
+          - despensa/aderezos-y-salsas/aderezos-salsas-soya-y-otros
+          - despensa/aderezos-y-salsas/mayonesa
+          - despensa/fideos-pastas-y-salsas/salsas-para-pastas
+          - despensa/aderezos-y-salsas/aji-y-salsas-picantes
+          - despensa/aderezos-y-salsas/ketchup
+          - despensa/aderezos-y-salsas/mostazas
+          - chocolates-galletas-y-snacks/pastas-para-coctel-y-untables/salsas-y-dip-untables
+          - chocolates-galletas-y-snacks/pastas-para-coctel-y-untables/pastas-untables
+          - chocolates-galletas-y-snacks/pastas-para-coctel-y-untables/hummus
         tottus:
           - CATG27325/Otros-Aderezos-y-Salsas
           - CATG27289/Salsas-de-Tomate
@@ -1030,6 +1184,13 @@
           - despensa/arroz-y-legumbres/legumbres/46589040_29552324_61354804
           - marcas-propias/despensa/arroz-y-pure/69507955_88445154_99997805
           - marcas-propias/despensa/legumbres/69507955_88445154_89243297
+        santa_isabel:
+          - despensa/arroz-quinoa-cuscus/arroz
+          - despensa/arroz-quinoa-cuscus/quinoa-cuscus-y-semillas
+          - despensa/arroz-quinoa-cuscus/arroz-preparado
+          - despensa/legumbres/lentejas
+          - despensa/legumbres/porotos
+          - despensa/legumbres/garbanzos-y-arvejas
         tottus:
           - CATG27294/Lentejas-y-Porotos
           - CATG27292/Arroz
@@ -1065,6 +1226,11 @@
           - marcas-propias/despensa/pastas/69507955_88445154_64642233
           - soy-pyme/despensa/pastas-salsas-y-arroz/52660800_84510960_27788126
           - despensa/pastas-y-salsas/lasanas-y-rellenos/46589040_59615139_53114456
+        santa_isabel:
+          - despensa/fideos-pastas-y-salsas/pastas-y-fideos
+          - despensa/fideos-pastas-y-salsas/lasanas-y-rellenos
+          - despensa/fideos-pastas-y-salsas/fideos-integrales-sin-gluten-y-otros
+          - despensa/fideos-pastas-y-salsas/fideos-de-arroz-y-legumbres
         tottus:
           - CATG27284/Pastas-y-Fideos
           - CATG27286/Pastas-sin-Gluten--Integrales-y-Otros
@@ -1097,6 +1263,12 @@
           - despensa/conservas/verduras-en-conserva/46589040_33283038_87516479
           - despensa/conservas/pescados-en-conserva/46589040_33283038_76234655
           - marcas-propias/despensa/conservas-verdura/69507955_88445154_99828535
+        santa_isabel:
+          - despensa/conservas/conservas-de-pescado
+          - despensa/conservas/fruta-en-conserva
+          - despensa/conservas/conservas-de-verduras
+          - despensa/conservas/conservas-de-mariscos
+          - despensa/conservas/conservas-de-carne
         tottus:
           - CATG27301/Pescados-en-Conserva
           - CATG27303/Frutas-en-Conserva
@@ -1124,6 +1296,10 @@
         lider:
           - marcas-propias/complementos-y-snacks/aceitunas-y-pepinillos/69507955_82726189_89435969
           - frutas-y-verduras/verduras/aderezos-y-complementos/22884697_56981658_90407235
+        santa_isabel:
+          - quesos-y-fiambres/aceitunas-pepinillos-y-otros/aceitunas
+          - quesos-y-fiambres/aceitunas-pepinillos-y-otros/pepinillos-y-pickles
+          - quesos-y-fiambres/aceitunas-pepinillos-y-otros/chucrut-y-otros
         tottus:
           - CATG27493/Aceitunas-y-Pickles
           - CATG27673/Aceitunas-y-Pickles
@@ -1143,6 +1319,10 @@
         lider:
           - frescos-y-lacteos/huevos/45669105_43398659
           - marcas-propias/desayuno/huevos/69507955_77670911_67465220
+        santa_isabel:
+          - lacteos-huevos-y-congelados/huevos/huevos-tradicionales
+          - lacteos-huevos-y-congelados/huevos/huevos-de-campo-y-gallina-libre
+          - lacteos-huevos-y-congelados/huevos/huevos-de-codorniz
         tottus:
           - CATG27484/Huevos-Blancos
           - CATG27483/Huevos-de-Color
@@ -1166,6 +1346,10 @@
           - desayunos-y-dulces/dulces-mermeladas-y-manjar/azucar/23483116_35492092_35385017
           - desayunos-y-dulces/dulces-mermeladas-y-manjar/endulzante/23483116_35492092_77562456
           - marcas-propias/desayuno/azucar-y-endulzantes/69507955_77670911_67506565
+        santa_isabel:
+          - despensa/azucar-y-endulzantes/endulzantes
+          - despensa/azucar-y-endulzantes/azucar
+          - despensa/azucar-y-endulzantes
         tottus:
           - CATG27378/Alulosa--Sucralosa-y-Otros
           - CATG27376/Liquidos
@@ -1213,6 +1397,17 @@
           - marcas-propias/despensa/harinas/69507955_88445154_62266742
           - despensa/harinas-y-polvos/harinas-blancas/46589040_37852653_14516025
           - panaderia-y-pasteleria/reposteria/coberturas/73535247_58054857_58622238
+        santa_isabel:
+          - despensa/harinas-postres-y-reposteria/gelatinas-y-flanes
+          - despensa/harinas-postres-y-reposteria/harina-blanca
+          - despensa/harinas-postres-y-reposteria/cacaos-y-premezclas
+          - despensa/harinas-postres-y-reposteria/salsas-para-postres-y-esencias
+          - despensa/harinas-postres-y-reposteria/harina-de-maiz-semola-y-polenta
+          - despensa/harinas-postres-y-reposteria/bizcocho-bases-y-coberturas-de-chocolate
+          - despensa/harinas-postres-y-reposteria/decoraciones-y-toppings
+          - despensa/harinas-postres-y-reposteria/harina-integral-y-otras
+          - despensa/harinas-postres-y-reposteria/polvo-de-hornear-y-levadura
+          - lacteos-huevos-y-congelados/mantequillas-y-margarinas/levadura-fresca
         tottus:
           - CATG27326/Jaleas-Flan-y-Otros
           - CATG27327/Premezclas
@@ -1256,6 +1451,12 @@
           - marcas-propias/despensa/bases-y-caldos/69507955_88445154_78036701
           - despensa/alimentos-instantaneos/pure/46589040_52225904_49849286
           - despensa/pastas-y-salsas/pastas-instantaneas/46589040_59615139_10063499
+        santa_isabel:
+          - despensa/sopas-cremas-e-instantaneos/cremas-y-sopas
+          - despensa/sopas-cremas-e-instantaneos/comida-instantanea
+          - despensa/sopas-cremas-e-instantaneos/caldos
+          - despensa/sopas-cremas-e-instantaneos/bases-y-salsas
+          - despensa/sopas-cremas-e-instantaneos/pure-instantaneo
         tottus:
           - CATG27315/Sopas-y-Cremas
           - CATG27316/Caldos-y-Bases
@@ -1318,6 +1519,20 @@
           - soy-pyme/desayuno-y-dulces/te-cafe-y-endulzantes/52660800_72422692_25412321
           - marcas-americanas/marcas-destacadas/folgers/27359988_58702810_20819193
           - marcas-americanas/marcas-destacadas/our-finest/27359988_58702810_11795138
+        santa_isabel:
+          - despensa/te-infusiones-y-mate/te-negro-ceylan
+          - despensa/cafe-y-cafeteras/cafe-saborizados-y-cremas
+          - despensa/cafe-y-cafeteras/capsulas-de-cafe
+          - lacteos-huevos-y-congelados/leches/saborizantes
+          - despensa/cafe-y-cafeteras/cafe-en-grano
+          - despensa/cafe-y-cafeteras/cafe-liofilizado
+          - despensa/te-infusiones-y-mate/infusiones-y-hierbas
+          - despensa/te-infusiones-y-mate/te-saborizados-y-especiales
+          - despensa/te-infusiones-y-mate/yerba-mate
+          - despensa/cafe-y-cafeteras/cafe-instantaneo
+          - despensa/te-infusiones-y-mate/te-verde
+          - despensa/cafe-y-cafeteras/cafe-descafeinado
+          - despensa/cafe-y-cafeteras/cafeteras-filtros-y-tazas
         tottus:
           - CATG27366/Hierbas-y-Yerbas-Mates
           - CATG27365/Te-Especial-e-Infusiones
@@ -1365,6 +1580,11 @@
           - salud-y-estilos-de-vida/a-base-de-plantas/desayuno-a-base-de-plantas/60967524_91601784_80058452
           - salud-y-estilos-de-vida/sin-gluten/barritas-y-cereales-sin-gluten/60967524_30159201_27316442
           - salud-y-estilos-de-vida/proteina/barritas-y-cereales-proteicos/60967524_94901070_34571296
+        santa_isabel:
+          - despensa/cereales-avenas-y-barras/cereales
+          - despensa/cereales-avenas-y-barras/barras-de-cereal
+          - despensa/cereales-avenas-y-barras/barras-de-proteina
+          - despensa/cereales-avenas-y-barras/avena-y-granola
         tottus:
           - CATG27371/Barras-de-Cereal-y-Proteicas
           - CATG27370/Avenas-y-Granolas
@@ -1403,6 +1623,16 @@
           - salud-y-estilos-de-vida/sin-gluten/galletas-y-dulces-sin-gluten/60967524_30159201_15534315
           - colaciones/galletas-y-snack-colacion/galletas-colacion/49858221_84316329_15554075
           - marcas-propias/complementos-y-snacks/galletas-saladas/69507955_82726189_27674213
+        santa_isabel:
+          - chocolates-galletas-y-snacks/galletas-dulces/galletas-rellenas-y-banadas
+          - chocolates-galletas-y-snacks/galletas-dulces/galletas-tradicionales
+          - chocolates-galletas-y-snacks/galletas-saladas/galletas-de-coctel
+          - chocolates-galletas-y-snacks/galletas-dulces/galletas-mini
+          - chocolates-galletas-y-snacks/galletas-dulces/galletones
+          - chocolates-galletas-y-snacks/galletas-dulces/galletas-de-arroz-y-quinoa
+          - chocolates-galletas-y-snacks/galletas-saladas/galletas-de-soda-y-agua
+          - chocolates-galletas-y-snacks/galletas-saladas/galletas-de-arroz-y-quinoa
+          - chocolates-galletas-y-snacks/galletas-dulces
         tottus:
           - CATG27391/Galletas-Dulces
           - CATG27392/Galletas-Saludables
@@ -1457,6 +1687,17 @@
           - chocolates/tipos/blanco/29989562_39577250_94319913
           - marcas-americanas/dulces-y-snacks/chocolates/27359988_17887579_85536142
           - marcas-americanas/dulces-y-snacks/dulces-y-gomitas/27359988_17887579_15384651
+        santa_isabel:
+          - chocolates-galletas-y-snacks/chocolates/chocolates-en-barra
+          - chocolates-galletas-y-snacks/dulces/gomitas-y-chicles
+          - chocolates-galletas-y-snacks/dulces/calugas-masticables-y-caramelos
+          - chocolates-galletas-y-snacks/chocolates/bombones-y-trufas
+          - chocolates-galletas-y-snacks/chocolates/chocolates-y-tentaciones
+          - chocolates-galletas-y-snacks/dulces/malvas-marshmallows-y-merenguitos
+          - chocolates-galletas-y-snacks/dulces/alfajores-pasteles-y-queques
+          - chocolates-galletas-y-snacks/dulces/barquillos-y-cuchuflis
+          - chocolates-galletas-y-snacks/chocolates/mazapan-y-turrones
+          - chocolates-galletas-y-snacks/chocolates/chocolates-sin-azucar
         tottus:
           - CATG27383/Chocolate-en-Barra
           - CATG27394/Gomitas-y-Masticables
@@ -1501,6 +1742,14 @@
           - frescos-y-lacteos/dulces_mermeladas_y_manjar/miel_y_dulces/45669105_21333127_09156956
           - soy-pyme/desayuno-y-dulces/mermeladas/52660800_72422692_74106407
           - salud-y-estilos-de-vida/a-base-de-plantas/dulces-y-galletas-a-base-de-plantas/60967524_91601784_49766295
+        santa_isabel:
+          - despensa/mermeladas-miel-y-otros/mermeladas
+          - lacteos-huevos-y-congelados/manjar-y-dulce-de-leche/manjar
+          - despensa/mermeladas-miel-y-otros/mantequilla-de-mani-y-cremas-dulces
+          - despensa/mermeladas-miel-y-otros/miel
+          - despensa/mermeladas-miel-y-otros/dulce-membrillo
+          - lacteos-huevos-y-congelados/manjar-y-dulce-de-leche/dulce-de-leche
+          - despensa/mermeladas-miel-y-otros/syrups
         tottus:
           - CATG27379/Mermeladas
           - CATG27118/Manjar
@@ -1546,6 +1795,13 @@
           - bebidas-y-snacks/snacks-y-picoteo/ramitas-sufles-y-mas/13901022_66742898_63723596
           - bebidas-y-snacks/snacks-y-picoteo/tortillas/13901022_66742898_96840690
           - marcas-americanas/dulces-y-snacks/papas-fritas-y-soufles/27359988_17887579_48051229
+        santa_isabel:
+          - chocolates-galletas-y-snacks/snacks/papas-fritas
+          - chocolates-galletas-y-snacks/snacks/ramitas-sufles-y-otros-snacks
+          - chocolates-galletas-y-snacks/snacks/doritos-y-tortillas
+          - chocolates-galletas-y-snacks/snacks/cabritas
+          - chocolates-galletas-y-snacks/snacks/snacks-vegetales
+          - chocolates-galletas-y-snacks/snacks/cocktail-y-tostadas
         tottus:
           - CATG27675/Otros-Snack
           - CATG27670/Papas-Fritas
@@ -1587,6 +1843,11 @@
           - congelados/comidas-congeladas/cockteleria/13010356_98401550_80735507
           - congelados/comidas-congeladas/pizzas-congeladas/13010356_98401550_14539867
           - marcas-propias/nuestras-preparaciones/panaderia/69507955_60983176_81058102
+        santa_isabel:
+          - lacteos-huevos-y-congelados/comidas-congeladas/pizzas-y-pastas-congeladas
+          - lacteos-huevos-y-congelados/comidas-congeladas/quiches-sopaipillas-y-otros
+          - lacteos-huevos-y-congelados/comidas-congeladas/comida-chilena
+          - lacteos-huevos-y-congelados/comidas-congeladas/empanadas-congeladas
         tottus:
           - CATG27128/Pizzas-y-Pizzetas
           - CATG27435/Lasagnas-y-Pastas
@@ -1614,6 +1875,10 @@
           - congelados/hamburguesas-y-churrascos/vegetarianos/13010356_13257607_91758612
           - salud-y-estilos-de-vida/a-base-de-plantas/proteina-a-base-de-plantas/60967524_91601784_42375497
           - marcas-propias/hay-carnes/hamburguesas/69507955_18040839_55608538
+        santa_isabel:
+          - lacteos-huevos-y-congelados/hamburguesas/hamburguesas-de-vacuno
+          - lacteos-huevos-y-congelados/hamburguesas/hamburguesas-vegetales
+          - lacteos-huevos-y-congelados/hamburguesas/hamburguesas-de-pollo
         tottus:
           - CATG27413/Hamburguesas-Carne
           - CATG27415/Hamburguesas-Veggie
@@ -1637,6 +1902,12 @@
           - congelados/hamburguesas-y-churrascos/apanados/13010356_13257607_99116249
           - carnes-y-pescados/pescados-y-mariscos/apanados/21856785_89519682_72708957
           - marcas-propias/congelados/apanados/69507955_76248501_42774529
+        santa_isabel:
+          - carnes-y-pescados/pescados/pescados-apanados
+          - lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/apanados
+          - lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-alitas-de-pollo
+          - lacteos-huevos-y-congelados/nuggets-apanados-y-embutidos/nuggets-y-apanados-de-verduras
+          - carnes-y-pescados/camarones/camarones-apanados
         tottus:
           - CATG27417/Nuggets-y-Croquetas-de-pollo
           - CATG27426/Apanados
@@ -1661,6 +1932,9 @@
           - carnes-y-pescados/mariscos/mariscos-congelados
         lider:
           - marcas-propias/hay-carnes/camarones-y-mariscos/69507955_18040839_91692547
+        santa_isabel:
+          - carnes-y-pescados/pescados/pescados-congelados
+          - carnes-y-pescados/mariscos/mariscos-congelados
         tottus:
           - CATG27421/Camarones
           - CATG27425/Mariscos-Congelados
@@ -1690,6 +1964,14 @@
           - congelados/verduras-y-frutas-congeladas/frutas-congeladas/13010356_19939301_36133902
           - congelados/verduras-y-frutas-congeladas/verduras-congeladas/13010356_19939301_87269140
           - marcas-propias/congelados/frutas/69507955_76248501_42872601
+        santa_isabel:
+          - lacteos-huevos-y-congelados/verduras-congeladas/choclos-arvejas-y-primaveras
+          - lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/frutas-congeladas
+          - lacteos-huevos-y-congelados/verduras-congeladas/otras-verduras
+          - lacteos-huevos-y-congelados/verduras-congeladas/sofritos-y-mix-de-verduras
+          - lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/pulpa-de-fruta
+          - lacteos-huevos-y-congelados/verduras-congeladas/legumbres-congeladas
+          - lacteos-huevos-y-congelados/frutas-y-pulpas-congeladas/smoothies-y-acai
         tottus:
           - CATG27409/Otras-Verduras-Congeladas
           - CATG27406/Choclo-Congelado
@@ -1711,6 +1993,8 @@
           - lacteos-huevos-y-congelados/verduras-congeladas/papas
         lider:
           - congelados/verduras-y-frutas-congeladas/papas-congeladas/13010356_19939301_26661364
+        santa_isabel:
+          - lacteos-huevos-y-congelados/verduras-congeladas/papas
         tottus:
           - CATG27407/Papas-Congeladas
     - name: Helados y Postres
@@ -1740,6 +2024,14 @@
           - marcas-americanas/carnes-y-congelados/27359988_23628340
           - salud-y-estilos-de-vida/a-base-de-plantas/helados-a-base-de-plantas/60967524_91601784_27947079
           - congelados/helados/helados-de-agua/13010356_52337906_32845082
+        santa_isabel:
+          - lacteos-huevos-y-congelados/helados-y-postres/helados-tradicionales
+          - lacteos-huevos-y-congelados/helados-y-postres/helados-premium
+          - lacteos-huevos-y-congelados/helados-y-postres/helados-multipack
+          - lacteos-huevos-y-congelados/helados-y-postres/helados-light-y-sin-azucar
+          - lacteos-huevos-y-congelados/helados-y-postres/postres-y-tortas-heladas
+          - lacteos-huevos-y-congelados/helados-y-postres/helados-de-agua
+          - lacteos-huevos-y-congelados/helados-y-postres
         tottus:
           - CATG27428/Helados-Tradicionales
           - CATG27431/Helados-Multipack
@@ -1765,6 +2057,8 @@
         acuenta:
           - el-bar/80/coctel/8005/complementos/800501
         jumbo:
+          - lacteos-huevos-y-congelados/hielo
+        santa_isabel:
           - lacteos-huevos-y-congelados/hielo
         unimarc:
           - congelados/hielo-helados-y-postres/hielo
@@ -1806,6 +2100,10 @@
           - experiencias-jumbo/comidas-preparadas/pizzas-y-focaccias
         lider:
           - marcas-propias/nuestras-preparaciones/pasta-fresca/69507955_60983176_69950811
+        santa_isabel:
+          - comidas-preparadas/pastas-frescas-y-salsas/pastas-rellenas-y-noquis
+          - comidas-preparadas/pastas-frescas-y-salsas/pastas-largas
+          - comidas-preparadas/pastas-frescas-y-salsas/lasanas
         tottus:
           - CATG27288/Pastas-Frescas-y-Refrigeradas
           - CATG27676/Pizzas-Refrigeradas
@@ -1831,6 +2129,11 @@
           - marcas-propias/nuestras-preparaciones/69507955_60983176
           - marcas-propias/nuestras-preparaciones/coctel/69507955_60983176_22117092
           - marcas-propias/nuestras-preparaciones/ensaladas/69507955_60983176_18307281
+        santa_isabel:
+          - despensa/conservas/comidas-listas
+          - comidas-preparadas/platos-de-fondo
+          - comidas-preparadas
+          - comidas-preparadas/postres-y-frutas
         tottus:
           - CATG27582/Ensaladas-Listas
           - CATG27438/Otras-Comidas-Congeladas
@@ -1868,6 +2171,19 @@
           - panaderia-y-pasteleria/panaderia-envasada/pan-pita/73535247_22477361_29378700
           - panaderia-y-pasteleria/panaderia-envasada/pan-especial/73535247_22477361_93414754
           - panaderia-y-pasteleria/panaderia-envasada/pan-rallado/73535247_22477361_17916289
+        santa_isabel:
+          - panaderia-y-pasteleria/panaderia-envasada/pan-de-molde
+          - panaderia-y-pasteleria/panaderia-envasada/hot-dog-y-hamburguesas
+          - panaderia-y-pasteleria/panaderia-envasada/cocktail-y-tostadas
+          - panaderia-y-pasteleria/panaderia-envasada/pan-pita
+          - panaderia-y-pasteleria/panaderia-envasada/pan-congelado-y-precocido
+          - panaderia-y-pasteleria/panaderia-granel/pan-especial
+          - panaderia-y-pasteleria/panaderia-granel/pan-tradicional
+          - panaderia-y-pasteleria/panaderia-envasada/pan-rallado
+          - panaderia-y-pasteleria/panaderia-envasada/pan-sin-gluten
+          - panaderia-y-pasteleria/panaderia-granel
+          - panaderia-y-pasteleria/panaderia-granel/pan-artesanal
+          - panaderia-y-pasteleria/panaderia-granel/pan-ciabatta
         tottus:
           - CATG27648/Pan-Granel
           - CATG27649/Pan-de-Molde
@@ -1906,6 +2222,10 @@
           - panaderia-y-pasteleria/panaderia-envasada/masas-pizzas-y-empanadas/73535247_22477361_55255262
           - panaderia-y-pasteleria/panaderia-envasada/tortillas/73535247_22477361_17270661
           - marcas-propias/nuestras-preparaciones/masas-listas/69507955_60983176_19185170
+        santa_isabel:
+          - panaderia-y-pasteleria/masas-y-tortillas/tortillas
+          - panaderia-y-pasteleria/masas-y-tortillas/masas-para-pizza
+          - panaderia-y-pasteleria/masas-y-tortillas/masas-empanadas-y-pascualinas
         tottus:
           - CATG27667/Tortillas
           - CATG27666/Masas
@@ -1941,6 +2261,13 @@
           - panaderia-y-pasteleria/pasteleria/alfajores/73535247_90671850_54272476
           - panaderia-y-pasteleria/pasteleria/pan-de-pascua-y-pan-dulce/73535247_90671850_31388464
           - panaderia-y-pasteleria/pasteleria/bases-para-tortas/73535247_90671850_20471163
+        santa_isabel:
+          - panaderia-y-pasteleria/pasteleria/pasteles-galletas-y-masas-dulces
+          - panaderia-y-pasteleria/pasteleria/muffins-queques-y-magdalenas
+          - panaderia-y-pasteleria/pasteleria/tortas
+          - panaderia-y-pasteleria/pasteleria/kuchen-pie-y-tartaletas
+          - panaderia-y-pasteleria/pasteleria/pan-de-pascua
+          - panaderia-y-pasteleria/pasteleria/media-lunas-y-bolleria
         tottus:
           - CATG27661/Galletas-y-Colaciones
           - CATG27659/Masas-y-Hojaldres
@@ -1990,6 +2317,13 @@
           - limpieza-y-aseo/detergentes/jabon-para-ropa/43390617_23557375_49917328
           - limpieza-y-aseo/detergentes/detergente-en-capsula/43390617_23557375_92226884
           - limpieza-y-aseo/mas-sustentables/detergentes-y-suavizantes/43390617_56006489_93405033
+        santa_isabel:
+          - limpieza/limpieza-de-ropa/suavizantes-y-aromatizantes-tela
+          - limpieza/limpieza-de-ropa/prelavado-quitamanchas-y-aprestos
+          - limpieza/limpieza-de-ropa/detergente-liquido
+          - limpieza/limpieza-de-ropa/detergente-en-polvo
+          - limpieza/limpieza-de-ropa/detergente-para-diluir
+          - limpieza/limpieza-de-ropa/jabones-para-ropa
         tottus:
           - CATG27444/Tratamiento-de-Ropa
           - CATG27441/Suavizantes
@@ -2027,6 +2361,11 @@
           - limpieza-y-aseo/papeles/panuelos/43390617_72719306_85239901
           - marcas-propias/limpieza-hogar/papel-higienico/69507955_15116335_78601612
           - limpieza-y-aseo/mas-sustentables/papeles/43390617_56006489_72633958
+        santa_isabel:
+          - limpieza/papeles-hogar/papel-higienico
+          - limpieza/papeles-hogar/toallas-de-papel
+          - limpieza/papeles-hogar/servilletas
+          - limpieza/papeles-hogar/panuelos
         tottus:
           - CATG27449/Papeles-y-Envoltorios-de-Cocina
           - CATG27447/Servilletas
@@ -2059,6 +2398,11 @@
           - limpieza-y-aseo/pisos-y-muebles/lustramuebles/43390617_45008163_50204094
           - limpieza-y-aseo/pisos-y-muebles/cera-y-virutilla/43390617_45008163_83369891
           - limpieza-y-aseo/mas-sustentables/limpiadores-piso/43390617_56006489_27078207
+        santa_isabel:
+          - limpieza/pisos-y-muebles/limpiadores-piso
+          - limpieza/pisos-y-muebles/ceras-y-virutillas
+          - limpieza/pisos-y-muebles/lustramuebles-y-limpiadores-de-metales
+          - limpieza/pisos-y-muebles/limpia-alfombras-y-tapices
         tottus:
           - CATG27459/Limpiadores-de-Pisos
           - CATG27462/Cera-y-Virutilla
@@ -2097,6 +2441,12 @@
           - marcas-propias/limpieza-hogar/lavalozas/69507955_15116335_68705410
           - limpieza-y-aseo/bano-y-cocina/limpia-vidrios/43390617_15090475_67480208
           - limpieza-y-aseo/mas-sustentables/limpiadores-hogar/43390617_56006489_96809231
+        santa_isabel:
+          - limpieza/bano/limpiadores-de-bano
+          - limpieza/cocina/lavalozas
+          - limpieza/cocina/limpiadores-cocina
+          - limpieza/bano/limpiavidrios
+          - limpieza/cocina/lavavajillas
         tottus:
           - CATG27450/Lavalozas-y-Lavavajillas
           - CATG27452/Limpiadores-de-Bano
@@ -2134,6 +2484,9 @@
           - limpieza-y-aseo/ambientadores/ambientador-aerosol/43390617_32024397_64693597
           - limpieza-y-aseo/ambientadores/ambientadores-gel/43390617_32024397_40226375
           - limpieza-y-aseo/ambientadores/ambientadores-toque/43390617_32024397_60978553
+        santa_isabel:
+          - limpieza/aerosoles-y-aromatizantes/desodorantes-ambientales
+          - limpieza/aerosoles-y-aromatizantes/aromatizantes
         tottus:
           - CATG27463/Desodorantes-Ambientales
           - CATG27466/Desinfectantes-Ambientales
@@ -2160,6 +2513,10 @@
           - limpieza-y-aseo/insecticidas-y-control-de-plagas/electricos-y-tabletas/43390617_74938748_62241924
           - limpieza-y-aseo/insecticidas-y-control-de-plagas/multi-propositos/43390617_74938748_30330050
           - limpieza-y-aseo/insecticidas-y-control-de-plagas/repelentes/43390617_74938748_38550225
+        santa_isabel:
+          - limpieza/bano/cloros-y-cloro-gel
+          - limpieza/aerosoles-y-aromatizantes/insecticidas
+          - limpieza/aerosoles-y-aromatizantes/desinfectantes
         tottus:
           - CATG27453/Cloro
           - CATG27467/Insecticidas
@@ -2175,6 +2532,8 @@
         lider:
           - limpieza-y-aseo/accesorios-aseo/envoltorios/43390617_61764352_17486012
           - limpieza-y-aseo/mas-sustentables/bolsas-y-envoltorios/43390617_56006489_58661930
+        santa_isabel:
+          - limpieza/accesorios-de-limpieza/bolsas-de-basura-y-bolsas-reutilizables
     - name: Accesorios de Limpieza
       slug: accesorios-limpieza
       id: 79dc0e07
@@ -2204,6 +2563,14 @@
           - limpieza-y-aseo/accesorios-aseo/bolsas-de-basura/43390617_61764352_96987954
           - limpieza-y-aseo/accesorios-aseo/bolsas-multiuso/43390617_61764352_28382301
           - limpieza-y-aseo/accesorios-aseo/fosforos/43390617_61764352_97864899
+        santa_isabel:
+          - limpieza/accesorios-de-limpieza/guantes-esponjas-y-panos
+          - limpieza/pisos-y-muebles/traperos-y-mopas
+          - limpieza/bano/toallas-desinfectantes
+          - limpieza/accesorios-de-limpieza/escobas-palas-y-plumeros
+          - limpieza/accesorios-de-limpieza/limpiadores-de-calzado
+          - limpieza/accesorios-de-limpieza/fosforos-y-velas
+          - limpieza/accesorios-de-limpieza/otros-accesorios-de-limpieza
         tottus:
           - CATG27470/Traperos-Mopas-y-Baldes
           - CATG27468/Bolsas-de-Basura
@@ -2249,6 +2616,13 @@
         lider:
           - marcas-propias/belleza-y-bebe/cuidado-capilar/69507955_34690291_60717243
           - marcas-americanas/belleza-y-bebe/shampoo-y-acondicionador/27359988_13440254_40228090
+        santa_isabel:
+          - cuidado-personal-y-bebe/cuidado-capilar/shampoo
+          - cuidado-personal-y-bebe/cuidado-capilar/acondicionadores
+          - cuidado-personal-y-bebe/cuidado-capilar/tratamiento-capilar
+          - cuidado-personal-y-bebe/cuidado-capilar/cepillos-de-pelo-y-accesorios
+          - cuidado-personal-y-bebe/cuidado-capilar/fijadores-lacas-y-ceras
+          - cuidado-personal-y-bebe/packs-de-cuidado-y-belleza
         tottus:
           - CATG27709/Tinturas
           - CATG27710/Fijadores-Cremas-y-Otros
@@ -2285,6 +2659,17 @@
         lider:
           - marcas-propias/belleza-y-bebe/cuidado-corporal/69507955_34690291_19729730
           - marcas-propias/belleza-y-bebe/cuidado-facial/69507955_34690291_72703684
+        santa_isabel:
+          - cuidado-personal-y-bebe/cuidado-corporal/cremas-y-cuidado-corporal
+          - cuidado-personal-y-bebe/cuidado-facial/limpieza-facial
+          - cuidado-personal-y-bebe/cuidado-facial/cremas-e-hidratacion-facial
+          - cuidado-personal-y-bebe/cuidado-corporal
+          - cuidado-personal-y-bebe/cuidado-facial/tratamientos-faciales
+          - cuidado-personal-y-bebe/cuidado-corporal/cremas-para-manos
+          - cuidado-personal-y-bebe/cuidado-facial/petalos-y-accesorios
+          - cuidado-personal-y-bebe/cuidado-corporal/talcos-y-cremas-para-pies
+          - cuidado-personal-y-bebe/cuidado-facial/balsamo-y-protector-labial
+          - cuidado-personal-y-bebe/cuidado-masculino/cuidado-facial
         tottus:
           - CATG27714/Aguas-Micelar-Serum-y-Otros
           - CATG27716/Cremas-Faciales
@@ -2317,6 +2702,12 @@
         lider:
           - marcas-propias/belleza-y-bebe/cuidado-bucal/69507955_34690291_37740846
           - soy-pyme/perfumeria-y-cuidado-personal/cuidado-bucal/52660800_69844972_99029014
+        santa_isabel:
+          - cuidado-personal-y-bebe/higiene-bucal/pasta-dental
+          - cuidado-personal-y-bebe/higiene-bucal/cepillo-dental
+          - cuidado-personal-y-bebe/higiene-bucal/cepillos-y-pasta-dental-infantil
+          - cuidado-personal-y-bebe/higiene-bucal/enjuague-bucal
+          - cuidado-personal-y-bebe/higiene-bucal/hilo-dental
         tottus:
           - CATG27728/Pasta-de-Dientes
           - CATG27730/Cepillos
@@ -2342,6 +2733,12 @@
           - cuidado-personal-y-bebe/desodorantes/desodorantes-gel-y-crema
         lider:
           - soy-pyme/perfumeria-y-cuidado-personal/cuidado-corporal/52660800_69844972_42391637
+        santa_isabel:
+          - cuidado-personal-y-bebe/desodorantes/desodorantes-en-aerosol
+          - cuidado-personal-y-bebe/desodorantes/desodorantes-en-barra
+          - cuidado-personal-y-bebe/desodorantes/desodorantes-clinical
+          - cuidado-personal-y-bebe/desodorantes/desodorantes-roll-on
+          - cuidado-personal-y-bebe/desodorantes/desodorantes-gel-y-crema
         tottus:
           - CATG27739/Spray
           - CATG27741/Barra
@@ -2364,6 +2761,10 @@
           - cuidado-personal-y-bebe/jabones/gel-de-ducha
         lider:
           - perfumeria-y-salud/cuidado-personal/79913105_16440401
+        santa_isabel:
+          - cuidado-personal-y-bebe/jabones/jabones-liquidos
+          - cuidado-personal-y-bebe/jabones/jabones-en-barra
+          - cuidado-personal-y-bebe/jabones/gel-de-ducha
         tottus:
           - CATG27733/Liquidos
           - CATG27734/Barra
@@ -2385,6 +2786,10 @@
           - cuidado-personal-y-bebe/cuidado-masculino/shampoo-cremas-y-ceras-para-hombres
         lider:
           - marcas-propias/nuestras-marcas/equate/69507955_30193274_20402528
+        santa_isabel:
+          - cuidado-personal-y-bebe/cuidado-masculino/maquinas-y-repuestos-de-afeitar
+          - cuidado-personal-y-bebe/cuidado-masculino/espuma-y-crema-para-afeitar
+          - cuidado-personal-y-bebe/cuidado-masculino/shampoo-cremas-y-ceras-para-hombres
         tottus:
           - CATG27744/Cremas-de-Afeitar-y-After-Shave
         unimarc:
@@ -2404,6 +2809,10 @@
         lider:
           - perfumeria-y-salud/cuidado-mujer/79913105_95389554
           - marcas-propias/belleza-y-bebe/higiene-femenina/69507955_34690291_97729128
+        santa_isabel:
+          - cuidado-personal-y-bebe/proteccion-femenina/toallas-higienicas-y-tampones
+          - cuidado-personal-y-bebe/proteccion-femenina/protectores-diarios
+          - cuidado-personal-y-bebe/proteccion-femenina/jabones-intimos-y-panitos-humedos
         tottus:
           - CATG27736/Toallas-Higienicas
           - CATG27737/Protectores-Diarios
@@ -2431,6 +2840,12 @@
           - cuidado-personal-y-bebe/maquillaje/maquillaje-labios
         lider:
           - soy-pyme/perfumeria-y-cuidado-personal/accesorios-de-belleza/52660800_69844972_10810157
+        santa_isabel:
+          - cuidado-personal-y-bebe/cuidado-corporal/colonias-y-body-mist
+          - cuidado-personal-y-bebe/maquillaje/brochas-y-accesorios-de-maquillaje
+          - cuidado-personal-y-bebe/maquillaje/esmaltes-y-quitaesmaltes
+          - cuidado-personal-y-bebe/cuidado-masculino/colonias-para-hombres
+          - cuidado-personal-y-bebe/maquillaje/maquillaje-labios
         tottus:
           - CATG27145/Colonias
           - CATG27727/Accesorios
@@ -2460,6 +2875,13 @@
           - cuidado-personal-y-bebe/depilacion/bandas-depilatorias
           - cuidado-personal-y-bebe/depilacion/gel-o-espumas-de-depilacion
           - cuidado-personal-y-bebe/cuidado-facial/protectores-solares
+        santa_isabel:
+          - cuidado-personal-y-bebe/depilacion/maquinas-de-depilacion
+          - cuidado-personal-y-bebe/depilacion/cremas-depilatorias
+          - cuidado-personal-y-bebe/depilacion/bandas-depilatorias
+          - cuidado-personal-y-bebe/depilacion/ceras-depilatorias
+          - cuidado-personal-y-bebe/solares-y-autobronceantes
+          - cuidado-personal-y-bebe/depilacion/gel-o-espumas-de-depilacion
         tottus:
           - CATG27743/Rasuradoras-y-Repuestos
           - CATG27746/Ceras-y-Otros
@@ -2480,6 +2902,9 @@
           - cuidado-personal-y-bebe/incontinencia-y-panales-adulto/incontinencia
         lider:
           - marcas-propias/belleza-y-bebe/incontinencia-adultos/69507955_34690291_73824004
+        santa_isabel:
+          - cuidado-personal-y-bebe/incontinencia-y-panales-adulto/panales-adulto
+          - cuidado-personal-y-bebe/incontinencia-y-panales-adulto/incontinencia
         tottus:
           - CATG27750/Incontinencia-y-Panales-Adulto
         unimarc:
@@ -2502,6 +2927,10 @@
         lider:
           - marcas-propias/belleza-y-bebe/primeros-auxilios/69507955_34690291_41131757
           - perfumeria-y-salud/cuidado-adulto-mayor/79913105_36806076
+        santa_isabel:
+          - cuidado-personal-y-bebe/farmacia/accesorios-medicos
+          - cuidado-personal-y-bebe/farmacia/preservativos-y-lubricantes
+          - cuidado-personal-y-bebe/farmacia/suplementos-y-vitaminas
         tottus:
           - CATG27749/Multivitaminicos
         unimarc:
@@ -2532,6 +2961,8 @@
           - mundo-bebe-y-jugueteria/panales-y-muda/emubaby/11780484_69224535_61276778
           - marcas-propias/belleza-y-bebe/panales-bebe/69507955_34690291_45452053
           - mundo-bebe-y-jugueteria/panales-y-muda/huggies/11780484_69224535_24872702
+        santa_isabel:
+          - cuidado-personal-y-bebe/bebe/panales-y-toallas-humedas
         tottus:
           - CATG27612/Panales-Infantiles
           - CATG27614/Toallas-Humedas
@@ -2562,6 +2993,10 @@
           - mundo-bebe-y-jugueteria/alimentacion-y-lactancia/colados-picados-y-aceites/11780484_23586822_54051415
           - mundo-bebe-y-jugueteria/alimentacion-y-lactancia/chupetes-y-accesorios/11780484_23586822_62165355
           - frescos-y-lacteos/postres-refrigerados/compotas/45669105_15349134_40696280
+        santa_isabel:
+          - cuidado-personal-y-bebe/bebe/colados-picados-y-otros
+          - despensa/conservas/compotas-y-pouch
+          - cuidado-personal-y-bebe/bebe/leche-y-suplementos-infantiles
         tottus:
           - CATG27304/Compotas
           - CATG27621/Colados-Picados-y-Compotas
@@ -2598,6 +3033,9 @@
           - mundo-bebe-y-jugueteria/perfumeria-e-higiene/colonias-y-lociones/11780484_96645034_64397654
           - mundo-bebe-y-jugueteria/perfumeria-e-higiene/talcos-y-pomadas/11780484_96645034_48346309
           - marcas-propias/belleza-y-bebe/cuidado-bebe/69507955_34690291_89494029
+        santa_isabel:
+          - cuidado-personal-y-bebe/bebe/perfumeria-infantil
+          - cuidado-personal-y-bebe/bebe/accesorios-de-bebe
         tottus:
           - CATG27616/Shampoo-y-Acondicionadores
           - CATG27618/Jabones-Cremas-y-Otros
@@ -2631,6 +3069,10 @@
         lider:
           - mascotas/perro/07089592_29432822
           - mascotas/higiene-y-bienestar/bao-y-limpieza/07089592_02342029_81556437
+        santa_isabel:
+          - mascotas/perros/alimentos-secos-perros
+          - mascotas/perros/snacks-salsas-y-huesos
+          - mascotas/perros/alimento-humedo-perro
         tottus:
           - CATG27756/Snack-y-Huesos
           - CATG27754/Alimentos-Adulto
@@ -2664,6 +3106,11 @@
           - mascotas/gato/alimento-seco/07089592_85723699_38537300
           - mascotas/gato/alimento-humedo/07089592_85723699_39598429
           - mascotas/higiene-y-bienestar/arena-para-gato/07089592_02342029_67185424
+        santa_isabel:
+          - mascotas/gatos/alimentos-secos-gatos
+          - mascotas/gatos/alimentos-humedos-gatos
+          - mascotas/gatos/arenas-e-higiene-gatos
+          - mascotas/gatos/snacks-y-salsas
         tottus:
           - CATG27758/Alimentos-Gato
           - CATG27757/Alimentos-Gatito
@@ -2683,6 +3130,9 @@
           - mascotas/otras-mascotas/peces
         lider:
           - mascotas/otras-mascotas/07089592_42714284
+        santa_isabel:
+          - mascotas/otras-mascotas/aves
+          - mascotas/otras-mascotas/roedores
         unimarc:
           - mascotas/alimento-otras-mascotas/alimentos
 
