@@ -43,6 +43,56 @@ defmodule SuperBarato.Crawler.Http do
 
   def known_profiles, do: @known_profiles
 
+  # User-Agent strings the curl-impersonate v0.6.1 wrappers inject by
+  # default — extracted directly from `priv/bin/curl_<profile>`. The
+  # wrapper *should* set this header itself (and locally it does), but
+  # we observed prod requests landing at Instaleap with no UA and
+  # being rejected with INVALID_HEADERS. Belt-and-braces: when the
+  # caller hasn't pinned a UA and the session hasn't stashed one
+  # either, we set the canonical UA matching the chosen TLS profile
+  # before invoking the binary, so what the server sees can't drift
+  # from the fingerprint regardless of how the wrapper happens to
+  # behave on the host.
+  @profile_user_agents %{
+    chrome99:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36",
+    chrome99_android:
+      "Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.58 Mobile Safari/537.36",
+    chrome100:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36",
+    chrome101:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36",
+    chrome104:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
+    chrome107:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+    chrome110:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+    chrome116:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    edge99:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 Edg/99.0.1150.30",
+    edge101:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.47",
+    ff91esr: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0",
+    ff95: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0",
+    ff98: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
+    ff100: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+    ff102: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0",
+    ff109: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0",
+    ff117: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
+    safari15_3:
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
+    safari15_5:
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15"
+  }
+
+  @doc "Canonical User-Agent that matches `profile`'s TLS fingerprint."
+  def user_agent_for_profile(profile) when is_atom(profile),
+    do: Map.get(@profile_user_agents, profile)
+
+  def user_agent_for_profile(_), do: nil
+
   @doc "GET. See `request/3`."
   def get(url, opts \\ []) when is_binary(url), do: request(:get, url, opts)
 
@@ -67,6 +117,7 @@ defmodule SuperBarato.Crawler.Http do
   def request(method, url, opts) when method in [:get, :post] and is_binary(url) do
     chain = Keyword.get(opts, :chain)
     {headers, profile} = enrich_from_session(chain, opts)
+    headers = ensure_profile_user_agent(headers, profile)
     body = Keyword.get(opts, :body)
     follow = Keyword.get(opts, :follow_redirects, true)
     timeout = Keyword.get(opts, :timeout_ms, @default_timeout_ms)
@@ -149,6 +200,14 @@ defmodule SuperBarato.Crawler.Http do
         default_profile()
 
     {headers, profile}
+  end
+
+  # If neither caller nor session pinned a User-Agent, fall back to
+  # the canonical UA for the profile we're about to invoke. Caller-
+  # or session-provided UAs always win — they're explicit overrides.
+  defp ensure_profile_user_agent(headers, profile) do
+    has_ua? = Enum.any?(headers, fn {k, _} -> String.downcase(k) == "user-agent" end)
+    if has_ua?, do: headers, else: override_header(headers, "user-agent", user_agent_for_profile(profile))
   end
 
   # Replace any existing `name` header (case-insensitive) with `value`,
