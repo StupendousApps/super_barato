@@ -28,19 +28,34 @@ if config_env() == :prod do
       Example: /data/super_barato.db
       """
 
-  # Six chains' Results workers each hit the DB on every listing,
-  # plus the streaming Linker.Worker opens its own transaction per
-  # link. With pool_size=5 we hit `:queue_timeout` immediately when
-  # all chains are crawling. SQLite WAL handles writers single-file
+  # Each chain's Results worker hits the DB on every listing, plus
+  # the streaming Linker.Worker opens its own transaction per link.
+  # With pool_size=5 we hit `:queue_timeout` immediately when several
+  # chains crawl in parallel. SQLite WAL handles writers single-file
   # via `busy_timeout` anyway, so the connection pool here is mostly
   # about queue depth, not parallelism.
+  #
+  # `busy_timeout` math (worst case, single batch):
+  #   chains × batch_size × link_tx_ms
+  #   = N × 44      × ~500ms
+  #   = N × 22_000ms
+  #
+  # With six chains today that's ~132s in the absolute worst burst,
+  # but in practice batches stagger across the cron window and only
+  # one or two chains overlap at a time — observed real bursts have
+  # all fit under 60s. 60s gives ~3 chains of headroom; budget
+  # higher via `SQLITE_BUSY_TIMEOUT` if a future cron landing puts
+  # 4+ chains writing simultaneously, or shard the Linker.Worker
+  # to lift the underlying single-writer bottleneck. The 5s default
+  # timed out under sustained crawler load and produced linker
+  # error storms — never go back below 30s.
   config :super_barato, SuperBarato.Repo,
     database: database_path,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "20"),
     queue_target: 1_000,
     queue_interval: 5_000,
     journal_mode: :wal,
-    busy_timeout: 5_000
+    busy_timeout: String.to_integer(System.get_env("SQLITE_BUSY_TIMEOUT") || "60000")
 
   # Crawler runtime paths. Both must be on a host volume in prod so
   # the price-log history and the curl-impersonate binary cache
