@@ -49,16 +49,37 @@
       sort={sort_dir("name", @sort)}
       sort_href={sort_href(~p"/chain-categories", @filters, "name", @sort)}
     >
-      <div>{c.name}</div>
-      <%= case chain_site_url(c.chain, c.slug) do %>
-        <% nil -> %>
-        <% url -> %>
-          <div class="cell-secondary">
-            <a href={url} target="_blank" rel="noopener">{pdp_host(url)}</a>
-          </div>
+      <div>
+        <.link href={~p"/listings?#{[chain: c.chain, category: c.slug]}"}>{c.name}</.link>
+      </div>
+      <div class="cell-secondary">
+        <%= case chain_site_url(c.chain, c.slug) do %>
+          <% nil -> %>
+            {c.slug}
+          <% url -> %>
+            <a href={url} target="_blank" rel="noopener">{c.slug}</a>
+        <% end %>
+      </div>
+    </:col>
+    <:col :let={c} label="Parent" nowrap>
+      <%= if c.parent_slug do %>
+        <div>
+          <.link href={~p"/listings?#{[chain: c.chain, category: c.parent_slug]}"}>
+            {Map.get(@parent_names, {c.chain, c.parent_slug}, c.parent_slug)}
+          </.link>
+        </div>
+        <div class="cell-secondary">
+          <%= case chain_site_url(c.chain, c.parent_slug) do %>
+            <% nil -> %>
+              {c.parent_slug}
+            <% url -> %>
+              <a href={url} target="_blank" rel="noopener">{c.parent_slug}</a>
+          <% end %>
+        </div>
+      <% else %>
+        —
       <% end %>
     </:col>
-    <:col :let={c} label="Parent" nowrap>{c.parent_slug || "—"}</:col>
     <:col
       :let={c}
       label="Level"

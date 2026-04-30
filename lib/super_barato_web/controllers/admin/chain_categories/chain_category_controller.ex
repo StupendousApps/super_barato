@@ -1,7 +1,10 @@
 defmodule SuperBaratoWeb.Admin.ChainCategoryController do
   use SuperBaratoWeb, :controller
 
-  alias SuperBarato.{Catalog, Crawler}
+  import Ecto.Query
+
+  alias SuperBarato.{Catalog, Crawler, Repo}
+  alias SuperBarato.Catalog.ChainCategory
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
   plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
@@ -33,14 +36,42 @@ defmodule SuperBaratoWeb.Admin.ChainCategoryController do
       per_page: params["per_page"] || ""
     }
 
+    parent_names = parent_names_for(result.items)
+
     conn
     |> assign(:top_nav, :chain_categories)
     |> assign(:active_chain, chain)
     |> assign(:result, result)
     |> assign(:filters, filters)
     |> assign(:sort, sort)
+    |> assign(:parent_names, parent_names)
     |> assign(:page_title, "Chain Categories")
     |> render(:index)
+  end
+
+  defp parent_names_for(items) do
+    pairs =
+      items
+      |> Enum.flat_map(fn c ->
+        if c.parent_slug, do: [{c.chain, c.parent_slug}], else: []
+      end)
+      |> Enum.uniq()
+
+    case pairs do
+      [] ->
+        %{}
+
+      pairs ->
+        chains = pairs |> Enum.map(&elem(&1, 0)) |> Enum.uniq()
+        slugs = pairs |> Enum.map(&elem(&1, 1)) |> Enum.uniq()
+
+        Repo.all(
+          from c in ChainCategory,
+            where: c.chain in ^chains and c.slug in ^slugs,
+            select: {{c.chain, c.slug}, c.name}
+        )
+        |> Map.new()
+    end
   end
 
   defp parse_chain(nil), do: nil
