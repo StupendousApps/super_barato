@@ -121,7 +121,7 @@ inserted =
       Repo.insert_all(
         CategoryMapping,
         batch,
-        on_conflict: :nothing,
+        on_conflict: {:replace, [:app_subcategory_id, :updated_at]},
         conflict_target: [:chain_category_id]
       )
 

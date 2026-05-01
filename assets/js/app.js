@@ -73,17 +73,65 @@ const Rails = {
   },
 }
 
+// Picker hook — open/close state lives entirely client side on a
+// `data-open` attribute. The LiveView re-renders the trigger label
+// (and the panel contents) on every URL patch; the hook re-applies
+// `data-open` after each morph so the panel doesn't snap shut.
+const Picker = {
+  mounted() {
+    this._open = false
+    this.toggle = this.el.querySelector("[data-picker-toggle]")
+    this._onElClick = (e) => {
+      // Click on the toggle: flip open/close and don't bubble to the
+      // document handler (which would immediately re-close us).
+      if (e.target.closest("[data-picker-toggle]")) {
+        e.stopPropagation()
+        this._open = !this._open
+        this.apply()
+        return
+      }
+      // Click on a link inside the panel: force close synchronously
+      // so the panel collapses regardless of how the click bubbles
+      // through Phoenix's patch handling.
+      if (e.target.closest("a")) {
+        this._open = false
+        this.apply()
+      }
+    }
+    this.el.addEventListener("click", this._onElClick)
+  },
+  beforeUpdate() {
+    this._open = this.el.hasAttribute("data-open")
+  },
+  updated() { this.apply() },
+  destroyed() {
+    if (this._onElClick) this.el.removeEventListener("click", this._onElClick)
+  },
+  apply() {
+    if (this._open) this.el.setAttribute("data-open", "")
+    else this.el.removeAttribute("data-open")
+  },
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks, Rails},
+  hooks: {...colocatedHooks, Rails, Picker},
 })
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
+
+// Outside click closes every open picker. (In-panel link clicks are
+// handled inside the Picker hook itself.)
+document.addEventListener("click", (event) => {
+  document.querySelectorAll(".picker[data-open]").forEach((p) => {
+    if (!p.contains(event.target)) p.removeAttribute("data-open")
+  })
+})
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

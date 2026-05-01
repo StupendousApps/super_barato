@@ -5,6 +5,188 @@
 }
 .search-block > * { pointer-events: auto; }
 
+/* Search row: a single horizontal row containing the leading
+   category dropdown button and the search input bar. Both share
+   the same height and the picker's panel drops below the button. */
+.search-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+/* The category dropdown sits to the left of the search input. The
+   shell carries the same glass treatment as `.search`. When a
+   category is active a leading × link clears the filter; when not,
+   only the toggle button is rendered. */
+.search-cat-button {
+  display: inline-flex; align-items: stretch;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0, 0, 0, 0.06);
+  min-height: 48px;
+  white-space: nowrap;
+}
+
+.search-cat-button__toggle {
+  appearance: none; cursor: pointer;
+  background: transparent; border: 0; outline: none;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 0 10px 0 16px;
+  font: inherit; font-size: 15px; font-weight: 400;
+  letter-spacing: .005em;
+  color: var(--ink);
+  border-radius: inherit;
+}
+.search-cat-button--filtered .search-cat-button__toggle {
+  padding-left: 4px;
+}
+
+/* The leading × and the trailing chevron share a 28px circular
+   tap-target with the same hover treatment, so they feel like
+   matching ornaments on either end of the pill. */
+.search-cat-button__x,
+.search-cat-button__chev {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  margin: 0 4px; align-self: center;
+  border-radius: 50%;
+  transition: background .12s ease, color .12s ease;
+}
+.search-cat-button__x {
+  color: var(--ink-2); text-decoration: none;
+  font-size: 18px; line-height: 1; font-weight: 400;
+}
+.search-cat-button__x:hover,
+.search-cat-button__toggle:hover .search-cat-button__chev {
+  background: var(--soft); color: var(--ink);
+}
+.search-cat-button__chev::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-right: 1.5px solid var(--ink-3);
+  border-bottom: 1.5px solid var(--ink-3);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .12s ease;
+}
+.cat-picker[data-open] .search-cat-button__chev::before {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.picker {
+  position: relative;
+  display: inline-block;
+}
+.picker__trigger {
+  appearance: none; background: transparent; border: 0; outline: none;
+  font: inherit;
+  cursor: pointer;
+  display: inline-flex; align-items: baseline; gap: 4px;
+  color: var(--ink); font-weight: 600;
+  padding: 0 14px 0 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--ink-3);
+  position: relative;
+}
+.picker__trigger:hover { text-decoration-color: var(--ink); }
+.picker__trigger::after {
+  content: ""; position: absolute; right: 0; top: 50%;
+  width: 7px; height: 7px;
+  border-right: 1.5px solid var(--ink-3);
+  border-bottom: 1.5px solid var(--ink-3);
+  transform: translateY(-75%) rotate(45deg);
+  transition: transform .12s ease;
+}
+.picker[data-open] .picker__trigger::after { transform: translateY(-25%) rotate(-135deg); }
+
+.picker__panel {
+  display: none;
+  position: absolute; left: 0; top: calc(100% + 8px);
+  z-index: 20;
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 18px 48px rgba(0, 0, 0, .12);
+  padding: 8px;
+  font-size: 14px; line-height: 1.3;
+  color: var(--ink);
+  letter-spacing: 0;
+  font-weight: 400;
+  min-width: 240px;
+}
+.picker[data-open] .picker__panel { display: block; }
+
+/* Chain panel: simple vertical list of links. */
+.chain-panel { min-width: 220px; display: flex; flex-direction: column; }
+.chain-panel__row {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.chain-panel__row:hover { background: var(--soft); }
+.chain-panel__row.is-active { background: var(--bg-selected); font-weight: 600; }
+
+/* Category panel: bento — one full-width "Todas las categorías"
+   tile at the top, then a 3-column grid where each tile is a
+   category header with its subcategories listed underneath. */
+.cat-panel { width: min(1100px, 90vw); }
+.cat-panel__all {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--soft);
+  text-decoration: none;
+  color: var(--ink); font-weight: 600;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.cat-panel__all:hover { background: var(--bg-selected); }
+.cat-panel__all.is-active { background: var(--bg-selected); }
+.cat-panel__grid {
+  column-count: 4;
+  column-gap: 8px;
+}
+.cat-tile {
+  break-inside: avoid;
+  background: var(--soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  display: flex; flex-direction: column; gap: 4px;
+  min-width: 0;
+}
+.cat-tile__head {
+  display: block;
+  color: var(--ink); font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: 6px;
+  margin: -4px -6px 2px;
+}
+.cat-tile__head:hover { background: var(--surface); }
+.cat-tile__head.is-active { background: var(--bg-selected); }
+.cat-tile__subs {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+}
+.cat-tile__sub {
+  display: block;
+  color: var(--ink-2); font-weight: 400;
+  font-size: 12.5px;
+  text-decoration: none;
+  padding: 3px 6px;
+  border-radius: 5px;
+}
+.cat-tile__sub:hover { background: var(--surface); color: var(--ink); }
+.cat-tile__sub.is-active { background: var(--bg-selected); color: var(--ink); font-weight: 500; }
+
 
 /* Glass treatment matches the rail asides — same border-radius,
    translucent surface, blur backdrop, and outset 1px border via
@@ -18,6 +200,7 @@
 .search {
   display: block;
   position: relative;
+  flex: 1; min-width: 0;
   background: color-mix(in oklch, var(--surface) 70%, transparent);
   backdrop-filter: saturate(140%) blur(18px);
   -webkit-backdrop-filter: saturate(140%) blur(18px);

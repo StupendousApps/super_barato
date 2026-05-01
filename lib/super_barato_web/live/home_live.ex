@@ -67,7 +67,15 @@ defmodule SuperBaratoWeb.HomeLive do
 
   @impl true
   def handle_event("search", %{"q" => q}, socket) do
-    {:noreply, socket |> assign(:query, q) |> run_search()}
+    qs =
+      [
+        {"q", String.trim(q)},
+        {"cat", socket.assigns.selected_category},
+        {"sub", socket.assigns.selected_subcategory}
+      ]
+      |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+
+    {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
   end
 
   def handle_event("add", %{"id" => id}, socket) do
@@ -176,41 +184,68 @@ defmodule SuperBaratoWeb.HomeLive do
       <div class="center">
         <div class="search-block">
           <div class="container">
-            <form class="search" phx-change="search" phx-submit="search">
-              <span class="mag" aria-hidden="true"></span>
-              <input
-                name="q"
-                value={@query}
-                placeholder="Buscar cualquier producto del super…"
-                autocomplete="off"
-                phx-debounce="150"
-                autofocus
-              />
-              <span class="kbd">⌘K</span>
-            </form>
+            <div class="search-row">
+              <div class="picker cat-picker" id="cat-picker" phx-hook="Picker">
+                <div class={["search-cat-button", category_active?(@selected_category, @selected_subcategory) && "search-cat-button--filtered"]}>
+                  <.link
+                    :if={category_active?(@selected_category, @selected_subcategory)}
+                    patch={~p"/?#{cat_params(@query, nil, nil)}"}
+                    class="search-cat-button__x"
+                    aria-label="Quitar categoría"
+                  >×</.link>
+                  <button
+                    type="button"
+                    class="search-cat-button__toggle"
+                    data-picker-toggle
+                    aria-haspopup="true"
+                  >
+                    <span class="search-cat-button__label">{cat_picker_label(@categories, @selected_category, @selected_subcategory)}</span>
+                    <span class="search-cat-button__chev" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="picker__panel cat-panel" role="menu">
+                  <.link
+                    patch={~p"/?#{cat_params(@query, nil, nil)}"}
+                    class={["cat-panel__all", is_nil(@selected_category) and is_nil(@selected_subcategory) && "is-active"]}
+                  >Todas las categorías</.link>
+                  <div class="cat-panel__grid">
+                    <div :for={c <- @categories} class="cat-tile">
+                      <.link
+                        patch={~p"/?#{cat_params(@query, c.slug, nil)}"}
+                        class={["cat-tile__head", @selected_category == c.slug and is_nil(@selected_subcategory) && "is-active"]}
+                      >{c.name}</.link>
+                      <ul :if={c.subcategories != []} class="cat-tile__subs">
+                        <li :for={s <- c.subcategories}>
+                          <.link
+                            patch={~p"/?#{cat_params(@query, nil, s.slug)}"}
+                            class={["cat-tile__sub", @selected_subcategory == s.slug && "is-active"]}
+                          >{s.name}</.link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <form class="search" phx-change="search" phx-submit="search">
+                <span class="mag" aria-hidden="true"></span>
+                <input
+                  name="q"
+                  value={@query}
+                  placeholder="Buscar cualquier producto del super…"
+                  autocomplete="off"
+                  phx-debounce="150"
+                  autofocus
+                />
+                <span class="kbd">⌘K</span>
+              </form>
+            </div>
           </div>
         </div>
 
         <main class="main">
          <div class="container">
-          <% filter = active_filter(@categories, @selected_category, @selected_subcategory) %>
           <div class="results-hd">
-            <h2>
-              <%= cond do %>
-                <% @query == "" and is_nil(filter) -> %>
-                  Resultados
-                <% true -> %>
-                  Búsqueda
-                  <em :if={@query != ""}>"{@query}"</em>
-                  <%= if filter do %>
-                    <span class="in">en</span>
-                    <span class="filter-tag">
-                      <span class="filter-tag__label">{filter.label}</span>
-                      <.link patch={~p"/"} class="filter-tag__x" aria-label="Quitar filtro">×</.link>
-                    </span>
-                  <% end %>
-              <% end %>
-            </h2>
             <div class="count">
               <%= cond do %>
                 <% @query == "" and is_nil(@selected_category) and is_nil(@selected_subcategory) -> %>
@@ -438,25 +473,32 @@ defmodule SuperBaratoWeb.HomeLive do
 
   ## ── Helpers ─────────────────────────────────────────────────
 
-  # Resolves the currently-selected category/subcategory slugs to a
-  # display label for the filter badge above the search bar. Returns
-  # nil when nothing is selected.
-  defp active_filter(_categories, nil, nil), do: nil
+  defp category_active?(nil, nil), do: false
+  defp category_active?(_, _), do: true
 
-  defp active_filter(categories, _cat_slug, sub_slug) when is_binary(sub_slug) do
-    Enum.find_value(categories, fn cat ->
-      case Enum.find(cat.subcategories, &(&1.slug == sub_slug)) do
-        nil -> nil
-        sub -> %{label: "#{cat.name} · #{sub.name}"}
-      end
+  # Trigger label for the bento category picker — reflects whatever
+  # the user has selected in URL state.
+  defp cat_picker_label(_cats, nil, nil), do: "Todas las categorías"
+
+  defp cat_picker_label(cats, _, sub_slug) when is_binary(sub_slug) do
+    Enum.find_value(cats, "todas", fn c ->
+      Enum.find_value(c.subcategories, fn s -> s.slug == sub_slug && s.name end)
     end)
   end
 
-  defp active_filter(categories, cat_slug, nil) when is_binary(cat_slug) do
-    case Enum.find(categories, &(&1.slug == cat_slug)) do
-      nil -> nil
-      cat -> %{label: cat.name}
+  defp cat_picker_label(cats, cat_slug, _) when is_binary(cat_slug) do
+    case Enum.find(cats, &(&1.slug == cat_slug)) do
+      nil -> "todas"
+      cat -> "Todo en #{cat.name}"
     end
+  end
+
+  # Build a query-string param list with q plus at most one of
+  # cat/sub. Used by the bento tiles and the "Todas las categorías"
+  # reset link.
+  defp cat_params(q, cat, sub) do
+    [{"q", String.trim(q)}, {"cat", cat}, {"sub", sub}]
+    |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
   end
 
 
