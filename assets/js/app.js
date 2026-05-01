@@ -26,11 +26,58 @@ import {hooks as colocatedHooks} from "phoenix-colocated/super_barato"
 import topbar from "../vendor/topbar"
 import {initSortable} from "./sortable"
 
+// Rails hook — purely frontend collapse/expand for the public home
+// page's left (categories) and right (cart) sidebars. The initial
+// state is applied by an inline script in the layout root before
+// CSS computes (see home_root.html.heex), so the rails render in
+// their saved state on first paint. This hook just listens for
+// clicks on `[data-rail-toggle]` buttons and flips the same
+// `data-rail-left` / `data-rail-right` attributes on <html> +
+// localStorage. The LiveView server is never told.
+const Rails = {
+  KEY: "super_barato.rails.collapsed",
+  mounted() {
+    this.clickHandler = (event) => {
+      const button = event.target.closest("[data-rail-toggle]")
+      if (!button || !this.el.contains(button)) return
+      const which = button.dataset.railToggle
+      if (which !== "left" && which !== "right") return
+      const current = this.read()
+      current[which] = !current[which]
+      this.write(current)
+      this.apply(current)
+    }
+    this.el.addEventListener("click", this.clickHandler)
+  },
+  destroyed() {
+    if (this.clickHandler) this.el.removeEventListener("click", this.clickHandler)
+  },
+  apply({left, right}) {
+    const d = document.documentElement
+    d.dataset.railLeft  = left  ? "collapsed" : "expanded"
+    d.dataset.railRight = right ? "collapsed" : "expanded"
+  },
+  read() {
+    try {
+      const raw = window.localStorage.getItem(this.KEY)
+      const parsed = raw ? JSON.parse(raw) : {}
+      return {left: !!parsed.left, right: !!parsed.right}
+    } catch (_e) {
+      return {left: false, right: false}
+    }
+  },
+  write({left, right}) {
+    try {
+      window.localStorage.setItem(this.KEY, JSON.stringify({left: !!left, right: !!right}))
+    } catch (_e) {}
+  },
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  hooks: {...colocatedHooks, Rails},
 })
 
 // Show progress bar on live navigation and form submits

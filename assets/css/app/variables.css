@@ -15,4 +15,13 @@
   --r-md: 12px;
   --r-lg: 16px;
   --r-xl: 20px;
+
+  /* Aliases used by rails / categories. Map to existing tokens so the
+     palette stays in one place. */
+  --border: var(--hair);
+  --border-hover: var(--ink-4);
+  --bg-rail: var(--panel);
+  --bg-hover: var(--soft);
+  --bg-selected: oklch(0.93 0.025 240);
+  --ink-dim: var(--ink-3);
 }

@@ -72,13 +72,25 @@ defmodule SuperBarato.Crawler.Chain.FetcherServer do
     {:ok, state}
   end
 
+  # Poll cadence while paused. We don't pop from the queue when
+  # `Crawler.enabled?/0` is false — leaving the queue intact for when
+  # the operator resumes — but we have to wake up periodically to
+  # check the flag. 500 ms keeps "Resume" feeling instant without
+  # busy-looping.
+  @paused_check_ms 500
+
   @impl true
   def handle_info(:work, state) do
-    task = QueueServer.pop(state.chain)
-    state = apply_gap(state)
-    state = dispatch(task, state)
-    send(self(), :work)
-    {:noreply, state}
+    if Crawler.enabled?() do
+      task = QueueServer.pop(state.chain)
+      state = apply_gap(state)
+      state = dispatch(task, state)
+      send(self(), :work)
+      {:noreply, state}
+    else
+      Process.send_after(self(), :work, @paused_check_ms)
+      {:noreply, state}
+    end
   end
 
   # Dispatch to adapter, route the result.

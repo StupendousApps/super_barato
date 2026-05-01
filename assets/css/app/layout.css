@@ -8,23 +8,116 @@ html.home, html.home body {
   overflow: hidden;
 }
 
-.app {
+/* Single centered pane. Both sidebars float on top of it with a
+   backdrop blur and never push the content around — the layout is
+   always one column wide regardless of rail state. */
+.layout {
+  --container-max: 960px;
+  --container-pad: 24px;
+
+  position: relative;
   height: 100vh;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.center {
+  position: relative;
+  height: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.stage { padding: 0; flex: 1; min-height: 0; }
-
-.frame {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  height: 100%;
-  background: var(--bg);
-  overflow: hidden;
+.main {
+  padding: 24px 0 26px;
+  overflow: auto;
+  min-height: 0;
+  flex: 1;
 }
 
-.right { position: relative; min-height: 0; min-width: 0; overflow: hidden; }
+/* Floating rails — fixed to the viewport edge, glass effect via
+   backdrop-filter. `inset: 0 auto 0 0` pins them top-to-bottom on
+   one side; `--rail-width` sets how far they extend across.
+   `prefers-reduced-motion` callers get the static end-state. */
+.rail {
+  position: fixed;
+  top: var(--rail-inset, 16px);
+  bottom: var(--rail-inset, 16px);
+  width: var(--rail-width, 320px);
+  z-index: 10;
 
-.main { padding: 96px 22px 26px; overflow: auto; min-height: 0; height: 100%; }
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+
+  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0,0,0,0.06);
+
+  animation: rail-slide-in 0.18s ease-out;
+}
+
+/* Rails fully detach from every viewport edge — fixed inset on all
+   four sides, fully rounded corners. */
+.rail--left  { left:  var(--rail-inset, 16px); --rail-width: 300px; border-radius: 16px; }
+.rail--right { right: var(--rail-inset, 16px); --rail-width: 340px; border-radius: 16px; }
+
+/* Collapsed state. Driven by `data-rail-left` / `data-rail-right` on
+   the <html> element — set by an inline script in the layout root
+   that reads localStorage synchronously *before* CSS computes, so
+   the rails render in their saved state on first paint (no
+   expand-then-collapse flash). The Rails JS hook keeps the
+   attribute in sync on subsequent toggles.
+
+   When collapsed, the aside wraps tightly around the toggle button:
+   bottom anchor is released so height collapses to content, and
+   every other element inside the rail is hidden. The result is a
+   single floating glass pill containing only the button. */
+html[data-rail-left="collapsed"]  .rail--left,
+html[data-rail-right="collapsed"] .rail--right {
+  --rail-width: auto;
+  bottom: auto;
+  height: auto;
+}
+
+html[data-rail-left="collapsed"]  .rail--left .rail-hd,
+html[data-rail-right="collapsed"] .rail--right .cart-hd {
+  border-bottom: 0;
+  min-height: 0;
+  gap: 0;
+}
+
+html[data-rail-left="collapsed"]  .rail--left  > *:not(.rail-hd),
+html[data-rail-right="collapsed"] .rail--right > *:not(.cart-hd) {
+  display: none;
+}
+
+html[data-rail-left="collapsed"]  .rail--left  .rail-hd > *:not(.rail-toggle),
+html[data-rail-right="collapsed"] .rail--right .cart-hd > *:not(.rail-toggle) {
+  display: none;
+}
+
+/* Animate width + height when toggling. */
+.rail {
+  transition:
+    width 0.22s ease,
+    height 0.22s ease,
+    bottom 0.22s ease;
+}
+
+@keyframes rail-slide-in {
+  from { transform: translateX(var(--rail-slide-from, -8px)); opacity: 0; }
+  to   { transform: translateX(0);                            opacity: 1; }
+}
+.rail--right { --rail-slide-from: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rail { animation: none; transition: none; }
+}

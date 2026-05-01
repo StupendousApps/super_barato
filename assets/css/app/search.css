@@ -1,33 +1,78 @@
 .search-block {
   position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-  padding: 18px 22px 14px;
-  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 72%, rgba(250, 249, 247, 0) 100%);
+  padding: 16px 22px 14px;
   pointer-events: none;
 }
 .search-block > * { pointer-events: auto; }
 
+/* Glass treatment matches the rail asides — same border-radius,
+   translucent surface, blur backdrop, and outset 1px border via
+   box-shadow. Content scrolls under and gets blurred.
+
+   The magnifier icon and the ⌘K hint float over the input so the
+   <input> can stretch edge-to-edge and capture clicks across the
+   full bar (including the icon and kbd regions). The input's
+   `padding-left` / `padding-right` reserves visual space so typed
+   text doesn't run under either ornament. */
 .search {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--surface);
-  border-radius: 999px;
-  padding: 14px 22px; min-height: 54px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .02), 0 2px 12px rgba(0, 0, 0, .03);
+  display: block;
+  position: relative;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0,0,0,0.06);
 }
+
+/* Magnifier — same 36×36 footprint and 20×20 glyph as the rail-toggle
+   button, floated over the input so it doesn't steal clicks. */
 .search .mag {
-  width: 18px; height: 18px; border-radius: 50%;
+  position: absolute;
+  top: 6px; left: 12px;
+  pointer-events: none;
+  width: 36px; height: 36px;
+  box-sizing: border-box;
+}
+.search .mag::before {
+  content: "";
+  position: absolute;
+  top: 8px; left: 8px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
   border: 1.8px solid var(--ink-2);
-  position: relative; flex: 0 0 auto;
 }
 .search .mag::after {
-  content: ""; position: absolute; width: 1.8px; height: 9px; background: var(--ink-2);
-  right: -5px; bottom: -5px; transform: rotate(-45deg); border-radius: 2px;
+  content: "";
+  position: absolute;
+  top: 23px; left: 23px;
+  width: 1.8px; height: 7px;
+  background: var(--ink-2);
+  transform: rotate(-45deg);
+  border-radius: 2px;
 }
+
+/* Input fills the bar edge-to-edge so any click anywhere inside the
+   pill focuses it. Padding leaves room for the floating icon on the
+   left and the kbd hint on the right. */
 .search input {
-  flex: 1; border: 0; outline: none; background: transparent;
-  font-size: 15px; letter-spacing: .005em;
+  display: block;
+  width: 100%;
+  border: 0; outline: none; background: transparent;
+  padding: 6px 64px 6px 56px;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 15px;
+  letter-spacing: .005em;
 }
 .search input::placeholder { color: var(--ink-3); }
+
+/* ⌘K hint — floated like the magnifier so it doesn't intercept
+   clicks meant for the input. */
 .search .kbd {
+  position: absolute;
+  top: 50%; right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
   color: var(--ink-3); font-size: 12px; padding: 3px 8px;
   background: var(--soft); border-radius: 6px;
 }

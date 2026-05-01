@@ -1,0 +1,68 @@
+/* Shared rail chrome — toggle button, header, and the collapsed-state
+   pinned button. Cart-specific bits stay in cart.css; category list
+   styles live in categories.css. */
+
+.rail-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink, #333);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.12s ease;
+}
+
+.rail-toggle:hover {
+  background: color-mix(in oklch, var(--ink) 6%, transparent);
+}
+
+.rail-toggle:active { transform: scale(0.96); }
+
+.rail-toggle .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.rail-toggle__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rail header. Toggle button is the first (left rail) or last
+   (right rail) child; gap lets the title / logo sit alongside. */
+.rail-hd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border, #e5e5e5);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.rail-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim, #666);
+}
