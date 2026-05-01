@@ -136,20 +136,22 @@ config :super_barato, SuperBarato.Crawler,
          {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :unimarc]]}}
       ]
     ],
-    # Jumbo + Santa Isabel use sitemap-driven discovery: PDPs on
-    # `www.<chain>.cl` are served from Cencosud's nginx (no Cloudflare,
-    # reachable from prod) and the sitemaps live on CloudFront/S3
-    # (also unprotected). Daily product walks use ProductProducer
-    # which streams every PDP URL into the chain Queue. At 1 req/s a
-    # full Jumbo pass takes ~14 hours; Santa Isabel ~4 hours.
+    # Jumbo + Santa Isabel are Cencosud chains served from Instaleap's
+    # `sm-web-api.ecomm.cencosud.com/catalog/api`, the same endpoint
+    # Acuenta uses. Stage 2 + 3 both run the category-walk
+    # ProductProducer (one HTTP request returns 40 priced products).
+    # The legacy sitemap-driven path (Cencosud.ProductProducer) is
+    # left implemented for fall-back use but no longer scheduled —
+    # at 1 req/s per PDP a full Jumbo pass took ~14 h, Santa Isabel
+    # ~4 h, vs. ~20 min and ~5 min through the category endpoint.
     jumbo: [
       schedule: [
         {{:weekly, [:mon], [~T[04:15:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :jumbo]]}},
         {{:weekly, [:mon], [~T[05:30:00]]},
-         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :jumbo]]}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo]]}},
         {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[05:30:00]]},
-         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :jumbo]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :jumbo]]}}
       ]
     ],
     santa_isabel: [
@@ -157,9 +159,9 @@ config :super_barato, SuperBarato.Crawler,
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :santa_isabel]]}},
         {{:weekly, [:mon], [~T[06:00:00]]},
-         {SuperBarato.Crawler.Cencosud.ProductProducer, :run, [[chain: :santa_isabel]]}},
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :santa_isabel]]}},
         {{:weekly, [:tue, :wed, :thu, :fri, :sat, :sun], [~T[06:00:00]]},
-         {SuperBarato.Crawler.Chain.ListingProducer, :run, [[chain: :santa_isabel]]}}
+         {SuperBarato.Crawler.Chain.ProductProducer, :run, [[chain: :santa_isabel]]}}
       ]
     ],
     # Tottus is on Cloudflare and the prod IP is banned at the edge.

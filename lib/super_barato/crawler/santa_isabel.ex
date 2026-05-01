@@ -38,6 +38,13 @@ defmodule SuperBarato.Crawler.SantaIsabel do
   def handle_task({:discover_categories, %{parent: _}}),
     do: Cencosud.discover_categories_from_home(@config, @home_url)
 
+  # Category-walk path — `Chain.ProductProducer` enqueues one of these
+  # per leaf category. Returns up to 40 priced listings per request via
+  # the same Instaleap endpoint Acuenta uses; ~40× faster than the
+  # legacy per-PDP sitemap walk below, which is kept as a fallback.
+  def handle_task({:discover_products, %{slug: slug}}),
+    do: Cencosud.discover_products(@config, slug)
+
   def handle_task({:fetch_product_pdp, %{url: url}}),
     do: Cencosud.fetch_product_pdp(@config, url)
 
