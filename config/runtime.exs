@@ -117,8 +117,19 @@ if config_env() == :prod do
 
   config :super_barato, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
+  # We serve the apex (`superbarato.cl`), `www.`, and the admin
+  # subdomain off the same Phoenix endpoint, so the LiveView socket
+  # has to accept Origin headers from all three. Without this, Phoenix
+  # rejects the WS handshake from `admin.<host>` with
+  # "Could not check origin for Phoenix.Socket transport" and the
+  # client falls back to longpoll forever.
   config :super_barato, SuperBaratoWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
+    check_origin: [
+      "https://#{host}",
+      "https://www.#{host}",
+      "https://admin.#{host}"
+    ],
     http: [
       # Enable IPv6 and bind on all interfaces. Port stays at the
       # Phoenix default 4000; Kamal's proxy fronts it.
