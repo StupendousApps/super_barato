@@ -84,21 +84,27 @@ defmodule SuperBarato.Linker.Worker do
             :skip
 
           true ->
-            # Atomic find-or-create + link. Wrapping both in one
-            # transaction means a `set_listing_link` failure (FK
-            # violation, exception inside `link/3`) rolls back the
-            # Product creation too — otherwise we'd accumulate
-            # Products that no listing references.
-            Repo.transaction(fn ->
-              {_action, product, source} =
-                Linker.find_or_create_product_for_listing(listing)
+            # Two separate, self-contained transactions:
+            # `find_or_create_product_for_listing/1` already wraps
+            # Product + ProductIdentifier inserts atomically;
+            # `set_listing_link/3` already wraps its delete + insert +
+            # orphan-check atomically. An outer transaction wrapping
+            # both bought only defensive rollback on the (rare)
+            # `set_listing_link` failure — at the cost of holding the
+            # SQLite write lock through ~3 transactions' worth of
+            # work, which produced cross-worker `Database busy`
+            # cascades during a fresh seed. The worst case now is a
+            # short-lived orphan Product if `set_listing_link` raises
+            # after the Product was just inserted; orphan cleanup
+            # runs on every later unlink/merge.
+            {_action, product, source} =
+              Linker.find_or_create_product_for_listing(listing)
 
-              Linker.set_listing_link(product.id, listing.id,
-                source: source,
-                confidence: confidence_for(source),
-                linked_at: now()
-              )
-            end)
+            Linker.set_listing_link(product.id, listing.id,
+              source: source,
+              confidence: confidence_for(source),
+              linked_at: now()
+            )
         end
     end
   end
