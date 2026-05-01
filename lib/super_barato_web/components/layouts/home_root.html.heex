@@ -8,19 +8,17 @@
       {assigns[:page_title]}
     </.live_title>
 
-    <%!-- Sidebar collapse state. Read synchronously from localStorage
-         and applied to <html> before any CSS computes, so the rails
-         render in their saved state on the very first paint (no
-         expand-then-collapse flash on reload). The Rails JS hook
-         keeps these attributes in sync after mount. --%>
+    <%!-- Cart rail collapse state. Read synchronously from
+         localStorage and applied to <html> before any CSS computes,
+         so the rail renders in its saved state on the very first
+         paint (no expand-then-collapse flash on reload). The Rails
+         JS hook keeps the attribute in sync after mount. --%>
     <script>
       (function () {
         try {
           var raw = window.localStorage.getItem("super_barato.rails.collapsed");
           var s = raw ? JSON.parse(raw) : {};
-          var d = document.documentElement;
-          d.dataset.railLeft  = s.left  ? "collapsed" : "expanded";
-          d.dataset.railRight = s.right ? "collapsed" : "expanded";
+          document.documentElement.dataset.railRight = s.right ? "collapsed" : "expanded";
         } catch (_e) {}
       })();
     </script>
@@ -29,7 +27,6 @@
     <link rel="stylesheet" href={~p"/assets/css/app/variables.css"} />
     <link rel="stylesheet" href={~p"/assets/css/app/layout.css"} />
     <link rel="stylesheet" href={~p"/assets/css/app/rails.css"} />
-    <link rel="stylesheet" href={~p"/assets/css/app/categories.css"} />
     <link rel="stylesheet" href={~p"/assets/css/app/search.css"} />
     <link rel="stylesheet" href={~p"/assets/css/app/results.css"} />
     <link rel="stylesheet" href={~p"/assets/css/app/card.css"} />

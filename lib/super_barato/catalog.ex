@@ -569,7 +569,8 @@ defmodule SuperBarato.Catalog do
     "canonical_name" => :canonical_name,
     "brand" => :brand,
     "inserted_at" => :inserted_at,
-    "updated_at" => :updated_at
+    "updated_at" => :updated_at,
+    "chain_count" => :chain_count
   }
 
   @doc """
@@ -583,10 +584,11 @@ defmodule SuperBarato.Catalog do
   def list_products_page(opts \\ []) do
     page = max(1, opts[:page] || 1)
     per_page = opts[:per_page] |> clamp_per_page()
+    fts_q = fts_query(opts[:q])
 
     query =
       Product
-      |> apply_product_q_filter(opts[:q])
+      |> apply_product_q_filter(opts[:q], fts_q)
       |> apply_product_ean_filter(opts[:ean])
       |> apply_product_app_category_filter(opts[:app_category])
       |> apply_product_app_subcategory_filter(opts[:app_subcategory])
@@ -596,7 +598,7 @@ defmodule SuperBarato.Catalog do
 
     items =
       query
-      |> apply_product_sort(opts[:sort] || "-updated_at")
+      |> apply_product_sort(opts[:sort] || "-updated_at", fts_q)
       |> limit(^per_page)
       |> offset(^((page - 1) * per_page))
       |> Repo.all()
@@ -610,7 +612,37 @@ defmodule SuperBarato.Catalog do
     }
   end
 
-  defp apply_product_q_filter(query, q), do: Q.filter(query, q, [:canonical_name, :brand])
+  # FTS5 path: build a MATCH expression from the user's query and
+  # constrain the products query to ids matching it. We fall back to
+  # the legacy LIKE-based filter when the query reduces to an empty
+  # FTS expression (so callers using EAN/operator forms still work).
+  defp apply_product_q_filter(query, _q, fts_q) when is_binary(fts_q) and fts_q != "" do
+    sub =
+      from f in "products_fts",
+        where: fragment("products_fts MATCH ?", ^fts_q),
+        select: %{rowid: fragment("rowid")}
+
+    from p in query, where: p.id in subquery(sub)
+  end
+
+  defp apply_product_q_filter(query, q, _fts_q),
+    do: Q.filter(query, q, [:canonical_name, :brand])
+
+  # Build an FTS5 MATCH expression from raw user input. Strips
+  # special operators, splits on whitespace, and turns each token
+  # into a prefix match so partial words still hit. Returns "" when
+  # nothing meaningful is left.
+  defp fts_query(nil), do: ""
+  defp fts_query(""), do: ""
+
+  defp fts_query(q) when is_binary(q) do
+    q
+    |> String.downcase()
+    |> String.replace(~r/[^\p{L}\p{N}\s]/u, " ")
+    |> String.split(~r/\s+/u, trim: true)
+    |> Enum.map(&(&1 <> "*"))
+    |> Enum.join(" ")
+  end
 
   # Product-side EAN filter — join product_identifiers and prefix-match
   # against EAN-kind rows. Distinct so a multi-EAN product isn't
@@ -850,6 +882,24 @@ defmodule SuperBarato.Catalog do
         select: {pi.kind, pi.value}
     )
   end
+
+  # When an FTS query is in play, order by combined relevance:
+  # bm25 score (lower = better) minus a chain_count boost (more
+  # chains = lower score = ranked higher). The factor 0.5 was
+  # picked by eye — tweak when the search UX gets evaluated.
+  defp apply_product_sort(query, _sort, fts_q) when is_binary(fts_q) and fts_q != "" do
+    rank_sub =
+      from f in "products_fts",
+        where: fragment("products_fts MATCH ?", ^fts_q),
+        select: %{rowid: fragment("rowid"), score: fragment("bm25(products_fts)")}
+
+    from p in query,
+      join: r in subquery(rank_sub),
+      on: r.rowid == p.id,
+      order_by: [asc: fragment("? - 1.5 * (? - 1)", r.score, p.chain_count)]
+  end
+
+  defp apply_product_sort(query, sort, _fts_q), do: apply_product_sort(query, sort)
 
   defp apply_product_sort(query, "-" <> field), do: apply_product_sort_dir(query, field, :desc)
   defp apply_product_sort(query, field), do: apply_product_sort_dir(query, field, :asc)

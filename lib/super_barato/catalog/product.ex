@@ -9,6 +9,13 @@ defmodule SuperBarato.Catalog.Product do
     field :brand, :string
     field :image_url, :string
 
+    # Denormalized count of distinct chains carrying any listing
+    # linked to this product. Maintained by SQLite triggers on
+    # `product_listings` (insert/delete/move) — see the FTS5
+    # migration. Powers the search ranking boost so cross-chain
+    # products surface above one-off store-only items.
+    field :chain_count, :integer, default: 0
+
     # Optional manual taxonomy override. When set it wins over the
     # consensus categorization derived from the product's chain
     # listings (see Catalog.categories_by_product_ids/1). The category

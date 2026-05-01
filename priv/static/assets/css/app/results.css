@@ -1,11 +1,24 @@
-.results-hd {
-  display: flex; align-items: baseline; justify-content: space-between;
-  padding: 2px 4px 14px;
+/* Floating bottom-left counter showing how many products the user
+   has scrolled past so far over the total in the result set. The
+   number on the left is updated client-side by the SeenCounter
+   hook (IntersectionObserver on each .card); the total comes from
+   the server. */
+.seen-counter {
+  position: fixed;
+  left: 16px; bottom: 16px;
+  z-index: 8;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  box-shadow: 0 0 0 1px var(--border), 0 6px 16px rgba(0, 0, 0, .04);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
 }
-.results-hd h2 {
-  font: 600 20px/1.2 'Instrument Sans', sans-serif; margin: 0; letter-spacing: -.01em;
-}
-.results-hd .count { color: var(--ink-3); font-size: 12.5px; }
+.seen-counter [data-seen] { color: var(--ink); font-weight: 600; }
 
 .results-empty {
   padding: 90px 20px; text-align: center; color: var(--ink-3);

@@ -113,11 +113,69 @@ const Picker = {
   },
 }
 
+// SeenCounter hook — tracks which `.card[data-product-index]`
+// elements are currently intersecting the viewport and renders the
+// highest visible index ("you're at item N out of M"). Re-runs
+// `observe()` on every LV update so infinite-scroll appends start
+// being tracked. The server pushes `seen_counter:reset` on filter
+// changes so the visible Set drops back to zero for the new set.
+const SeenCounter = {
+  mounted() {
+    this.visible = new Set()
+    this.observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const idx = parseInt(entry.target.dataset.productIndex, 10)
+        if (Number.isNaN(idx)) continue
+        if (entry.isIntersecting) this.visible.add(idx)
+        else this.visible.delete(idx)
+      }
+      this.render()
+    })
+    this.observe()
+    this.handleEvent("seen_counter:reset", () => {
+      this.visible.clear()
+      this.render()
+    })
+  },
+  updated() { this.observe() },
+  destroyed() { if (this.observer) this.observer.disconnect() },
+  observe() {
+    document.querySelectorAll(".card[data-product-index]").forEach((c) => this.observer.observe(c))
+    this.render()
+  },
+  render() {
+    const seenEl = this.el.querySelector("[data-seen]")
+    if (!seenEl) return
+    const max = this.visible.size === 0 ? 0 : Math.max(...this.visible)
+    seenEl.textContent = max
+  },
+}
+
+// InfiniteScroll hook — fires `load_more` whenever a sentinel
+// element scrolls into view. The LiveView re-renders the sentinel
+// in place after each append, so the same element keeps observing
+// the next batch's tail. When all results are loaded the sentinel
+// is removed by the server and the observer disconnects on
+// `destroyed`.
+const InfiniteScroll = {
+  mounted() {
+    this.observer = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        this.pushEvent("load_more")
+      }
+    }, {rootMargin: "400px 0px"})
+    this.observer.observe(this.el)
+  },
+  destroyed() {
+    if (this.observer) this.observer.disconnect()
+  },
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks, Rails, Picker},
+  hooks: {...colocatedHooks, Rails, Picker, InfiniteScroll, SeenCounter},
 })
 
 // Show progress bar on live navigation and form submits

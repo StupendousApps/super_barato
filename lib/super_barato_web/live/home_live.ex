@@ -9,7 +9,6 @@ defmodule SuperBaratoWeb.HomeLive do
 
   @results_per_page 50
 
-  @chain_order ~w(jumbo santa_isabel unimarc lider tottus acuenta)
   @chain_names %{
     "jumbo" => "Jumbo",
     "santa_isabel" => "Santa Isabel",
@@ -25,15 +24,13 @@ defmodule SuperBaratoWeb.HomeLive do
      socket
      |> assign(:query, "")
      |> assign(:cart, %{})
-     # Accordion: which app_category slug is open in the left rail.
-     # Nil = all collapsed.
-     |> assign(:open_category, nil)
      # Selected category/subcategory filters (nil = no filter).
      |> assign(:selected_category, nil)
      |> assign(:selected_subcategory, nil)
      |> assign(:categories, Catalog.app_categories_with_subcategories())
      |> assign(:products, [])
      |> assign(:total_count, 0)
+     |> assign(:page, 1)
      |> assign(:page_title, "SuperBarato.cl"), layout: false}
   end
 
@@ -44,25 +41,8 @@ defmodule SuperBaratoWeb.HomeLive do
      |> assign(:query, params["q"] || "")
      |> assign(:selected_category, params["cat"])
      |> assign(:selected_subcategory, params["sub"])
-     |> maybe_open_category()
-     |> run_search()}
-  end
-
-  # Keep the accordion in sync with the URL — if a subcategory is
-  # selected, its parent category must be expanded so the user can see
-  # the highlighted row.
-  defp maybe_open_category(socket) do
-    case {socket.assigns.selected_subcategory, socket.assigns.selected_category} do
-      {nil, nil} ->
-        socket
-
-      {nil, cat_slug} ->
-        assign(socket, :open_category, cat_slug)
-
-      {sub_slug, _} ->
-        cat = Enum.find(socket.assigns.categories, &Enum.any?(&1.subcategories, fn s -> s.slug == sub_slug end))
-        assign(socket, :open_category, cat && cat.slug)
-    end
+     |> run_search()
+     |> push_event("seen_counter:reset", %{})}
   end
 
   @impl true
@@ -102,12 +82,14 @@ defmodule SuperBaratoWeb.HomeLive do
     {:noreply, assign(socket, :cart, cart)}
   end
 
-  # Accordion toggle on the left rail. Clicking a category name opens
-  # its subcategory list (or closes if already open). We don't change
-  # the URL here — that's only for actual selections.
-  def handle_event("toggle_category", %{"slug" => slug}, socket) do
-    open = if socket.assigns.open_category == slug, do: nil, else: slug
-    {:noreply, assign(socket, :open_category, open)}
+  def handle_event("load_more", _, socket) do
+    %{products: existing, total_count: total, page: page} = socket.assigns
+
+    cond do
+      length(existing) >= total -> {:noreply, socket}
+      total == 0 -> {:noreply, socket}
+      true -> {:noreply, fetch_page(socket, page + 1)}
+    end
   end
 
   ## ── Search ──────────────────────────────────────────────────
@@ -121,35 +103,55 @@ defmodule SuperBaratoWeb.HomeLive do
     sub = socket.assigns.selected_subcategory
 
     if q == "" and is_nil(cat) and is_nil(sub) do
-      assign(socket, products: [], total_count: 0)
+      assign(socket, products: [], total_count: 0, page: 1)
     else
-      result =
-        Catalog.list_products_page(
-          q: q,
-          app_category: cat,
-          app_subcategory: sub,
-          page: 1,
-          per_page: @results_per_page
-        )
-
-      pids = Enum.map(result.items, & &1.id)
-      listings = Linker.listings_by_product_ids(pids)
-
-      products =
-        Enum.map(result.items, fn p ->
-          prices = product_prices(Map.get(listings, p.id, []))
-
-          %{
-            id: p.id,
-            name: p.canonical_name,
-            brand: p.brand,
-            image_url: p.image_url,
-            prices: prices
-          }
-        end)
-
-      assign(socket, products: products, total_count: result.total_entries)
+      fetch_page(assign(socket, products: [], page: 1), 1)
     end
+  end
+
+  # Fetches `page` worth of products and either replaces the
+  # `products` list (page 1) or appends to it (subsequent pages).
+  # Pagination keys off the same sort that drives the initial load,
+  # so OFFSET-based paging stays stable across requests.
+  defp fetch_page(socket, page) do
+    q = String.trim(socket.assigns.query)
+    cat = socket.assigns.selected_category
+    sub = socket.assigns.selected_subcategory
+
+    result =
+      Catalog.list_products_page(
+        q: q,
+        app_category: cat,
+        app_subcategory: sub,
+        sort: "-chain_count",
+        page: page,
+        per_page: @results_per_page
+      )
+
+    pids = Enum.map(result.items, & &1.id)
+    listings = Linker.listings_by_product_ids(pids)
+
+    new_products =
+      Enum.map(result.items, fn p ->
+        prices = product_prices(Map.get(listings, p.id, []))
+
+        %{
+          id: p.id,
+          name: p.canonical_name,
+          brand: p.brand,
+          image_url: p.image_url,
+          prices: prices
+        }
+      end)
+
+    products =
+      if page == 1, do: new_products, else: socket.assigns.products ++ new_products
+
+    assign(socket,
+      products: products,
+      total_count: result.total_entries,
+      page: page
+    )
   end
 
   # Rail collapse is purely a frontend concern — see the `Rails` JS
@@ -168,19 +170,9 @@ defmodule SuperBaratoWeb.HomeLive do
 
     ~H"""
     <div class="layout" id="layout" phx-hook="Rails">
-      <%!-- Rails are always rendered. The collapsed/expanded state
-           is a pure frontend concern — the `Rails` JS hook flips a
-           `data-collapsed` attribute on the rail and persists to
-           localStorage. The server never sees the toggle. --%>
-      <aside class="rail rail--left">
-        <.rail_left
-          categories={@categories}
-          open_category={@open_category}
-          selected_category={@selected_category}
-          selected_subcategory={@selected_subcategory}
-        />
-      </aside>
-
+      <%!-- Cart rail collapse state is a pure frontend concern —
+           the `Rails` JS hook flips a `data-rail-right` attribute
+           on <html> and persists to localStorage. --%>
       <div class="center">
         <div class="search-block">
           <div class="container">
@@ -245,19 +237,6 @@ defmodule SuperBaratoWeb.HomeLive do
 
         <main class="main">
          <div class="container">
-          <div class="results-hd">
-            <div class="count">
-              <%= cond do %>
-                <% @query == "" and is_nil(@selected_category) and is_nil(@selected_subcategory) -> %>
-                  6 supermercados
-                <% @total_count > @results_per_page -> %>
-                  {@total_count} resultados (mostrando {length(@products)})
-                <% true -> %>
-                  {@total_count} resultados
-              <% end %>
-            </div>
-          </div>
-
           <%= cond do %>
             <% @products == [] and @query == "" and is_nil(@selected_category) and is_nil(@selected_subcategory) -> %>
               <div class="results-empty">
@@ -273,9 +252,11 @@ defmodule SuperBaratoWeb.HomeLive do
             <% true -> %>
               <div class="grid">
                 <button
-                  :for={p <- @products}
+                  :for={{p, i} <- Enum.with_index(@products)}
                   type="button"
                   class="card"
+                  data-product-id={p.id}
+                  data-product-index={i + 1}
                   phx-click="add"
                   phx-value-id={p.id}
                   aria-label={"Agregar #{p.name}"}
@@ -292,8 +273,8 @@ defmodule SuperBaratoWeb.HomeLive do
                       <div class="prices prices--empty">Sin precio</div>
                     <% else %>
                       <ul class="prices">
-                        <li :for={row <- p.prices} class={["price-row", row.promo? && "price-row--promo"]}>
-                          <span class="ch">{row.name}</span>
+                        <li :for={row <- p.prices} class={["price-row", row.promo? && "price-row--promo", row.lowest? && "price-row--lowest"]}>
+                          <img class="ch-icon" src={chain_icon_url(row.chain)} alt={row.name} title={row.name} />
                           <span class="amt">{format_clp(row.price)}</span>
                         </li>
                       </ul>
@@ -301,6 +282,11 @@ defmodule SuperBaratoWeb.HomeLive do
                   </div>
                 </button>
               </div>
+              <div
+                :if={length(@products) < @total_count}
+                id="infinite-scroll-sentinel"
+                phx-hook="InfiniteScroll"
+              ></div>
           <% end %>
          </div>
         </main>
@@ -309,71 +295,26 @@ defmodule SuperBaratoWeb.HomeLive do
       <aside class="rail rail--right">
         <.rail_right cart_items={@cart_items} />
       </aside>
+
+      <%!-- Bottom-left "X / Y Productos" counter. The total comes
+           from the server; the visible count is owned by the
+           SeenCounter hook, which observes each .card with an
+           IntersectionObserver and counts unique product ids that
+           have entered the viewport. --%>
+      <div
+        :if={@total_count > 0}
+        id="seen-counter"
+        class="seen-counter"
+        phx-hook="SeenCounter"
+        data-total={@total_count}
+      >
+        <span data-seen>0</span> / {@total_count} Productos
+      </div>
     </div>
     """
   end
 
   ## ── Rail components ──────────────────────────────────────────
-
-  attr :categories, :list, required: true
-  attr :open_category, :string, default: nil
-  attr :selected_category, :string, default: nil
-  attr :selected_subcategory, :string, default: nil
-
-  defp rail_left(assigns) do
-    ~H"""
-    <div class="rail-hd">
-      <button
-        type="button"
-        class="rail-toggle"
-        data-rail-toggle="left"
-        aria-label="Mostrar/ocultar categorías"
-      >
-        <.icon_sidebar_left />
-      </button>
-      <div class="rail-title">Categorías</div>
-    </div>
-    <nav class="cat-list">
-        <%= for cat <- @categories do %>
-          <% open? = @open_category == cat.slug %>
-          <% selected? = @selected_category == cat.slug and is_nil(@selected_subcategory) %>
-          <div class={["cat", open? && "cat--open", selected? && "cat--selected"]}>
-            <button
-              type="button"
-              class="cat-row"
-              phx-click="toggle_category"
-              phx-value-slug={cat.slug}
-              aria-expanded={open?}
-            >
-              <span class="cat-name">{cat.name}</span>
-              <span class="cat-count">{length(cat.subcategories)}</span>
-              <span class="cat-chev"><.icon_chevron_right /></span>
-            </button>
-            <%= if open? do %>
-              <ul class="sub-list">
-                <li>
-                  <.link
-                    patch={~p"/?#{[cat: cat.slug]}"}
-                    class={["sub-link", "sub-link--all", selected? && "sub-link--selected"]}
-                  >
-                    Todo en {cat.name}
-                  </.link>
-                </li>
-                <li :for={sub <- cat.subcategories}>
-                  <.link
-                    patch={~p"/?#{[sub: sub.slug]}"}
-                    class={["sub-link", @selected_subcategory == sub.slug && "sub-link--selected"]}
-                  >
-                    {sub.name}
-                  </.link>
-                </li>
-              </ul>
-            <% end %>
-          </div>
-        <% end %>
-      </nav>
-    """
-  end
 
   attr :cart_items, :list, required: true
 
@@ -447,26 +388,10 @@ defmodule SuperBaratoWeb.HomeLive do
 
   ## ── Inline icons (24×24, currentColor) ───────────────────────
 
-  defp icon_sidebar_left(assigns) do
-    ~H"""
-    <svg viewBox="0 0 24 24" fill="currentColor" class="icon" aria-hidden="true">
-      <path d="M5.579 19.807h13.054c2.137 0 3.367-1.289 3.367-3.579V7.78c0-2.29-1.23-3.587-3.367-3.587H5.579C3.298 4.193 2 5.49 2 7.78v8.448c0 2.29 1.298 3.579 3.579 3.579Zm.009-1.365c-1.408 0-2.222-.806-2.222-2.214V7.78c0-1.408.814-2.222 2.222-2.222h2.875v12.884H5.588Zm12.824-12.884c1.408 0 2.222.814 2.222 2.222v8.448c0 1.408-.814 2.214-2.222 2.214H9.795V5.558h8.617Zm-11.577 3.155a.483.483 0 0 0 .483-.475c0-.254-.229-.475-.483-.475H5.011a.475.475 0 0 0-.475.475c0 .254.221.475.475.475h1.824Zm0 2.197a.483.483 0 0 0 .483-.483.475.475 0 0 0-.483-.467H5.011a.467.467 0 0 0-.475.467c0 .254.221.483.475.483h1.824Zm0 2.188a.475.475 0 0 0 .483-.466c0-.255-.229-.475-.483-.475H5.011a.475.475 0 0 0-.475.475c0 .254.221.466.475.466h1.824Z"/>
-    </svg>
-    """
-  end
-
   defp icon_sidebar_right(assigns) do
     ~H"""
     <svg viewBox="0 0 24 24" fill="currentColor" class="icon" aria-hidden="true">
       <path d="M5.579 19.807h13.054c2.137 0 3.367-1.289 3.367-3.579V7.78c0-2.29-1.23-3.587-3.367-3.587H5.579C3.298 4.193 2 5.49 2 7.78v8.448c0 2.29 1.298 3.579 3.579 3.579Zm.009-1.365c-1.408 0-2.222-.806-2.222-2.214V7.78c0-1.408.814-2.222 2.222-2.222h8.643v12.884H5.588Zm12.824-12.884c1.408 0 2.222.814 2.222 2.222v8.448c0 1.408-.814 2.214-2.222 2.214h-2.85V5.558h2.85Zm-1.221 3.155h1.815a.483.483 0 0 0 .483-.475.475.475 0 0 0-.483-.475H17.19a.475.475 0 0 0-.484.475c0 .254.22.475.484.475Zm0 2.197h1.815a.483.483 0 0 0 .483-.483.475.475 0 0 0-.483-.467H17.19a.475.475 0 0 0-.484.467c0 .254.22.483.484.483Zm0 2.188h1.815a.475.475 0 0 0 .483-.466.475.475 0 0 0-.483-.475H17.19a.475.475 0 0 0-.484.475c0 .254.22.466.484.466Z"/>
-    </svg>
-    """
-  end
-
-  defp icon_chevron_right(assigns) do
-    ~H"""
-    <svg viewBox="0 0 24 24" fill="currentColor" class="icon icon--chev" aria-hidden="true">
-      <path d="M9 6l6 6-6 6"/>
     </svg>
     """
   end
@@ -507,24 +432,45 @@ defmodule SuperBaratoWeb.HomeLive do
   # current_regular_price are dropped. If a chain has multiple
   # listings linked, we pick the cheapest effective price.
   defp product_prices(listings) do
-    listings
-    |> Enum.reject(&is_nil(&1.current_regular_price))
-    |> Enum.map(fn l ->
-      reg = l.current_regular_price
-      promo = l.current_promo_price
-      promo? = is_integer(promo) and is_integer(reg) and promo < reg
-      eff = if promo?, do: promo, else: reg
-      %{chain: l.chain, price: eff, promo?: promo?}
-    end)
-    |> Enum.group_by(& &1.chain)
-    |> Enum.map(fn {_chain, rows} -> Enum.min_by(rows, & &1.price) end)
-    |> Enum.sort_by(fn %{chain: c} ->
-      Enum.find_index(@chain_order, &(&1 == c)) || length(@chain_order)
-    end)
-    |> Enum.map(fn row ->
-      Map.put(row, :name, Map.get(@chain_names, row.chain, row.chain))
-    end)
+    rows =
+      listings
+      |> Enum.reject(&is_nil(&1.current_regular_price))
+      |> Enum.map(fn l ->
+        reg = l.current_regular_price
+        promo = l.current_promo_price
+        promo? = is_integer(promo) and is_integer(reg) and promo < reg
+        eff = if promo?, do: promo, else: reg
+        %{chain: l.chain, price: eff, promo?: promo?}
+      end)
+      |> Enum.group_by(& &1.chain)
+      |> Enum.map(fn {_chain, rows} -> Enum.min_by(rows, & &1.price) end)
+      |> Enum.sort_by(& &1.price)
+      |> Enum.map(fn row ->
+        Map.put(row, :name, Map.get(@chain_names, row.chain, row.chain))
+      end)
+
+    case rows do
+      [_only] ->
+        Enum.map(rows, &Map.put(&1, :lowest?, false))
+
+      [] ->
+        []
+
+      _ ->
+        min_price = rows |> Enum.map(& &1.price) |> Enum.min()
+        Enum.map(rows, &Map.put(&1, :lowest?, &1.price == min_price))
+    end
   end
+
+  # Static favicon path for each chain. Files live in
+  # priv/static/images/chains/ — pre-baked, not crawled.
+  defp chain_icon_url("jumbo"), do: "/images/chains/jumbo.png"
+  defp chain_icon_url("santa_isabel"), do: "/images/chains/santa_isabel.png"
+  defp chain_icon_url("unimarc"), do: "/images/chains/unimarc.ico"
+  defp chain_icon_url("lider"), do: "/images/chains/lider.ico"
+  defp chain_icon_url("tottus"), do: "/images/chains/tottus.png"
+  defp chain_icon_url("acuenta"), do: "/images/chains/acuenta.ico"
+  defp chain_icon_url(_), do: nil
 
 
   # `cart` is a `%{product_id => qty}` map. We resolve product
