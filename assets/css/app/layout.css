@@ -21,12 +21,14 @@ html.home, html.home body {
   overflow: hidden;
 }
 
+/* `.center` is the full-width column wrapper. The scrolling element
+   (`.main`) and the floating search-block both span edge-to-edge, so
+   the scrollbar sits at the viewport edge. The width-restricted
+   layout lives in `.container` children that get centered with
+   `margin: 0 auto`. */
 .center {
   position: relative;
   height: 100%;
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--container-pad);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -37,6 +39,71 @@ html.home, html.home body {
   overflow: auto;
   min-height: 0;
   flex: 1;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+  box-sizing: border-box;
+}
+
+/* Pretty-scroll treatment for the page feed and rail bodies. Same
+   tokens / fallbacks the macatlas portal shell uses: a thin
+   translucent thumb on Firefox via `scrollbar-color`, and a more
+   refined webkit-only override (rounded thumb, transparent track)
+   for Chrome / Safari. */
+.main,
+.cat-list,
+.cart-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+@supports selector(::-webkit-scrollbar) {
+  .main,
+  .cat-list,
+  .cart-body {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  .main::-webkit-scrollbar,
+  .cat-list::-webkit-scrollbar,
+  .cart-body::-webkit-scrollbar {
+    width: 14px;
+    background: transparent;
+  }
+
+  .main::-webkit-scrollbar-track,
+  .cat-list::-webkit-scrollbar-track,
+  .cart-body::-webkit-scrollbar-track,
+  .main::-webkit-scrollbar-track-piece,
+  .cat-list::-webkit-scrollbar-track-piece,
+  .cart-body::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+
+  .main::-webkit-scrollbar-thumb,
+  .cat-list::-webkit-scrollbar-thumb,
+  .cart-body::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--scrollbar-thumb);
+    background-clip: padding-box;
+    border: 4px solid transparent;
+  }
+
+  .main::-webkit-scrollbar-thumb:hover,
+  .cat-list::-webkit-scrollbar-thumb:hover,
+  .cart-body::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  .main::-webkit-scrollbar-corner,
+  .cat-list::-webkit-scrollbar-corner,
+  .cart-body::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
 
 /* Floating rails — fixed to the viewport edge, glass effect via

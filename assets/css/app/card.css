@@ -25,6 +25,12 @@
   content: ""; position: absolute; inset: 0;
   background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(0, 0, 0, .015) 6px 7px);
 }
+.card .img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
 .card .img .hover-cta {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;

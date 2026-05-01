@@ -1,37 +1,13 @@
 defmodule SuperBaratoWeb.HomeLive do
   use SuperBaratoWeb, :live_view
 
-  alias SuperBarato.Catalog
+  import Ecto.Query
 
-  # Wireframe placeholder data. Prices in CLP, keyed by supermarket id
-  # (jumbo, lider, santa, unimarc, tottus, acuenta). Real data will come
-  # from the catalog once the crawler seeds it.
-  @products [
-    %{id: 1, name: "Leche entera Colun 1 L", unit: "1 L",
-      prices: %{"jumbo" => 1190, "lider" => 1090, "santa" => 1150, "unimarc" => 1240, "tottus" => 1120, "acuenta" => 990}},
-    %{id: 2, name: "Pan de molde blanco Ideal 500 g", unit: "500 g",
-      prices: %{"jumbo" => 2290, "lider" => 2190, "santa" => 2290, "unimarc" => 2390, "tottus" => 2250, "acuenta" => 2090}},
-    %{id: 3, name: "Arroz Tucapel Grado 1, 1 kg", unit: "1 kg",
-      prices: %{"jumbo" => 1690, "lider" => 1590, "santa" => 1690, "unimarc" => 1790, "tottus" => 1590, "acuenta" => 1490}},
-    %{id: 4, name: "Aceite maravilla Chef 900 ml", unit: "900 mL",
-      prices: %{"jumbo" => 2190, "lider" => 1990, "santa" => 2090, "unimarc" => 2290, "tottus" => 2090, "acuenta" => 1890}},
-    %{id: 5, name: "Huevos blancos XL 1/2 docena", unit: "6 un",
-      prices: %{"jumbo" => 2490, "lider" => 2290, "santa" => 2390, "unimarc" => 2590, "tottus" => 2390, "acuenta" => 2190}},
-    %{id: 6, name: "Azúcar granulada IANSA 1 kg", unit: "1 kg",
-      prices: %{"jumbo" => 1390, "lider" => 1290, "santa" => 1350, "unimarc" => 1490, "tottus" => 1290, "acuenta" => 1190}},
-    %{id: 7, name: "Fideos spaghetti Carozzi 400 g", unit: "400 g",
-      prices: %{"jumbo" => 890, "lider" => 790, "santa" => 850, "unimarc" => 990, "tottus" => 790, "acuenta" => 690}},
-    %{id: 8, name: "Yogurt natural Soprole 1 L", unit: "1 L",
-      prices: %{"jumbo" => 1890, "lider" => 1790, "santa" => 1890, "unimarc" => 1990, "tottus" => 1790, "acuenta" => nil}},
-    %{id: 9, name: "Papel higiénico Confort 12 un", unit: "12 rollos",
-      prices: %{"jumbo" => 6990, "lider" => 6490, "santa" => 6790, "unimarc" => 7290, "tottus" => 6590, "acuenta" => 5990}},
-    %{id: 10, name: "Detergente Ariel 3 kg", unit: "3 kg",
-      prices: %{"jumbo" => 8990, "lider" => 8490, "santa" => 8790, "unimarc" => 9290, "tottus" => 8590, "acuenta" => 7990}},
-    %{id: 11, name: "Palta Hass, kilo", unit: "x kg",
-      prices: %{"jumbo" => 3990, "lider" => 3790, "santa" => 3890, "unimarc" => nil, "tottus" => 3790, "acuenta" => 3490}},
-    %{id: 12, name: "Tomate larga vida, kilo", unit: "x kg",
-      prices: %{"jumbo" => 1490, "lider" => 1290, "santa" => 1390, "unimarc" => 1590, "tottus" => 1290, "acuenta" => 1190}}
-  ]
+  alias SuperBarato.{Catalog, Linker}
+  alias SuperBarato.Catalog.Product
+  alias SuperBarato.Repo
+
+  @results_per_page 50
 
   @impl true
   def mount(_params, _session, socket) do
@@ -46,6 +22,8 @@ defmodule SuperBaratoWeb.HomeLive do
      |> assign(:selected_category, nil)
      |> assign(:selected_subcategory, nil)
      |> assign(:categories, Catalog.app_categories_with_subcategories())
+     |> assign(:products, [])
+     |> assign(:total_count, 0)
      |> assign(:page_title, "SuperBarato.cl"), layout: false}
   end
 
@@ -53,9 +31,11 @@ defmodule SuperBaratoWeb.HomeLive do
   def handle_params(params, _uri, socket) do
     {:noreply,
      socket
+     |> assign(:query, params["q"] || "")
      |> assign(:selected_category, params["cat"])
      |> assign(:selected_subcategory, params["sub"])
-     |> maybe_open_category()}
+     |> maybe_open_category()
+     |> run_search()}
   end
 
   # Keep the accordion in sync with the URL — if a subcategory is
@@ -77,7 +57,7 @@ defmodule SuperBaratoWeb.HomeLive do
 
   @impl true
   def handle_event("search", %{"q" => q}, socket) do
-    {:noreply, assign(socket, :query, q)}
+    {:noreply, socket |> assign(:query, q) |> run_search()}
   end
 
   def handle_event("add", %{"id" => id}, socket) do
@@ -104,11 +84,6 @@ defmodule SuperBaratoWeb.HomeLive do
     {:noreply, assign(socket, :cart, cart)}
   end
 
-  # Rail collapse is purely a frontend concern — see the `Rails` JS
-  # hook in assets/js/app.js. The toggle button(s) inside each rail
-  # flip a `data-collapsed="true"` attribute on the rail element and
-  # write to localStorage. The server is never told.
-
   # Accordion toggle on the left rail. Clicking a category name opens
   # its subcategory list (or closes if already open). We don't change
   # the URL here — that's only for actual selections.
@@ -117,14 +92,63 @@ defmodule SuperBaratoWeb.HomeLive do
     {:noreply, assign(socket, :open_category, open)}
   end
 
+  ## ── Search ──────────────────────────────────────────────────
+
+  # Hits the catalog only when there's something to search for OR a
+  # category filter is active. The empty home view stays cheap (no
+  # query) so first paint isn't gated on a catalog read.
+  defp run_search(socket) do
+    q = String.trim(socket.assigns.query)
+    cat = socket.assigns.selected_category
+    sub = socket.assigns.selected_subcategory
+
+    if q == "" and is_nil(cat) and is_nil(sub) do
+      assign(socket, products: [], total_count: 0)
+    else
+      result =
+        Catalog.list_products_page(
+          q: q,
+          app_category: cat,
+          app_subcategory: sub,
+          page: 1,
+          per_page: @results_per_page
+        )
+
+      pids = Enum.map(result.items, & &1.id)
+      ranges = Linker.price_range_by_product_ids(pids)
+      chains = Linker.chains_by_product_ids(pids)
+
+      products =
+        Enum.map(result.items, fn p ->
+          {min_p, max_p} = Map.get(ranges, p.id, {nil, nil})
+          chain_count = chains |> Map.get(p.id, []) |> length()
+
+          %{
+            id: p.id,
+            name: p.canonical_name,
+            brand: p.brand,
+            image_url: p.image_url,
+            range: %{lo: min_p, hi: max_p, count: chain_count}
+          }
+        end)
+
+      assign(socket, products: products, total_count: result.total_entries)
+    end
+  end
+
+  # Rail collapse is purely a frontend concern — see the `Rails` JS
+  # hook in assets/js/app.js. The toggle button(s) inside each rail
+  # flip a `data-collapsed="true"` attribute on the rail element and
+  # write to localStorage. The server is never told.
+
   ## ── Render ───────────────────────────────────────────────────
 
   @impl true
   def render(assigns) do
     assigns =
       assigns
-      |> assign(:products, products_for(assigns.query))
       |> assign(:cart_items, cart_items(assigns.cart))
+      |> assign(:results_per_page, @results_per_page)
 
     ~H"""
     <div class="layout" id="layout" phx-hook="Rails">
@@ -143,70 +167,91 @@ defmodule SuperBaratoWeb.HomeLive do
 
       <div class="center">
         <div class="search-block">
-          <form class="search" phx-change="search" phx-submit="search">
-            <span class="mag" aria-hidden="true"></span>
-            <input
-              name="q"
-              value={@query}
-              placeholder="Buscar cualquier producto del super…"
-              autocomplete="off"
-              phx-debounce="150"
-              autofocus
-            />
-            <span class="kbd">⌘K</span>
-          </form>
+          <div class="container">
+            <form class="search" phx-change="search" phx-submit="search">
+              <span class="mag" aria-hidden="true"></span>
+              <input
+                name="q"
+                value={@query}
+                placeholder="Buscar cualquier producto del super…"
+                autocomplete="off"
+                phx-debounce="150"
+                autofocus
+              />
+              <span class="kbd">⌘K</span>
+            </form>
+          </div>
         </div>
 
         <main class="main">
+         <div class="container">
           <div class="results-hd">
             <h2>
               Resultados
               <em :if={@query != ""}>"{@query}"</em>
             </h2>
             <div class="count">
-              <%= if @query == "" do %>
-                6 supermercados · 24.302 productos
-              <% else %>
-                {length(@products)} resultados · 6 supermercados
+              <%= cond do %>
+                <% @query == "" and is_nil(@selected_category) and is_nil(@selected_subcategory) -> %>
+                  6 supermercados
+                <% @total_count > @results_per_page -> %>
+                  {@total_count} resultados (mostrando {length(@products)})
+                <% true -> %>
+                  {@total_count} resultados
               <% end %>
             </div>
           </div>
 
-          <%= if @query == "" do %>
-            <div class="results-empty">
-              <div class="arrow">↑</div>
-              <div class="msg">Busca un producto para ver resultados</div>
-              <div class="stats">Jumbo · Líder · Santa Isabel · Unimarc · Tottus · Acuenta</div>
-            </div>
-          <% else %>
-            <div class="grid">
-              <button
-                :for={p <- @products}
-                type="button"
-                class="card"
-                phx-click="add"
-                phx-value-id={p.id}
-                aria-label={"Agregar #{p.name}"}
-              >
-                <div class="img">
-                  <div class="hover-cta"><span class="plus">+</span>Agregar</div>
-                </div>
-                <div class="name">{p.name}</div>
-                <div class="unit">{p.unit}</div>
-                <div class="range">
-                  <span class="lo">{format_clp(p.range.lo)}</span>
-                  <span class="dash">–</span>
-                  <span class="hi">{format_clp(p.range.hi)}</span>
-                </div>
-                <div class="stores">
-                  <span class="dots">
-                    <span :for={_ <- 1..p.range.count//1} class="d"></span>
-                  </span>
-                  {p.range.count} supermercados
-                </div>
-              </button>
-            </div>
+          <%= cond do %>
+            <% @products == [] and @query == "" and is_nil(@selected_category) and is_nil(@selected_subcategory) -> %>
+              <div class="results-empty">
+                <div class="arrow">↑</div>
+                <div class="msg">Busca un producto o elige una categoría</div>
+                <div class="stats">Jumbo · Líder · Santa Isabel · Unimarc · Tottus · Acuenta</div>
+              </div>
+            <% @products == [] -> %>
+              <div class="results-empty">
+                <div class="msg">Sin resultados</div>
+                <div class="stats">Prueba otra búsqueda o categoría</div>
+              </div>
+            <% true -> %>
+              <div class="grid">
+                <button
+                  :for={p <- @products}
+                  type="button"
+                  class="card"
+                  phx-click="add"
+                  phx-value-id={p.id}
+                  aria-label={"Agregar #{p.name}"}
+                >
+                  <div class="img">
+                    <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" />
+                    <div class="hover-cta"><span class="plus">+</span>Agregar</div>
+                  </div>
+                  <div class="name">{p.name}</div>
+                  <div :if={p.brand} class="brand">{p.brand}</div>
+                  <div class="range">
+                    <%= cond do %>
+                      <% is_nil(p.range.lo) -> %>
+                        <span class="lo">—</span>
+                      <% p.range.lo == p.range.hi -> %>
+                        <span class="lo">{format_clp(p.range.lo)}</span>
+                      <% true -> %>
+                        <span class="lo">{format_clp(p.range.lo)}</span>
+                        <span class="dash">–</span>
+                        <span class="hi">{format_clp(p.range.hi)}</span>
+                    <% end %>
+                  </div>
+                  <div class="stores">
+                    <span class="dots">
+                      <span :for={_ <- 1..max(p.range.count, 1)//1} class="d"></span>
+                    </span>
+                    {p.range.count} {if p.range.count == 1, do: "supermercado", else: "supermercados"}
+                  </div>
+                </button>
+              </div>
           <% end %>
+         </div>
         </main>
       </div>
 
@@ -377,29 +422,30 @@ defmodule SuperBaratoWeb.HomeLive do
 
   ## ── Helpers ─────────────────────────────────────────────────
 
-  defp products_for(""), do: []
-
-  defp products_for(query) do
-    q = String.downcase(String.trim(query))
-
-    @products
-    |> Enum.filter(fn p -> q == "" or String.contains?(String.downcase(p.name), q) end)
-    |> Enum.map(&Map.put(&1, :range, price_range(&1)))
-  end
-
-  defp price_range(%{prices: prices}) do
-    vals = prices |> Map.values() |> Enum.reject(&is_nil/1)
-    %{lo: Enum.min(vals), hi: Enum.max(vals), count: length(vals)}
-  end
-
+  # `cart` is a `%{product_id => qty}` map. We resolve product
+  # metadata + current price range on every render so prices stay
+  # fresh without us having to rebroadcast updates. Single round-trip
+  # via two batched lookups.
   defp cart_items(cart) when map_size(cart) == 0, do: []
 
   defp cart_items(cart) do
-    for {id, qty} <- cart, product = Enum.find(@products, &(&1.id == id)) do
-      r = price_range(product)
-      mid = round((r.lo + r.hi) / 2 * qty)
-      spread = round((r.hi - r.lo) / 2 * qty)
-      %{product: product, qty: qty, lo: r.lo, hi: r.hi, mid: mid, spread: spread}
+    pids = Map.keys(cart)
+    products = Repo.all(from p in Product, where: p.id in ^pids) |> Map.new(&{&1.id, &1})
+    ranges = Linker.price_range_by_product_ids(pids)
+
+    for {pid, qty} <- cart, product = Map.get(products, pid) do
+      {lo, hi} = Map.get(ranges, pid, {0, 0})
+      mid = round((lo + hi) / 2 * qty)
+      spread = round((hi - lo) / 2 * qty)
+
+      %{
+        product: %{id: product.id, name: product.canonical_name, image_url: product.image_url},
+        qty: qty,
+        lo: lo,
+        hi: hi,
+        mid: mid,
+        spread: spread
+      }
     end
   end
 

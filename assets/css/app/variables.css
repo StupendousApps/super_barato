@@ -24,4 +24,10 @@
   --bg-hover: var(--soft);
   --bg-selected: oklch(0.93 0.025 240);
   --ink-dim: var(--ink-3);
+
+  /* Scrollbar tokens — borrowed from the macatlas portal shell so
+     scrollable areas (the main feed and rail bodies) get a thin,
+     translucent thumb instead of the OS default. */
+  --scrollbar-thumb: rgb(0 0 0 / 0.18);
+  --scrollbar-thumb-hover: rgb(0 0 0 / 0.28);
 }
