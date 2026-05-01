@@ -193,10 +193,23 @@ defmodule SuperBaratoWeb.HomeLive do
 
         <main class="main">
          <div class="container">
+          <% filter = active_filter(@categories, @selected_category, @selected_subcategory) %>
           <div class="results-hd">
             <h2>
-              Resultados
-              <em :if={@query != ""}>"{@query}"</em>
+              <%= cond do %>
+                <% @query == "" and is_nil(filter) -> %>
+                  Resultados
+                <% true -> %>
+                  Búsqueda
+                  <em :if={@query != ""}>"{@query}"</em>
+                  <%= if filter do %>
+                    <span class="in">en</span>
+                    <span class="filter-tag">
+                      <span class="filter-tag__label">{filter.label}</span>
+                      <.link patch={~p"/"} class="filter-tag__x" aria-label="Quitar filtro">×</.link>
+                    </span>
+                  <% end %>
+              <% end %>
             </h2>
             <div class="count">
               <%= cond do %>
@@ -424,6 +437,28 @@ defmodule SuperBaratoWeb.HomeLive do
   end
 
   ## ── Helpers ─────────────────────────────────────────────────
+
+  # Resolves the currently-selected category/subcategory slugs to a
+  # display label for the filter badge above the search bar. Returns
+  # nil when nothing is selected.
+  defp active_filter(_categories, nil, nil), do: nil
+
+  defp active_filter(categories, _cat_slug, sub_slug) when is_binary(sub_slug) do
+    Enum.find_value(categories, fn cat ->
+      case Enum.find(cat.subcategories, &(&1.slug == sub_slug)) do
+        nil -> nil
+        sub -> %{label: "#{cat.name} · #{sub.name}"}
+      end
+    end)
+  end
+
+  defp active_filter(categories, cat_slug, nil) when is_binary(cat_slug) do
+    case Enum.find(categories, &(&1.slug == cat_slug)) do
+      nil -> nil
+      cat -> %{label: cat.name}
+    end
+  end
+
 
   # Per-chain effective price for a product, ordered by @chain_order.
   # Each entry: %{chain, name, price, promo?}. Listings without a

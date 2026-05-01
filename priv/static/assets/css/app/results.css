@@ -10,6 +10,32 @@
   font-style: italic; font-weight: 400; color: var(--ink-2);
   margin-left: 6px; font-size: 22px;
 }
+.results-hd h2 .in {
+  font-weight: 400; color: var(--ink-2); margin-left: 6px;
+}
+.results-hd h2 .filter-tag {
+  display: inline-flex; align-items: center; gap: 2px;
+  margin-left: 6px;
+  font-weight: 500;
+  vertical-align: baseline;
+}
+.results-hd h2 .filter-tag__label {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-3);
+}
+.results-hd h2 .filter-tag__x {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  color: var(--ink-3); text-decoration: none;
+  font-size: 16px; line-height: 1;
+  font-weight: 400;
+  transition: background .12s ease, color .12s ease;
+}
+.results-hd h2 .filter-tag__x:hover {
+  background: var(--soft); color: var(--ink);
+}
 .results-hd .count { color: var(--ink-3); font-size: 12.5px; }
 
 .results-empty {
