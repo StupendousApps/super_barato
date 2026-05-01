@@ -26,17 +26,27 @@ defmodule SuperBarato.Crawler.Status do
     %{
       chain: chain,
       running: pipeline_running?(chain),
-      profile: Session.get(chain, :profile),
+      profile: current_profile(chain),
       queue_depth: queue_depth(chain),
       queue_capacity: queue_capacity(chain),
       scheduler_mailbox: stage_mailbox(chain, SchedulerServer),
       fetcher_mailbox: stage_mailbox(chain, FetcherServer),
+      fetcher_last_task_at: Session.get(chain, :last_task_at),
       schedule_count: length(Schedules.list_for(chain)),
       listings_count: count(ChainListing, chain),
       last_priced_at: latest(ChainListing, :last_priced_at, chain),
       categories_count: count(ChainCategory, chain),
       last_seen_at: latest(ChainCategory, :last_seen_at, chain)
     }
+  end
+
+  # Session.put(:profile) only fires on rotation (i.e. on `:blocked`).
+  # A happy chain that never rotates would otherwise show "idle" forever,
+  # so default to the first entry of `fallback_profiles` — the profile
+  # the Fetcher actually starts on.
+  defp current_profile(chain) do
+    Session.get(chain, :profile) ||
+      List.first(Crawler.opts_for(chain)[:fallback_profiles] || [])
   end
 
   @doc "Live snapshot of the singleton PersistenceServer."

@@ -241,8 +241,9 @@ defmodule SuperBaratoWeb.Admin.CrawlerLive do
           <.stage_box
             label="Fetcher"
             running={s.running}
-            primary={s.profile || "idle"}
-            secondary={"mbox #{s.fetcher_mailbox || 0}"}
+            primary={fetcher_primary(s)}
+            secondary={fetcher_secondary(s)}
+            tone={fetcher_tone(s)}
           />
           <.arrow />
         </div>
@@ -285,6 +286,42 @@ defmodule SuperBaratoWeb.Admin.CrawlerLive do
   end
 
   defp arrow(assigns), do: ~H[<div class="pipeline-arrow">→</div>]
+
+  defp fetcher_primary(%{profile: nil}), do: "idle"
+  defp fetcher_primary(%{profile: p}), do: to_string(p)
+
+  # Heartbeat — "Xs ago" since the FetcherServer last finished a task.
+  # If we've never seen one (just booted, no tasks dispatched yet) and
+  # the queue has work, that's a different signal than "idle".
+  defp fetcher_secondary(%{fetcher_last_task_at: nil, queue_depth: d}) when d in [nil, 0],
+    do: "no work"
+
+  defp fetcher_secondary(%{fetcher_last_task_at: nil}), do: "starting…"
+
+  defp fetcher_secondary(%{fetcher_last_task_at: t}) do
+    age = DateTime.diff(DateTime.utc_now(), t, :second)
+
+    cond do
+      age < 2 -> "active"
+      age < 60 -> "#{age}s ago"
+      age < 3_600 -> "#{div(age, 60)}m ago"
+      true -> "#{div(age, 3_600)}h ago"
+    end
+  end
+
+  # Active in the last 2 s → green. Stale > 5 min while queue has work
+  # → warn. Otherwise neutral.
+  defp fetcher_tone(%{fetcher_last_task_at: nil}), do: :neutral
+
+  defp fetcher_tone(%{fetcher_last_task_at: t, queue_depth: d}) do
+    age = DateTime.diff(DateTime.utc_now(), t, :second)
+
+    cond do
+      age < 2 -> :neutral
+      age > 300 and d not in [nil, 0] -> :warn
+      true -> :neutral
+    end
+  end
 
   defp queue_fill_label(%{queue_depth: d, queue_capacity: c}) when is_integer(d) and is_integer(c) and c > 0 do
     "#{round(d / c * 100)}% full"

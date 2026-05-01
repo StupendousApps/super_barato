@@ -92,21 +92,29 @@ defmodule SuperBarato.Crawler.Chain.FetcherServer do
     started_at = now()
     Logger.debug("[#{state.chain}] task start #{format_task_for_log(task)}")
 
-    case safe_handle_task(state.adapter, task) do
-      {:ok, payload} ->
-        PersistenceServer.record(state.chain, task, payload)
-        log_task_done(state, task, payload, now() - started_at)
-        %{state | last_call_at: now(), consecutive_blocks: 0}
+    new_state =
+      case safe_handle_task(state.adapter, task) do
+        {:ok, payload} ->
+          PersistenceServer.record(state.chain, task, payload)
+          log_task_done(state, task, payload, now() - started_at)
+          %{state | last_call_at: now(), consecutive_blocks: 0}
 
-      :blocked ->
-        QueueServer.requeue(state.chain, task)
-        state = handle_blocked(state)
-        %{state | last_call_at: now()}
+        :blocked ->
+          QueueServer.requeue(state.chain, task)
+          state = handle_blocked(state)
+          %{state | last_call_at: now()}
 
-      {:error, reason} ->
-        log_task_error(state, task, reason, now() - started_at)
-        %{state | last_call_at: now(), consecutive_blocks: 0}
-    end
+        {:error, reason} ->
+          log_task_error(state, task, reason, now() - started_at)
+          %{state | last_call_at: now(), consecutive_blocks: 0}
+      end
+
+    # Heartbeat for the live runtime view. Stored in ETS via Session
+    # (no GenServer roundtrip) so a status snapshot can ask "when did
+    # this Fetcher last finish a task?" without blocking on the
+    # FetcherServer mailbox.
+    Session.put(state.chain, :last_task_at, DateTime.utc_now())
+    new_state
   end
 
   # One-line summary so `bin/kamal logs` shows progress for long-running

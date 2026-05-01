@@ -18,7 +18,7 @@ defmodule SuperBarato.Crawler.StatusTest do
 
     test "every snapshot has the documented shape" do
       keys = ~w(chain running profile queue_depth queue_capacity
-                 scheduler_mailbox fetcher_mailbox
+                 scheduler_mailbox fetcher_mailbox fetcher_last_task_at
                  schedule_count listings_count last_priced_at
                  categories_count last_seen_at)a
 
