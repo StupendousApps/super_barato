@@ -75,27 +75,9 @@ defmodule SuperBarato.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["compile", "esbuild super_barato", &copy_css/1],
-      "assets.deploy": ["esbuild super_barato --minify", &copy_css/1, "phx.digest"],
+      "assets.build": ["compile", "esbuild super_barato"],
+      "assets.deploy": ["esbuild super_barato --minify", "phx.digest"],
       precommit: ["compile --warnings-as-errors", "deps.unlock --unused", "format", "test"]
     ]
-  end
-
-  # Raw CSS under assets/css/ — public site only (HomeLive + the
-  # phx.gen.auth pages). Admin CSS comes from the :stupendous_admin
-  # dep, mounted by Plug.Static in the endpoint.
-  defp copy_css(_args) do
-    src_root = "assets/css"
-    dst_root = "priv/static/assets/css"
-
-    src_root
-    |> Path.join("**/*.css")
-    |> Path.wildcard()
-    |> Enum.each(fn src ->
-      rel = Path.relative_to(src, src_root)
-      dst = Path.join(dst_root, rel)
-      File.mkdir_p!(Path.dirname(dst))
-      File.cp!(src, dst)
-    end)
   end
 end

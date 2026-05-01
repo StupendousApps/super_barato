@@ -9,6 +9,16 @@ defmodule SuperBaratoWeb.HomeLive do
 
   @results_per_page 50
 
+  @chain_order ~w(jumbo santa_isabel unimarc lider tottus acuenta)
+  @chain_names %{
+    "jumbo" => "Jumbo",
+    "santa_isabel" => "Santa Isabel",
+    "unimarc" => "Unimarc",
+    "lider" => "Líder",
+    "tottus" => "Tottus",
+    "acuenta" => "Acuenta"
+  }
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
@@ -115,20 +125,18 @@ defmodule SuperBaratoWeb.HomeLive do
         )
 
       pids = Enum.map(result.items, & &1.id)
-      ranges = Linker.price_range_by_product_ids(pids)
-      chains = Linker.chains_by_product_ids(pids)
+      listings = Linker.listings_by_product_ids(pids)
 
       products =
         Enum.map(result.items, fn p ->
-          {min_p, max_p} = Map.get(ranges, p.id, {nil, nil})
-          chain_count = chains |> Map.get(p.id, []) |> length()
+          prices = product_prices(Map.get(listings, p.id, []))
 
           %{
             id: p.id,
             name: p.canonical_name,
             brand: p.brand,
             image_url: p.image_url,
-            range: %{lo: min_p, hi: max_p, count: chain_count}
+            prices: prices
           }
         end)
 
@@ -226,27 +234,22 @@ defmodule SuperBaratoWeb.HomeLive do
                 >
                   <div class="img">
                     <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" />
-                    <div class="hover-cta"><span class="plus">+</span>Agregar</div>
                   </div>
-                  <div class="name">{p.name}</div>
-                  <div :if={p.brand} class="brand">{p.brand}</div>
-                  <div class="range">
-                    <%= cond do %>
-                      <% is_nil(p.range.lo) -> %>
-                        <span class="lo">—</span>
-                      <% p.range.lo == p.range.hi -> %>
-                        <span class="lo">{format_clp(p.range.lo)}</span>
-                      <% true -> %>
-                        <span class="lo">{format_clp(p.range.lo)}</span>
-                        <span class="dash">–</span>
-                        <span class="hi">{format_clp(p.range.hi)}</span>
+                  <div class="body">
+                    <div class="head">
+                      <div class="name">{p.name}</div>
+                      <div :if={p.brand} class="brand">{p.brand}</div>
+                    </div>
+                    <%= if p.prices == [] do %>
+                      <div class="prices prices--empty">Sin precio</div>
+                    <% else %>
+                      <ul class="prices">
+                        <li :for={row <- p.prices} class={["price-row", row.promo? && "price-row--promo"]}>
+                          <span class="ch">{row.name}</span>
+                          <span class="amt">{format_clp(row.price)}</span>
+                        </li>
+                      </ul>
                     <% end %>
-                  </div>
-                  <div class="stores">
-                    <span class="dots">
-                      <span :for={_ <- 1..max(p.range.count, 1)//1} class="d"></span>
-                    </span>
-                    {p.range.count} {if p.range.count == 1, do: "supermercado", else: "supermercados"}
                   </div>
                 </button>
               </div>
@@ -421,6 +424,31 @@ defmodule SuperBaratoWeb.HomeLive do
   end
 
   ## ── Helpers ─────────────────────────────────────────────────
+
+  # Per-chain effective price for a product, ordered by @chain_order.
+  # Each entry: %{chain, name, price, promo?}. Listings without a
+  # current_regular_price are dropped. If a chain has multiple
+  # listings linked, we pick the cheapest effective price.
+  defp product_prices(listings) do
+    listings
+    |> Enum.reject(&is_nil(&1.current_regular_price))
+    |> Enum.map(fn l ->
+      reg = l.current_regular_price
+      promo = l.current_promo_price
+      promo? = is_integer(promo) and is_integer(reg) and promo < reg
+      eff = if promo?, do: promo, else: reg
+      %{chain: l.chain, price: eff, promo?: promo?}
+    end)
+    |> Enum.group_by(& &1.chain)
+    |> Enum.map(fn {_chain, rows} -> Enum.min_by(rows, & &1.price) end)
+    |> Enum.sort_by(fn %{chain: c} ->
+      Enum.find_index(@chain_order, &(&1 == c)) || length(@chain_order)
+    end)
+    |> Enum.map(fn row ->
+      Map.put(row, :name, Map.get(@chain_names, row.chain, row.chain))
+    end)
+  end
+
 
   # `cart` is a `%{product_id => qty}` map. We resolve product
   # metadata + current price range on every render so prices stay
