@@ -11,8 +11,8 @@ defmodule SuperBarato.Crawler.Status do
   import Ecto.Query
 
   alias SuperBarato.Crawler
-  alias SuperBarato.Crawler.{Schedules, Session}
-  alias SuperBarato.Crawler.Chain.{QueueServer, Supervisor}
+  alias SuperBarato.Crawler.{PersistenceServer, Schedules, Session}
+  alias SuperBarato.Crawler.Chain.{FetcherServer, QueueServer, SchedulerServer, Supervisor}
   alias SuperBarato.Catalog.{ChainCategory, ChainListing}
   alias SuperBarato.Repo
 
@@ -28,12 +28,37 @@ defmodule SuperBarato.Crawler.Status do
       running: pipeline_running?(chain),
       profile: Session.get(chain, :profile),
       queue_depth: queue_depth(chain),
+      queue_capacity: queue_capacity(chain),
+      scheduler_mailbox: stage_mailbox(chain, SchedulerServer),
+      fetcher_mailbox: stage_mailbox(chain, FetcherServer),
       schedule_count: length(Schedules.list_for(chain)),
       listings_count: count(ChainListing, chain),
       last_priced_at: latest(ChainListing, :last_priced_at, chain),
       categories_count: count(ChainCategory, chain),
       last_seen_at: latest(ChainCategory, :last_seen_at, chain)
     }
+  end
+
+  @doc "Live snapshot of the singleton PersistenceServer."
+  def persistence, do: PersistenceServer.metrics()
+
+  defp queue_capacity(chain) do
+    Crawler.opts_for(chain)[:queue_capacity]
+  end
+
+  # Mailbox depth of the per-chain GenServer registered under
+  # `{Mod, chain}`. Returns nil when the pipeline isn't running.
+  defp stage_mailbox(chain, mod) do
+    case Registry.lookup(SuperBarato.Crawler.Registry, {mod, chain}) do
+      [{pid, _}] ->
+        case Process.info(pid, :message_queue_len) do
+          {:message_queue_len, n} -> n
+          _ -> nil
+        end
+
+      _ ->
+        nil
+    end
   end
 
   defp pipeline_running?(chain) do

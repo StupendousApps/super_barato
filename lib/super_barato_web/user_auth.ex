@@ -250,6 +250,45 @@ defmodule SuperBaratoWeb.UserAuth do
   end
 
   @doc """
+  LiveView `on_mount` hook for admin-host LiveViews. Mirrors
+  `require_admin/2` for the websocket reconnect path. Reads the
+  user_token from the session, hydrates the scope, and either
+  continues or redirects.
+  """
+  def on_mount(:require_admin, _params, session, socket) do
+    socket = mount_current_scope(socket, session)
+    scope = socket.assigns.current_scope
+
+    cond do
+      is_nil(scope) or is_nil(scope.user) ->
+        {:halt,
+         socket
+         |> Phoenix.LiveView.put_flash(:error, "You must log in.")
+         |> Phoenix.LiveView.redirect(to: ~p"/login")}
+
+      User.role_at_least?(scope.user, :moderator) ->
+        {:cont, socket}
+
+      true ->
+        {:halt,
+         socket
+         |> Phoenix.LiveView.put_flash(:error, "You do not have permission.")
+         |> Phoenix.LiveView.redirect(to: ~p"/login")}
+    end
+  end
+
+  defp mount_current_scope(socket, session) do
+    Phoenix.Component.assign_new(socket, :current_scope, fn ->
+      with token when is_binary(token) <- session["user_token"],
+           {user, _inserted_at} <- Accounts.get_user_by_session_token(token) do
+        Scope.for_user(user)
+      else
+        _ -> Scope.for_user(nil)
+      end
+    end)
+  end
+
+  @doc """
   Plug for the admin login page. Redirects already-authenticated
   admins to the dashboard.
   """

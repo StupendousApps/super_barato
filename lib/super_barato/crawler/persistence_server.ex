@@ -39,10 +39,45 @@ defmodule SuperBarato.Crawler.PersistenceServer do
     GenServer.cast(__MODULE__, {:record, chain, task, payload})
   end
 
+  @doc """
+  Live snapshot for the admin runtime view: mailbox depth, total
+  records handled since boot, last-handled timestamp, and a rolling
+  10-second throughput estimate (records/sec).
+  """
+  def metrics do
+    case Process.whereis(__MODULE__) do
+      nil ->
+        %{alive: false, mailbox_len: 0, total_handled: 0, last_handled_at: nil, ops_per_sec: 0.0}
+
+      pid ->
+        {:message_queue_len, mbox} = Process.info(pid, :message_queue_len)
+        state = :sys.get_state(pid)
+
+        %{
+          alive: true,
+          mailbox_len: mbox,
+          total_handled: state.total_handled,
+          last_handled_at: state.last_handled_at,
+          ops_per_sec: ops_per_sec(state.recent)
+        }
+    end
+  end
+
+  # 10-second rolling-window throughput. `recent` is a list of monotonic
+  # millisecond timestamps; we evict anything older than 10 s and
+  # divide by the window size.
+  @window_ms 10_000
+
+  defp ops_per_sec(recent) do
+    now = System.monotonic_time(:millisecond)
+    fresh = Enum.take_while(recent, &(now - &1 < @window_ms))
+    length(fresh) / (@window_ms / 1000)
+  end
+
   @impl true
   def init(_opts) do
     Logger.metadata(role: :persistence)
-    {:ok, %{}}
+    {:ok, %{total_handled: 0, last_handled_at: nil, recent: []}}
   end
 
   @impl true
@@ -54,7 +89,17 @@ defmodule SuperBarato.Crawler.PersistenceServer do
         Logger.warning("persistence: #{chain} persist failed: #{inspect(err)}")
     end
 
-    {:noreply, state}
+    now_ms = System.monotonic_time(:millisecond)
+    cutoff = now_ms - @window_ms
+    recent = [now_ms | Enum.take_while(state.recent, &(&1 > cutoff))]
+
+    {:noreply,
+     %{
+       state
+       | total_handled: state.total_handled + 1,
+         last_handled_at: DateTime.utc_now() |> DateTime.truncate(:second),
+         recent: recent
+     }}
   end
 
   @doc """

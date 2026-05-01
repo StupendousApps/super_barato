@@ -112,3 +112,93 @@ tr.is-sort-dragging { opacity: 0.4; }
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     background: var(--background-color, #fff);
 }
+
+/* Pipeline graph — admin/crawlers/live LiveView. Two-column layout:
+   left column lists every chain's stages (Scheduler → Queue → Fetcher),
+   right column is the singleton PersistenceServer all chains feed
+   into. Updates every 500 ms via LiveView. */
+.pipeline-graph {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.pipeline-graph__chains {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pipeline-graph__row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pipeline-graph__chain {
+    width: 7rem;
+    flex-shrink: 0;
+}
+
+.pipeline-graph__sink {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+}
+
+.pipeline-stage {
+    flex: 1;
+    min-width: 6rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--border-color-2, #ddd);
+    border-radius: 6px;
+    background: var(--background-color, #fff);
+    font-size: var(--font-size-xs, 0.75rem);
+    line-height: 1.2;
+}
+
+.pipeline-stage--wide {
+    min-width: 12rem;
+    padding: 1rem 1.25rem;
+    font-size: var(--font-size-sm, 0.875rem);
+}
+
+.pipeline-stage--idle {
+    opacity: 0.45;
+}
+
+.pipeline-stage--warn {
+    border-color: #d4a017;
+    background: rgba(212, 160, 23, 0.08);
+}
+
+.pipeline-stage--critical {
+    border-color: #c0392b;
+    background: rgba(192, 57, 43, 0.08);
+}
+
+.pipeline-stage__label {
+    font-size: var(--font-size-xs, 0.7rem);
+    color: var(--text-color-3, #888);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.pipeline-stage__primary {
+    font-weight: 600;
+    font-family: var(--font-family-mono, ui-monospace, monospace);
+}
+
+.pipeline-stage__secondary {
+    font-size: var(--font-size-xs, 0.7rem);
+    color: var(--text-color-3, #888);
+    margin-top: 1px;
+}
+
+.pipeline-arrow {
+    color: var(--text-color-3, #888);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
