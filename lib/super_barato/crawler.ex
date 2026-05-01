@@ -29,6 +29,27 @@ defmodule SuperBarato.Crawler do
 
   def known_chains, do: @chain_order
 
+  @doc """
+  Resolved pipeline knobs for `chain` — the merge of
+  `:super_barato, SuperBarato.Crawler[:defaults]` with the chain's
+  entry under `[:chains, chain]`. Per-chain values win.
+
+  Returns a flat keyword list with `:chain` injected, ready to hand
+  to `Chain.Supervisor.start_link/1`. Every reader of pipeline knobs
+  goes through this function so there's exactly one place that
+  defines what's a knob and how defaults flow into per-chain
+  overrides.
+  """
+  def opts_for(chain) when is_atom(chain) do
+    cfg = Application.get_env(:super_barato, __MODULE__, [])
+    defaults = Keyword.get(cfg, :defaults, [])
+    chain_opts = cfg |> Keyword.get(:chains, []) |> Keyword.get(chain, [])
+
+    defaults
+    |> Keyword.merge(chain_opts)
+    |> Keyword.put(:chain, chain)
+  end
+
   @enabled_key {__MODULE__, :enabled}
 
   @doc """
@@ -125,7 +146,7 @@ defmodule SuperBarato.Crawler do
     cond do
       chain not in known_chains() -> {:error, :unknown_chain}
       not pipeline_running?(chain) -> {:error, :pipeline_not_running}
-      true -> {:ok, SuperBarato.Crawler.Chain.Queue.clear(chain)}
+      true -> {:ok, SuperBarato.Crawler.Chain.QueueServer.clear(chain)}
     end
   end
 

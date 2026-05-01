@@ -1,4 +1,4 @@
-defmodule SuperBarato.Crawler.Chain.Worker do
+defmodule SuperBarato.Crawler.Chain.FetcherServer do
   @moduledoc """
   The one process that actually makes HTTP requests for a chain.
 
@@ -21,7 +21,8 @@ defmodule SuperBarato.Crawler.Chain.Worker do
   require Logger
 
   alias SuperBarato.Crawler
-  alias SuperBarato.Crawler.Chain.{Queue, Results}
+  alias SuperBarato.Crawler.Chain.QueueServer
+  alias SuperBarato.Crawler.PersistenceServer
   alias SuperBarato.Crawler.{Flaresolverr, Session}
 
   @default_interval_ms 1_000
@@ -73,7 +74,7 @@ defmodule SuperBarato.Crawler.Chain.Worker do
 
   @impl true
   def handle_info(:work, state) do
-    task = Queue.pop(state.chain)
+    task = QueueServer.pop(state.chain)
     state = apply_gap(state)
     state = dispatch(task, state)
     send(self(), :work)
@@ -93,12 +94,12 @@ defmodule SuperBarato.Crawler.Chain.Worker do
 
     case safe_handle_task(state.adapter, task) do
       {:ok, payload} ->
-        Results.record(state.chain, task, payload)
+        PersistenceServer.record(state.chain, task, payload)
         log_task_done(state, task, payload, now() - started_at)
         %{state | last_call_at: now(), consecutive_blocks: 0}
 
       :blocked ->
-        Queue.requeue(state.chain, task)
+        QueueServer.requeue(state.chain, task)
         state = handle_blocked(state)
         %{state | last_call_at: now()}
 

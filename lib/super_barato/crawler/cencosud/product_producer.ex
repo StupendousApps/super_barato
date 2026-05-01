@@ -11,7 +11,7 @@ defmodule SuperBarato.Crawler.Cencosud.ProductProducer do
   URL the chain wants indexed, and push one `:fetch_product_pdp`
   task per URL into the chain's Queue.
 
-  `Queue.push/2` blocks when the queue is full, so memory stays bounded
+  `QueueServer.push/2` blocks when the queue is full, so memory stays bounded
   — this process stalls naturally when the Worker can't keep up. A
   full Jumbo pass at the default 1 req/s pacing takes ~14 hours; that's
   fine for a daily run. Bump `interval_ms` in config if you want it
@@ -22,7 +22,7 @@ defmodule SuperBarato.Crawler.Cencosud.ProductProducer do
 
   alias SuperBarato.Crawler
   alias SuperBarato.Crawler.Cencosud
-  alias SuperBarato.Crawler.Chain.Queue
+  alias SuperBarato.Crawler.Chain.QueueServer
 
   @doc "Runs to completion. Spawn via Task.Supervisor."
   def run(opts) do
@@ -36,7 +36,7 @@ defmodule SuperBarato.Crawler.Cencosud.ProductProducer do
           {:ok, urls} ->
             count =
               Enum.reduce(urls, 0, fn url, n ->
-                Queue.push(chain, {:fetch_product_pdp, %{chain: chain, url: url}})
+                QueueServer.push(chain, {:fetch_product_pdp, %{chain: chain, url: url}})
                 n + 1
               end)
 

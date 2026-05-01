@@ -1,9 +1,10 @@
-defmodule SuperBarato.Crawler.Chain.WorkerTest do
-  # Using DataCase so the Worker → Results → DB chain has a sandbox
-  # connection available (shared mode — async: false).
+defmodule SuperBarato.Crawler.Chain.FetcherServerTest do
+  # Using DataCase so the FetcherServer → PersistenceServer → DB
+  # chain has a sandbox connection available (shared mode — async: false).
   use SuperBarato.DataCase, async: false
 
-  alias SuperBarato.Crawler.Chain.{Queue, Results, Worker}
+  alias SuperBarato.Crawler.Chain.{QueueServer, FetcherServer}
+  alias SuperBarato.Crawler.PersistenceServer
   alias SuperBarato.Crawler.Session
   alias SuperBarato.Test.StubAdapter
 
@@ -12,15 +13,14 @@ defmodule SuperBarato.Crawler.Chain.WorkerTest do
     Session.put(chain, :profile, nil)
     StubAdapter.reset(chain)
 
-    {:ok, _q} = start_supervised({Queue, chain: chain, capacity: 10}, id: {:q, chain})
-    {:ok, _r} = start_supervised({Results, chain: chain, adapter: StubAdapter}, id: {:r, chain})
+    {:ok, _q} = start_supervised({QueueServer, chain: chain, capacity: 10}, id: {:q, chain})
 
-    # Make sure any pending Results casts drain before the sandbox is
-    # torn down, so we don't see spurious "ownership" warnings if a
-    # happy-path test wrote through Results.
+    # PersistenceServer is a global singleton (started by the
+    # Application). Drain any pending casts at end-of-test so a
+    # happy-path write doesn't trigger a sandbox-ownership warning.
     on_exit(fn ->
-      case Registry.lookup(SuperBarato.Crawler.Registry, {Results, chain}) do
-        [{pid, _}] -> if Process.alive?(pid), do: :sys.get_state(pid)
+      case Process.whereis(PersistenceServer) do
+        pid when is_pid(pid) -> :sys.get_state(pid)
         _ -> :ok
       end
     end)
@@ -37,7 +37,7 @@ defmodule SuperBarato.Crawler.Chain.WorkerTest do
       block_backoff_ms: 50
     ]
 
-    {:ok, _w} = start_supervised({Worker, Keyword.merge(base, opts)}, id: {:w, chain})
+    {:ok, _w} = start_supervised({FetcherServer, Keyword.merge(base, opts)}, id: {:w, chain})
     :ok
   end
 
@@ -46,13 +46,13 @@ defmodule SuperBarato.Crawler.Chain.WorkerTest do
       StubAdapter.set_response(chain, :discover_products, {:ok, [fake_listing(chain)]})
       :ok = start_worker(chain)
 
-      :ok = Queue.push(chain, {:discover_products, %{chain: chain, slug: "test-cat"}})
+      :ok = QueueServer.push(chain, {:discover_products, %{chain: chain, slug: "test-cat"}})
 
       # Wait for worker to consume the task — adapter records receipts.
       assert_receive_task(chain, 500)
 
       # Queue should be empty after consumption.
-      assert Queue.size(chain) == 0
+      assert QueueServer.size(chain) == 0
     end
   end
 
@@ -63,7 +63,7 @@ defmodule SuperBarato.Crawler.Chain.WorkerTest do
       StubAdapter.set_response(chain, :discover_products, :blocked)
       :ok = start_worker(chain)
 
-      :ok = Queue.push(chain, {:discover_products, %{chain: chain, slug: "x"}})
+      :ok = QueueServer.push(chain, {:discover_products, %{chain: chain, slug: "x"}})
 
       # Wait for at least one rotation cycle: worker pops, gets :blocked,
       # rotates profile, requeues. With 2 profiles and a 50ms backoff,
@@ -82,12 +82,12 @@ defmodule SuperBarato.Crawler.Chain.WorkerTest do
       StubAdapter.set_response(chain, :discover_products, {:error, :boom})
       :ok = start_worker(chain)
 
-      :ok = Queue.push(chain, {:discover_products, %{chain: chain, slug: "x"}})
+      :ok = QueueServer.push(chain, {:discover_products, %{chain: chain, slug: "x"}})
 
       Process.sleep(50)
 
       # Queue drained (task was consumed), no requeue.
-      assert Queue.size(chain) == 0
+      assert QueueServer.size(chain) == 0
 
       # Profile untouched — stays nil (default).
       assert Session.get(chain, :profile) == nil
@@ -106,7 +106,7 @@ defmodule SuperBarato.Crawler.Chain.WorkerTest do
       :ok = start_worker(chain, interval_ms: 100)
 
       for i <- 1..3 do
-        :ok = Queue.push(chain, {:discover_products, %{chain: chain, slug: "s-#{i}"}})
+        :ok = QueueServer.push(chain, {:discover_products, %{chain: chain, slug: "s-#{i}"}})
       end
 
       assert_receive {:tick, t1}, 500

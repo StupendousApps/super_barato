@@ -29,7 +29,7 @@ if config_env() == :prod do
       """
 
   # Each chain's Results worker hits the DB on every listing, plus
-  # the streaming Linker.Worker opens its own transaction per link.
+  # the streaming Linker opens its own transaction per link.
   # With pool_size=5 we hit `:queue_timeout` immediately when several
   # chains crawl in parallel. SQLite WAL handles writers single-file
   # via `busy_timeout` anyway, so the connection pool here is mostly
@@ -45,7 +45,7 @@ if config_env() == :prod do
   # one or two chains overlap at a time — observed real bursts have
   # all fit under 60s. 60s gives ~3 chains of headroom; budget
   # higher via `SQLITE_BUSY_TIMEOUT` if a future cron landing puts
-  # 4+ chains writing simultaneously, or shard the Linker.Worker
+  # 4+ chains writing simultaneously, or shard the Linker
   # to lift the underlying single-writer bottleneck. The 5s default
   # timed out under sustained crawler load and produced linker
   # error storms — never go back below 30s.

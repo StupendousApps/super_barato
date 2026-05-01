@@ -1,18 +1,21 @@
-defmodule SuperBarato.Crawler.Chain.ResultsTest do
+defmodule SuperBarato.Crawler.PersistenceServerTest do
   use SuperBarato.DataCase, async: false
 
   alias SuperBarato.{Catalog, PriceLog, Repo}
   alias SuperBarato.Catalog.ChainListing
   alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
-  alias SuperBarato.Crawler.Chain.Results
+  alias SuperBarato.Crawler.PersistenceServer
   alias SuperBarato.Test.StubAdapter
 
   setup do
     chain = :"results_test_#{System.unique_integer([:positive])}"
     StubAdapter.reset(chain)
-    # StubAdapter's refresh_identifier/0 returns :ean — good for refresh tests below.
-    {:ok, _pid} = start_supervised({Results, chain: chain, adapter: StubAdapter})
+
+    # The PersistenceServer is a global singleton (started by the
+    # Application). Tests drive it via `persist_sync/4` — same code
+    # path, no GenServer round-trip, no need to register a stub
+    # adapter for the synthetic test chain.
 
     # Point PriceLog at a temp dir for this test.
     log_dir =
@@ -49,9 +52,8 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
         }
       ]
 
-      :ok = Results.record(chain, {:discover_categories, %{chain: chain, parent: nil}}, cats)
+      :ok = PersistenceServer.persist_sync(chain, StubAdapter, {:discover_categories, %{chain: chain, parent: nil}}, cats)
 
-      flush_results(chain)
 
       assert Catalog.leaf_categories(chain) |> length() == 1
       [leaf] = Catalog.leaf_categories(chain)
@@ -87,13 +89,10 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
       ]
 
       :ok =
-        Results.record(
-          chain,
-          {:discover_products, %{chain: chain, slug: "despensa"}},
+        PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "despensa"}},
           listings
         )
 
-      flush_results(chain)
 
       # DB: both upserted with current_* columns set.
       rows =
@@ -125,13 +124,10 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
       ]
 
       :ok =
-        Results.record(
-          chain,
-          {:discover_products, %{chain: chain, slug: "x"}},
+        PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "x"}},
           listings
         )
 
-      flush_results(chain)
 
       # No row in chain_listings — Catalog refused to insert.
       refute Repo.get_by(ChainListing, identifiers_key: "sku=sku-noprice")
@@ -151,8 +147,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
         }
       ]
 
-      :ok = Results.record(chain, {:discover_products, %{chain: chain, slug: "x"}}, first)
-      flush_results(chain)
+      :ok = PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "x"}}, first)
 
       row = Repo.get_by!(ChainListing, identifiers_key: "sku=sku-flip")
       assert row.has_price == true
@@ -161,8 +156,7 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
       # Second discovery: same SKU, no price. Should update row but
       # preserve the price columns and flip the has_price signal.
       second = [%{first |> List.first() | regular_price: nil, name: "Refreshed"}]
-      :ok = Results.record(chain, {:discover_products, %{chain: chain, slug: "x"}}, second)
-      flush_results(chain)
+      :ok = PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "x"}}, second)
 
       row = Repo.get_by!(ChainListing, identifiers_key: "sku=sku-flip")
       assert row.has_price == false
@@ -200,13 +194,10 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
       ]
 
       :ok =
-        Results.record(
-          chain,
-          {:fetch_product_info, %{chain: chain, identifiers: ["7801234567890"]}},
+        PersistenceServer.persist_sync(chain, StubAdapter, {:fetch_product_info, %{chain: chain, identifiers: ["7801234567890"]}},
           refreshed
         )
 
-      flush_results(chain)
 
       [listing] = Repo.all(ChainListing)
       assert listing.current_promo_price == 990
@@ -228,22 +219,14 @@ defmodule SuperBarato.Crawler.Chain.ResultsTest do
       ]
 
       :ok =
-        Results.record(
-          chain,
-          {:fetch_product_info, %{chain: chain, identifiers: ["0000000000000"]}},
+        PersistenceServer.persist_sync(chain, StubAdapter, {:fetch_product_info, %{chain: chain, identifiers: ["0000000000000"]}},
           fresh
         )
 
-      flush_results(chain)
 
       # Nothing logged (the DB lookup failed; PriceLog isn't called).
       assert PriceLog.read(chain, "UNKNOWN") == []
     end
   end
 
-  # Wait for the async cast to drain by round-tripping a :sys.get_state
-  # through the Results GenServer.
-  defp flush_results(chain) do
-    :sys.get_state({:via, Registry, {SuperBarato.Crawler.Registry, {Results, chain}}})
-  end
 end

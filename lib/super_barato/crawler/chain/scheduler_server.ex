@@ -1,13 +1,13 @@
-defmodule SuperBarato.Crawler.Chain.Cron do
+defmodule SuperBarato.Crawler.Chain.SchedulerServer do
   @moduledoc """
   Per-chain scheduler. Holds a static list of schedule entries and
   fires each one via `Task.Supervisor.start_child/2` at the configured
   cadence. Each entry is an `{mfa}` describing the side effect — either
-  a direct `Queue.push` (for one-shot discovery seeds) or a
+  a direct `QueueServer.push` (for one-shot discovery seeds) or a
   `ProductProducer.run` call (for streaming work out of the DB).
 
-  Cron itself never blocks. Each firing spawns a short-lived task
-  under the chain's Task.Supervisor and returns immediately.
+  The scheduler itself never blocks. Each firing spawns a short-lived
+  task under the chain's Task.Supervisor and returns immediately.
   """
 
   use GenServer

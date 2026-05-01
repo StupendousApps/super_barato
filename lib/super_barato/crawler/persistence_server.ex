@@ -1,65 +1,57 @@
-defmodule SuperBarato.Crawler.Chain.Results do
+defmodule SuperBarato.Crawler.PersistenceServer do
   @moduledoc """
-  Persistence sink for a chain. Receives `{task, payload}` casts from
-  the Worker, dispatches to the right Catalog function based on task
-  type, and (for discovery) enqueues follow-up tasks if the adapter's
-  tree walk needs more than one request.
+  Singleton DB writer for the entire crawler pipeline. Receives
+  `{chain, task, payload}` casts from the per-chain `FetcherServer`s,
+  dispatches to the right Catalog function, and runs the product-link
+  step inline as plain `Linker` function calls.
 
-  Fire-and-forget: the Worker doesn't wait for persistence to finish.
-  On a DB failure the row is lost; Cron will re-queue it on the next
-  scheduled pass because the Catalog row's `last_*_at` timestamp won't
-  have been updated.
+  One process means one DB writer. SQLite serializes writes through a
+  single lock anyway; funneling all crawler writes through one
+  GenServer turns that physical bottleneck into a clean queue and
+  eliminates the `Database busy` cascades we hit when six per-chain
+  Results plus a separate linker GenServer all raced for the lock
+  under deferred-mode upgrades.
+
+  Fire-and-forget: the FetcherServer doesn't wait for persistence to
+  finish. On a DB failure the row is lost; the SchedulerServer will
+  re-queue it on the next scheduled pass because the Catalog row's
+  `last_*_at` timestamp won't have been updated.
   """
 
   use GenServer
 
   require Logger
 
-  alias SuperBarato.{Catalog, PriceLog}
-  alias SuperBarato.Linker
+  alias SuperBarato.{Catalog, Linker, PriceLog}
 
-  def start_link(opts) do
-    chain = Keyword.fetch!(opts, :chain)
-    GenServer.start_link(__MODULE__, opts, name: via(chain))
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
   @doc """
-  Hands a completed task's payload to the Results sink. Non-blocking —
-  Worker moves on immediately.
+  Hands a completed task's payload to the persistence sink.
+  Non-blocking — the caller (FetcherServer) moves on immediately.
+  `chain` is carried in the cast so the singleton can resolve the
+  right adapter for chain-scoped work (currently only
+  `:fetch_product_info`'s `refresh_identifier`).
   """
   def record(chain, task, payload) do
-    GenServer.cast(via(chain), {:record, task, payload})
-  end
-
-  def child_spec(opts) do
-    chain = Keyword.fetch!(opts, :chain)
-
-    %{
-      id: {__MODULE__, chain},
-      start: {__MODULE__, :start_link, [opts]},
-      type: :worker,
-      restart: :permanent
-    }
-  end
-
-  defp via(chain),
-    do: {:via, Registry, {SuperBarato.Crawler.Registry, {__MODULE__, chain}}}
-
-  @impl true
-  def init(opts) do
-    chain = Keyword.fetch!(opts, :chain)
-    adapter = Keyword.get(opts, :adapter) || SuperBarato.Crawler.adapter(chain)
-    Logger.metadata(chain: chain, role: :results)
-    {:ok, %{chain: chain, adapter: adapter}}
+    GenServer.cast(__MODULE__, {:record, chain, task, payload})
   end
 
   @impl true
-  def handle_cast({:record, task, payload}, state) do
+  def init(_opts) do
+    Logger.metadata(role: :persistence)
+    {:ok, %{}}
+  end
+
+  @impl true
+  def handle_cast({:record, chain, task, payload}, state) do
     try do
-      persist(state, task, payload)
+      persist(chain, task, payload, [])
     rescue
       err ->
-        Logger.warning("results: #{state.chain} persist failed: #{inspect(err)}")
+        Logger.warning("persistence: #{chain} persist failed: #{inspect(err)}")
     end
 
     {:noreply, state}
@@ -67,16 +59,20 @@ defmodule SuperBarato.Crawler.Chain.Results do
 
   @doc """
   Synchronous version of `record/3`. Applies the same persistence path
-  (upsert + PriceLog append) without going through the GenServer. Used
-  by Mix tasks (`crawler.trigger`) that want a blocking, standalone
-  run without a full pipeline.
+  (upsert + PriceLog append + product link) without going through the
+  GenServer. Used by Mix tasks (`crawler.trigger`) that want a
+  blocking, standalone run without a full pipeline.
+
+  `adapter` is accepted explicitly so callers can pass a stub during
+  tests; falls back to the registered adapter for `chain`.
   """
   def persist_sync(chain, adapter, task, payload) do
-    persist(%{chain: chain, adapter: adapter}, task, payload)
+    persist(chain, task, payload, adapter: adapter)
   end
 
   # Category discovery: upsert all categories from payload.
-  defp persist(_state, {:discover_categories, _meta}, categories) when is_list(categories) do
+  defp persist(_chain, {:discover_categories, _meta}, categories, _opts)
+       when is_list(categories) do
     Enum.each(categories, fn cat ->
       case Catalog.upsert_category(cat) do
         {:ok, _} -> :ok
@@ -87,33 +83,35 @@ defmodule SuperBarato.Crawler.Chain.Results do
 
   # Product discovery: upsert every listing and append a price
   # observation to the per-product file log.
-  defp persist(state, {:discover_products, %{slug: slug}}, listings)
+  defp persist(chain, {:discover_products, %{slug: slug}}, listings, _opts)
        when is_list(listings) do
     Enum.each(listings, &persist_listing/1)
 
     # Per-category log lives at :debug because a full daily product
     # walk fires this once per leaf category (1000s of times). The
     # interesting info is the producer-level start/done summary.
-    Logger.debug("[#{state.chain}] upserted #{length(listings)} listings for category=#{slug}")
+    Logger.debug("[#{chain}] upserted #{length(listings)} listings for category=#{slug}")
   end
 
   # Sitemap-driven single-PDP fetch (Cencosud chains). The adapter
   # returns a one-element listing list; upsert it the same way the
   # category-batch path does. PriceLog.append captures the price
   # observation per call.
-  defp persist(_state, {:fetch_product_pdp, _meta}, listings) when is_list(listings) do
+  defp persist(_chain, {:fetch_product_pdp, _meta}, listings, _opts)
+       when is_list(listings) do
     Enum.each(listings, &persist_listing/1)
   end
 
   # Ad-hoc single-SKU refresh: look up existing listing by identifier,
   # update current_* and append to the log.
-  defp persist(state, {:fetch_product_info, %{identifiers: _ids}}, listings)
+  defp persist(chain, {:fetch_product_info, %{identifiers: _ids}}, listings, opts)
        when is_list(listings) do
-    field = state.adapter.refresh_identifier()
+    adapter = opts[:adapter] || SuperBarato.Crawler.adapter(chain)
+    field = adapter.refresh_identifier()
 
     Enum.each(listings, fn info ->
       with id when is_binary(id) <- Map.get(info, field),
-           listing when not is_nil(listing) <- lookup_by(state.chain, field, id),
+           listing when not is_nil(listing) <- lookup_by(chain, field, id),
            {:ok, _} <- Catalog.record_product_info(listing, info) do
         log_price(info)
       else
@@ -122,27 +120,22 @@ defmodule SuperBarato.Crawler.Chain.Results do
     end)
   end
 
-  defp persist(state, task, payload) do
+  defp persist(chain, task, payload, _opts) do
     Logger.warning(
-      "[#{state.chain}] unknown task shape: task=#{inspect(task)} payload=#{inspect(payload, limit: 3)}"
+      "[#{chain}] unknown task shape: task=#{inspect(task)} payload=#{inspect(payload, limit: 3)}"
     )
   end
 
   # Single point that:
   #   1. Upserts the chain_listing.
   #   2. Appends a price observation when the row carries a price.
-  #   3. Notifies the Linker on every observation. The linker's
-  #      `set_listing_link/3` is idempotent (no-op when nothing
-  #      changed) but must re-run on updates because a listing may
-  #      acquire / change its EAN over time — Tottus listings start
-  #      with `ean: nil` from the search endpoint and gain one only
-  #      when the PDP refresh fires. The linker then folds the
-  #      single-chain placeholder into the canonical EAN-keyed Product.
+  #   3. Runs the linker inline — plain function call into `Linker`.
+  #      Idempotent; a no-op when nothing changed.
   defp persist_listing(listing) do
     case Catalog.upsert_listing(listing) do
       {:ok, action, %{id: id}} when action in [:upserted, :updated] ->
         log_price(listing)
-        Linker.Worker.link_listing(id)
+        link_listing(id)
 
       {:ok, :skipped, _} ->
         # No price on the parsed listing AND no existing row to flip —
@@ -153,6 +146,15 @@ defmodule SuperBarato.Crawler.Chain.Results do
       {:error, cs} ->
         Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
     end
+  end
+
+  defp link_listing(chain_listing_id) do
+    Linker.link_listing(chain_listing_id)
+  rescue
+    err ->
+      Logger.warning(
+        "linker: failed for chain_listing_id=#{chain_listing_id}: #{inspect(err)}"
+      )
   end
 
   # Appends a `<unix> <regular> [<promo>]` line to the product's log

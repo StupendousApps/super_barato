@@ -85,13 +85,13 @@ defmodule SuperBarato.Crawler.Schedules do
   defp reload_chain(chain_str) when is_binary(chain_str) do
     chain_str
     |> String.to_existing_atom()
-    |> SuperBarato.Crawler.Chain.Cron.reload()
+    |> SuperBarato.Crawler.Chain.SchedulerServer.reload()
   rescue
     ArgumentError -> :ok
   end
 
   @doc """
-  `{cadence, mfa}` entries for a chain — the list Chain.Cron consumes.
+  `{cadence, mfa}` entries for a chain — the list Chain.SchedulerServer consumes.
   Filters out `active: false` rows.
   """
   def cron_entries(chain) when is_atom(chain) do
@@ -144,7 +144,7 @@ defmodule SuperBarato.Crawler.Schedules do
     do: "discover_categories"
 
   # Legacy: pre-CategoryProducer schedules pushed straight to the queue.
-  defp infer_kind({SuperBarato.Crawler.Chain.Queue, :push, [_chain, {:discover_categories, _}]}),
+  defp infer_kind({SuperBarato.Crawler.Chain.QueueServer, :push, [_chain, {:discover_categories, _}]}),
     do: "discover_categories"
 
   defp infer_kind({SuperBarato.Crawler.Chain.ProductProducer, :run, [_]}),

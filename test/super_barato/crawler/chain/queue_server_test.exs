@@ -1,7 +1,7 @@
-defmodule SuperBarato.Crawler.Chain.QueueTest do
+defmodule SuperBarato.Crawler.Chain.QueueServerTest do
   use ExUnit.Case, async: false
 
-  alias SuperBarato.Crawler.Chain.Queue
+  alias SuperBarato.Crawler.Chain.QueueServer
 
   # The Queue uses {:via, Registry, ...} — make sure the Registry is running.
   setup_all do
@@ -19,29 +19,29 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
     # unblocks one parked pusher (gate reopens at queue len 2).
     # Watermark-batching behavior gets its own setup below.
     chain = :"queue_test_#{System.unique_integer([:positive])}"
-    {:ok, _pid} = start_supervised({Queue, chain: chain, capacity: 3, low_water: 2})
+    {:ok, _pid} = start_supervised({QueueServer, chain: chain, capacity: 3, low_water: 2})
     {:ok, chain: chain}
   end
 
   describe "push/pop (basic)" do
     test "FIFO ordering", %{chain: chain} do
-      :ok = Queue.push(chain, :a)
-      :ok = Queue.push(chain, :b)
-      :ok = Queue.push(chain, :c)
+      :ok = QueueServer.push(chain, :a)
+      :ok = QueueServer.push(chain, :b)
+      :ok = QueueServer.push(chain, :c)
 
-      assert Queue.pop(chain) == :a
-      assert Queue.pop(chain) == :b
-      assert Queue.pop(chain) == :c
+      assert QueueServer.pop(chain) == :a
+      assert QueueServer.pop(chain) == :b
+      assert QueueServer.pop(chain) == :c
     end
 
     test "size reflects current queue length", %{chain: chain} do
-      assert Queue.size(chain) == 0
-      :ok = Queue.push(chain, :a)
-      assert Queue.size(chain) == 1
-      :ok = Queue.push(chain, :b)
-      assert Queue.size(chain) == 2
-      _ = Queue.pop(chain)
-      assert Queue.size(chain) == 1
+      assert QueueServer.size(chain) == 0
+      :ok = QueueServer.push(chain, :a)
+      assert QueueServer.size(chain) == 1
+      :ok = QueueServer.push(chain, :b)
+      assert QueueServer.size(chain) == 2
+      _ = QueueServer.pop(chain)
+      assert QueueServer.size(chain) == 1
     end
   end
 
@@ -51,14 +51,14 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
 
       popper =
         spawn_link(fn ->
-          task = Queue.pop(chain)
+          task = QueueServer.pop(chain)
           send(parent, {:got, task})
         end)
 
       # pop should be parked — no message yet
       refute_receive {:got, _}, 50
 
-      :ok = Queue.push(chain, :delivered)
+      :ok = QueueServer.push(chain, :delivered)
       assert_receive {:got, :delivered}, 200
 
       refute Process.alive?(popper)
@@ -68,16 +68,16 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
   describe "push blocks when full" do
     test "push parks when queue is at capacity; unblocks after a pop", %{chain: chain} do
       # Fill to capacity (= 3)
-      :ok = Queue.push(chain, :a)
-      :ok = Queue.push(chain, :b)
-      :ok = Queue.push(chain, :c)
-      assert Queue.size(chain) == 3
+      :ok = QueueServer.push(chain, :a)
+      :ok = QueueServer.push(chain, :b)
+      :ok = QueueServer.push(chain, :c)
+      assert QueueServer.size(chain) == 3
 
       parent = self()
 
       pusher =
         spawn_link(fn ->
-          :ok = Queue.push(chain, :d)
+          :ok = QueueServer.push(chain, :d)
           send(parent, :pushed)
         end)
 
@@ -85,13 +85,13 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
       assert Process.alive?(pusher)
 
       # Pop one → pending pusher should be unblocked and :d added
-      assert Queue.pop(chain) == :a
+      assert QueueServer.pop(chain) == :a
       assert_receive :pushed, 200
 
       # Remaining order: b, c, d
-      assert Queue.pop(chain) == :b
-      assert Queue.pop(chain) == :c
-      assert Queue.pop(chain) == :d
+      assert QueueServer.pop(chain) == :b
+      assert QueueServer.pop(chain) == :c
+      assert QueueServer.pop(chain) == :d
     end
   end
 
@@ -100,60 +100,60 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
       parent = self()
 
       spawn_link(fn ->
-        task = Queue.pop(chain)
+        task = QueueServer.pop(chain)
         send(parent, {:got, task})
       end)
 
       # Let the pop park
       Process.sleep(30)
-      assert Queue.size(chain) == 0
+      assert QueueServer.size(chain) == 0
 
-      :ok = Queue.push(chain, :direct)
+      :ok = QueueServer.push(chain, :direct)
       assert_receive {:got, :direct}, 200
 
       # Nothing lingering in the queue
-      assert Queue.size(chain) == 0
+      assert QueueServer.size(chain) == 0
     end
   end
 
   describe "requeue" do
     test "puts task at the front of the queue", %{chain: chain} do
-      :ok = Queue.push(chain, :a)
-      :ok = Queue.push(chain, :b)
-      :ok = Queue.requeue(chain, :urgent)
+      :ok = QueueServer.push(chain, :a)
+      :ok = QueueServer.push(chain, :b)
+      :ok = QueueServer.requeue(chain, :urgent)
 
-      assert Queue.pop(chain) == :urgent
-      assert Queue.pop(chain) == :a
-      assert Queue.pop(chain) == :b
+      assert QueueServer.pop(chain) == :urgent
+      assert QueueServer.pop(chain) == :a
+      assert QueueServer.pop(chain) == :b
     end
 
     test "bypasses capacity limit", %{chain: chain} do
       # Fill to capacity
-      :ok = Queue.push(chain, :a)
-      :ok = Queue.push(chain, :b)
-      :ok = Queue.push(chain, :c)
-      assert Queue.size(chain) == 3
+      :ok = QueueServer.push(chain, :a)
+      :ok = QueueServer.push(chain, :b)
+      :ok = QueueServer.push(chain, :c)
+      assert QueueServer.size(chain) == 3
 
       # Requeue doesn't block even though we're at cap
-      :ok = Queue.requeue(chain, :urgent)
-      assert Queue.size(chain) == 4
+      :ok = QueueServer.requeue(chain, :urgent)
+      assert QueueServer.size(chain) == 4
 
       # Front-of-queue
-      assert Queue.pop(chain) == :urgent
+      assert QueueServer.pop(chain) == :urgent
     end
 
     test "hands directly to a parked pop if any", %{chain: chain} do
       parent = self()
 
       spawn_link(fn ->
-        task = Queue.pop(chain)
+        task = QueueServer.pop(chain)
         send(parent, {:got, task})
       end)
 
       Process.sleep(30)
-      :ok = Queue.requeue(chain, :direct)
+      :ok = QueueServer.requeue(chain, :direct)
       assert_receive {:got, :direct}, 200
-      assert Queue.size(chain) == 0
+      assert QueueServer.size(chain) == 0
     end
   end
 
@@ -163,22 +163,22 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
       # stays closed until pops drain to 2 — at which point ALL
       # parked pushes flood back in.
       chain = :"queue_watermark_test_#{System.unique_integer([:positive])}"
-      {:ok, _pid} = start_supervised({Queue, chain: chain, capacity: 5, low_water: 2})
+      {:ok, _pid} = start_supervised({QueueServer, chain: chain, capacity: 5, low_water: 2})
       {:ok, chain: chain}
     end
 
     test "intermediate pops do NOT unblock parked pushers (gate stays closed above low_water)",
          %{chain: chain} do
       # Fill to capacity
-      for t <- [:a, :b, :c, :d, :e], do: :ok = Queue.push(chain, t)
-      assert Queue.size(chain) == 5
+      for t <- [:a, :b, :c, :d, :e], do: :ok = QueueServer.push(chain, t)
+      assert QueueServer.size(chain) == 5
 
       parent = self()
 
       # Park 3 pushes
       for t <- [:f, :g, :h] do
         spawn_link(fn ->
-          :ok = Queue.push(chain, t)
+          :ok = QueueServer.push(chain, t)
           send(parent, {:pushed, t})
         end)
       end
@@ -187,12 +187,12 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
       refute_receive {:pushed, _}, 50
 
       # Pop once: queue 5→4. Above low_water (2). Gate stays closed.
-      assert Queue.pop(chain) == :a
+      assert QueueServer.pop(chain) == :a
       refute_receive {:pushed, _}, 50
 
       # Pop twice more: queue 4→3→2. Now at low_water.
-      assert Queue.pop(chain) == :b
-      assert Queue.pop(chain) == :c
+      assert QueueServer.pop(chain) == :b
+      assert QueueServer.pop(chain) == :c
 
       # Gate reopens, all parked pushes flood in at once
       assert_receive {:pushed, :f}, 200
@@ -200,38 +200,38 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
       assert_receive {:pushed, :h}, 200
 
       # FIFO order preserved
-      assert Queue.pop(chain) == :d
-      assert Queue.pop(chain) == :e
-      assert Queue.pop(chain) == :f
-      assert Queue.pop(chain) == :g
-      assert Queue.pop(chain) == :h
+      assert QueueServer.pop(chain) == :d
+      assert QueueServer.pop(chain) == :e
+      assert QueueServer.pop(chain) == :f
+      assert QueueServer.pop(chain) == :g
+      assert QueueServer.pop(chain) == :h
     end
 
     test "drain stops at capacity if more pushes are parked than slots free",
          %{chain: chain} do
       # Fill to capacity
-      for t <- [:a, :b, :c, :d, :e], do: :ok = Queue.push(chain, t)
+      for t <- [:a, :b, :c, :d, :e], do: :ok = QueueServer.push(chain, t)
 
       parent = self()
 
       # Park MANY more pushes than the gap between low_water and capacity
       for t <- 1..10 do
         spawn_link(fn ->
-          :ok = Queue.push(chain, t)
+          :ok = QueueServer.push(chain, t)
           send(parent, {:pushed, t})
         end)
       end
 
       # Drain to low_water
-      Queue.pop(chain)
-      Queue.pop(chain)
-      Queue.pop(chain)
+      QueueServer.pop(chain)
+      QueueServer.pop(chain)
+      QueueServer.pop(chain)
 
       # Only `capacity - low_water` = 3 pushes flood in this round
       Process.sleep(50)
       received_count = collect_pushed(0)
       assert received_count == 3, "expected 3 pushes to unblock, got #{received_count}"
-      assert Queue.size(chain) == 5
+      assert QueueServer.size(chain) == 5
     end
 
     defp collect_pushed(n) do
@@ -258,7 +258,7 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
 
     setup do
       chain = :"queue_stress_#{System.unique_integer([:positive])}"
-      {:ok, _pid} = start_supervised({Queue, chain: chain, capacity: 50, low_water: 30})
+      {:ok, _pid} = start_supervised({QueueServer, chain: chain, capacity: 50, low_water: 30})
       {:ok, chain: chain}
     end
 
@@ -269,18 +269,18 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
       # Producer: 100 tasks as fast as backpressure allows.
       _producer =
         spawn_link(fn ->
-          for i <- 1..100, do: :ok = Queue.push(chain, i)
+          for i <- 1..100, do: :ok = QueueServer.push(chain, i)
           send(parent, :producer_done)
         end)
 
-      # Worker: pop one per 100ms (10 req/s — fast enough to keep
+      # FetcherServer: pop one per 100ms (10 req/s — fast enough to keep
       # the test under 11 seconds; the watermark behavior is
       # rate-independent).
       _worker =
         spawn_link(fn ->
           received =
             Enum.map(1..100, fn _ ->
-              v = Queue.pop(chain)
+              v = QueueServer.pop(chain)
               Process.sleep(100)
               v
             end)
@@ -293,7 +293,7 @@ defmodule SuperBarato.Crawler.Chain.QueueTest do
         Task.async(fn ->
           Enum.map(1..110, fn _ ->
             Process.sleep(100)
-            Queue.size(chain)
+            QueueServer.size(chain)
           end)
         end)
 

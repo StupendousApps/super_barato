@@ -16,9 +16,11 @@ defmodule SuperBarato.Application do
         {DNSCluster, query: Application.get_env(:super_barato, :dns_cluster_query) || :ignore},
         {Phoenix.PubSub, name: SuperBarato.PubSub},
         {Registry, keys: :unique, name: SuperBarato.Crawler.Registry},
-        # Single-process consumer of "new listing inserted" signals
-        # from the crawler. Sits idle until the first cast arrives.
-        SuperBarato.Linker.Worker
+        # Singleton DB writer for the entire crawler pipeline. Every
+        # per-chain `Crawler.Chain.FetcherServer` funnels its results
+        # through this one process so SQLite never sees write-write
+        # contention from the crawler. Sits idle until the first cast.
+        SuperBarato.Crawler.PersistenceServer
       ] ++
         chain_pipeline_specs() ++
         [SuperBaratoWeb.Endpoint]
@@ -88,22 +90,23 @@ defmodule SuperBarato.Application do
     end
   end
 
-  # Per-chain pipeline supervisors (Queue, Worker, Results, Cron, TaskSup).
-  # Gated by `chains_enabled` so tests and IEx can skip the network workers.
+  # Per-chain pipeline supervisors (QueueServer, FetcherServer,
+  # SchedulerServer, TaskSup). The DB sink (PersistenceServer) is a
+  # global singleton, started above. Gated by `chains_enabled` so
+  # tests and IEx can skip the network workers.
   defp chain_pipeline_specs do
     crawler_cfg = Application.get_env(:super_barato, SuperBarato.Crawler, [])
 
     if Keyword.get(crawler_cfg, :chains_enabled, false) do
-      crawler_cfg
-      |> Keyword.get(:chains, [])
-      |> Enum.map(fn {chain, chain_opts} ->
-        # Pacing + fallback profiles still come from config; the
-        # schedule is loaded from the DB inside Chain.Supervisor.init/1
+      Enum.map(SuperBarato.Crawler.known_chains(), fn chain ->
+        # `Crawler.opts_for/1` merges defaults with the chain's
+        # overrides (compile-time knobs in config.exs). The schedule
+        # is loaded from the DB inside Chain.Supervisor.init/1
         # (deferred so Repo is started by the time we hit it).
         opts =
-          chain_opts
+          chain
+          |> SuperBarato.Crawler.opts_for()
           |> Keyword.delete(:schedule)
-          |> Keyword.put(:chain, chain)
 
         Supervisor.child_spec(
           {SuperBarato.Crawler.Chain.Supervisor, opts},

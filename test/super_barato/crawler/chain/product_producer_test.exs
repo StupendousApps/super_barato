@@ -3,12 +3,12 @@ defmodule SuperBarato.Crawler.Chain.ProductProducerTest do
 
   alias SuperBarato.Catalog
   alias SuperBarato.Crawler.ChainCategory
-  alias SuperBarato.Crawler.Chain.{ProductProducer, Queue}
+  alias SuperBarato.Crawler.Chain.{ProductProducer, QueueServer}
 
   @chain :unimarc
 
   setup do
-    {:ok, _} = start_supervised({Queue, chain: @chain, capacity: 100})
+    {:ok, _} = start_supervised({QueueServer, chain: @chain, capacity: 100})
     :ok
   end
 
@@ -23,10 +23,10 @@ defmodule SuperBarato.Crawler.Chain.ProductProducerTest do
 
       ProductProducer.run(chain: @chain)
 
-      assert Queue.size(@chain) == 2
+      assert QueueServer.size(@chain) == 2
 
-      task_a = Queue.pop(@chain)
-      task_b = Queue.pop(@chain)
+      task_a = QueueServer.pop(@chain)
+      task_b = QueueServer.pop(@chain)
 
       slugs = [task_a, task_b] |> Enum.map(fn {:discover_products, %{slug: s}} -> s end)
       assert Enum.sort(slugs) == ["despensa/arroz", "despensa/pastas"]
@@ -34,7 +34,7 @@ defmodule SuperBarato.Crawler.Chain.ProductProducerTest do
 
     test "pushes nothing when no leaf categories exist" do
       ProductProducer.run(chain: @chain)
-      assert Queue.size(@chain) == 0
+      assert QueueServer.size(@chain) == 0
     end
 
     test "skips non-leaf categories even if they have a slug" do
@@ -44,7 +44,7 @@ defmodule SuperBarato.Crawler.Chain.ProductProducerTest do
       ])
 
       ProductProducer.run(chain: @chain)
-      assert Queue.size(@chain) == 0
+      assert QueueServer.size(@chain) == 0
     end
   end
 

@@ -12,7 +12,7 @@ defmodule SuperBarato.Crawler.Status do
 
   alias SuperBarato.Crawler
   alias SuperBarato.Crawler.{Schedules, Session}
-  alias SuperBarato.Crawler.Chain.{Queue, Supervisor}
+  alias SuperBarato.Crawler.Chain.{QueueServer, Supervisor}
   alias SuperBarato.Catalog.{ChainCategory, ChainListing}
   alias SuperBarato.Repo
 
@@ -49,7 +49,7 @@ defmodule SuperBarato.Crawler.Status do
   defp queue_depth(chain) do
     if pipeline_running?(chain) do
       try do
-        Queue.size(chain)
+        QueueServer.size(chain)
       catch
         :exit, _ -> nil
       end

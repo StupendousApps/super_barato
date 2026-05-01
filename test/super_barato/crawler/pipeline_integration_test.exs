@@ -2,14 +2,14 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
   @moduledoc """
   End-to-end tests for the per-chain pipeline. Each test stands up a
   full `Chain.Supervisor` tree with a `StubAdapter` (so HTTP is
-  deterministic), fires a Cron entry directly, and verifies the result
+  deterministic), fires a SchedulerServer entry directly, and verifies the result
   landed in the DB via Catalog queries.
 
   Covers the two main paths:
-    * discovery: Cron -> Task -> Queue.push(discover_categories) ->
-      Worker -> StubAdapter -> Results -> categories table
-    * products:  Cron -> ProductProducer -> Queue.push(discover_products)
-      per leaf -> Worker -> StubAdapter -> Results -> chain_listings table
+    * discovery: SchedulerServer -> Task -> QueueServer.push(discover_categories) ->
+      FetcherServer -> StubAdapter -> Results -> categories table
+    * products:  SchedulerServer -> ProductProducer -> QueueServer.push(discover_products)
+      per leaf -> FetcherServer -> StubAdapter -> Results -> chain_listings table
   """
 
   use SuperBarato.DataCase, async: false
@@ -17,7 +17,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
   alias SuperBarato.Catalog
   alias SuperBarato.Catalog.ChainListing
   alias SuperBarato.Crawler.{ChainCategory, Listing}
-  alias SuperBarato.Crawler.Chain.{Cron, Queue, Supervisor, ProductProducer}
+  alias SuperBarato.Crawler.Chain.{SchedulerServer, QueueServer, Supervisor, ProductProducer}
   alias SuperBarato.Test.StubAdapter
 
   @chain :pipeline_int_test
@@ -61,7 +61,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
   end
 
   defp cron_pid(chain) do
-    [{pid, _}] = Registry.lookup(SuperBarato.Crawler.Registry, {Cron, chain})
+    [{pid, _}] = Registry.lookup(SuperBarato.Crawler.Registry, {SchedulerServer, chain})
     pid
   end
 
@@ -87,7 +87,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
     end
   end
 
-  describe "full discovery path (Cron → Queue → Worker → Results → DB)" do
+  describe "full discovery path (SchedulerServer → Queue → FetcherServer → Results → DB)" do
     test "categories land in the DB" do
       # 1. Program the stub: responding to :discover_categories with a
       #    fake category tree.
@@ -97,7 +97,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
       #    fire entries directly.
       schedule = [
         {{:every, {1, :day}},
-         {Queue, :push, [@chain, {:discover_categories, %{chain: @chain, parent: nil}}]}}
+         {QueueServer, :push, [@chain, {:discover_categories, %{chain: @chain, parent: nil}}]}}
       ]
 
       _sup = start_pipeline(schedule)
@@ -122,7 +122,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
     end
   end
 
-  describe "full product-discovery path (Cron → Producer → Queue → Worker → Results → DB)" do
+  describe "full product-discovery path (SchedulerServer → Producer → Queue → FetcherServer → Results → DB)" do
     test "listings land in the DB for every leaf category" do
       # 1. Seed the categories table (ProductProducer reads from here).
       seed_leaf_categories(["despensa/arroz", "despensa/conservas"])
@@ -154,7 +154,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
 
       _sup = start_pipeline(schedule)
 
-      # 4. Fire the producer entry. Cron does
+      # 4. Fire the producer entry. SchedulerServer does
       #    Task.Supervisor.start_child(state.task_sup, fn -> apply(...) end);
       #    the spawned task calls ProductProducer.run, which streams
       #    leaf categories from the DB and pushes Queue tasks.
@@ -162,7 +162,7 @@ defmodule SuperBarato.Crawler.PipelineIntegrationTest do
 
       send(cron_pid(@chain), {:fire, hd(schedule)})
 
-      # 5. Wait for Worker to consume both product tasks and Results to persist.
+      # 5. Wait for FetcherServer to consume both product tasks and Results to persist.
       wait_until(fn ->
         Repo.one(
           from l in ChainListing, where: l.chain == ^to_string(@chain), select: count(l.id)

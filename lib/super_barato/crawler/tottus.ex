@@ -69,7 +69,7 @@ defmodule SuperBarato.Crawler.Tottus do
   # Stage 3 (ListingProducer) — refresh a single PDP. The Cron entry
   # passes the listing's stored `pdp_url`; we extract product data
   # (incl. EAN from `okayToShopBarcodes` / `data-ean` attribute) and
-  # return a one-element list so `Chain.Results.persist/3` matches
+  # return a one-element list so `PersistenceServer.persist/3` matches
   # the same shape Cencosud uses.
   def handle_task({:fetch_product_pdp, %{url: url}}) when is_binary(url) do
     case fetch_pdp(url) do

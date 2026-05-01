@@ -2,7 +2,7 @@ defmodule SuperBarato.Crawler.SchedulesTest do
   use SuperBarato.DataCase, async: false
 
   alias SuperBarato.Crawler.{Schedule, Schedules}
-  alias SuperBarato.Crawler.Chain.Cron
+  alias SuperBarato.Crawler.Chain.SchedulerServer
 
   describe "list/1" do
     setup do
@@ -125,13 +125,13 @@ defmodule SuperBarato.Crawler.SchedulesTest do
     end
   end
 
-  describe "mutations trigger Cron reload" do
+  describe "mutations trigger SchedulerServer reload" do
     setup do
       {:ok, task_sup} = Task.Supervisor.start_link()
 
       cron_pid =
         start_supervised!({
-          Cron,
+          SchedulerServer,
           chain: :unimarc, schedule: Schedules.cron_entries(:unimarc), task_sup: task_sup
         })
 
@@ -174,7 +174,7 @@ defmodule SuperBarato.Crawler.SchedulesTest do
 
       stale_entry =
         {{:weekly, [:mon], [~T[04:00:00]]},
-         {SuperBarato.Crawler.Chain.Queue, :push,
+         {SuperBarato.Crawler.Chain.QueueServer, :push,
           [:unimarc, {:discover_categories, %{chain: :unimarc, parent: nil}}]}}
 
       {:ok, _} = Schedules.update(s, %{"days" => "tue"})

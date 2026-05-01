@@ -65,13 +65,46 @@ config :logger, :default_formatter,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Crawler: per-chain rate limits (shared by discovery and price fetches).
+# Crawler: pipeline knobs.
+#
+# Two-layer config: `defaults: [...]` carries every tunable knob with
+# its baseline value, and each entry in `chains: [...]` only carries
+# the chain's overrides plus its `:schedule`. `SuperBarato.Crawler.opts_for/1`
+# merges defaults with the chain block (chain wins) and returns a flat
+# keyword list for the chain's Supervisor — every place that needs a
+# resolved knob reads it through that single function.
+#
+# Defaults live here at compile time; per-chain overrides land in the
+# `chains:` block below; no resolver path looks elsewhere.
 config :super_barato, SuperBarato.Crawler,
   # Whether the pipeline supervisors start with the app. Off by default
   # — Mix tasks drive the crawler synchronously via handle_task/1.
   # Flip on in env-specific config (e.g. prod) when you want the Cron-
   # driven background pipeline running.
   chains_enabled: false,
+  defaults: [
+    # Pacing — minimum gap between successive Worker HTTP requests for
+    # this chain. Lider raises to 2s in its override (Akamai-shaped).
+    interval_ms: 1_000,
+    # Queue depth + low-water producer-restart threshold (60% of cap).
+    # Producers backpressure on the high-water mark and resume when
+    # consumption drains below low-water.
+    queue_capacity: 50,
+    queue_low_water: 30,
+    # curl-impersonate profile rotation order. Worker starts on the
+    # head and rotates on :blocked. Lider needs an older-Chromium-only
+    # list to slip past Akamai (override below).
+    fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
+    # How long a chain stays "blocked" before Worker tries again after
+    # the fallback list is exhausted.
+    block_backoff_ms: 60_000,
+    # Cloudflare front detection. cf_protected: true makes Worker push
+    # a `cf_clearance` cookie obtained from FlareSolverr; cf_homepage
+    # is the URL FlareSolverr probes to mint that cookie. Off by
+    # default; only Tottus flips it on (or used to — see chain note).
+    cf_protected: false,
+    cf_homepage: nil
+  ],
   chains: [
     # Schedules are staggered so chains don't all pound the network
     # at the same moment. Times are UTC — Chile is UTC-3 (standard) /
@@ -82,15 +115,13 @@ config :super_barato, SuperBarato.Crawler,
     #
     # `products` does both discovery and price refresh: the search
     # endpoints return current prices alongside product data, and
-    # Chain.Results appends every observation to PriceLog.
+    # PersistenceServer appends every observation to PriceLog.
     #
     # Three-stage cron pattern across all chains:
     #   * stage 1 (CategoryProducer) — weekly Monday discovery.
     #   * stage 2 (ProductProducer)  — weekly Monday discovery.
     #   * stage 3 (ListingProducer)  — daily Tue–Sun price refresh.
     unimarc: [
-      interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:00:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :unimarc]]}},
@@ -112,8 +143,6 @@ config :super_barato, SuperBarato.Crawler,
     # which streams every PDP URL into the chain Queue. At 1 req/s a
     # full Jumbo pass takes ~14 hours; Santa Isabel ~4 hours.
     jumbo: [
-      interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:15:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :jumbo]]}},
@@ -124,8 +153,6 @@ config :super_barato, SuperBarato.Crawler,
       ]
     ],
     santa_isabel: [
-      interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :santa_isabel]]}},
@@ -142,8 +169,6 @@ config :super_barato, SuperBarato.Crawler,
     # triggers can still run from a future CL-resident host; in prod
     # today every request will fail with :blocked / 403.
     tottus: [
-      interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[04:30:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :tottus]]}},
@@ -168,8 +193,6 @@ config :super_barato, SuperBarato.Crawler,
     # ListingProducer. Slower but accurate; ~10k products at 1 req/s
     # ≈ 3 hours per refresh, well within a single off-peak window.
     acuenta: [
-      interval_ms: 1_000,
-      fallback_profiles: [:chrome116, :chrome107, :chrome100, :chrome99],
       schedule: [
         {{:weekly, [:mon], [~T[05:00:00]]},
          {SuperBarato.Crawler.Chain.CategoryProducer, :run, [[chain: :acuenta]]}},

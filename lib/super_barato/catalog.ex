@@ -302,7 +302,7 @@ defmodule SuperBarato.Catalog do
 
   @doc """
   Refreshes a listing's current price columns. Price history is
-  appended to the file-backed log by `Chain.Results` separately
+  appended to the file-backed log by `PersistenceServer` separately
   (`SuperBarato.PriceLog`), so this function only updates the DB
   "current" snapshot.
   """

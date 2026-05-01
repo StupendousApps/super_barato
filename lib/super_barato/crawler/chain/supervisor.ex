@@ -1,24 +1,29 @@
 defmodule SuperBarato.Crawler.Chain.Supervisor do
   @moduledoc """
-  One supervisor per supermarket chain. Hosts the four long-lived
-  GenServers that make up the chain's pipeline, plus a Task.Supervisor
-  for the short-lived tasks Cron fires.
+  One supervisor per supermarket chain. Hosts the per-chain pipeline
+  GenServers (QueueServer, FetcherServer, SchedulerServer) plus a
+  Task.Supervisor for the short-lived tasks the SchedulerServer fires.
 
-  Strategy is `:rest_for_one`: if Queue dies, Worker/TaskSup/Cron all
-  restart — the pipeline is reset and Cron re-seeds from its schedule.
+  The DB sink is a global singleton — `Crawler.PersistenceServer` —
+  supervised at the application level. Every per-chain FetcherServer
+  funnels writes into it, so SQLite never sees write-write contention
+  from the crawler.
+
+  Strategy is `:rest_for_one`: if QueueServer dies, FetcherServer /
+  TaskSup / SchedulerServer all restart — the pipeline is reset and
+  the SchedulerServer re-seeds from its schedule.
 
   Child order (this is the `:rest_for_one` reset order):
 
-    1. Results          (sink — depends on nothing)
-    2. Queue            (central pipe)
-    3. Worker           (depends on Queue + Results)
-    4. Task.Supervisor  (for transient Cron tasks)
-    5. Cron             (fires via Task.Supervisor, pushes to Queue)
+    1. QueueServer       (central pipe)
+    2. FetcherServer     (depends on QueueServer + global PersistenceServer)
+    3. Task.Supervisor   (for transient SchedulerServer tasks)
+    4. SchedulerServer   (fires via Task.Supervisor, pushes to QueueServer)
   """
 
   use Supervisor
 
-  alias SuperBarato.Crawler.Chain.{Cron, Queue, Results, Worker}
+  alias SuperBarato.Crawler.Chain.{FetcherServer, QueueServer, SchedulerServer}
 
   def start_link(opts) do
     chain = Keyword.fetch!(opts, :chain)
@@ -51,6 +56,10 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
         SuperBarato.Crawler.Schedules.cron_entries(chain)
       end)
 
+    # Knobs come from `Crawler.opts_for/1` already merged with the
+    # defaults block in config.exs. The `Keyword.get` defaults below
+    # are only the safety net for tests that hand-roll opts without
+    # going through the resolver.
     queue_capacity = Keyword.get(opts, :queue_capacity, 50)
     queue_low_water = Keyword.get(opts, :queue_low_water, div(queue_capacity * 6, 10))
     interval_ms = Keyword.get(opts, :interval_ms, 1_000)
@@ -63,9 +72,8 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
     task_sup_name = task_sup_name(chain)
 
     children = [
-      {Results, chain: chain, adapter: adapter},
-      {Queue, chain: chain, capacity: queue_capacity, low_water: queue_low_water},
-      {Worker,
+      {QueueServer, chain: chain, capacity: queue_capacity, low_water: queue_low_water},
+      {FetcherServer,
        chain: chain,
        adapter: adapter,
        interval_ms: interval_ms,
@@ -74,7 +82,7 @@ defmodule SuperBarato.Crawler.Chain.Supervisor do
        cf_protected: cf_protected,
        cf_homepage: cf_homepage},
       {Task.Supervisor, name: task_sup_name},
-      {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name}
+      {SchedulerServer, chain: chain, schedule: schedule, task_sup: task_sup_name}
     ]
 
     Supervisor.init(children, strategy: :rest_for_one)

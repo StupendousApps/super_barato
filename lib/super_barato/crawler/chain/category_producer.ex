@@ -12,14 +12,14 @@ defmodule SuperBarato.Crawler.Chain.CategoryProducer do
 
   require Logger
 
-  alias SuperBarato.Crawler.Chain.Queue
+  alias SuperBarato.Crawler.Chain.QueueServer
 
   @doc "Runs to completion. Spawn via Task.Supervisor."
   def run(opts) do
     chain = Keyword.fetch!(opts, :chain)
     Logger.metadata(chain: chain, role: :producer)
     Logger.info("category producer starting")
-    Queue.push(chain, {:discover_categories, %{chain: chain, parent: nil}})
+    QueueServer.push(chain, {:discover_categories, %{chain: chain, parent: nil}})
     Logger.info("category producer done")
   end
 end

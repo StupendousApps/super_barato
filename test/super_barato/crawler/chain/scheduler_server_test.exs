@@ -1,7 +1,7 @@
-defmodule SuperBarato.Crawler.Chain.CronTest do
+defmodule SuperBarato.Crawler.Chain.SchedulerServerTest do
   use ExUnit.Case, async: false
 
-  alias SuperBarato.Crawler.Chain.Cron
+  alias SuperBarato.Crawler.Chain.SchedulerServer
 
   # Schedule delays are at least 1 second for `{:every, {1, :second}}`. To
   # keep tests fast, we directly send `{:fire, entry}` to the Cron
@@ -23,7 +23,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
     ]
 
     {:ok, cron_pid} =
-      start_supervised({Cron, chain: chain, schedule: schedule, task_sup: task_sup_name})
+      start_supervised({SchedulerServer, chain: chain, schedule: schedule, task_sup: task_sup_name})
 
     {:ok, chain: chain, cron: cron_pid, schedule: schedule}
   end
@@ -51,23 +51,23 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
     @now ~U[2026-04-23 12:00:00Z]
 
     test ":every {N, :second}" do
-      assert Cron.delay_ms({:every, {1, :second}}, @now) == 1_000
-      assert Cron.delay_ms({:every, {90, :second}}, @now) == 90_000
+      assert SchedulerServer.delay_ms({:every, {1, :second}}, @now) == 1_000
+      assert SchedulerServer.delay_ms({:every, {90, :second}}, @now) == 90_000
     end
 
     test ":every {N, :minute}" do
-      assert Cron.delay_ms({:every, {1, :minute}}, @now) == 60_000
-      assert Cron.delay_ms({:every, {5, :minute}}, @now) == 5 * 60_000
+      assert SchedulerServer.delay_ms({:every, {1, :minute}}, @now) == 60_000
+      assert SchedulerServer.delay_ms({:every, {5, :minute}}, @now) == 5 * 60_000
     end
 
     test ":every {N, :hour}" do
-      assert Cron.delay_ms({:every, {1, :hour}}, @now) == 3_600_000
-      assert Cron.delay_ms({:every, {24, :hour}}, @now) == 24 * 3_600_000
+      assert SchedulerServer.delay_ms({:every, {1, :hour}}, @now) == 3_600_000
+      assert SchedulerServer.delay_ms({:every, {24, :hour}}, @now) == 24 * 3_600_000
     end
 
     test ":every {N, :day} and {N, :days}" do
-      assert Cron.delay_ms({:every, {1, :day}}, @now) == 86_400_000
-      assert Cron.delay_ms({:every, {7, :days}}, @now) == 7 * 86_400_000
+      assert SchedulerServer.delay_ms({:every, {1, :day}}, @now) == 86_400_000
+      assert SchedulerServer.delay_ms({:every, {7, :days}}, @now) == 7 * 86_400_000
     end
   end
 
@@ -78,47 +78,47 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
     test "target time later today (same day-of-week) returns ms until then" do
       cadence = {:weekly, [:thu], [~T[15:00:00]]}
       # 3 hours ahead
-      assert Cron.delay_ms(cadence, @thu_noon) == 3 * 3_600_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 3 * 3_600_000
     end
 
     test "target time already passed today — rolls to next week" do
       cadence = {:weekly, [:thu], [~T[09:00:00]]}
       # 7 days - 3 hours (time already passed by 3h)
       expected = 7 * 86_400_000 - 3 * 3_600_000
-      assert Cron.delay_ms(cadence, @thu_noon) == expected
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == expected
     end
 
     test "target day tomorrow" do
       cadence = {:weekly, [:fri], [~T[12:00:00]]}
       # Exactly 24h ahead
-      assert Cron.delay_ms(cadence, @thu_noon) == 24 * 3_600_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 24 * 3_600_000
     end
 
     test "target day yesterday (rolls forward 6 days)" do
       cadence = {:weekly, [:wed], [~T[12:00:00]]}
       # 6 days ahead (same hour-minute)
-      assert Cron.delay_ms(cadence, @thu_noon) == 6 * 86_400_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 6 * 86_400_000
     end
 
     test "target 6 days later (:fri .. :wed)" do
       # Fri 12:00 → next Wed 12:00 is 5 days, sanity check
       fri = ~U[2026-04-24 12:00:00Z]
       cadence = {:weekly, [:wed], [~T[12:00:00]]}
-      assert Cron.delay_ms(cadence, fri) == 5 * 86_400_000
+      assert SchedulerServer.delay_ms(cadence, fri) == 5 * 86_400_000
     end
 
     test "target time ~1ms after now" do
       cadence = {:weekly, [:thu], [~T[12:00:00]]}
       now = ~U[2026-04-23 11:59:59.999Z]
       # delta is a few ms (with sub-second on `now`)
-      ms = Cron.delay_ms(cadence, now)
+      ms = SchedulerServer.delay_ms(cadence, now)
       assert ms >= 0 and ms < 10
     end
 
     test "target time exactly == now rolls to next week" do
       cadence = {:weekly, [:thu], [~T[12:00:00]]}
       # now is the slot exactly — compare :gt is false, so +7 days
-      assert Cron.delay_ms(cadence, @thu_noon) == 7 * 86_400_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 7 * 86_400_000
     end
   end
 
@@ -128,7 +128,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
     test "picks today when today is in the set and time still ahead" do
       cadence = {:weekly, [:mon, :thu, :sun], [~T[15:00:00]]}
       # Thu 15:00 is earliest (today, 3h ahead)
-      assert Cron.delay_ms(cadence, @thu_noon) == 3 * 3_600_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 3 * 3_600_000
     end
 
     test "picks nearest future day when today's time already passed" do
@@ -136,18 +136,18 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
       # Thu 09:00 already passed (noon now), Fri 09:00 is tomorrow.
       # Mon is after Fri; so Fri wins.
       expected = 24 * 3_600_000 - 3 * 3_600_000
-      assert Cron.delay_ms(cadence, @thu_noon) == expected
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == expected
     end
 
     test "every day of the week (effectively daily_at)" do
       cadence = {:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[15:00:00]]}
-      assert Cron.delay_ms(cadence, @thu_noon) == 3 * 3_600_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 3 * 3_600_000
     end
 
     test "every day, time already passed — rolls to tomorrow (not 7d)" do
       cadence = {:weekly, [:mon, :tue, :wed, :thu, :fri, :sat, :sun], [~T[09:00:00]]}
       expected = 24 * 3_600_000 - 3 * 3_600_000
-      assert Cron.delay_ms(cadence, @thu_noon) == expected
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == expected
     end
   end
 
@@ -157,20 +157,20 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
     test "picks earliest time still ahead today" do
       cadence = {:weekly, [:thu], [~T[14:00:00], ~T[18:00:00]]}
       # Earliest is 14:00 — 2h ahead.
-      assert Cron.delay_ms(cadence, @thu_noon) == 2 * 3_600_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 2 * 3_600_000
     end
 
     test "if all today's times passed, rolls to next week" do
       cadence = {:weekly, [:thu], [~T[08:00:00], ~T[09:00:00]]}
       # Both passed. Next occurrence: next Thu 08:00 = 7 days - 4h.
       expected = 7 * 86_400_000 - 4 * 3_600_000
-      assert Cron.delay_ms(cadence, @thu_noon) == expected
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == expected
     end
 
     test "mixed — one today passed, one ahead; picks ahead" do
       cadence = {:weekly, [:thu], [~T[08:00:00], ~T[18:00:00]]}
       # 18:00 today wins.
-      assert Cron.delay_ms(cadence, @thu_noon) == 6 * 3_600_000
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == 6 * 3_600_000
     end
   end
 
@@ -184,13 +184,13 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
       # Today is Thu 12:00. Next matching day is Mon (4 days ahead).
       # Earliest Mon slot: 04:45 UTC. That's Thu 12:00 + 3d + 16h 45m.
       expected = 3 * 86_400_000 + 16 * 3_600_000 + 45 * 60_000
-      assert Cron.delay_ms(cadence, @thu_noon) == expected
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == expected
     end
 
     test "argument order (days, times) doesn't change the result" do
       a = {:weekly, [:mon, :thu, :sun], [~T[08:00:00], ~T[20:00:00]]}
       b = {:weekly, [:sun, :thu, :mon], [~T[20:00:00], ~T[08:00:00]]}
-      assert Cron.delay_ms(a, @thu_noon) == Cron.delay_ms(b, @thu_noon)
+      assert SchedulerServer.delay_ms(a, @thu_noon) == SchedulerServer.delay_ms(b, @thu_noon)
     end
 
     test "picks the globally-earliest (day, time) pair" do
@@ -201,7 +201,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
       #   Mon 04:00 = +3d 16h
       cadence = {:weekly, [:fri, :mon], [~T[04:00:00], ~T[02:00:00]]}
       expected = 14 * 3_600_000
-      assert Cron.delay_ms(cadence, @thu_noon) == expected
+      assert SchedulerServer.delay_ms(cadence, @thu_noon) == expected
     end
   end
 
@@ -220,7 +220,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
         now = DateTime.new!(date, ~T[12:00:00], "Etc/UTC")
         cadence = {:weekly, [day_atom], [~T[15:00:00]]}
 
-        assert Cron.delay_ms(cadence, now) == 3 * 3_600_000,
+        assert SchedulerServer.delay_ms(cadence, now) == 3 * 3_600_000,
                "failed for #{day_atom}"
       end
     end
@@ -235,7 +235,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
         cadence = {:weekly, [day_atom], [~T[09:00:00]]}
         expected = 7 * 86_400_000 - 3 * 3_600_000
 
-        assert Cron.delay_ms(cadence, now) == expected,
+        assert SchedulerServer.delay_ms(cadence, now) == expected,
                "failed for #{day_atom}"
       end
     end
@@ -263,7 +263,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
 
       {:ok, _} =
         start_supervised(
-          {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name},
+          {SchedulerServer, chain: chain, schedule: schedule, task_sup: task_sup_name},
           id: {:wa_cron, chain}
         )
 
@@ -284,7 +284,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
 
       {:ok, _} =
         start_supervised(
-          {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name},
+          {SchedulerServer, chain: chain, schedule: schedule, task_sup: task_sup_name},
           id: {:ws_cron, chain}
         )
 
@@ -308,7 +308,7 @@ defmodule SuperBarato.Crawler.Chain.CronTest do
 
       {:ok, _} =
         start_supervised(
-          {Cron, chain: chain, schedule: schedule, task_sup: task_sup_name},
+          {SchedulerServer, chain: chain, schedule: schedule, task_sup: task_sup_name},
           id: {:wc_cron, chain}
         )
 

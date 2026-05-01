@@ -1,8 +1,9 @@
-defmodule SuperBarato.Crawler.Chain.Queue do
+defmodule SuperBarato.Crawler.Chain.QueueServer do
   @moduledoc """
   Bounded FIFO task queue with **high/low watermark backpressure**,
-  one per chain. The Worker pops; Cron, Producer, Results, and (for
-  requeue-on-block) Worker itself push.
+  one per chain. The FetcherServer pops; SchedulerServer, Producers,
+  PersistenceServer, and (for requeue-on-block) FetcherServer itself
+  push.
 
   Push/pop are blocking calls — `push/2` parks the caller when the
   queue is full or the gate is closed; `pop/1` parks when empty.

@@ -9,7 +9,7 @@ defmodule SuperBarato.Crawler.Chain.ListingProducer do
   listings can use this without modification, since the worker's
   `:fetch_product_pdp` clause already dispatches to the right adapter.
 
-  Backpressure via `Queue.push/2`'s blocking call: the producer
+  Backpressure via `QueueServer.push/2`'s blocking call: the producer
   stalls when the queue is full, so memory stays bounded regardless
   of the listing count. A full Jumbo refresh at 1 req/s is ~14 hours,
   matching the original sitemap walk but without the discovery cost.
@@ -19,7 +19,7 @@ defmodule SuperBarato.Crawler.Chain.ListingProducer do
   require Logger
 
   alias SuperBarato.Catalog.ChainListing
-  alias SuperBarato.Crawler.Chain.Queue
+  alias SuperBarato.Crawler.Chain.QueueServer
   alias SuperBarato.Repo
 
   @doc "Runs to completion. Spawn via Task.Supervisor."
@@ -35,7 +35,7 @@ defmodule SuperBarato.Crawler.Chain.ListingProducer do
           |> active_pdp_urls_query()
           |> Repo.stream(max_rows: 200)
           |> Stream.map(fn url ->
-            Queue.push(chain, {:fetch_product_pdp, %{chain: chain, url: url}})
+            QueueServer.push(chain, {:fetch_product_pdp, %{chain: chain, url: url}})
             1
           end)
           |> Enum.sum()

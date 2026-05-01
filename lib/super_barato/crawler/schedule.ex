@@ -1,6 +1,6 @@
 defmodule SuperBarato.Crawler.Schedule do
   @moduledoc """
-  A persisted crawler schedule — what Chain.Cron loads at boot instead
+  A persisted crawler schedule — what Chain.SchedulerServer loads at boot instead
   of reading from `config/config.exs`.
 
   Each row defines a weekly cadence: fire `{kind}` for `{chain}` on
@@ -15,7 +15,7 @@ defmodule SuperBarato.Crawler.Schedule do
       prices. Cheap on the producer side, slow on the worker side.
 
   `to_cron_entry/1` returns the `{cadence, mfa}` tuple expected by
-  `Chain.Cron`.
+  `Chain.SchedulerServer`.
   """
   use Ecto.Schema
   import Ecto.Changeset
@@ -80,7 +80,7 @@ defmodule SuperBarato.Crawler.Schedule do
   end
 
   @doc """
-  Converts the row to the `{cadence, mfa}` tuple Chain.Cron expects.
+  Converts the row to the `{cadence, mfa}` tuple Chain.SchedulerServer expects.
 
   Inactive rows return `:skip` — callers should filter those out.
   """

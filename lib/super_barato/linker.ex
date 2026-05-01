@@ -14,7 +14,8 @@ defmodule SuperBarato.Linker do
 
     * `"ean_canonical"` — the listing's canonicalized GTIN-13 / EAN-8
       matched a Product's identifier in `product_identifiers`. High
-      confidence; produced live by `Linker.Worker`.
+      confidence; produced live by `Crawler.PersistenceServer`'s
+      inline `Linker.link_listing/1` call.
     * `"single_chain"` — listing has no usable EAN (Tottus's loose
       meat, produce sold by weight, anything where the chain doesn't
       expose a barcode). Each such listing gets a placeholder Product
@@ -46,6 +47,49 @@ defmodule SuperBarato.Linker do
   def source_ean_canonical, do: @source_ean_canonical
   def source_single_chain, do: @source_single_chain
   def source_admin, do: @source_admin
+
+  @doc """
+  Synchronous linker entry point. Called inline from
+  `Crawler.PersistenceServer` (the singleton DB writer) on every
+  upserted/updated `ChainListing`. No GenServer in front of it — the
+  serialization is the PersistenceServer's responsibility, this
+  function just runs the linking logic.
+
+  Skips listings with no price or no usable identifier. Returns
+  `:ok | :skip`.
+  """
+  def link_listing(chain_listing_id) when is_integer(chain_listing_id) do
+    case Repo.get(ChainListing, chain_listing_id) do
+      nil ->
+        :skip
+
+      %ChainListing{} = listing ->
+        cond do
+          # `Catalog.upsert_listing/1` already refuses to insert
+          # rows without a price; defense in depth.
+          is_nil(listing.current_regular_price) or listing.current_regular_price <= 0 ->
+            :skip
+
+          identifiers_for_listing(listing) == [] ->
+            :skip
+
+          true ->
+            {_action, product, source} = find_or_create_product_for_listing(listing)
+
+            set_listing_link(product.id, listing.id,
+              source: source,
+              confidence: confidence_for(source),
+              linked_at: DateTime.utc_now() |> DateTime.truncate(:second)
+            )
+
+            :ok
+        end
+    end
+  end
+
+  defp confidence_for(@source_ean_canonical), do: 1.0
+  defp confidence_for(@source_single_chain), do: 0.5
+  defp confidence_for(_), do: nil
 
   @doc """
   Derive the typed identifiers a listing brings into the lookup

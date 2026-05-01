@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Crawler.Trigger do
   require Logger
 
   alias SuperBarato.{Catalog, Crawler}
-  alias SuperBarato.Crawler.Chain.Results
+  alias SuperBarato.Crawler.PersistenceServer
 
   @switches [limit: :integer, category: :string, interval: :integer]
 
@@ -66,7 +66,7 @@ defmodule Mix.Tasks.Crawler.Trigger do
 
     case mod.handle_task(task) do
       {:ok, categories} ->
-        Results.persist_sync(chain, mod, task, categories)
+        PersistenceServer.persist_sync(chain, mod, task, categories)
 
         Logger.info(
           "[#{chain}] trigger: discover done (#{length(categories)} categories, " <>
@@ -105,7 +105,7 @@ defmodule Mix.Tasks.Crawler.Trigger do
 
         case mod.handle_task(task) do
           {:ok, listings} ->
-            Results.persist_sync(chain, mod, task, listings)
+            PersistenceServer.persist_sync(chain, mod, task, listings)
             Logger.info("[#{chain}] #{slug}: #{length(listings)} listings")
             {ok + 1, blocked, errors}
 
