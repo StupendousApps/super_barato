@@ -46,6 +46,7 @@
   align-items: center;
   justify-content: center;
 }
+.rail-toggle__badge[hidden] { display: none; }
 
 /* Rail header. Toggle button is the first (left rail) or last
    (right rail) child; gap lets the title / logo sit alongside. */

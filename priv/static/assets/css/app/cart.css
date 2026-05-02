@@ -149,20 +149,133 @@
 }
 .cart-footer__cta:active { transform: translateY(1px); }
 
+/* Empty cart — two stacked instructional cards: how to add a
+   product, and how to form a comparison group. Both are dashed
+   cards that read as "drop here". The first one tints to the
+   brand yellow when the user is dragging over the pane. */
 .cart-empty {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: var(--ink-3);
-  text-align: center;
-  padding: 40px 20px;
+  gap: 10px;
+  padding: 16px;
   pointer-events: none;
 }
-.cart-empty .msg { font-size: 13px; color: var(--ink-2); }
-.cart-empty .hint { font-size: 12px; color: var(--ink-3); }
+.cart-empty__card {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 2px dashed var(--ink-4);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--ink-3);
+  text-align: left;
+  transition: border-color .18s ease, background .18s ease;
+}
+.cart-pane.drop-target--pane .cart-empty__card:first-child {
+  border-color: oklch(0.78 0.18 80);
+  background: color-mix(in oklch, oklch(0.78 0.18 80) 8%, var(--surface));
+}
+.cart-empty__text {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Glyphs */
+.cart-empty__glyph {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+/* "Drop a product here" — a cursor pointer drags a small chip in
+   from the right, pauses over the dashed target slot, releases,
+   and fades out. Loops. */
+.cart-empty__glyph--drop {
+  position: relative;
+  overflow: hidden;
+}
+.cart-empty__slot {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 26px; height: 26px;
+  border: 1.5px dashed var(--ink-4);
+  border-radius: 6px;
+  transform: translate(-50%, -50%);
+}
+.cart-empty__drop-chip {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1.5px var(--ink-3);
+  transform-origin: center;
+  animation: cart-empty-drop-chip 3s ease-in-out infinite;
+}
+.cart-empty__cursor {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 16px; height: 16px;
+  color: var(--ink);
+  margin: -8px 0 0 -8px;
+  animation: cart-empty-cursor 3s ease-in-out infinite;
+}
+
+/* Chip is held by the cursor on the right, slides to the slot,
+   bounces down on release, sticks briefly, then fades out as the
+   loop resets. Coordinates are deltas applied on top of the
+   `translate(-50%, -50%)` centering. */
+@keyframes cart-empty-drop-chip {
+  0%   { transform: translate(calc(-50% + 28px), calc(-50% - 4px)); opacity: 0; }
+  10%  { transform: translate(calc(-50% + 22px), calc(-50% - 4px)); opacity: 1; }
+  45%  { transform: translate(-50%,            calc(-50% - 4px)); opacity: 1; }
+  60%  { transform: translate(-50%, -50%);                          opacity: 1; }
+  80%  { transform: translate(-50%, -50%);                          opacity: 1; }
+  95%  { transform: translate(-50%, -50%);                          opacity: 0; }
+  100% { transform: translate(calc(-50% + 28px), calc(-50% - 4px)); opacity: 0; }
+}
+
+/* Cursor enters with the chip, lifts away when the chip "drops",
+   then fades out. */
+@keyframes cart-empty-cursor {
+  0%   { transform: translate(24px, 2px) scale(1);     opacity: 0; }
+  10%  { transform: translate(18px, 2px) scale(1);     opacity: 1; }
+  45%  { transform: translate(0, 2px) scale(1);        opacity: 1; }
+  60%  { transform: translate(4px, -8px) scale(1.15);  opacity: 1; }
+  75%  { transform: translate(8px, -12px) scale(1.1);  opacity: 0; }
+  100% { transform: translate(24px, 2px) scale(1);     opacity: 0; }
+}
+
+/* Two-chip stack hinting at "drop on top of another to compare". */
+.cart-empty__glyph--stack { position: relative; }
+.cart-empty__glyph--stack .cart-empty__chip {
+  position: absolute;
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1.5px var(--ink-4);
+}
+.cart-empty__glyph--stack .cart-empty__chip:nth-child(1) {
+  top: 14px; left: 14px;
+  background: oklch(0.92 0.10 90);
+  box-shadow: 0 0 0 1.5px oklch(0.78 0.18 80);
+}
+.cart-empty__glyph--stack .cart-empty__chip:nth-child(2) {
+  top: 18px; left: 18px;
+  animation: cart-empty-stack 2s ease-in-out infinite;
+}
+@keyframes cart-empty-stack {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-3px, -3px); }
+}
 
 /* ── Slot (single product or group) ─────────────────────────── */
 

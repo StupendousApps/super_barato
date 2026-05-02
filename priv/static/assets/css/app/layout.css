@@ -68,6 +68,7 @@ html.home [contenteditable="plaintext-only"] {
 }
 .topbar__inner {
     display: flex;
+    flex-direction: row-reverse;
     align-items: stretch;
     gap: var(--cart-gap);
     padding-top: 16px;
@@ -83,6 +84,7 @@ html.home [contenteditable="plaintext-only"] {
    logo's leading edge aligns with the cart pane's left edge. */
 .topbar__main {
     display: flex;
+    flex-direction: row-reverse;
     align-items: stretch;
     gap: 8px;
     flex: 1;
@@ -91,12 +93,10 @@ html.home [contenteditable="plaintext-only"] {
 .topbar__aside {
     display: flex;
     align-items: stretch;
+    justify-content: space-between;
     gap: 8px;
     flex-shrink: 0;
     width: var(--cart-pane-width);
-}
-.topbar__aside .logo {
-    margin-right: auto;
 }
 
 /* Body row — main column on the left, cart pane on the right.
@@ -123,7 +123,7 @@ html.home [contenteditable="plaintext-only"] {
     /* Align the pane's top with the start of the layout-body's
        content (sticky topbar height + the body's top padding). */
     top: calc(var(--topbar-height) + 12px);
-    right: max(
+    left: max(
         var(--container-pad),
         calc((100vw - var(--layout-max)) / 2 + var(--container-pad))
     );
@@ -138,10 +138,10 @@ html.home [contenteditable="plaintext-only"] {
     z-index: 5;
 }
 
-/* When the cart is open, reserve space at the right of the body
+/* When the cart is open, reserve space at the left of the body
    so the fixed-positioned aside doesn't overlap the main grid. */
 html[data-rail-right="expanded"] .layout-body {
-    padding-right: calc(
+    padding-left: calc(
         var(--cart-pane-width) + var(--cart-gap) + var(--container-pad)
     );
 }

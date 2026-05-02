@@ -275,8 +275,25 @@ export const Cart = {
     if (this.slots.length === 0) {
       this.body.innerHTML = `
         <div class="cart-empty">
-          <div class="msg">Aún no hay productos</div>
-          <div class="hint">Arrastra productos aquí</div>
+          <div class="cart-empty__card">
+            <div class="cart-empty__glyph cart-empty__glyph--drop" aria-hidden="true">
+              <span class="cart-empty__slot"></span>
+              <span class="cart-empty__drop-chip"></span>
+              <svg class="cart-empty__cursor" viewBox="0 0 24 24"
+                   fill="currentColor" stroke="var(--surface)" stroke-width="1.2"
+                   stroke-linejoin="round">
+                <path d="M5 3 L5 19 L9.5 14.5 L12.5 20 L15 19 L12 13.5 L17 13.5 Z"/>
+              </svg>
+            </div>
+            <div class="cart-empty__text">Arrastra tus productos acá.</div>
+          </div>
+          <div class="cart-empty__card">
+            <div class="cart-empty__glyph cart-empty__glyph--stack" aria-hidden="true">
+              <span class="cart-empty__chip"></span>
+              <span class="cart-empty__chip"></span>
+            </div>
+            <div class="cart-empty__text">Suéltalo encima de otro producto para compararlos.</div>
+          </div>
         </div>
       `
       if (this.footer) {

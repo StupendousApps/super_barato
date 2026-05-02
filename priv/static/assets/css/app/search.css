@@ -149,7 +149,10 @@ html[data-rail-right="expanded"] .cart-toggle:hover .cart-toggle__close {
 
 .picker__panel {
   display: none;
-  position: absolute; left: 0; top: calc(100% + 8px);
+  /* The cat picker now sits on the right side of the search row,
+     so anchor the panel from the right edge — otherwise it
+     overflows past the layout container. */
+  position: absolute; right: 0; top: calc(100% + 8px);
   z-index: 20;
   background: var(--surface);
   border-radius: 14px;
