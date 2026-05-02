@@ -72,9 +72,7 @@
     padding: 0 4px 14px;
 }
 .cat-band__hd h2 {
-    font:
-        700 24px/1.15 "Instrument Sans",
-        sans-serif;
+    font: 700 24px/1.15 var(--font-sans);
     margin: 0;
     letter-spacing: -0.015em;
     color: var(--ink);

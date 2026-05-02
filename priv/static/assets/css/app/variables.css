@@ -1,6 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&display=swap');
-
 :root {
+  /* System sans stack — same fallback Facebook serves to web
+     visitors when their custom Facebook Sans isn't available.
+     Picks San Francisco on macOS/iOS, Segoe UI on Windows,
+     Roboto on Android, and falls back to Helvetica/Arial. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Display stack for the SUPERbarato logotype — condensed, heavy
+     letterforms. Impact ships on Windows + macOS; the others fill
+     in the gaps on older Mac and Linux. */
+  --font-display: Impact, "Haettenschweiler", "Franklin Gothic Bold", "Charcoal", "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans-serif;
+
   --bg: oklch(0.985 0.004 85);
   --surface: #ffffff;
   --panel: oklch(0.945 0.008 85);

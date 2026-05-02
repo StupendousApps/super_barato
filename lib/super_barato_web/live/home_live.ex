@@ -184,6 +184,7 @@ defmodule SuperBaratoWeb.HomeLive do
     <div class="scroll" id="layout" phx-hook="Rails">
       <header class="topbar">
         <div class="container topbar__inner">
+          <div class="topbar__main">
           <div class="picker cat-picker" id="cat-picker" phx-hook="Picker">
             <div class={["search-cat-button", category_active?(@selected_category, @selected_subcategory) && "search-cat-button--filtered"]}>
               <.link
@@ -246,6 +247,12 @@ defmodule SuperBaratoWeb.HomeLive do
             />
             <span class="kbd">⌘K</span>
           </form>
+          </div>
+
+          <div class="topbar__aside">
+          <a class="logo" href="/" aria-label="SuperBarato.cl">
+            <span class="super">SUPER</span><span class="barato">barato</span><span class="tld">.cl</span>
+          </a>
 
           <button
             type="button"
@@ -257,6 +264,7 @@ defmodule SuperBaratoWeb.HomeLive do
             <span class="cart-toggle__close"><.icon_close /></span>
             <span :if={@cart_items != []} class="rail-toggle__badge">{length(@cart_items)}</span>
           </button>
+          </div>
         </div>
       </header>
 
@@ -396,12 +404,6 @@ defmodule SuperBaratoWeb.HomeLive do
 
   defp rail_right(assigns) do
     ~H"""
-    <div class="cart-hd">
-      <a class="logo" href="/" aria-label="SuperBarato.cl">
-        <span class="super">SUPER</span><span class="barato">barato</span><span class="tld">.cl</span>
-      </a>
-    </div>
-
       <%= if @cart_items == [] do %>
         <div class="cart-empty">
           <div class="box">+</div>
@@ -466,11 +468,18 @@ defmodule SuperBaratoWeb.HomeLive do
 
   defp icon_cart(assigns) do
     ~H"""
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-         stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true">
-      <path d="M3 4h2.2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.5L21 8H6.5"/>
-      <circle cx="9.5" cy="20" r="1.4" />
-      <circle cx="17.5" cy="20" r="1.4" />
+    <svg viewBox="0 0 130 110" class="icon" aria-hidden="true">
+      <g transform="skewX(-10) translate(20 0)">
+        <path d="M 4 18 L 22 18 L 30 30" fill="none" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 28 30 L 96 30 L 86 70 L 38 70 Z" fill="#0A0A0A" />
+        <rect x="38" y="40" width="50" height="4" fill="#FFD43B" rx="2" />
+        <rect x="42" y="50" width="42" height="4" fill="#FFD43B" opacity="0.7" rx="2" />
+        <rect x="46" y="60" width="34" height="4" fill="#FFD43B" opacity="0.4" rx="2" />
+      </g>
+      <circle cx="56" cy="96" r="8" fill="#0A0A0A" />
+      <circle cx="90" cy="96" r="8" fill="#0A0A0A" />
+      <circle cx="56" cy="96" r="2.5" fill="#FFD43B" />
+      <circle cx="90" cy="96" r="2.5" fill="#FFD43B" />
     </svg>
     """
   end

@@ -2,17 +2,22 @@ html.home,
 html.home body {
     background: var(--bg);
     color: var(--ink);
-    font:
-        14px/1.45 "Instrument Sans",
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        sans-serif;
+    font: 14px/1.45 var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     height: 100%;
     margin: 0;
     overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Inputs and textareas keep their normal selection so the search
+   field can be edited / copy-pasted. */
+html.home input,
+html.home textarea {
+    user-select: text;
+    -webkit-user-select: text;
 }
 
 /* Tokens used across the home layout. The container caps the
@@ -20,10 +25,14 @@ html.home body {
    gets generous gutters on wide displays. */
 :root {
     --layout-max: 1600px;
-    --container-pad-l: clamp(32px, 10vw, 150px);
-    --container-pad-r: 24px;
+    --container-pad: clamp(32px, 6vw, 64px);
     --topbar-height: 80px;
     --cart-pane-width: 340px;
+    /* The gutter between `.main` and the cart pane in the body
+       row. Drives both the layout-body's right reservation and
+       the topbar's inter-column gap so the header lines up with
+       the body underneath. */
+    --cart-gap: 32px;
 }
 
 /* The single scrolling element on the page. Fixed-positioned
@@ -41,27 +50,24 @@ html.home body {
 .container {
     max-width: var(--layout-max);
     margin: 0 auto;
-    padding: 0 var(--container-pad-r) 0 var(--container-pad-l);
+    padding: 0 var(--container-pad);
     box-sizing: border-box;
 }
 
-/* Topbar — fixed to the viewport top so it stays put while
-   `.scroll` scrolls underneath. The blurred background lives on
-   the inner `.container` so the blur edge aligns with the page
-   gutters, not the viewport edge. */
+/* Topbar — sticky inside `.scroll`'s flow so it stays put while
+   the page scrolls and the inner `.container` shares `.scroll`'s
+   width (matching the layout-body's container exactly). The
+   blurred background lives on the inner `.container` so the
+   blur edge aligns with the page gutters. */
 .topbar {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
     z-index: 10;
-    pointer-events: none;
 }
 .topbar__inner {
-    pointer-events: auto;
     display: flex;
     align-items: stretch;
-    gap: 8px;
+    gap: var(--cart-gap);
     padding-top: 16px;
     padding-bottom: 14px;
     background: color-mix(in oklch, var(--bg) 70%, transparent);
@@ -69,12 +75,34 @@ html.home body {
     -webkit-backdrop-filter: saturate(140%) blur(18px);
 }
 
+/* When the cart is open the topbar splits into two columns whose
+   gap and widths match the layout-body row exactly: the search
+   group's trailing edge aligns with `.main`'s right edge, and the
+   logo's leading edge aligns with the cart pane's left edge. */
+.topbar__main {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+.topbar__aside {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    flex-shrink: 0;
+    width: var(--cart-pane-width);
+}
+.topbar__aside .logo {
+    margin-right: auto;
+}
+
 /* Body row — main column on the left, cart pane on the right.
    Top padding clears the fixed topbar. */
 .layout-body {
     display: flex;
     align-items: flex-start;
-    padding-top: var(--topbar-height);
+    padding-top: 12px;
     padding-bottom: 32px;
     gap: 24px;
 }
@@ -90,8 +118,13 @@ html.home body {
    Contents scroll independently of the page. */
 .cart-pane {
     position: fixed;
-    top: var(--topbar-height);
-    right: max(var(--container-pad-r), calc((100vw - var(--layout-max)) / 2 + var(--container-pad-r)));
+    /* Align the pane's top with the start of the layout-body's
+       content (sticky topbar height + the body's top padding). */
+    top: calc(var(--topbar-height) + 12px);
+    right: max(
+        var(--container-pad),
+        calc((100vw - var(--layout-max)) / 2 + var(--container-pad))
+    );
     bottom: 24px;
     width: var(--cart-pane-width);
     display: flex;
@@ -106,7 +139,9 @@ html.home body {
 /* When the cart is open, reserve space at the right of the body
    so the fixed-positioned aside doesn't overlap the main grid. */
 html[data-rail-right="expanded"] .layout-body {
-    padding-right: calc(var(--cart-pane-width) + 48px);
+    padding-right: calc(
+        var(--cart-pane-width) + var(--cart-gap) + var(--container-pad)
+    );
 }
 
 html[data-rail-right="collapsed"] .cart-pane {

@@ -10,14 +10,14 @@
   gap: 14px;
   align-items: stretch;
   transition: transform .14s ease, box-shadow .14s ease;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
+  box-shadow: 0 0 0 1px var(--border);
   border: 0;
   text-align: left;
   width: 100%;
 }
 .card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, .02), 0 10px 30px rgba(0, 0, 0, .08);
+  box-shadow: 0 0 0 1px var(--border), 0 10px 30px rgba(0, 0, 0, .08);
 }
 .card:active { transform: translateY(0); }
 

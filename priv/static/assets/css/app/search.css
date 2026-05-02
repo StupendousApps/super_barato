@@ -4,26 +4,21 @@
    closed; when the cart is open, hovering the button morphs the
    cart glyph into an × (mirrors the magnifier → × treatment on a
    non-empty search input). */
-/* Glass-pill cart toggle — same surface treatment as the
-   `.search-cat-button` and `.search` input bar so the topbar reads
-   as a row of three matching pills. */
+/* Bare cart toggle — no glass pill; just a 48×48 hit area. */
 .cart-toggle {
   flex-shrink: 0;
   position: relative;
   display: inline-flex; align-items: center; justify-content: center;
   width: 48px; height: 48px;
   padding: 0;
-  background: color-mix(in oklch, var(--surface) 70%, transparent);
-  backdrop-filter: saturate(140%) blur(18px);
-  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  background: transparent;
   border: 0;
-  border-radius: 16px;
-  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   color: var(--ink);
   transition: background .12s ease;
 }
-.cart-toggle:hover { background: var(--surface); }
+.cart-toggle:hover { background: color-mix(in oklch, var(--ink) 6%, transparent); border-radius: var(--r-md); }
+.cart-toggle .icon { width: 32px; height: 32px; }
 .cart-toggle__cart,
 .cart-toggle__close {
   display: inline-flex;
@@ -73,7 +68,7 @@ html[data-rail-right="expanded"] .cart-toggle:hover .cart-toggle__close {
   background: color-mix(in oklch, var(--surface) 70%, transparent);
   backdrop-filter: saturate(140%) blur(18px);
   -webkit-backdrop-filter: saturate(140%) blur(18px);
-  border-radius: 16px;
+  border-radius: var(--r-md);
   box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0, 0, 0, 0.06);
   min-height: 48px;
   white-space: nowrap;
@@ -254,7 +249,7 @@ html[data-rail-right="expanded"] .cart-toggle:hover .cart-toggle__close {
   background: color-mix(in oklch, var(--surface) 70%, transparent);
   backdrop-filter: saturate(140%) blur(18px);
   -webkit-backdrop-filter: saturate(140%) blur(18px);
-  border-radius: 16px;
+  border-radius: var(--r-md);
   box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0,0,0,0.06);
 }
 
