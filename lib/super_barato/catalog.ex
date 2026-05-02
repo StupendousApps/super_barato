@@ -28,6 +28,7 @@ defmodule SuperBarato.Catalog do
   alias SuperBarato.Crawler.ChainCategory, as: CrawlerCategory
   alias SuperBarato.Crawler.Listing
   alias SuperBarato.Repo
+  alias SuperBarato.Thumbnails
 
   # Categories
 
@@ -48,6 +49,7 @@ defmodule SuperBarato.Catalog do
       level: cat.level,
       is_leaf: cat.is_leaf,
       active: true,
+      crawl_enabled: default_crawl_enabled?(cat.chain, cat.slug),
       first_seen_at: now,
       last_seen_at: now
     }
@@ -55,6 +57,9 @@ defmodule SuperBarato.Catalog do
     %ChainCategory{}
     |> ChainCategory.discovery_changeset(attrs)
     |> Repo.insert(
+      # `crawl_enabled` is intentionally absent from the replace
+      # list so any operator-applied override survives subsequent
+      # discovery sweeps.
       on_conflict:
         {:replace,
          [
@@ -72,6 +77,313 @@ defmodule SuperBarato.Catalog do
     )
   end
 
+  # Per-chain prefix denylist used at chain_category creation time
+  # to default `crawl_enabled` to false for non-grocery branches
+  # (toys, home, tech, vestuario, mundo bebé). Add prefixes here as
+  # we observe more umbrellas worth excluding. Existing rows are
+  # *not* retroactively flipped — only newly-discovered ones.
+  @auto_disabled_prefixes %{
+    "jumbo" => [
+      "hogar-jugueteria-y-libreria/"
+    ],
+    "lider" => [],
+    "santa_isabel" => [],
+    "unimarc" => [],
+    "tottus" => [],
+    "acuenta" => []
+  }
+
+  @doc """
+  True when a brand-new category should be crawled by default; false
+  when its slug matches a denylist prefix for the chain.
+  """
+  def default_crawl_enabled?(chain, slug) when is_binary(slug) do
+    prefixes = Map.get(@auto_disabled_prefixes, to_string(chain), [])
+    not Enum.any?(prefixes, &String.starts_with?(slug, &1))
+  end
+
+  def default_crawl_enabled?(_chain, _slug), do: true
+
+  @doc """
+  Hard-delete every chain_listing linked to `category_id`, clean up
+  any newly-orphaned products, and best-effort delete their R2
+  thumbnails. Returns `{:ok, %{listings: n, products: m}}` with
+  counts of rows actually removed.
+
+  Cascades:
+    chain_listings  → chain_listing_categories  (FK delete_all)
+                    → product_listings          (FK delete_all)
+    products (orphaned) → product_identifiers   (FK delete_all)
+
+  Thumbnail R2 cleanup runs after the transaction commits. We only
+  delete an R2 object once no surviving Product references the same
+  `thumbnail_key` (keys are content-addressed by image_url, so two
+  products that share an image share a key).
+  """
+  def delete_chain_category_listings(category_id) do
+    Repo.transaction(fn ->
+      listing_ids =
+        Repo.all(
+          from clc in ChainListingCategory,
+            where: clc.chain_category_id == ^category_id,
+            select: clc.chain_listing_id
+        )
+
+      if listing_ids == [] do
+        %{listings: 0, products: 0, thumbnail_keys: []}
+      else
+        candidate_product_ids =
+          Repo.all(
+            from pl in ProductListing,
+              where: pl.chain_listing_id in ^listing_ids,
+              distinct: true,
+              select: pl.product_id
+          )
+
+        {n_listings, _} =
+          Repo.delete_all(from l in ChainListing, where: l.id in ^listing_ids)
+
+        # After cascade: products with zero remaining product_listings
+        # are now orphans. Capture their thumbnail keys before delete.
+        orphan_rows =
+          Repo.all(
+            from p in Product,
+              left_join: pl in ProductListing,
+              on: pl.product_id == p.id,
+              where: p.id in ^candidate_product_ids and is_nil(pl.id),
+              select: {p.id, p.thumbnail_key}
+          )
+
+        orphan_ids = Enum.map(orphan_rows, &elem(&1, 0))
+
+        {n_products, _} =
+          Repo.delete_all(from p in Product, where: p.id in ^orphan_ids)
+
+        thumbnail_keys =
+          orphan_rows
+          |> Enum.map(&elem(&1, 1))
+          |> Enum.reject(&(&1 in [nil, ""]))
+          |> Enum.uniq()
+
+        %{listings: n_listings, products: n_products, thumbnail_keys: thumbnail_keys}
+      end
+    end)
+    |> case do
+      {:ok, result} ->
+        # Only delete R2 objects whose keys aren't held by any
+        # surviving Product (image_url-derived keys can be shared).
+        result.thumbnail_keys
+        |> Enum.reject(&thumbnail_key_in_use?/1)
+        |> Enum.each(&Thumbnails.delete_object/1)
+
+        {:ok, Map.delete(result, :thumbnail_keys)}
+
+      other ->
+        other
+    end
+  end
+
+  defp thumbnail_key_in_use?(key) do
+    Repo.exists?(from p in Product, where: p.thumbnail_key == ^key)
+  end
+
+  # Chains whose category slugs are slash-separated breadcrumbs
+  # ("hogar/jugueteria/munecas"). For these we walk the path and
+  # materialize an ancestor row per segment. Other chains emit
+  # opaque slugs (sometimes containing slashes that aren't
+  # separators, e.g. tottus's "<id>/<segment>"); those become a
+  # single, parent-less row.
+  @hierarchical_chains ~w(jumbo santa_isabel)
+
+  @doc """
+  Ensures a `chain_categories` row exists for `slug_path` (and, for
+  hierarchical chains, for every ancestor). Returns the leaf row's
+  id. Stub rows get a name derived from the slug's last segment;
+  operators can rename them later via the admin edit page.
+
+  This is the listing-ingest entry point: every listing must end up
+  linked to exactly one chain_categories row, and that row must
+  exist before the link is written.
+  """
+  def ensure_chain_category!(chain, slug_path)
+      when is_binary(slug_path) and slug_path != "" do
+    chain_str = to_string(chain)
+    segments = path_segments(chain_str, slug_path)
+    do_ensure_path(chain_str, segments, nil, 1)
+  end
+
+  defp path_segments(chain, slug_path) do
+    if chain in @hierarchical_chains do
+      slug_path
+      |> String.split("/", trim: true)
+      |> accumulate_segments([], "")
+    else
+      [slug_path]
+    end
+  end
+
+  defp accumulate_segments([], acc, _prefix), do: Enum.reverse(acc)
+
+  defp accumulate_segments([seg | rest], acc, ""),
+    do: accumulate_segments(rest, [seg | acc], seg)
+
+  defp accumulate_segments([seg | rest], acc, prefix) do
+    full = prefix <> "/" <> seg
+    accumulate_segments(rest, [full | acc], full)
+  end
+
+  defp do_ensure_path(_chain, [], leaf_id, _level), do: leaf_id
+
+  defp do_ensure_path(chain, [slug | rest], _prev_id, level) do
+    is_leaf = rest == []
+    parent_slug = parent_of(slug)
+    id = upsert_stub_category!(chain, slug, parent_slug, level, is_leaf)
+    do_ensure_path(chain, rest, id, level + 1)
+  end
+
+  defp parent_of(slug) do
+    case String.split(slug, "/") do
+      [_only] -> nil
+      parts -> parts |> Enum.drop(-1) |> Enum.join("/")
+    end
+  end
+
+  defp upsert_stub_category!(chain, slug, parent_slug, level, is_leaf) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+    attrs = %{
+      chain: chain,
+      slug: slug,
+      name: stub_name_from_slug(slug),
+      parent_slug: parent_slug,
+      level: level,
+      is_leaf: is_leaf,
+      active: true,
+      crawl_enabled: default_crawl_enabled?(chain, slug),
+      first_seen_at: now,
+      last_seen_at: now
+    }
+
+    # On insert: take the stub. On conflict: refresh `last_seen_at`,
+    # promote the row to non-leaf if we now know it has a child, but
+    # leave name/crawl_enabled/parent_slug/level untouched — the real
+    # category-discovery crawl (or the admin edit page) is the source
+    # of truth for those.
+    on_conflict_set =
+      if is_leaf do
+        [last_seen_at: now, updated_at: now]
+      else
+        [is_leaf: false, last_seen_at: now, updated_at: now]
+      end
+
+    {:ok, row} =
+      %ChainCategory{}
+      |> ChainCategory.discovery_changeset(attrs)
+      |> Repo.insert(
+        on_conflict: [set: on_conflict_set],
+        conflict_target: [:chain, :slug],
+        returning: true
+      )
+
+    row.id
+  end
+
+  defp stub_name_from_slug(slug) do
+    slug
+    |> String.split("/")
+    |> List.last()
+    |> String.split("-")
+    |> Enum.map_join(" ", &String.capitalize/1)
+  end
+
+  @doc """
+  Slugs whose entire branch is disabled — either the row itself
+  carries `crawl_enabled = false` or one of its ancestors does.
+  Walks the parent chain in Elixir off a single SELECT of all the
+  chain's categories (per-chain row counts are in the low thousands
+  at most, so this is fine).
+  """
+  def disabled_branch_slugs(chain) do
+    chain_str = to_string(chain)
+
+    rows =
+      Repo.all(
+        from c in ChainCategory,
+          where: c.chain == ^chain_str,
+          select: {c.slug, c.parent_slug, c.crawl_enabled}
+      )
+
+    by_slug = Map.new(rows, fn {slug, parent, enabled} -> {slug, {parent, enabled}} end)
+
+    rows
+    |> Enum.filter(fn {slug, _parent, _enabled} ->
+      branch_disabled?(slug, by_slug, MapSet.new())
+    end)
+    |> Enum.map(fn {slug, _, _} -> slug end)
+    |> MapSet.new()
+  end
+
+  defp branch_disabled?(nil, _by_slug, _seen), do: false
+
+  defp branch_disabled?(slug, by_slug, seen) do
+    cond do
+      MapSet.member?(seen, slug) ->
+        false
+
+      true ->
+        case Map.get(by_slug, slug) do
+          nil -> false
+          {_parent, false} -> true
+          {parent, true} -> branch_disabled?(parent, by_slug, MapSet.put(seen, slug))
+        end
+    end
+  end
+
+  @doc """
+  Drop every chain_listing whose categories all sit inside a
+  disabled branch (self or any ancestor). Listings with no
+  category attachments are left alone — those came from earlier
+  crawls before we tracked categories and shouldn't be
+  collateral damage of a later UI pruning.
+
+  Cascades to product_listings via the FK `on_delete: :delete_all`.
+  Returns the deleted-row count.
+  """
+  def prune_disabled_branch_listings(chain) do
+    chain_str = to_string(chain)
+    disabled = disabled_branch_slugs(chain) |> MapSet.to_list()
+
+    if disabled == [] do
+      0
+    else
+      with_cats =
+        from clc in ChainListingCategory,
+          join: cc in ChainCategory,
+          on: cc.id == clc.chain_category_id,
+          where: cc.chain == ^chain_str,
+          distinct: true,
+          select: clc.chain_listing_id
+
+      with_enabled =
+        from clc in ChainListingCategory,
+          join: cc in ChainCategory,
+          on: cc.id == clc.chain_category_id,
+          where: cc.chain == ^chain_str and cc.slug not in ^disabled,
+          distinct: true,
+          select: clc.chain_listing_id
+
+      {n, _} =
+        Repo.delete_all(
+          from cl in ChainListing,
+            where: cl.chain == ^chain_str,
+            where: cl.id in subquery(with_cats),
+            where: cl.id not in subquery(with_enabled)
+        )
+
+      n
+    end
+  end
+
   @doc "All leaf categories for a chain (used as stage-2 seeds)."
   def leaf_categories(chain) do
     Repo.all(leaf_categories_query(chain))
@@ -82,8 +394,14 @@ defmodule SuperBarato.Catalog do
   `ProductProducer` with `Repo.stream/2` for bounded-memory traversal.
   """
   def leaf_categories_query(chain) do
-    ChainCategory
-    |> where([c], c.chain == ^to_string(chain) and c.is_leaf == true and c.active == true)
+    chain_str = to_string(chain)
+    disabled = disabled_branch_slugs(chain) |> MapSet.to_list()
+
+    base =
+      ChainCategory
+      |> where([c], c.chain == ^chain_str and c.is_leaf == true and c.active == true)
+
+    if disabled == [], do: base, else: where(base, [c], c.slug not in ^disabled)
   end
 
   @doc """
@@ -105,11 +423,16 @@ defmodule SuperBarato.Catalog do
   insert, refreshes `last_discovered_at`, and updates price/display
   fields with whatever the adapter returned.
   """
+  def upsert_listing(%Listing{category_path: cp})
+      when cp in [nil, ""] do
+    {:error, :missing_category_path}
+  end
+
   def upsert_listing(%Listing{} = listing) do
     if is_integer(listing.regular_price) and listing.regular_price > 0 do
       # Hot path — most refreshes have a price. Single INSERT…ON
-      # CONFLICT statement; no SELECT needed. The category_paths
-      # merge happens inline via SQLite's `json_each`.
+      # CONFLICT statement; no SELECT needed. The category link
+      # is written separately after the upsert returns.
       do_priced_upsert(listing)
     else
       # Cold path — refresh observed no price. Update only if the row
@@ -142,9 +465,6 @@ defmodule SuperBarato.Catalog do
   defp mark_unavailable(%ChainListing{} = row, %Listing{} = incoming) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
 
-    incoming_paths = listing_incoming_paths(incoming)
-    merged_paths = merge_category_paths(row.category_paths, incoming_paths)
-
     # Update everything except the price columns and `last_priced_at`.
     # The shopper-facing price stays at its last-known value;
     # `has_price` is the signal that the chain isn't currently offering it.
@@ -157,7 +477,6 @@ defmodule SuperBarato.Catalog do
         image_url: incoming.image_url,
         pdp_url: incoming.pdp_url,
         raw: incoming.raw || %{},
-        category_paths: merged_paths,
         last_discovered_at: now,
         active: true,
         has_price: false
@@ -168,17 +487,16 @@ defmodule SuperBarato.Catalog do
       |> Ecto.Changeset.change(attrs)
       |> Repo.update()
 
-    sync_listing_categories(updated)
+    link_listing_to_category(updated, incoming.category_path)
     {:ok, :updated, updated}
   end
 
   # Single-statement INSERT…ON CONFLICT. The on_conflict :replace
-  # list rewrites every field except `category_paths`, which is
-  # merged inline below via a SQL fragment so we never lose surfaces
-  # the row was previously discovered through.
+  # list rewrites every column on the listing row; the
+  # category-link side is handled separately via
+  # `link_listing_to_category/2` after the insert returns.
   defp do_priced_upsert(%Listing{} = listing) do
     now = DateTime.utc_now() |> DateTime.truncate(:second)
-    incoming_paths = listing_incoming_paths(listing)
 
     attrs = %{
       chain: to_string(listing.chain),
@@ -191,7 +509,6 @@ defmodule SuperBarato.Catalog do
       image_url: listing.image_url,
       pdp_url: listing.pdp_url,
       raw: listing.raw || %{},
-      category_paths: incoming_paths,
       current_regular_price: listing.regular_price,
       current_promo_price: listing.promo_price,
       current_promotions: listing.promotions || %{},
@@ -202,11 +519,6 @@ defmodule SuperBarato.Catalog do
       has_price: true
     }
 
-    # SQLite expression that unions the existing row's category_paths
-    # with the inserted candidate's, dedupes, and returns a JSON
-    # array. Runs inside the conflict-update so it can see both
-    # `chain_listings.<col>` (existing) and `excluded.<col>`
-    # (incoming).
     on_conflict =
       from(c in ChainListing,
         update: [
@@ -225,20 +537,7 @@ defmodule SuperBarato.Catalog do
             last_priced_at: fragment("excluded.last_priced_at"),
             active: fragment("excluded.active"),
             has_price: fragment("excluded.has_price"),
-            updated_at: fragment("excluded.updated_at"),
-            # `category_paths` (unqualified) refers to the existing
-            # row's value in SQLite's ON CONFLICT context;
-            # `excluded.category_paths` is the incoming candidate.
-            # Wrapped in COALESCE to handle the no-existing-paths
-            # case (NULL → empty JSON array for json_each).
-            category_paths:
-              fragment("""
-              (SELECT json_group_array(value) FROM (
-                SELECT value FROM json_each(COALESCE(category_paths, '[]'))
-                UNION
-                SELECT value FROM json_each(COALESCE(excluded.category_paths, '[]'))
-              ))
-              """)
+            updated_at: fragment("excluded.updated_at")
           ]
         ]
       )
@@ -251,7 +550,7 @@ defmodule SuperBarato.Catalog do
            returning: true
          ) do
       {:ok, row} ->
-        sync_listing_categories(row)
+        link_listing_to_category(row, listing.category_path)
         {:ok, :upserted, row}
 
       {:error, _} = err ->
@@ -259,46 +558,23 @@ defmodule SuperBarato.Catalog do
     end
   end
 
-  defp listing_incoming_paths(%Listing{category_path: nil}), do: []
-  defp listing_incoming_paths(%Listing{category_path: ""}), do: []
-  defp listing_incoming_paths(%Listing{category_path: p}) when is_binary(p), do: [p]
+  # Ensures the `chain_categories` row exists for `slug_path` and
+  # links it to `listing` via `chain_listing_categories`. The unique
+  # index on (chain_listing_id, chain_category_id) absorbs re-runs.
+  defp link_listing_to_category(%ChainListing{} = listing, slug_path)
+       when is_binary(slug_path) and slug_path != "" do
+    cat_id = ensure_chain_category!(listing.chain, slug_path)
 
-  # Sync `chain_listing_categories` join rows for one ChainListing.
-  # Each entry in `category_paths` is a `chain_categories.slug`; we
-  # resolve them to ids in a single query and INSERT OR IGNORE the
-  # joins (the unique index on (chain_listing_id, chain_category_id)
-  # absorbs re-runs without complaint).
-  #
-  # Paths that don't resolve (chain renamed a category, breadcrumb
-  # carried a slug we never crawled, …) are silently dropped — the
-  # join is best-effort. The legacy `category_paths` array still
-  # carries the raw value as a fallback.
-  defp sync_listing_categories(%ChainListing{id: id, chain: chain, category_paths: paths})
-       when is_list(paths) and paths != [] do
-    cat_ids =
-      Repo.all(
-        from c in ChainCategory,
-          where: c.chain == ^chain and c.slug in ^paths,
-          select: c.id
-      )
-
-    rows = Enum.map(cat_ids, &%{chain_listing_id: id, chain_category_id: &1})
-
-    if rows != [] do
-      Repo.insert_all(ChainListingCategory, rows, on_conflict: :nothing)
-    end
+    Repo.insert_all(
+      ChainListingCategory,
+      [%{chain_listing_id: listing.id, chain_category_id: cat_id}],
+      on_conflict: :nothing
+    )
 
     :ok
   end
 
-  defp sync_listing_categories(_), do: :ok
-
-  defp merge_category_paths(nil, incoming), do: incoming
-  defp merge_category_paths(existing, []) when is_list(existing), do: existing
-
-  defp merge_category_paths(existing, incoming) when is_list(existing) and is_list(incoming) do
-    Enum.uniq(existing ++ incoming)
-  end
+  defp link_listing_to_category(_listing, _), do: :ok
 
   @doc """
   Refreshes a listing's current price columns. Price history is
@@ -422,10 +698,13 @@ defmodule SuperBarato.Catalog do
     where(query, [l], like(l.ean, ^like))
   end
 
-  # `category_paths` is the JSON array of surfaces this listing has
-  # been discovered through. Filter accepts either an exact slug or
-  # any descendant — passing the L1 slug `CATG27055/Despensa` matches
-  # every listing one of whose paths lives under it.
+  # Filter listings by their `chain_listing_categories` join. Accepts
+  # either an exact slug or any descendant — passing an L1 slug
+  # matches every listing under it. Descendant matching is a string
+  # prefix on `chain_categories.slug`, which works because
+  # hierarchical chains (jumbo, santa_isabel) use slash-separated
+  # paths; non-hierarchical chains have opaque slugs and will only
+  # match exactly, which is the right behavior for them.
   defp apply_category_filter(query, nil), do: query
   defp apply_category_filter(query, ""), do: query
 
@@ -436,8 +715,8 @@ defmodule SuperBarato.Catalog do
       query,
       [l],
       fragment(
-        "EXISTS (SELECT 1 FROM json_each(?) WHERE value = ? OR value LIKE ?)",
-        l.category_paths,
+        "EXISTS (SELECT 1 FROM chain_listing_categories clc JOIN chain_categories cc ON cc.id = clc.chain_category_id WHERE clc.chain_listing_id = ? AND (cc.slug = ? OR cc.slug LIKE ?))",
+        l.id,
         ^slug,
         ^like
       )
@@ -519,6 +798,7 @@ defmodule SuperBarato.Catalog do
       |> apply_cat_chain_filter(opts[:chain])
       |> apply_cat_q_filter(opts[:q])
       |> apply_cat_type_filter(opts[:type])
+      |> apply_cat_crawl_filter(opts[:crawl])
 
     total_entries = Repo.aggregate(query, :count)
 
@@ -552,6 +832,10 @@ defmodule SuperBarato.Catalog do
   defp apply_cat_type_filter(query, :leaf), do: where(query, [c], c.is_leaf == true)
   defp apply_cat_type_filter(query, :parent), do: where(query, [c], c.is_leaf == false)
   defp apply_cat_type_filter(query, _), do: query
+
+  defp apply_cat_crawl_filter(query, :enabled), do: where(query, [c], c.crawl_enabled == true)
+  defp apply_cat_crawl_filter(query, :disabled), do: where(query, [c], c.crawl_enabled == false)
+  defp apply_cat_crawl_filter(query, _), do: query
 
   defp apply_cat_sort(query, "-" <> field), do: apply_cat_sort_dir(query, field, :desc)
   defp apply_cat_sort(query, field), do: apply_cat_sort_dir(query, field, :asc)

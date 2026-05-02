@@ -6,7 +6,11 @@ defmodule SuperBaratoWeb.Admin.ProductController do
   """
   use SuperBaratoWeb, :controller
 
-  alias SuperBarato.{Catalog, Crawler, Linker}
+  alias SuperBarato.{Catalog, Crawler, Linker, Repo, Thumbnails}
+  alias SuperBarato.Catalog.{ChainListing, Product}
+  alias SuperBarato.Linker.ProductListing
+
+  import Ecto.Query
 
   plug :put_root_layout, html: {SuperBaratoWeb.AdminLayouts, :root}
   plug :put_layout, html: {SuperBaratoWeb.AdminLayouts, :admin}
@@ -208,6 +212,64 @@ defmodule SuperBaratoWeb.Admin.ProductController do
       :not_found -> put_flash(conn, :error, "No link found.")
     end
     |> redirect(to: ~p"/products/#{id}?#{search_qs(params)}")
+  end
+
+  def use_listing_name(conn, %{"id" => id, "listing_id" => listing_id} = params) do
+    product = Repo.get!(Product, id)
+    listing = Repo.get!(ChainListing, listing_id)
+
+    linked? =
+      Repo.exists?(
+        from pl in ProductListing,
+          where: pl.product_id == ^product.id and pl.chain_listing_id == ^listing.id
+      )
+
+    conn =
+      cond do
+        not linked? ->
+          put_flash(conn, :error, "Listing no está enlazado a este producto.")
+
+        listing.name in [nil, ""] ->
+          put_flash(conn, :error, "El listing no tiene nombre.")
+
+        true ->
+          case product
+               |> Product.changeset(%{canonical_name: listing.name})
+               |> Repo.update() do
+            {:ok, _updated} -> put_flash(conn, :info, "Nombre actualizado.")
+            {:error, cs} -> put_flash(conn, :error, "Falló: #{inspect(cs.errors)}")
+          end
+      end
+
+    redirect(conn, to: ~p"/products/#{id}?#{search_qs(params)}")
+  end
+
+  def use_listing_image(conn, %{"id" => id, "listing_id" => listing_id} = params) do
+    product = Repo.get!(Product, id)
+    listing = Repo.get!(ChainListing, listing_id)
+
+    linked? =
+      Repo.exists?(
+        from pl in ProductListing,
+          where: pl.product_id == ^product.id and pl.chain_listing_id == ^listing.id
+      )
+
+    conn =
+      cond do
+        not linked? ->
+          put_flash(conn, :error, "Listing no está enlazado a este producto.")
+
+        listing.image_url in [nil, ""] ->
+          put_flash(conn, :error, "El listing no tiene imagen.")
+
+        true ->
+          case Thumbnails.use_image(product, listing.image_url) do
+            {:ok, _updated} -> put_flash(conn, :info, "Imagen actualizada.")
+            {:error, reason} -> put_flash(conn, :error, "Falló: #{inspect(reason)}")
+          end
+      end
+
+    redirect(conn, to: ~p"/products/#{id}?#{search_qs(params)}")
   end
 
   defp search_qs(params) do

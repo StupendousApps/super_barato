@@ -1,9 +1,21 @@
 defmodule SuperBarato.CatalogTest do
   use SuperBarato.DataCase, async: false
 
+  import Ecto.Query
+
   alias SuperBarato.{Catalog, Repo}
-  alias SuperBarato.Catalog.ChainListing
+  alias SuperBarato.Catalog.{ChainCategory, ChainListing, ChainListingCategory}
   alias SuperBarato.Crawler.Listing
+
+  defp linked_slugs(%ChainListing{id: id}) do
+    Repo.all(
+      from clc in ChainListingCategory,
+        join: cc in ChainCategory,
+        on: cc.id == clc.chain_category_id,
+        where: clc.chain_listing_id == ^id,
+        select: cc.slug
+    )
+  end
 
   defp listing(opts) do
     %Listing{
@@ -17,7 +29,7 @@ defmodule SuperBarato.CatalogTest do
       brand: opts[:brand] || "Brand X",
       image_url: opts[:image_url] || "https://example.com/x.jpg",
       pdp_url: opts[:pdp_url] || "https://example.com/p/x",
-      category_path: opts[:category_path],
+      category_path: Keyword.get(opts, :category_path, "test-cat"),
       regular_price: Keyword.get(opts, :regular_price, 1990),
       promo_price: opts[:promo_price],
       promotions: opts[:promotions] || %{},
@@ -40,9 +52,9 @@ defmodule SuperBarato.CatalogTest do
       assert row.has_price == true
       assert row.current_regular_price == 1990
       assert row.current_promo_price == 1490
-      assert row.category_paths == ["despensa/arroz"]
       assert row.last_priced_at != nil
       assert row.first_seen_at == row.last_discovered_at
+      assert linked_slugs(row) == ["despensa/arroz"]
     end
 
     test "without a price → :skipped, no row created" do
@@ -141,7 +153,7 @@ defmodule SuperBarato.CatalogTest do
       assert after_back.id == row.id
     end
 
-    test "merges category_paths even when no price", %{row: _row} do
+    test "adds the new surface as a join row even when no price", %{row: _row} do
       l =
         listing(
           identifiers_key: "ean=78002",
@@ -150,47 +162,54 @@ defmodule SuperBarato.CatalogTest do
         )
 
       {:ok, :updated, new_row} = Catalog.upsert_listing(l)
-      assert "despensa" in new_row.category_paths
-      assert "marcas-tottus/despensa" in new_row.category_paths
+      slugs = linked_slugs(new_row)
+      assert "despensa" in slugs
+      assert "marcas-tottus/despensa" in slugs
     end
   end
 
-  describe "upsert_listing/1 — category_paths array merge" do
-    test "first observation produces single-element array" do
-      l = listing(identifiers_key: "k1", regular_price: 1000, category_path: "a/b")
-      {:ok, :upserted, row} = Catalog.upsert_listing(l)
-      assert row.category_paths == ["a/b"]
+  describe "upsert_listing/1 — category links" do
+    test "rejects a listing with no category_path" do
+      l = listing(identifiers_key: "k0", regular_price: 1000, category_path: nil)
+      assert {:error, :missing_category_path} = Catalog.upsert_listing(l)
     end
 
-    test "second discovery via different path appends + dedupes" do
+    test "first observation produces single join row" do
+      l = listing(identifiers_key: "k1", regular_price: 1000, category_path: "a/b")
+      {:ok, :upserted, row} = Catalog.upsert_listing(l)
+      assert linked_slugs(row) == ["a/b"]
+    end
+
+    test "second discovery via different path adds another join row" do
       Catalog.upsert_listing(listing(identifiers_key: "k2", regular_price: 1000, category_path: "a/b"))
 
       {:ok, :upserted, row} =
         Catalog.upsert_listing(listing(identifiers_key: "k2", regular_price: 1000, category_path: "c/d"))
 
-      assert Enum.sort(row.category_paths) == ["a/b", "c/d"]
+      assert Enum.sort(linked_slugs(row)) == ["a/b", "c/d"]
     end
 
-    test "rediscovery via the same path is a no-op for the array" do
+    test "rediscovery via the same path is a no-op" do
       Catalog.upsert_listing(listing(identifiers_key: "k3", regular_price: 1000, category_path: "x/y"))
 
       {:ok, :upserted, row} =
         Catalog.upsert_listing(listing(identifiers_key: "k3", regular_price: 1000, category_path: "x/y"))
 
-      assert row.category_paths == ["x/y"]
+      assert linked_slugs(row) == ["x/y"]
     end
 
-    test "nil/empty incoming path leaves array unchanged" do
-      Catalog.upsert_listing(listing(identifiers_key: "k4", regular_price: 1000, category_path: "kept"))
+    test "creates a stub chain_categories row on the fly" do
+      l = listing(chain: :unimarc, identifiers_key: "k5", regular_price: 1000, category_path: "novel-slug")
+      {:ok, :upserted, _row} = Catalog.upsert_listing(l)
 
-      {:ok, :upserted, row} =
-        Catalog.upsert_listing(listing(identifiers_key: "k4", regular_price: 1000, category_path: nil))
-
-      assert row.category_paths == ["kept"]
+      stub = Repo.get_by!(ChainCategory, chain: "unimarc", slug: "novel-slug")
+      assert stub.name == "Novel Slug"
+      assert stub.is_leaf == true
+      assert stub.parent_slug == nil
     end
   end
 
-  describe "list_listings_page/1 — category filter via array" do
+  describe "list_listings_page/1 — category filter" do
     setup do
       Catalog.upsert_listing(listing(identifiers_key: "f1", regular_price: 1, category_path: "despensa/arroz"))
       Catalog.upsert_listing(listing(identifiers_key: "f2", regular_price: 1, category_path: "despensa/aceites"))

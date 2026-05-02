@@ -45,6 +45,7 @@ defmodule SuperBarato.Crawler.StatusTest do
           chain_sku: "x-1",
           identifiers_key: "sku=x-1",
           name: "Test",
+          category_path: "despensa",
           regular_price: 100
         })
 

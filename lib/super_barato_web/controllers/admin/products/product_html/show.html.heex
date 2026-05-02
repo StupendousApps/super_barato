@@ -81,13 +81,45 @@
     </:col>
 
     <:col :let={l} label="" nowrap align={:right}>
-      <.form
-        for={%{}}
-        method="delete"
-        action={~p"/products/#{@product.id}/listings/#{l.id}"}
-      >
-        <.button type="submit" variant={:danger}>Unlink</.button>
-      </.form>
+      <.row_actions>
+        <.form
+          :if={l.name not in [nil, ""]}
+          for={%{}}
+          method="post"
+          action={~p"/products/#{@product.id}/listings/#{l.id}/use-name"}
+        >
+          <.button
+            type="submit"
+            variant={:subtle}
+            size={:sm}
+            data-confirm="Reemplazar el nombre del producto con el de este listing?"
+          >
+            Use name
+          </.button>
+        </.form>
+        <.form
+          :if={l.image_url not in [nil, ""]}
+          for={%{}}
+          method="post"
+          action={~p"/products/#{@product.id}/listings/#{l.id}/use-image"}
+        >
+          <.button
+            type="submit"
+            variant={:subtle}
+            size={:sm}
+            data-confirm="Reemplazar la imagen del producto con la de este listing?"
+          >
+            Use image
+          </.button>
+        </.form>
+        <.form
+          for={%{}}
+          method="delete"
+          action={~p"/products/#{@product.id}/listings/#{l.id}"}
+        >
+          <.button type="submit" variant={:danger} size={:sm}>Unlink</.button>
+        </.form>
+      </.row_actions>
     </:col>
   </.table>
 

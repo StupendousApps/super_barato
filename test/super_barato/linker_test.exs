@@ -18,6 +18,7 @@ defmodule SuperBarato.LinkerTest do
         chain_sku: sku,
         identifiers_key: "sku=#{sku}",
         name: "Listing #{sku}",
+        category_path: "test",
         regular_price: 1000
       })
 

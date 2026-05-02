@@ -26,6 +26,7 @@ defmodule SuperBarato.Catalog.CategoryMappingTest do
     AppCategory,
     AppSubcategory,
     CategoryMapping,
+    ChainCategory,
     ChainListingCategory,
     Product
   }
@@ -142,8 +143,9 @@ defmodule SuperBarato.Catalog.CategoryMappingTest do
       assert length(joins) == 1
     end
 
-    test "drops paths that do not match any chain_category" do
-      # Note: no chain_category with this slug.
+    test "creates a stub chain_category on the fly when the slug is new" do
+      # No chain_category with this slug exists up front — ingest
+      # should materialize one rather than dropping the link.
       row =
         upsert_listing!(
           chain: :unimarc,
@@ -151,17 +153,20 @@ defmodule SuperBarato.Catalog.CategoryMappingTest do
           category_path: "ghost-category"
         )
 
-      # The listing keeps the legacy fallback array...
-      assert row.category_paths == ["ghost-category"]
+      stub = Repo.get_by!(ChainCategory, chain: "unimarc", slug: "ghost-category")
+      assert stub.name == "Ghost Category"
+      assert stub.parent_slug == nil
+      assert stub.level == 1
+      assert stub.is_leaf == true
 
-      # ...but no join row was written.
       joins =
         Repo.all(
           from clc in ChainListingCategory,
             where: clc.chain_listing_id == ^row.id
         )
 
-      assert joins == []
+      assert [%{chain_category_id: cat_id}] = joins
+      assert cat_id == stub.id
     end
 
     test "is idempotent on re-upsert with the same slug" do

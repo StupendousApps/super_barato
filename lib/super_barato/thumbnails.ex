@@ -84,6 +84,88 @@ defmodule SuperBarato.Thumbnails do
     end
   end
 
+  @doc """
+  Override `product`'s thumbnail with one generated from
+  `image_url`. Fetches the source, resizes, uploads to R2, updates
+  `product.image_url` + `product.thumbnail_key`, and (best-effort)
+  deletes the previous R2 object when no other product still
+  references that key.
+  """
+  def use_image(%Product{} = product, image_url)
+      when is_binary(image_url) and image_url != "" do
+    case config() do
+      nil ->
+        # Dev / no R2: just point the product at the new image_url.
+        product
+        |> Product.changeset(%{image_url: image_url, thumbnail_key: nil})
+        |> Repo.update()
+
+      r2 ->
+        old_key = product.thumbnail_key
+
+        with {:ok, source} <- fetch(image_url),
+             {:ok, webp} <- resize_webp(source),
+             new_key = key_for(image_url),
+             :ok <- upload(r2, new_key, webp),
+             {:ok, updated} <-
+               product
+               |> Product.changeset(%{image_url: image_url, thumbnail_key: new_key})
+               |> Repo.update() do
+          if is_binary(old_key) and old_key != "" and old_key != new_key and
+               not key_used_by_other_product?(updated.id, old_key) do
+            delete_object(old_key)
+          end
+
+          {:ok, updated}
+        end
+    end
+  end
+
+  defp key_used_by_other_product?(product_id, key) do
+    import Ecto.Query
+
+    Repo.exists?(
+      from p in Product,
+        where: p.thumbnail_key == ^key and p.id != ^product_id
+    )
+  end
+
+  @doc """
+  Delete the R2 object at `key`. No-op when R2 isn't configured or
+  when the key is blank. Logs and swallows transport errors — this
+  is best-effort cleanup; a stranded object is much cheaper than
+  failing the surrounding admin action.
+  """
+  def delete_object(nil), do: :ok
+  def delete_object(""), do: :ok
+
+  def delete_object(key) when is_binary(key) do
+    case config() do
+      nil ->
+        :ok
+
+      r2 ->
+        url = "https://#{r2[:account_id]}.r2.cloudflarestorage.com/#{r2[:bucket]}/#{key}"
+        headers = sign_delete(url, r2)
+
+        case Req.delete(url, headers: headers, receive_timeout: 15_000) do
+          {:ok, %Req.Response{status: status}} when status in 200..299 ->
+            :ok
+
+          {:ok, %Req.Response{status: 404}} ->
+            :ok
+
+          {:ok, %Req.Response{status: status, body: body}} ->
+            Logger.warning("thumbnails: delete #{key} → #{status} #{inspect(body)}")
+            :ok
+
+          {:error, e} ->
+            Logger.warning("thumbnails: delete #{key} failed: #{inspect(e)}")
+            :ok
+        end
+    end
+  end
+
   ## ── Internals ───────────────────────────────────────────────
 
   defp fetch(url) do
@@ -122,6 +204,24 @@ defmodule SuperBarato.Thumbnails do
       {:ok, %Req.Response{status: status, body: body}} -> {:error, {:r2_put, status, body}}
       {:error, e} -> {:error, e}
     end
+  end
+
+  defp sign_delete(url, r2) do
+    now = DateTime.utc_now()
+    empty_sha = :crypto.hash(:sha256, "") |> Base.encode16(case: :lower)
+
+    :aws_signature.sign_v4(
+      r2[:access_key_id],
+      r2[:secret_access_key],
+      "auto",
+      "s3",
+      now |> DateTime.to_naive() |> NaiveDateTime.to_erl(),
+      "DELETE",
+      url,
+      [{"x-amz-content-sha256", empty_sha}],
+      "",
+      []
+    )
   end
 
   defp sign_put(url, body, content_type, r2) do

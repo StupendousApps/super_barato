@@ -9,6 +9,7 @@ defmodule SuperBaratoWeb.Admin.ChainCategoryHTML do
   embed_templates "chain_category_html/*"
 
   defdelegate format_datetime(dt), to: ListingHTML
+  defdelegate format_clp(n), to: ListingHTML
   defdelegate sort_dir(field, current), to: ListingHTML
   defdelegate sort_href(path, params, field, current), to: ListingHTML
   defdelegate pdp_host(url), to: ListingHTML

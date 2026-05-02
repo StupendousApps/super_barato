@@ -188,6 +188,9 @@ defmodule SuperBarato.Crawler.PersistenceServer do
         # refresh that observes a price will create the row cleanly.
         :ok
 
+      {:error, :missing_category_path} ->
+        Logger.warning("listing upsert rejected: missing category_path (chain=#{listing.chain} sku=#{listing.chain_sku})")
+
       {:error, cs} ->
         Logger.warning("listing upsert failed: #{inspect(cs.errors)}")
     end

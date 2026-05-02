@@ -43,11 +43,17 @@ defmodule SuperBaratoWeb.Router do
     post "/products/:id/merge", ProductController, :merge_create
     post "/products/:id/listings", ProductController, :link_listing
     delete "/products/:id/listings/:listing_id", ProductController, :unlink_listing
+    post "/products/:id/listings/:listing_id/use-image", ProductController, :use_listing_image
+    post "/products/:id/listings/:listing_id/use-name", ProductController, :use_listing_name
     get "/listings", ListingController, :index
     get "/listings/:id/link", ListingController, :link_new
     post "/listings/:id/link", ListingController, :link_create
     delete "/listings/:id/link", ListingController, :link_delete
     get "/chain-categories", ChainCategoryController, :index
+    get "/chain-categories/:id/edit", ChainCategoryController, :edit
+    patch "/chain-categories/:id", ChainCategoryController, :update
+    put "/chain-categories/:id", ChainCategoryController, :update
+    delete "/chain-categories/:id/listings", ChainCategoryController, :delete_listings
     get "/app-categories", AppCategoryController, :index
     post "/app-categories/reorder", AppCategoryController, :reorder_categories
     post "/app-categories/subcategories/reorder",

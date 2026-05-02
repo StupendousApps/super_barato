@@ -18,6 +18,13 @@
         options={[{"All", ""}, {"Leaf", "leaf"}, {"Parent", "parent"}]}
       />
       <.input
+        name="crawl"
+        type="select"
+        value={@filters.crawl}
+        label="Crawl"
+        options={[{"All", ""}, {"Enabled", "enabled"}, {"Disabled", "disabled"}]}
+      />
+      <.input
         name="per_page"
         type="select"
         value={@filters.per_page}
@@ -89,7 +96,19 @@
     >
       {c.level}
     </:col>
-    <:col :let={c} label="Leaf" align={:center}>{c.is_leaf && "✓"}</:col>
+    <:col :let={c} label="Leaf" align={:center}>
+      <span style={"color: " <> if(c.is_leaf, do: "oklch(0.55 0.18 145)", else: "oklch(0.55 0.16 25)")}>
+        {if c.is_leaf, do: "✓", else: "✕"}
+      </span>
+    </:col>
+    <:col :let={c} label="Crawl" align={:center}>
+      <span style={"color: " <> if(c.crawl_enabled, do: "oklch(0.55 0.18 145)", else: "oklch(0.55 0.16 25)")}>
+        {if c.crawl_enabled, do: "✓", else: "✕"}
+      </span>
+    </:col>
+    <:col :let={c} label="Listings" align={:right} nowrap>
+      {Map.get(@listing_counts, c.id, 0)}
+    </:col>
     <:col
       :let={c}
       label="Last seen"
@@ -98,6 +117,16 @@
       sort_href={sort_href(~p"/chain-categories", @filters, "last_seen_at", @sort)}
     >
       {format_datetime(c.last_seen_at)}
+    </:col>
+    <:col :let={c} label="" align={:right} nowrap>
+      <.button
+        variant={:subtle}
+        size={:sm}
+        href={~p"/chain-categories/#{c.id}/edit"}
+        aria-label="Edit"
+      >
+        <.sfsymbol name="pencil" />
+      </.button>
     </:col>
   </.table>
 

@@ -119,6 +119,7 @@ defmodule SuperBarato.Crawler.PersistenceServerTest do
           chain_sku: "sku-noprice",
           identifiers_key: "sku=sku-noprice",
           name: "X",
+          category_path: "test",
           regular_price: nil
         }
       ]
@@ -143,6 +144,7 @@ defmodule SuperBarato.Crawler.PersistenceServerTest do
           chain_sku: "sku-flip",
           identifiers_key: "sku=sku-flip",
           name: "Original",
+          category_path: "test",
           regular_price: 1990
         }
       ]
@@ -174,6 +176,7 @@ defmodule SuperBarato.Crawler.PersistenceServerTest do
           ean: "7801234567890",
           identifiers_key: "ean=7801234567890,sku=123",
           name: "Arroz 1kg",
+          category_path: "test",
           regular_price: 1490
         })
 
@@ -188,6 +191,7 @@ defmodule SuperBarato.Crawler.PersistenceServerTest do
           ean: "7801234567890",
           identifiers_key: "ean=7801234567890,sku=123",
           name: "Arroz 1kg",
+          category_path: "test",
           regular_price: 1490,
           promo_price: 990
         }
@@ -214,6 +218,7 @@ defmodule SuperBarato.Crawler.PersistenceServerTest do
           ean: "0000000000000",
           identifiers_key: "ean=0000000000000,sku=UNKNOWN",
           name: "Unknown",
+          category_path: "test",
           regular_price: 100
         }
       ]

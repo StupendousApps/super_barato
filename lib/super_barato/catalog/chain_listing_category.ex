@@ -1,9 +1,8 @@
 defmodule SuperBarato.Catalog.ChainListingCategory do
   @moduledoc """
-  Join row tying a `ChainListing` to a `ChainCategory`. Replaces the
-  legacy `chain_listings.category_paths` JSON-array-of-slugs — same
-  many-to-many relationship, but normalized so we get FK integrity
-  and proper joins.
+  Join row tying a `ChainListing` to a `ChainCategory` — the
+  source of truth for which category surfaces a listing was
+  discovered through.
   """
 
   use Ecto.Schema

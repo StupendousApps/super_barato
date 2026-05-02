@@ -1,0 +1,75 @@
+<.admin_container>
+  <.page_header title={"Edit · " <> @category.name}>
+    <:back href={~p"/chain-categories?#{[chain: @category.chain, q: @category.slug]}"}>
+      Back to categories
+    </:back>
+  </.page_header>
+
+  <% form = to_form(@changeset, as: :chain_category) %>
+
+  <.stupendous_form
+    for={form}
+    action={~p"/chain-categories/#{@category.id}"}
+    method="put"
+    width={:regular}
+  >
+    <.form_errors form={form} />
+
+    <.input name="chain" value={@category.chain} label="Chain" disabled />
+    <.input name="slug" value={@category.slug} label="Slug" disabled />
+    <.input field={form[:name]} label="Name" />
+    <.input
+      field={form[:crawl_enabled]}
+      type="checkbox"
+      label="Crawl enabled"
+    />
+
+    <:footer>
+      <.button type="submit" variant={:primary}>Save</.button>
+      <.button
+        href={~p"/chain-categories?#{[chain: @category.chain, q: @category.slug]}"}
+        variant={:subtle}
+      >
+        Cancel
+      </.button>
+    </:footer>
+  </.stupendous_form>
+
+  <h2>Listings ({length(@listings)})</h2>
+
+  <.form
+    :if={not @category.crawl_enabled and @listings != []}
+    for={%{}}
+    action={~p"/chain-categories/#{@category.id}/listings"}
+    method="delete"
+  >
+    <.button
+      type="submit"
+      variant={:danger}
+      data-confirm={"Borrar #{length(@listings)} listings (y productos huérfanos + thumbnails) de #{@category.name}? Esto no se puede deshacer."}
+    >
+      <.sfsymbol name="trash" /> Delete all listings
+    </.button>
+  </.form>
+
+
+  <.table rows={@listings} empty="No listings linked to this category.">
+    <:col :let={l} label="Name">
+      <div>
+        <.link href={~p"/listings/#{l.id}/link"}>{l.name || "—"}</.link>
+      </div>
+      <div :if={l.brand} class="cell-secondary">{l.brand}</div>
+    </:col>
+    <:col :let={l} label="Chain SKU" nowrap>{l.chain_sku}</:col>
+    <:col :let={l} label="EAN" nowrap>{l.ean || "—"}</:col>
+    <:col :let={l} label="Price" align={:right} nowrap>
+      {format_clp(l.current_regular_price)}
+    </:col>
+    <:col :let={l} label="Last seen" nowrap>{format_datetime(l.last_discovered_at)}</:col>
+    <:col :let={l} label="" align={:right} nowrap>
+      <.link :if={l.pdp_url} href={l.pdp_url} target="_blank" rel="noopener">
+        <.sfsymbol name="arrow.up.right.square" />
+      </.link>
+    </:col>
+  </.table>
+</.admin_container>

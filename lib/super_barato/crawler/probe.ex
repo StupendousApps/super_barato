@@ -20,7 +20,7 @@ defmodule SuperBarato.Crawler.Probe do
 
   import Ecto.Query
 
-  alias SuperBarato.Catalog.{ChainCategory, ChainListing}
+  alias SuperBarato.Catalog.{ChainCategory, ChainListing, ChainListingCategory}
   alias SuperBarato.Crawler.{Cencosud, Http, Listing}
   alias SuperBarato.Repo
 
@@ -435,34 +435,28 @@ defmodule SuperBarato.Crawler.Probe do
   defp sample_pdp_url_for_category(chain, slug) do
     chain_str = to_string(chain)
 
-    name =
+    cat_id =
       ChainCategory
       |> where([c], c.chain == ^chain_str and c.slug == ^slug)
-      |> select([c], c.name)
+      |> select([c], c.id)
       |> Repo.one()
 
-    case name do
+    case cat_id do
       nil ->
         sample_pdp_url_for_chain(chain)
 
-      n ->
-        # SQLite doesn't support ilike; LIKE is case-insensitive for
-        # ASCII out of the box, which is fine for this fuzzy match.
-        pattern = "%" <> n <> "%"
-
+      id ->
         ChainListing
-        |> where(
-          [l],
-          l.chain == ^chain_str and l.active == true and not is_nil(l.pdp_url) and
-            fragment(
-              "EXISTS (SELECT 1 FROM json_each(?) WHERE value LIKE ?)",
-              l.category_paths,
-              ^pattern
-            )
+        |> join(:inner, [l], clc in ChainListingCategory,
+          on: clc.chain_listing_id == l.id and clc.chain_category_id == ^id
         )
-        |> order_by([l], asc: l.id)
+        |> where(
+          [l, _clc],
+          l.chain == ^chain_str and l.active == true and not is_nil(l.pdp_url)
+        )
+        |> order_by([l, _clc], asc: l.id)
         |> limit(1)
-        |> select([l], l.pdp_url)
+        |> select([l, _clc], l.pdp_url)
         |> Repo.one() || sample_pdp_url_for_chain(chain)
     end
   end
