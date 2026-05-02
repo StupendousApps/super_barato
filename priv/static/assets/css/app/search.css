@@ -253,7 +253,41 @@ html[data-rail-right="expanded"] .cart-toggle:hover .cart-toggle__close {
   backdrop-filter: saturate(140%) blur(18px);
   -webkit-backdrop-filter: saturate(140%) blur(18px);
   border-radius: var(--r-md);
-  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0,0,0,0.06);
+  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: box-shadow .14s ease;
+}
+
+/* Phoenix LiveView adds `phx-change-loading` to the form while a
+   change event is in flight. We use that to glow the border in the
+   brand red and slide a thin gradient bar across the bottom edge —
+   the input feels alive while results are coming back. */
+.search.phx-change-loading {
+  box-shadow:
+    0 0 0 1.5px #e14a2b,
+    0 12px 32px rgba(225, 74, 43, 0.12);
+}
+.search::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #e14a2b 30%,
+    #ffd43b 70%,
+    transparent 100%);
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.search.phx-change-loading::after {
+  opacity: 1;
+  animation: search-progress 1.05s ease-in-out infinite;
+}
+@keyframes search-progress {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* Magnifier — same 36×36 footprint and 20×20 glyph as the rail-toggle

@@ -191,6 +191,20 @@ topbar.config({
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 
+// HomeLive pushes `search:focus` after every handle_params so the
+// search input stays focused across patches (suggestion chip,
+// category pick, etc.). Avoid stealing focus from elements the
+// user is actively typing in elsewhere.
+window.addEventListener("phx:search:focus", () => {
+  const el = document.getElementById("search-q")
+  if (!el) return
+  const active = document.activeElement
+  if (active && active !== el && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.isContentEditable)) {
+    return
+  }
+  el.focus({preventScroll: true})
+})
+
 // Outside click closes every open picker. (In-panel link clicks are
 // handled inside the Picker hook itself.)
 document.addEventListener("click", (event) => {

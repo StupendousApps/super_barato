@@ -40,7 +40,8 @@ defmodule SuperBaratoWeb.HomeLive do
      |> assign(:suggestions, suggestions_for(params))
      |> assign(:category_previews, category_previews_for(params))
      |> run_search()
-     |> push_event("seen_counter:reset", %{})}
+     |> push_event("seen_counter:reset", %{})
+     |> push_event("search:focus", %{})}
   end
 
   @impl true
@@ -63,6 +64,32 @@ defmodule SuperBaratoWeb.HomeLive do
 
       {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
     end
+  end
+
+  def handle_event("product_detail", %{"id" => id}, socket) do
+    product_id =
+      cond do
+        is_integer(id) -> id
+        is_binary(id) -> String.to_integer(id)
+        true -> 0
+      end
+
+    listings =
+      Linker.listings_for_product(product_id)
+      |> Enum.map(fn l ->
+        %{
+          chain: l.chain,
+          name: l.name,
+          brand: l.brand,
+          image_url: l.image_url,
+          pdp_url: l.pdp_url,
+          regular_price: l.current_regular_price,
+          promo_price: l.current_promo_price,
+          raw: l.raw || %{}
+        }
+      end)
+
+    {:reply, %{listings: listings}, socket}
   end
 
   def handle_event("load_more", _, socket) do
@@ -237,6 +264,7 @@ defmodule SuperBaratoWeb.HomeLive do
               <span class="mag" aria-hidden="true"></span>
             <% end %>
             <input
+              id="search-q"
               name="q"
               value={@query}
               placeholder="Buscar cualquier producto del super…"

@@ -196,15 +196,29 @@ export const Cart = {
 
   add(product, target) {
     const entry = {...product, qty: 1}
+    let focusSlotIdx
+    let scrollToBottom = false
     if (!target || target.kind === "pane") {
       this.slots.push({products: [entry]})
+      focusSlotIdx = this.slots.length - 1
+      scrollToBottom = true
     } else if (target.kind === "slot") {
       const slot = this.slots[target.slotIdx]
-      if (slot) slot.products.push(entry)
-      else this.slots.push({products: [entry]})
+      if (slot) {
+        slot.products.push(entry)
+        focusSlotIdx = target.slotIdx
+        // Also bottom-scroll when merging into the last slot — the
+        // newly-added product sits at the end and the cart's
+        // generous bottom padding can hide it otherwise.
+        if (target.slotIdx === this.slots.length - 1) scrollToBottom = true
+      } else {
+        this.slots.push({products: [entry]})
+        focusSlotIdx = this.slots.length - 1
+        scrollToBottom = true
+      }
     }
     Store.save(this.slots)
-    this.render({animate: true, focusSlotIdx: target?.slotIdx})
+    this.render({animate: true, focusSlotIdx, scrollToBottom})
   },
 
   changeQty(slotIdx, productIdx, delta) {
@@ -278,7 +292,7 @@ export const Cart = {
     this.render({animate: true})
   },
 
-  render({animate = false, focusSlotIdx = null} = {}) {
+  render({animate = false, focusSlotIdx = null, scrollToBottom = false} = {}) {
     const prevRects = animate ? this._captureRects() : null
 
     if (this.slots.length === 0) {
@@ -316,6 +330,19 @@ export const Cart = {
 
     this._updateBadge()
     if (prevRects) this._playFlip(prevRects, focusSlotIdx)
+
+    // After a new slot was appended, scroll the cart-body all the
+    // way to the bottom so the user sees the new item and the empty
+    // drop area below it. For merges/moves, just nudge the affected
+    // slot into view if it isn't already.
+    if (scrollToBottom) {
+      this.body.scrollTo({top: this.body.scrollHeight, behavior: "smooth"})
+    } else if (focusSlotIdx != null) {
+      const el = this.body.querySelector(`[data-slot-idx="${focusSlotIdx}"]`)
+      if (el && el.scrollIntoView) {
+        el.scrollIntoView({block: "nearest", behavior: "smooth"})
+      }
+    }
   },
 
   _renderFooter() {
@@ -825,7 +852,7 @@ const SmartCart = {
         const pIdx = parseInt(detailBtn.dataset.productIdx, 10)
         const slot = cart.slots[slotIdx]
         const p = slot && slot.products[pIdx]
-        if (p) ProductDetail.open(p)
+        if (p) ProductDetail.open(p, cart)
         return
       }
 
@@ -1028,7 +1055,7 @@ const SmartCart = {
 // ── Product detail sub-popover ────────────────────────────────────
 
 const ProductDetail = {
-  open(product) {
+  open(product, cart) {
     if (document.querySelector(".product-detail")) return
     const overlay = document.createElement("div")
     overlay.className = "product-detail"
@@ -1036,37 +1063,89 @@ const ProductDetail = {
       <div class="product-detail__backdrop" data-pd-close></div>
       <div class="product-detail__panel" role="dialog" aria-modal="true">
         <button class="product-detail__close" type="button" aria-label="Cerrar" data-pd-close>×</button>
-        <div class="product-detail__hero">
-          <div class="product-detail__img">
-            ${product.image_url ? `<img src="${escHtml(product.image_url)}" alt=""/>` : ""}
-          </div>
-          <div class="product-detail__head">
-            ${product.brand ? `<div class="product-detail__brand">${escHtml(product.brand)}</div>` : ""}
-            <h3 class="product-detail__name">${escHtml(product.name)}</h3>
-            ${ProductDetail._renderPriceList(product)}
-          </div>
+        <div class="product-detail__img">
+          <div class="product-detail__img-frame" data-pd-image></div>
+          <div class="product-detail__img-switch" data-pd-switch></div>
         </div>
-        <div class="product-detail__tabs" role="tablist">
-          <button class="product-detail__tab is-active" type="button" data-pd-tab="info" role="tab">Información</button>
-          <button class="product-detail__tab" type="button" data-pd-tab="stores" role="tab">Tiendas</button>
-          <button class="product-detail__tab" type="button" data-pd-tab="details" role="tab">Detalles</button>
-        </div>
-        <div class="product-detail__tab-body" data-pd-tab-body>
-          ${ProductDetail._renderTab("info", product)}
+        <div class="product-detail__main">
+          <h3 class="product-detail__name">${escHtml(product.name)}</h3>
+          ${product.brand ? `<div class="product-detail__brand">${escHtml(product.brand)}</div>` : ""}
+          <div class="product-detail__stores" data-pd-stores></div>
         </div>
       </div>
     `
     document.body.appendChild(overlay)
 
+    let listings = null
+    let activeChain = null
+
+    const renderHero = () => {
+      const frame = overlay.querySelector("[data-pd-image]")
+      const switcher = overlay.querySelector("[data-pd-switch]")
+
+      // Build the list of available images. Prefer listing-level
+      // images (each chain's own product photo) over the static
+      // product image_url.
+      let images = []
+      if (listings) {
+        const seen = new Set()
+        for (const l of listings) {
+          if (l.image_url && !seen.has(l.image_url)) {
+            seen.add(l.image_url)
+            images.push({chain: l.chain, url: l.image_url})
+          }
+        }
+      }
+      if (images.length === 0 && product.image_url) {
+        images = [{chain: null, url: product.image_url}]
+      }
+      if (images.length === 0) {
+        frame.innerHTML = `<div class="product-detail__img-empty">Sin imagen</div>`
+        switcher.innerHTML = ""
+        return
+      }
+
+      const active = images.find((i) => i.chain === activeChain) || images[0]
+      activeChain = active.chain
+      frame.innerHTML = `<img src="${escHtml(active.url)}" alt=""/>`
+
+      switcher.innerHTML = images.length > 1
+        ? images.map((img) => `
+            <button type="button"
+                    class="pd-img-switch${img.chain === active.chain ? " is-active" : ""}"
+                    data-pd-switch-chain="${img.chain ?? ""}"
+                    aria-label="${escHtml(CHAIN_NAMES[img.chain] || "")}">
+              ${img.chain
+                ? `<img src="${CHAIN_ICONS[img.chain] || ""}" alt=""/>`
+                : `<span class="pd-img-switch__dot"></span>`}
+            </button>
+          `).join("")
+        : ""
+    }
+
+    const renderStores = () => {
+      const body = overlay.querySelector("[data-pd-stores]")
+      body.innerHTML = ProductDetail._renderStores(product, listings)
+    }
+
+    if (cart && cart.pushEvent) {
+      cart.pushEvent("product_detail", {id: product.id}, (reply) => {
+        listings = (reply && reply.listings) || []
+        renderHero()
+        renderStores()
+      })
+    }
+
+    renderHero()
+    renderStores()
+
     const onClick = (e) => {
       if (e.target.closest("[data-pd-close]")) { closeIt(); return }
-      const tabBtn = e.target.closest("[data-pd-tab]")
-      if (tabBtn) {
-        overlay.querySelectorAll("[data-pd-tab]").forEach((b) => {
-          b.classList.toggle("is-active", b === tabBtn)
-        })
-        const body = overlay.querySelector("[data-pd-tab-body]")
-        body.innerHTML = ProductDetail._renderTab(tabBtn.dataset.pdTab, product)
+      const switchBtn = e.target.closest("[data-pd-switch-chain]")
+      if (switchBtn) {
+        const chain = switchBtn.dataset.pdSwitchChain
+        activeChain = chain === "" ? null : chain
+        renderHero()
         return
       }
     }
@@ -1081,63 +1160,62 @@ const ProductDetail = {
     }
   },
 
-  _renderPriceList(product) {
-    const rows = (product.prices || [])
-      .filter((r) => Number.isFinite(r.price))
-      .sort((a, b) => a.price - b.price)
-    if (rows.length === 0) return `<div class="product-detail__nopx">Sin precios disponibles</div>`
-    const lo = rows[0].price
-    return `
-      <ul class="product-detail__prices">
-        ${rows.map((r) => `
-          <li class="product-detail__price-row${r.price === lo && rows.length > 1 ? " is-best" : ""}">
-            <img src="${CHAIN_ICONS[r.chain] || ""}" alt=""/>
-            <span class="product-detail__price-name">${escHtml(CHAIN_NAMES[r.chain] || r.chain)}</span>
-            <span class="product-detail__price-amt">${formatClp(r.price)}</span>
-          </li>
-        `).join("")}
-      </ul>
-    `
-  },
-
-  _renderTab(name, product) {
-    if (name === "info") {
-      return `
-        <dl class="pd-info">
-          <div class="pd-info__row">
-            <dt>Nombre</dt><dd>${escHtml(product.name)}</dd>
-          </div>
-          ${product.brand ? `<div class="pd-info__row"><dt>Marca</dt><dd>${escHtml(product.brand)}</dd></div>` : ""}
-          <div class="pd-info__row">
-            <dt>Cantidad en tu carrito</dt><dd>×${product.qty || 1}</dd>
-          </div>
-          <div class="pd-info__row">
-            <dt>Disponibilidad</dt>
-            <dd>${(product.prices || []).filter((r) => Number.isFinite(r.price)).length} supermercados</dd>
-          </div>
-        </dl>
-      `
-    }
-    if (name === "stores") {
+  // Stores table — one row per chain. Both the chain name and the
+  // price are anchored to the chain's pdp_url so either is a
+  // clickable shortcut into that store. Live `listings` (with raw)
+  // wins over the static prices snapshot once it arrives.
+  _renderStores(product, listings) {
+    if (listings === null) {
+      // Initial render before the LiveView reply lands.
       const rows = (product.prices || [])
         .filter((r) => Number.isFinite(r.price))
         .sort((a, b) => a.price - b.price)
-      if (rows.length === 0) return `<div class="pd-empty">Sin tiendas disponibles.</div>`
-      return `
-        <ul class="pd-stores">
-          ${rows.map((r) => `
-            <li class="pd-stores__row">
-              <img src="${CHAIN_ICONS[r.chain] || ""}" alt=""/>
-              <span class="pd-stores__name">${escHtml(CHAIN_NAMES[r.chain] || r.chain)}</span>
-              <span class="pd-stores__price">${formatClp(r.price)}</span>
-              ${r.url
-                ? `<a class="pd-stores__link" href="${escHtml(r.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda →</a>`
-                : `<span class="pd-stores__link pd-stores__link--off">—</span>`}
-            </li>
-          `).join("")}
-        </ul>
-      `
+      return rows.length === 0
+        ? `<div class="pd-empty">Sin tiendas disponibles.</div>`
+        : ProductDetail._storesTable(rows.map((r) => ({
+            chain: r.chain,
+            regular_price: r.price,
+            promo_price: null,
+            pdp_url: r.url,
+            name: null,
+          })))
     }
-    return `<div class="pd-empty">Aún no tenemos más detalles para este producto.</div>`
+    if (listings.length === 0) return `<div class="pd-empty">Sin tiendas disponibles.</div>`
+    const sorted = [...listings].sort((a, b) => {
+      const ap = Number.isFinite(a.regular_price) ? a.regular_price : Infinity
+      const bp = Number.isFinite(b.regular_price) ? b.regular_price : Infinity
+      return ap - bp
+    })
+    return ProductDetail._storesTable(sorted)
+  },
+
+  _storesTable(rows) {
+    return `
+      <ul class="pd-stores">
+        ${rows.map((l) => {
+          const reg = l.regular_price
+          const promo = (Number.isFinite(l.promo_price) && Number.isFinite(reg) && l.promo_price < reg) ? l.promo_price : null
+          const eff = promo != null ? promo : reg
+          const priceInner = promo != null
+            ? `<span class="pd-stores__price-eff">${formatClp(eff)}</span><span class="pd-stores__price-was">${formatClp(reg)}</span>`
+            : (Number.isFinite(eff) ? formatClp(eff) : "—")
+          const inner = `
+            <div class="pd-stores__hd">
+              <img class="pd-stores__chain-icon" src="${CHAIN_ICONS[l.chain] || ""}" alt=""/>
+              <span class="pd-stores__chain-name">${escHtml(CHAIN_NAMES[l.chain] || l.chain)}</span>
+              <span class="pd-stores__price">${priceInner}</span>
+            </div>
+            ${l.name ? `<div class="pd-stores__sub">${escHtml(l.name)}</div>` : ""}
+          `
+          return `
+            <li class="pd-stores__row">
+              ${l.pdp_url
+                ? `<a class="pd-stores__card" href="${escHtml(l.pdp_url)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+                : `<div class="pd-stores__card pd-stores__card--off">${inner}</div>`}
+            </li>
+          `
+        }).join("")}
+      </ul>
+    `
   },
 }
