@@ -137,6 +137,10 @@ export const Cart = {
         this.toggleCollapsed(parseInt(toggleBtn.dataset.toggleSlot, 10))
         return
       }
+      if (e.target.closest(".cart-footer__cta")) {
+        this.openSmart()
+        return
+      }
     }
 
     this._onLabelKey = (e) => {
@@ -249,6 +253,81 @@ export const Cart = {
 
     Store.save(this.slots)
     this.render({animate: true, focusSlotIdx: tIdx ?? this.slots.length - 1})
+  },
+
+  openSmart() {
+    if (document.querySelector(".smart-cart")) return
+    const {min, max} = this._computeTotals()
+    const savings = Math.max(0, max - min)
+    const slotsHtml = this.slots.map((slot, idx) => {
+      const isGroup = slot.products.length > 1
+      const label = (slot.label && slot.label.trim()) || (isGroup ? (commonWord(slot.products) || "Comparación") : null)
+      const items = slot.products.map((p) => `
+        <div class="smart-cart-item">
+          <div class="smart-cart-item__img">${p.image_url ? `<img src="${escHtml(p.image_url)}" alt=""/>` : ""}</div>
+          <div class="smart-cart-item__name">${escHtml(p.name)}</div>
+          ${renderPrice(p.prices)}
+          <div class="smart-cart-item__qty">×${p.qty || 1}</div>
+        </div>
+      `).join("")
+      return `
+        <div class="smart-cart-slot${isGroup ? " smart-cart-slot--group" : ""}">
+          ${label ? `<div class="smart-cart-slot__label">${escHtml(label)}${isGroup ? ` · ${slot.products.length}` : ""}</div>` : ""}
+          ${items}
+        </div>
+      `
+    }).join("")
+
+    const overlay = document.createElement("div")
+    overlay.className = "smart-cart"
+    overlay.innerHTML = `
+      <div class="smart-cart__backdrop" data-smart-close></div>
+      <div class="smart-cart__panel" role="dialog" aria-modal="true" aria-labelledby="smart-cart-title">
+        <header class="smart-cart__hd">
+          <div>
+            <div class="smart-cart__eyebrow">Compra Inteligente</div>
+            <h2 class="smart-cart__title" id="smart-cart-title">Tu compra óptima</h2>
+          </div>
+          <button class="smart-cart__close" type="button" aria-label="Cerrar" data-smart-close>×</button>
+        </header>
+
+        <div class="smart-cart__body">
+          <div class="smart-cart__slots">
+            ${slotsHtml || `<div class="smart-cart__empty">Tu carrito está vacío.</div>`}
+          </div>
+        </div>
+
+        <footer class="smart-cart__ft">
+          <div class="smart-cart__totals">
+            <span class="cart-footer__label">Total</span>
+            <span class="cart-footer__amount">
+              <span class="cart-footer__lo">${formatClp(min)}</span>
+              <span class="cart-footer__dash">–</span>
+              <span class="cart-footer__hi">${formatClp(max)}</span>
+            </span>
+            ${savings > 0 ? `<span class="cart-footer__savings">Ahorra hasta <strong>${formatClp(savings)}</strong></span>` : ""}
+          </div>
+          <button class="cart-footer__cta" type="button" data-smart-close><span><span class="cart-footer__cta-line">Volver al</span><span class="cart-footer__cta-line">Carrito</span></span></button>
+        </footer>
+      </div>
+    `
+
+    document.body.appendChild(overlay)
+    document.body.classList.add("smart-cart-open")
+
+    const onKey = (e) => { if (e.key === "Escape") closeIt() }
+    const onClick = (e) => { if (e.target.closest("[data-smart-close]")) closeIt() }
+    const closeIt = () => {
+      overlay.removeEventListener("click", onClick)
+      document.removeEventListener("keydown", onKey)
+      overlay.classList.add("smart-cart--closing")
+      setTimeout(() => {
+        overlay.remove()
+        document.body.classList.remove("smart-cart-open")
+      }, 180)
+    }
+    overlay.addEventListener("click", onClick)
+    document.addEventListener("keydown", onKey)
   },
 
   toggleCollapsed(slotIdx) {
