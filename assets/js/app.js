@@ -180,7 +180,14 @@ const liveSocket = new LiveSocket("/live", Socket, {
 })
 
 // Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
+// Brand-colored Phoenix LiveView progress bar (the slim line that
+// shows at the top of the viewport during page-loading events).
+// Default was the topbar library's blue; switched to the
+// SUPERbarato red so it matches the rest of the chrome.
+topbar.config({
+  barColors: {0: "#e14a2b", 0.5: "#ff7a4f", 1.0: "#ffd43b"},
+  shadowColor: "rgba(225, 74, 43, .35)",
+})
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 

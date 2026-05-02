@@ -775,6 +775,7 @@ const SmartCart = {
           items.push({
             slotIdx, pIdx, isGroup, groupLabel,
             isFirstInGroup: isGroup && pIdx === 0,
+            isLastInGroup: isGroup && pIdx === slot.products.length - 1,
             product: p,
           })
         })
@@ -815,6 +816,16 @@ const SmartCart = {
         const pIdx = parseInt(removeBtn.dataset.smartRemoveProduct, 10)
         cart.remove(slotIdx, pIdx)
         renderTable()
+        return
+      }
+
+      const detailBtn = e.target.closest("[data-product-detail]")
+      if (detailBtn) {
+        const slotIdx = parseInt(detailBtn.dataset.slotIdx, 10)
+        const pIdx = parseInt(detailBtn.dataset.productIdx, 10)
+        const slot = cart.slots[slotIdx]
+        const p = slot && slot.products[pIdx]
+        if (p) ProductDetail.open(p)
         return
       }
 
@@ -899,13 +910,15 @@ const SmartCart = {
         : ""
 
       return bandRow + `
-        <tr class="smart-cart-row${isDisabled ? " smart-cart-row--disabled" : ""}${!isDisabled && !winner ? " smart-cart-row--missing" : ""}${it.isGroup ? " smart-cart-row--in-group" : ""}">
+        <tr class="smart-cart-row${isDisabled ? " smart-cart-row--disabled" : ""}${!isDisabled && !winner ? " smart-cart-row--missing" : ""}${it.isGroup ? " smart-cart-row--in-group" : ""}${it.isLastInGroup ? " smart-cart-row--in-group-end" : ""}">
           <td class="smart-cart-td smart-cart-td--remove">
             <button type="button" class="smart-cart-remove" aria-label="Quitar"
                     data-smart-remove="${it.slotIdx}" data-smart-remove-product="${it.pIdx}">×</button>
           </td>
           <th class="smart-cart-th smart-cart-th--product">
-            <div class="smart-cart-product">
+            <button type="button" class="smart-cart-product"
+                    data-product-detail
+                    data-slot-idx="${it.slotIdx}" data-product-idx="${it.pIdx}">
               <div class="smart-cart-product__img">
                 ${p.image_url ? `<img src="${escHtml(p.image_url)}" alt=""/>` : ""}
               </div>
@@ -917,7 +930,7 @@ const SmartCart = {
                   ${renderPrice(p.prices)}
                 </div>
               </div>
-            </div>
+            </button>
           </th>
           <td class="smart-cart-td smart-cart-td--qty">
             <div class="smart-cart-qty">
@@ -1009,5 +1022,122 @@ const SmartCart = {
         <tfoot>${chainSwitchRow}${totalRow}</tfoot>
       </table>
     `
+  },
+}
+
+// ── Product detail sub-popover ────────────────────────────────────
+
+const ProductDetail = {
+  open(product) {
+    if (document.querySelector(".product-detail")) return
+    const overlay = document.createElement("div")
+    overlay.className = "product-detail"
+    overlay.innerHTML = `
+      <div class="product-detail__backdrop" data-pd-close></div>
+      <div class="product-detail__panel" role="dialog" aria-modal="true">
+        <button class="product-detail__close" type="button" aria-label="Cerrar" data-pd-close>×</button>
+        <div class="product-detail__hero">
+          <div class="product-detail__img">
+            ${product.image_url ? `<img src="${escHtml(product.image_url)}" alt=""/>` : ""}
+          </div>
+          <div class="product-detail__head">
+            ${product.brand ? `<div class="product-detail__brand">${escHtml(product.brand)}</div>` : ""}
+            <h3 class="product-detail__name">${escHtml(product.name)}</h3>
+            ${ProductDetail._renderPriceList(product)}
+          </div>
+        </div>
+        <div class="product-detail__tabs" role="tablist">
+          <button class="product-detail__tab is-active" type="button" data-pd-tab="info" role="tab">Información</button>
+          <button class="product-detail__tab" type="button" data-pd-tab="stores" role="tab">Tiendas</button>
+          <button class="product-detail__tab" type="button" data-pd-tab="details" role="tab">Detalles</button>
+        </div>
+        <div class="product-detail__tab-body" data-pd-tab-body>
+          ${ProductDetail._renderTab("info", product)}
+        </div>
+      </div>
+    `
+    document.body.appendChild(overlay)
+
+    const onClick = (e) => {
+      if (e.target.closest("[data-pd-close]")) { closeIt(); return }
+      const tabBtn = e.target.closest("[data-pd-tab]")
+      if (tabBtn) {
+        overlay.querySelectorAll("[data-pd-tab]").forEach((b) => {
+          b.classList.toggle("is-active", b === tabBtn)
+        })
+        const body = overlay.querySelector("[data-pd-tab-body]")
+        body.innerHTML = ProductDetail._renderTab(tabBtn.dataset.pdTab, product)
+        return
+      }
+    }
+    overlay.addEventListener("click", onClick)
+    const onKey = (e) => { if (e.key === "Escape") closeIt() }
+    document.addEventListener("keydown", onKey)
+    const closeIt = () => {
+      overlay.removeEventListener("click", onClick)
+      document.removeEventListener("keydown", onKey)
+      overlay.classList.add("product-detail--closing")
+      setTimeout(() => overlay.remove(), 160)
+    }
+  },
+
+  _renderPriceList(product) {
+    const rows = (product.prices || [])
+      .filter((r) => Number.isFinite(r.price))
+      .sort((a, b) => a.price - b.price)
+    if (rows.length === 0) return `<div class="product-detail__nopx">Sin precios disponibles</div>`
+    const lo = rows[0].price
+    return `
+      <ul class="product-detail__prices">
+        ${rows.map((r) => `
+          <li class="product-detail__price-row${r.price === lo && rows.length > 1 ? " is-best" : ""}">
+            <img src="${CHAIN_ICONS[r.chain] || ""}" alt=""/>
+            <span class="product-detail__price-name">${escHtml(CHAIN_NAMES[r.chain] || r.chain)}</span>
+            <span class="product-detail__price-amt">${formatClp(r.price)}</span>
+          </li>
+        `).join("")}
+      </ul>
+    `
+  },
+
+  _renderTab(name, product) {
+    if (name === "info") {
+      return `
+        <dl class="pd-info">
+          <div class="pd-info__row">
+            <dt>Nombre</dt><dd>${escHtml(product.name)}</dd>
+          </div>
+          ${product.brand ? `<div class="pd-info__row"><dt>Marca</dt><dd>${escHtml(product.brand)}</dd></div>` : ""}
+          <div class="pd-info__row">
+            <dt>Cantidad en tu carrito</dt><dd>×${product.qty || 1}</dd>
+          </div>
+          <div class="pd-info__row">
+            <dt>Disponibilidad</dt>
+            <dd>${(product.prices || []).filter((r) => Number.isFinite(r.price)).length} supermercados</dd>
+          </div>
+        </dl>
+      `
+    }
+    if (name === "stores") {
+      const rows = (product.prices || [])
+        .filter((r) => Number.isFinite(r.price))
+        .sort((a, b) => a.price - b.price)
+      if (rows.length === 0) return `<div class="pd-empty">Sin tiendas disponibles.</div>`
+      return `
+        <ul class="pd-stores">
+          ${rows.map((r) => `
+            <li class="pd-stores__row">
+              <img src="${CHAIN_ICONS[r.chain] || ""}" alt=""/>
+              <span class="pd-stores__name">${escHtml(CHAIN_NAMES[r.chain] || r.chain)}</span>
+              <span class="pd-stores__price">${formatClp(r.price)}</span>
+              ${r.url
+                ? `<a class="pd-stores__link" href="${escHtml(r.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda →</a>`
+                : `<span class="pd-stores__link pd-stores__link--off">—</span>`}
+            </li>
+          `).join("")}
+        </ul>
+      `
+    }
+    return `<div class="pd-empty">Aún no tenemos más detalles para este producto.</div>`
   },
 }

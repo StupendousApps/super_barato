@@ -45,15 +45,24 @@ defmodule SuperBaratoWeb.HomeLive do
 
   @impl true
   def handle_event("search", %{"q" => q}, socket) do
-    qs =
-      [
-        {"q", String.trim(q)},
-        {"cat", socket.assigns.selected_category},
-        {"sub", socket.assigns.selected_subcategory}
-      ]
-      |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
+    trimmed = String.trim(q)
+    # No-op if the trimmed query didn't actually change — the
+    # phx-change event fires on every keystroke and trailing-space
+    # / IME composition flakes can otherwise trigger a full
+    # handle_params + re-render cycle for nothing.
+    if trimmed == String.trim(socket.assigns.query) do
+      {:noreply, socket}
+    else
+      qs =
+        [
+          {"q", trimmed},
+          {"cat", socket.assigns.selected_category},
+          {"sub", socket.assigns.selected_subcategory}
+        ]
+        |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
 
-    {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
+      {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
+    end
   end
 
   def handle_event("load_more", _, socket) do
@@ -232,7 +241,7 @@ defmodule SuperBaratoWeb.HomeLive do
               value={@query}
               placeholder="Buscar cualquier producto del super…"
               autocomplete="off"
-              phx-debounce="150"
+              phx-debounce="350"
               autofocus
             />
             <span class="kbd">⌘K</span>
