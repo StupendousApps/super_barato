@@ -143,6 +143,14 @@ export const Cart = {
       }
     }
 
+    // The "Limpiar carro" link sits outside the cart pane (below
+    // it in the layout), so it needs its own document-level click
+    // handler to route into `clear()`.
+    this._onDocClick = (e) => {
+      if (e.target.closest("[data-cart-clear]")) this.clear()
+    }
+    document.addEventListener("click", this._onDocClick)
+
     this._onLabelKey = (e) => {
       const labelEl = e.target.closest("[data-slot-label]")
       if (!labelEl) return
@@ -192,6 +200,7 @@ export const Cart = {
     this.el.removeEventListener("keydown", this._onLabelKey)
     this.el.removeEventListener("focusin", this._onLabelFocus)
     this.el.removeEventListener("focusout", this._onLabelBlur)
+    if (this._onDocClick) document.removeEventListener("click", this._onDocClick)
   },
 
   add(product, target) {
@@ -274,6 +283,13 @@ export const Cart = {
     SmartCart.open(this)
   },
 
+  clear() {
+    if (!window.confirm("¿Estás seguro? Esto vaciará el carro.")) return
+    this.slots = []
+    Store.save(this.slots)
+    this.render({animate: true})
+  },
+
   toggleCollapsed(slotIdx) {
     const slot = this.slots[slotIdx]
     if (!slot) return
@@ -327,6 +343,8 @@ export const Cart = {
       this.body.innerHTML = this.slots.map((slot, idx) => this._renderSlot(slot, idx)).join("")
       this._renderFooter()
     }
+    const clear = document.querySelector("[data-cart-clear]")
+    if (clear) clear.hidden = this.slots.length === 0
 
     this._updateBadge()
     if (prevRects) this._playFlip(prevRects, focusSlotIdx)
@@ -716,6 +734,13 @@ const CHAIN_NAMES = {
   jumbo: "Jumbo", santa_isabel: "Santa Isabel", unimarc: "Unimarc",
   lider: "Líder", tottus: "Tottus", acuenta: "Acuenta",
 }
+const ICON_X = `
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M6 6l12 12M18 6L6 18"/>
+  </svg>
+`
+
 const CHAIN_ICONS = {
   jumbo: "/images/chains/jumbo.png",
   santa_isabel: "/images/chains/santa_isabel.png",
@@ -768,9 +793,11 @@ const SmartCart = {
     overlay.innerHTML = `
       <div class="smart-cart__backdrop" data-smart-close></div>
       <div class="smart-cart__panel" role="dialog" aria-modal="true">
-        <button class="smart-cart__close" type="button" aria-label="Cerrar" data-smart-close>×</button>
         <div class="smart-cart__body" data-table-host></div>
       </div>
+      <button class="smart-cart__close" type="button" aria-label="Cerrar" data-smart-close>
+        ${ICON_X}
+      </button>
     `
 
     document.body.appendChild(overlay)
@@ -1062,7 +1089,6 @@ const ProductDetail = {
     overlay.innerHTML = `
       <div class="product-detail__backdrop" data-pd-close></div>
       <div class="product-detail__panel" role="dialog" aria-modal="true">
-        <button class="product-detail__close" type="button" aria-label="Cerrar" data-pd-close>×</button>
         <div class="product-detail__img">
           <div class="product-detail__img-frame" data-pd-image></div>
           <div class="product-detail__img-switch" data-pd-switch></div>
@@ -1073,6 +1099,9 @@ const ProductDetail = {
           <div class="product-detail__stores" data-pd-stores></div>
         </div>
       </div>
+      <button class="product-detail__close" type="button" aria-label="Cerrar" data-pd-close>
+        ${ICON_X}
+      </button>
     `
     document.body.appendChild(overlay)
 

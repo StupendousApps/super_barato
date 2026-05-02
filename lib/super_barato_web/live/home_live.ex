@@ -354,6 +354,7 @@ defmodule SuperBaratoWeb.HomeLive do
           </div>
           <div class="cart-footer" data-cart-footer hidden></div>
         </aside>
+        <button type="button" class="cart-clear" data-cart-clear hidden>Limpiar carro</button>
       </div>
 
       <%!-- Bottom-left "X / Y Productos" counter. The total comes

@@ -104,7 +104,7 @@ html.home [contenteditable="plaintext-only"] {
 .layout-body {
     display: flex;
     align-items: flex-start;
-    padding-top: 12px;
+    padding-top: 4px;
     padding-bottom: 32px;
     gap: 24px;
 }
@@ -122,7 +122,7 @@ html.home [contenteditable="plaintext-only"] {
     position: fixed;
     /* Align the pane's top with the start of the layout-body's
        content (sticky topbar height + the body's top padding). */
-    top: calc(var(--topbar-height) + 12px);
+    top: calc(var(--topbar-height) + 4px);
     left: max(
         var(--container-pad),
         calc((100vw - var(--layout-max)) / 2 + var(--container-pad))
