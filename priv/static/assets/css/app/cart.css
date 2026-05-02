@@ -593,7 +593,7 @@ body.smart-cart-open { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: 16px;
   animation: smart-cart-fade-in .18s ease-out;
 }
 .smart-cart--closing { animation: smart-cart-fade-out .18s ease-in forwards; }
@@ -606,9 +606,10 @@ body.smart-cart-open { overflow: hidden; }
 }
 
 .smart-cart__panel {
+  --smart-cart-row-h: 56px;
   position: relative;
-  width: min(1100px, 92vw);
-  height: min(820px, 90vh);
+  width: 98vw;
+  height: 96vh;
   background: var(--surface);
   border-radius: var(--r-md);
   box-shadow:
@@ -623,113 +624,376 @@ body.smart-cart-open { overflow: hidden; }
   animation: smart-cart-pop-out .18s ease-in forwards;
 }
 
-.smart-cart__hd {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  padding: 28px 32px 20px;
-  border-bottom: 1px solid var(--border);
-}
-.smart-cart__eyebrow {
-  font-size: 11px; font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #e14a2b;
-}
-.smart-cart__title {
-  margin: 4px 0 0;
-  font-size: 28px; font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
 .smart-cart__close {
-  appearance: none; border: 0; background: transparent;
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 2;
+  appearance: none; border: 0;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border);
   width: 36px; height: 36px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
   color: var(--ink-2);
-  transition: background .12s ease;
+  transition: background .12s ease, color .12s ease;
 }
 .smart-cart__close:hover { background: var(--soft); color: var(--ink); }
 
+/* Body & table */
 .smart-cart__body {
   flex: 1;
-  overflow-y: auto;
-  padding: 24px 32px;
+  overflow: auto;
+  padding: 0 32px 0;
 }
-.smart-cart__empty {
-  text-align: center;
+.smart-cart-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.smart-cart-th, .smart-cart-td {
+  padding: 10px 12px;
+  text-align: right;
+  font-size: 13px;
+  vertical-align: middle;
+}
+.smart-cart-th--remove  { width: 44px; }
+.smart-cart-th--product { text-align: left; width: auto; }
+.smart-cart-th--qty     { width: 100px; }
+.smart-cart-th--switch  { width: 60px; }
+.smart-cart-th--chain   { width: 130px; }
+.smart-cart-table thead th {
+  position: sticky; top: 0;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--ink-3);
-  padding: 60px 20px;
-  font-size: 14px;
-}
-.smart-cart__slots {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 14px;
-}
-.smart-cart-slot {
-  background: var(--surface);
-  border-radius: var(--r-md);
-  box-shadow: 0 0 0 1px var(--border);
-  padding: 12px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.smart-cart-slot--group {
-  background: oklch(0.985 0.04 95);
-  box-shadow: 0 0 0 1px oklch(0.85 0.10 80);
-}
-.smart-cart-slot__label {
-  display: inline-block;
-  font-size: 10px; font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: oklch(0.30 0.10 75);
-  background: oklch(0.92 0.10 90);
-  padding: 2px 7px;
+  z-index: 1;
+  padding-top: 18px;
+  padding-bottom: 14px;
+}
+.smart-cart-th__chain {
+  display: inline-flex; align-items: center; gap: 6px;
+  justify-content: flex-end;
+}
+.smart-cart-th__chain img {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  background: #fff;
+  object-fit: contain;
+}
+
+/* Body rows */
+.smart-cart-row { transition: opacity .12s ease; }
+.smart-cart-row > .smart-cart-th--product,
+.smart-cart-row > .smart-cart-td {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.smart-cart-row--disabled > * { opacity: 0.35; }
+.smart-cart-row--inactive > * { opacity: 0.45; }
+.smart-cart-row--inactive .smart-cart-product__name { text-decoration: line-through; }
+
+/* Cells */
+.smart-cart-td { color: var(--ink); position: relative; }
+.smart-cart-td--empty { color: var(--ink-4); }
+.smart-cart-td--off {
+  color: var(--ink-4);
+  background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,0.02) 4px 5px);
+}
+
+/* Every price reserves the ring footprint with a transparent
+   stroke so toggling the winner doesn't reflow the column. Only
+   the winner gets the colored fill + ring. */
+.smart-cart-td__amt {
+  display: inline-block;
+  padding: 4px 10px;
   border-radius: 999px;
-  align-self: flex-start;
+  background: transparent;
+  box-shadow: 0 0 0 2px transparent;
+  font-variant-numeric: tabular-nums;
+  transition: background .14s ease, box-shadow .14s ease, color .14s ease;
 }
-.smart-cart-slot:not(.smart-cart-slot--group) .smart-cart-slot__label {
-  color: var(--ink-3);
-  background: var(--soft);
+.smart-cart-td--win .smart-cart-td__amt {
+  background: oklch(0.94 0.12 95);
+  box-shadow: 0 0 0 2px oklch(0.78 0.18 80);
+  color: oklch(0.32 0.12 75);
 }
-.smart-cart-item {
+
+/* Per-product header cell — image + name. The on/off toggle
+   moved out to its own column (.smart-cart-td--row-switch). */
+.smart-cart-product {
   display: grid;
-  grid-template-columns: 44px 1fr auto auto;
+  grid-template-columns: 40px 1fr;
   gap: 10px;
   align-items: center;
 }
-.smart-cart-item__img {
-  width: 44px; height: 44px;
+
+/* Per-row toggle column. */
+.smart-cart-td--row-switch { text-align: center; }
+
+/* Per-row delete button — small × that fades in on row hover. */
+.smart-cart-td--remove { text-align: center; }
+.smart-cart-remove {
+  appearance: none; border: 0;
+  background: transparent;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ink-3);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .12s ease, background .12s ease, color .12s ease;
+}
+.smart-cart-row:hover .smart-cart-remove { opacity: 1; }
+.smart-cart-remove:hover { background: var(--soft); color: var(--ink); }
+
+/* Per-row qty pill (— N +). */
+.smart-cart-td--qty { text-align: center; }
+.smart-cart-qty {
+  display: inline-flex;
+  align-items: center;
+  background: var(--soft);
+  border-radius: 999px;
+  padding: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.smart-cart-qty button {
+  appearance: none; border: 0; background: transparent;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px; line-height: 1;
+  color: var(--ink-2);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .12s ease, color .12s ease;
+}
+.smart-cart-qty button:hover { background: var(--surface); color: var(--ink); }
+.smart-cart-qty span {
+  min-width: 24px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.smart-cart-row-switch {
+  display: inline-flex;
+  cursor: pointer;
+}
+.smart-cart-row-switch input { display: none; }
+.smart-cart-row-switch__track {
+  width: 36px; height: 22px;
+  background: var(--soft);
+  border-radius: 999px;
+  position: relative;
+  transition: background .14s ease;
+}
+.smart-cart-row-switch__track::before {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  transition: transform .14s ease;
+}
+.smart-cart-row-switch input:checked + .smart-cart-row-switch__track {
+  background: oklch(0.55 0.18 145);
+}
+.smart-cart-row-switch input:checked + .smart-cart-row-switch__track::before {
+  transform: translateX(14px);
+}
+.smart-cart-product__img {
+  width: 40px; height: 40px;
   border-radius: 6px;
   background: oklch(0.96 0.005 85);
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
-.smart-cart-item__img img { width: 100%; height: 100%; object-fit: contain; }
-.smart-cart-item__name {
-  font-size: 13px;
-  line-height: 1.3;
+.smart-cart-product__img img { width: 100%; height: 100%; object-fit: contain; }
+.smart-cart-product__meta { min-width: 0; }
+.smart-cart-product__name {
+  font-size: 13px; line-height: 1.3;
   color: var(--ink);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.smart-cart-item__qty {
-  font-size: 12px;
+.smart-cart-product__qty { font-size: 11px; color: var(--ink-3); }
+.smart-cart-product__sub {
+  display: flex; align-items: baseline; gap: 4px;
+  margin-top: 2px;
+  font-size: 10.5px;
   color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.smart-cart-product__sep { color: var(--ink-4); }
+/* Reuse the same price summary span used elsewhere; restyle for
+   this tiny secondary-line context. */
+.smart-cart-product__sub .cart-item__price {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  text-transform: none;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
+.smart-cart-product__sub .cart-item__price-dash { margin: 0 1px; }
+.smart-cart-product__sub .cart-item__price-hi { font-size: 10px; }
 
-.smart-cart__ft {
-  display: flex; align-items: center; gap: 16px;
-  padding: 20px 32px;
-  border-top: 1px solid var(--border);
-  background: var(--soft);
+/* Group rows get a tinted background so the band reads as a unit. */
+.smart-cart-row--in-group > * {
+  background: oklch(0.985 0.04 95);
 }
-.smart-cart__totals { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+/* Product can't be bought with the active chain selection — wavy
+   red strikethrough across the name and a faint red wash across
+   the whole row, like a "no-go" mark. Specificity bumped so the
+   tint wins over the in-group yellow when both apply. */
+.smart-cart-row.smart-cart-row--missing > * {
+  background: color-mix(in oklch, #e14a2b 6%, var(--surface));
+}
+.smart-cart-row--missing .smart-cart-product__name {
+  text-decoration: line-through wavy #e14a2b;
+  text-decoration-thickness: 1.6px;
+  text-underline-offset: 1px;
+  color: var(--ink-3);
+}
+.smart-cart-group-hd th {
+  text-align: left;
+  padding: 10px 12px 6px;
+  border-top: 1px solid var(--border);
+  background: oklch(0.94 0.10 95);
+}
+.smart-cart-group-hd__label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: oklch(0.30 0.10 75);
+  background: oklch(0.92 0.10 90);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+.smart-cart-group-hd__hint {
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-left: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+/* Footer rows live inside the table itself: a row of chain
+   switches stacked above a grand-total row. Both sticky so they
+   stay visible while the body scrolls; the switches row pins
+   above the total row's height. */
+.smart-cart-table tfoot tr > * {
+  position: sticky;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  z-index: 1;
+}
+.smart-cart-foot--switches > * {
+  bottom: var(--smart-cart-row-h);
+  height: var(--smart-cart-row-h);
+  border-top: 1px solid var(--border);
+}
+.smart-cart-foot--total > * {
+  bottom: 0;
+  height: var(--smart-cart-row-h);
+}
+.smart-cart-foot--switches .smart-cart-th--product {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+.smart-cart-td--switch { text-align: right; }
+.smart-cart-chain-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.smart-cart-chain-cell__amt {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  min-width: 4ch;
+  text-align: left;
+}
+.smart-cart-chain-cell__amt--zero { color: var(--ink-4); }
+.smart-cart-chain-cell__amt--off { color: var(--ink-3); font-weight: 500; }
+
+/* iOS-style chain toggle. The whole label is the click target —
+   the price label sits inside it next to the track so toggling
+   has a generous hit area. */
+.smart-cart-chain-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 999px;
+  transition: background .12s ease;
+}
+.smart-cart-chain-switch:hover { background: var(--soft); }
+.smart-cart-chain-switch input { display: none; }
+.smart-cart-chain-switch__track {
+  width: 36px; height: 22px;
+  background: var(--soft);
+  border-radius: 999px;
+  position: relative;
+  transition: background .14s ease;
+}
+.smart-cart-chain-switch__track::before {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  transition: transform .14s ease;
+}
+.smart-cart-chain-switch input:checked + .smart-cart-chain-switch__track {
+  background: oklch(0.55 0.18 145);
+}
+.smart-cart-chain-switch input:checked + .smart-cart-chain-switch__track::before {
+  transform: translateX(14px);
+}
+
+.smart-cart-foot--total .smart-cart-th--product {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+.smart-cart-td--total {
+  text-align: right;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  border-top: 1px solid var(--border);
+}
 
 @keyframes smart-cart-fade-in {
   from { opacity: 0; }

@@ -257,77 +257,7 @@ export const Cart = {
 
   openSmart() {
     if (document.querySelector(".smart-cart")) return
-    const {min, max} = this._computeTotals()
-    const savings = Math.max(0, max - min)
-    const slotsHtml = this.slots.map((slot, idx) => {
-      const isGroup = slot.products.length > 1
-      const label = (slot.label && slot.label.trim()) || (isGroup ? (commonWord(slot.products) || "Comparación") : null)
-      const items = slot.products.map((p) => `
-        <div class="smart-cart-item">
-          <div class="smart-cart-item__img">${p.image_url ? `<img src="${escHtml(p.image_url)}" alt=""/>` : ""}</div>
-          <div class="smart-cart-item__name">${escHtml(p.name)}</div>
-          ${renderPrice(p.prices)}
-          <div class="smart-cart-item__qty">×${p.qty || 1}</div>
-        </div>
-      `).join("")
-      return `
-        <div class="smart-cart-slot${isGroup ? " smart-cart-slot--group" : ""}">
-          ${label ? `<div class="smart-cart-slot__label">${escHtml(label)}${isGroup ? ` · ${slot.products.length}` : ""}</div>` : ""}
-          ${items}
-        </div>
-      `
-    }).join("")
-
-    const overlay = document.createElement("div")
-    overlay.className = "smart-cart"
-    overlay.innerHTML = `
-      <div class="smart-cart__backdrop" data-smart-close></div>
-      <div class="smart-cart__panel" role="dialog" aria-modal="true" aria-labelledby="smart-cart-title">
-        <header class="smart-cart__hd">
-          <div>
-            <div class="smart-cart__eyebrow">Compra Inteligente</div>
-            <h2 class="smart-cart__title" id="smart-cart-title">Tu compra óptima</h2>
-          </div>
-          <button class="smart-cart__close" type="button" aria-label="Cerrar" data-smart-close>×</button>
-        </header>
-
-        <div class="smart-cart__body">
-          <div class="smart-cart__slots">
-            ${slotsHtml || `<div class="smart-cart__empty">Tu carrito está vacío.</div>`}
-          </div>
-        </div>
-
-        <footer class="smart-cart__ft">
-          <div class="smart-cart__totals">
-            <span class="cart-footer__label">Total</span>
-            <span class="cart-footer__amount">
-              <span class="cart-footer__lo">${formatClp(min)}</span>
-              <span class="cart-footer__dash">–</span>
-              <span class="cart-footer__hi">${formatClp(max)}</span>
-            </span>
-            ${savings > 0 ? `<span class="cart-footer__savings">Ahorra hasta <strong>${formatClp(savings)}</strong></span>` : ""}
-          </div>
-          <button class="cart-footer__cta" type="button" data-smart-close><span><span class="cart-footer__cta-line">Volver al</span><span class="cart-footer__cta-line">Carrito</span></span></button>
-        </footer>
-      </div>
-    `
-
-    document.body.appendChild(overlay)
-    document.body.classList.add("smart-cart-open")
-
-    const onKey = (e) => { if (e.key === "Escape") closeIt() }
-    const onClick = (e) => { if (e.target.closest("[data-smart-close]")) closeIt() }
-    const closeIt = () => {
-      overlay.removeEventListener("click", onClick)
-      document.removeEventListener("keydown", onKey)
-      overlay.classList.add("smart-cart--closing")
-      setTimeout(() => {
-        overlay.remove()
-        document.body.classList.remove("smart-cart-open")
-      }, 180)
-    }
-    overlay.addEventListener("click", onClick)
-    document.addEventListener("keydown", onKey)
+    SmartCart.open(this)
   },
 
   toggleCollapsed(slotIdx) {
@@ -751,3 +681,333 @@ const DragManager = {
 }
 
 DragManager.init()
+
+// ── Compra Inteligente popover ────────────────────────────────────
+
+const CHAIN_ORDER = ["jumbo", "santa_isabel", "unimarc", "lider", "tottus", "acuenta"]
+const CHAIN_NAMES = {
+  jumbo: "Jumbo", santa_isabel: "Santa Isabel", unimarc: "Unimarc",
+  lider: "Líder", tottus: "Tottus", acuenta: "Acuenta",
+}
+const CHAIN_ICONS = {
+  jumbo: "/images/chains/jumbo.png",
+  santa_isabel: "/images/chains/santa_isabel.png",
+  unimarc: "/images/chains/unimarc.ico",
+  lider: "/images/chains/lider.ico",
+  tottus: "/images/chains/tottus.png",
+  acuenta: "/images/chains/acuenta.ico",
+}
+
+// Cheapest selected-chain price for a product. Returns
+// {chain, price} or null if none available.
+const bestChainFor = (product, selectedChains) => {
+  let best = null
+  for (const r of (product.prices || [])) {
+    if (!selectedChains.has(r.chain)) continue
+    if (!Number.isFinite(r.price)) continue
+    if (!best || r.price < best.price) best = {chain: r.chain, price: r.price}
+  }
+  return best
+}
+
+// For a comparison group: among the (non-disabled) products, find
+// the (productId, chain, unit price) with the lowest qty-weighted
+// cost across selected chains. Returns null if nothing's available.
+const bestGroupPick = (slot, selectedChains, disabled) => {
+  let best = null
+  for (const p of slot.products) {
+    if (disabled.has(p.id)) continue
+    const w = bestChainFor(p, selectedChains)
+    if (!w) continue
+    const qty = p.qty || 1
+    const cost = w.price * qty
+    if (!best || cost < best.cost) {
+      best = {productId: p.id, chain: w.chain, price: w.price, qty, cost}
+    }
+  }
+  return best
+}
+
+const SmartCart = {
+  open(cart) {
+    const state = {
+      selected: new Set(),                            // populated lazily on first render
+      disabled: new Set(),                            // disabled product rows (by id)
+      _seeded: false,
+    }
+
+    const overlay = document.createElement("div")
+    overlay.className = "smart-cart"
+    overlay.innerHTML = `
+      <div class="smart-cart__backdrop" data-smart-close></div>
+      <div class="smart-cart__panel" role="dialog" aria-modal="true">
+        <button class="smart-cart__close" type="button" aria-label="Cerrar" data-smart-close>×</button>
+        <div class="smart-cart__body" data-table-host></div>
+      </div>
+    `
+
+    document.body.appendChild(overlay)
+    document.body.classList.add("smart-cart-open")
+
+    const tableHost = overlay.querySelector("[data-table-host]")
+
+    const buildContext = () => {
+      const allChains = new Set()
+      for (const slot of cart.slots) {
+        for (const p of slot.products) {
+          for (const r of (p.prices || [])) {
+            if (Number.isFinite(r.price)) allChains.add(r.chain)
+          }
+        }
+      }
+      const chains = CHAIN_ORDER.filter((c) => allChains.has(c))
+      if (!state._seeded) {
+        state.selected = new Set(chains)
+        state._seeded = true
+      }
+      const items = []
+      cart.slots.forEach((slot, slotIdx) => {
+        const isGroup = slot.products.length > 1
+        const groupLabel = isGroup
+          ? (slot.label?.trim() || commonWord(slot.products) || "Comparación")
+          : null
+        slot.products.forEach((p, pIdx) => {
+          items.push({
+            slotIdx, pIdx, isGroup, groupLabel,
+            isFirstInGroup: isGroup && pIdx === 0,
+            product: p,
+          })
+        })
+      })
+      return {chains, items}
+    }
+
+    const renderTable = () => {
+      if (cart.slots.length === 0) { closeIt(); return }
+      const {chains, items} = buildContext()
+      tableHost.innerHTML = SmartCart._renderTable(items, chains, state)
+    }
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target.closest("[data-smart-close]")) { closeIt(); return }
+
+      const chainBox = e.target.closest("input[data-chain]")
+      if (chainBox) {
+        const chain = chainBox.dataset.chain
+        if (chainBox.checked) state.selected.add(chain)
+        else state.selected.delete(chain)
+        renderTable()
+        return
+      }
+
+      const productBox = e.target.closest("input[data-product-toggle]")
+      if (productBox) {
+        const id = productBox.dataset.productToggle
+        if (productBox.checked) state.disabled.delete(id)
+        else state.disabled.add(id)
+        renderTable()
+        return
+      }
+
+      const removeBtn = e.target.closest("[data-smart-remove]")
+      if (removeBtn) {
+        const slotIdx = parseInt(removeBtn.dataset.smartRemove, 10)
+        const pIdx = parseInt(removeBtn.dataset.smartRemoveProduct, 10)
+        cart.remove(slotIdx, pIdx)
+        renderTable()
+        return
+      }
+
+      const qtyBtn = e.target.closest("[data-smart-qty]")
+      if (qtyBtn) {
+        const slotIdx = parseInt(qtyBtn.dataset.smartQtySlot, 10)
+        const pIdx = parseInt(qtyBtn.dataset.smartQtyProduct, 10)
+        const delta = qtyBtn.dataset.smartQty === "inc" ? 1 : -1
+        cart.changeQty(slotIdx, pIdx, delta)
+        renderTable()
+        return
+      }
+    })
+
+    const onKey = (e) => { if (e.key === "Escape") closeIt() }
+    const closeIt = () => {
+      document.removeEventListener("keydown", onKey)
+      overlay.classList.add("smart-cart--closing")
+      setTimeout(() => {
+        overlay.remove()
+        document.body.classList.remove("smart-cart-open")
+      }, 180)
+    }
+    document.addEventListener("keydown", onKey)
+
+    renderTable()
+  },
+
+  _renderTable(items, chains, state) {
+    // Columns: delete | product | qty | row-switch | chains[…]
+    const head = `
+      <thead>
+        <tr>
+          <th class="smart-cart-th smart-cart-th--remove"></th>
+          <th class="smart-cart-th smart-cart-th--product"></th>
+          <th class="smart-cart-th smart-cart-th--qty"></th>
+          <th class="smart-cart-th smart-cart-th--switch"></th>
+          ${chains.map((c) => `
+            <th class="smart-cart-th smart-cart-th--chain">
+              <div class="smart-cart-th__chain">
+                <img src="${CHAIN_ICONS[c]}" alt=""/>
+                <span>${escHtml(CHAIN_NAMES[c])}</span>
+              </div>
+            </th>
+          `).join("")}
+        </tr>
+      </thead>
+    `
+    const leadingCols = 4
+
+    // Per-row: per-product winner is the cheapest selected-chain
+    // price among the row's prices. The winning cell gets a circle.
+    const rows = items.map((it) => {
+      const p = it.product
+      const isDisabled = state.disabled.has(String(p.id)) || state.disabled.has(p.id)
+      const winner = isDisabled ? null : bestChainFor(p, state.selected)
+
+      const qty = p.qty || 1
+      const cells = chains.map((c) => {
+        const r = (p.prices || []).find((x) => x.chain === c)
+        if (!r || !Number.isFinite(r.price)) {
+          return `<td class="smart-cart-td smart-cart-td--empty"><span class="smart-cart-td__amt smart-cart-td__amt--empty">—</span></td>`
+        }
+        const isOff = !state.selected.has(c)
+        const isWinner = winner && winner.chain === c && winner.price === r.price
+        return `
+          <td class="smart-cart-td${isOff ? " smart-cart-td--off" : ""}${isWinner ? " smart-cart-td--win" : ""}">
+            <span class="smart-cart-td__amt">${formatClp(r.price * qty)}</span>
+          </td>
+        `
+      }).join("")
+
+      // Group header band before the first product of a group.
+      const bandRow = it.isFirstInGroup
+        ? `
+          <tr class="smart-cart-group-hd">
+            <th colspan="${chains.length + leadingCols}">
+              <span class="smart-cart-group-hd__label">${escHtml(it.groupLabel)}</span>
+            </th>
+          </tr>
+        `
+        : ""
+
+      return bandRow + `
+        <tr class="smart-cart-row${isDisabled ? " smart-cart-row--disabled" : ""}${!isDisabled && !winner ? " smart-cart-row--missing" : ""}${it.isGroup ? " smart-cart-row--in-group" : ""}">
+          <td class="smart-cart-td smart-cart-td--remove">
+            <button type="button" class="smart-cart-remove" aria-label="Quitar"
+                    data-smart-remove="${it.slotIdx}" data-smart-remove-product="${it.pIdx}">×</button>
+          </td>
+          <th class="smart-cart-th smart-cart-th--product">
+            <div class="smart-cart-product">
+              <div class="smart-cart-product__img">
+                ${p.image_url ? `<img src="${escHtml(p.image_url)}" alt=""/>` : ""}
+              </div>
+              <div class="smart-cart-product__meta">
+                <div class="smart-cart-product__name">${escHtml(p.name)}</div>
+                <div class="smart-cart-product__sub">
+                  ${p.brand ? `<span class="smart-cart-product__brand">${escHtml(p.brand)}</span>` : ""}
+                  ${p.brand ? `<span class="smart-cart-product__sep">·</span>` : ""}
+                  ${renderPrice(p.prices)}
+                </div>
+              </div>
+            </div>
+          </th>
+          <td class="smart-cart-td smart-cart-td--qty">
+            <div class="smart-cart-qty">
+              <button type="button" data-smart-qty="dec"
+                      data-smart-qty-slot="${it.slotIdx}" data-smart-qty-product="${it.pIdx}"
+                      aria-label="Quitar uno">−</button>
+              <span>${p.qty || 1}</span>
+              <button type="button" data-smart-qty="inc"
+                      data-smart-qty-slot="${it.slotIdx}" data-smart-qty-product="${it.pIdx}"
+                      aria-label="Agregar uno">+</button>
+            </div>
+          </td>
+          <td class="smart-cart-td smart-cart-td--row-switch">
+            <label class="smart-cart-row-switch">
+              <input type="checkbox" data-product-toggle="${escHtml(p.id)}" ${isDisabled ? "" : "checked"}/>
+              <span class="smart-cart-row-switch__track"></span>
+            </label>
+          </td>
+          ${cells}
+        </tr>
+      `
+    }).join("")
+
+    // Footer: per-chain subtotals + chain switch row + grand total.
+    // For active chains we sum the products that landed on it
+    // (i.e., where it's the row winner). For inactive chains we
+    // show the column sum — what the user would pay if that chain
+    // were the only one selected — so they can preview the cost
+    // of toggling it on alone.
+    let total = 0
+    const perChain = Object.fromEntries(chains.map((c) => [c, 0]))
+    for (const it of items) {
+      const p = it.product
+      if (state.disabled.has(p.id) || state.disabled.has(String(p.id))) continue
+      const w = bestChainFor(p, state.selected)
+      if (w) {
+        const cost = w.price * (p.qty || 1)
+        total += cost
+        perChain[w.chain] = (perChain[w.chain] || 0) + cost
+      }
+    }
+    // Column-sum fallback for unselected chains.
+    const columnSum = Object.fromEntries(chains.map((c) => [c, 0]))
+    for (const it of items) {
+      const p = it.product
+      if (state.disabled.has(p.id) || state.disabled.has(String(p.id))) continue
+      for (const c of chains) {
+        const r = (p.prices || []).find((x) => x.chain === c)
+        if (r && Number.isFinite(r.price)) {
+          columnSum[c] += r.price * (p.qty || 1)
+        }
+      }
+    }
+
+    const chainSwitchRow = `
+      <tr class="smart-cart-foot smart-cart-foot--switches">
+        <th class="smart-cart-th" colspan="${leadingCols}">Supermercados</th>
+        ${chains.map((c) => `
+          ${(() => {
+            const isOn = state.selected.has(c)
+            const amt = isOn ? perChain[c] : columnSum[c]
+            return `
+              <td class="smart-cart-td smart-cart-td--switch">
+                <label class="smart-cart-chain-switch">
+                  <input type="checkbox" data-chain="${c}" ${isOn ? "checked" : ""}/>
+                  <span class="smart-cart-chain-switch__track"></span>
+                  <span class="smart-cart-chain-cell__amt${amt > 0 ? "" : " smart-cart-chain-cell__amt--zero"}${isOn ? "" : " smart-cart-chain-cell__amt--off"}">
+                    ${amt > 0 ? formatClp(amt) : ""}
+                  </span>
+                </label>
+              </td>
+            `
+          })()}
+        `).join("")}
+      </tr>
+    `
+
+    const totalRow = `
+      <tr class="smart-cart-foot smart-cart-foot--total">
+        <th class="smart-cart-th" colspan="${leadingCols}">Total</th>
+        <td class="smart-cart-td smart-cart-td--total" colspan="${chains.length}">${formatClp(total)}</td>
+      </tr>
+    `
+
+    return `
+      <table class="smart-cart-table">
+        ${head}
+        <tbody>${rows}</tbody>
+        <tfoot>${chainSwitchRow}${totalRow}</tfoot>
+      </table>
+    `
+  },
+}
