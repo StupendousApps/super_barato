@@ -15,7 +15,9 @@ html.home body {
 /* Inputs and textareas keep their normal selection so the search
    field can be edited / copy-pasted. */
 html.home input,
-html.home textarea {
+html.home textarea,
+html.home [contenteditable="true"],
+html.home [contenteditable="plaintext-only"] {
     user-select: text;
     -webkit-user-select: text;
 }

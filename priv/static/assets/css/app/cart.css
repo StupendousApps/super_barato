@@ -213,6 +213,28 @@
   background: oklch(0.92 0.10 90);
   padding: 2px 7px;
   border-radius: 999px;
+  cursor: text;
+  outline: none;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: box-shadow .12s ease;
+}
+.cart-slot__label:hover {
+  box-shadow: 0 0 0 1px oklch(0.78 0.18 80);
+}
+.cart-slot__label:focus {
+  background: var(--surface);
+  box-shadow: 0 0 0 2px oklch(0.78 0.18 80);
+  cursor: text;
+  white-space: normal;
+}
+.cart-slot__count {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: oklch(0.30 0.10 75);
 }
 .cart-slot__toggle {
   appearance: none; border: 0; background: transparent;

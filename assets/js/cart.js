@@ -54,6 +54,46 @@ const priceSummary = (prices) => {
   return lo === hi ? {kind: "single", value: lo} : {kind: "range", lo, hi}
 }
 
+// Word-level token extraction used to find the shared term across a
+// comparison group's product names. Matches the spirit of the
+// server-side popular_terms tokenizer: lowercase, strip punctuation,
+// drop short/stop/unit words and pure numbers.
+const STOP_WORDS = new Set([
+  "de", "la", "el", "en", "y", "con", "sin", "los", "las", "del", "al",
+  "por", "para", "su", "sus", "a", "un", "una", "uno", "mas",
+])
+const UNIT_WORDS = new Set([
+  "g", "kg", "mg", "ml", "cl", "cc", "lt", "l", "un", "mt", "cm", "km",
+  "oz", "lb", "lbs", "pack", "pcs", "unid", "uns",
+])
+
+const tokenize = (text) => {
+  if (!text) return []
+  return String(text)
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .split(/\s+/u)
+    .filter((t) => t.length >= 3 && !STOP_WORDS.has(t) && !UNIT_WORDS.has(t) && !/^\d+$/.test(t))
+}
+
+// First token (longest first) shared by *every* product in the
+// group — used as the group label when there is one. Returns null
+// when no shared word qualifies.
+const commonWord = (products) => {
+  if (!Array.isArray(products) || products.length < 2) return null
+  const tokenSets = products.map((p) => new Set(tokenize(p.name)))
+  if (tokenSets.some((s) => s.size === 0)) return null
+  const first = [...tokenSets[0]]
+  // Prefer longer words — they're more specific.
+  first.sort((a, b) => b.length - a.length)
+  for (const word of first) {
+    if (tokenSets.every((s) => s.has(word))) {
+      return word.charAt(0).toUpperCase() + word.slice(1)
+    }
+  }
+  return null
+}
+
 const renderPrice = (prices) => {
   const s = priceSummary(prices)
   if (s.kind === "none") return `<span class="cart-item__price cart-item__price--empty">—</span>`
@@ -99,9 +139,45 @@ export const Cart = {
       }
     }
 
+    this._onLabelKey = (e) => {
+      const labelEl = e.target.closest("[data-slot-label]")
+      if (!labelEl) return
+      if (e.key === "Enter") { e.preventDefault(); labelEl.blur() }
+      if (e.key === "Escape") { labelEl.textContent = labelEl.dataset.savedLabel || ""; labelEl.blur() }
+    }
+    this._onLabelFocus = (e) => {
+      const labelEl = e.target.closest("[data-slot-label]")
+      if (!labelEl) return
+      // Stash the on-focus value so Escape can revert.
+      labelEl.dataset.savedLabel = labelEl.textContent.trim()
+      // Stop drag-from-label.
+      labelEl.draggable = false
+    }
+    this._onLabelBlur = (e) => {
+      const labelEl = e.target.closest("[data-slot-label]")
+      if (!labelEl) return
+      const slotIdx = parseInt(labelEl.dataset.slotLabel, 10)
+      const value = labelEl.textContent.trim()
+      const auto = labelEl.dataset.defaultLabel || ""
+      const slot = this.slots[slotIdx]
+      if (!slot) return
+      // Treat empty input or input matching auto-label as "no manual label".
+      if (value === "" || value === auto) {
+        delete slot.label
+      } else {
+        slot.label = value
+      }
+      Store.save(this.slots)
+      // Restore display text (just in case the user typed/deleted).
+      labelEl.textContent = (slot.label && slot.label.trim()) || auto
+    }
+
     this.el.addEventListener("cart:add", this._onAdd)
     this.el.addEventListener("cart:move", this._onMove)
     this.el.addEventListener("click", this._onClick)
+    this.el.addEventListener("keydown", this._onLabelKey)
+    this.el.addEventListener("focusin", this._onLabelFocus)
+    this.el.addEventListener("focusout", this._onLabelBlur)
     this.render({animate: false})
   },
 
@@ -109,6 +185,9 @@ export const Cart = {
     this.el.removeEventListener("cart:add", this._onAdd)
     this.el.removeEventListener("cart:move", this._onMove)
     this.el.removeEventListener("click", this._onClick)
+    this.el.removeEventListener("keydown", this._onLabelKey)
+    this.el.removeEventListener("focusin", this._onLabelFocus)
+    this.el.removeEventListener("focusout", this._onLabelBlur)
   },
 
   add(product, target) {
@@ -303,10 +382,18 @@ export const Cart = {
     const collapsed = isGroup && slot.collapsed
     const groupCls = isGroup ? " cart-slot--group" : ""
     const collapsedCls = collapsed ? " cart-slot--collapsed" : ""
+    const autoLabel = isGroup ? (commonWord(slot.products) || "Comparación") : ""
+    const groupLabel = (slot.label && slot.label.trim()) || autoLabel
     const header = isGroup
       ? `
         <div class="cart-slot__hd">
-          <span class="cart-slot__label">Comparación · ${slot.products.length}</span>
+          <span class="cart-slot__label"
+                contenteditable="plaintext-only"
+                spellcheck="false"
+                data-slot-label="${slotIdx}"
+                data-default-label="${escHtml(autoLabel)}"
+                title="Click para renombrar">${escHtml(groupLabel)}</span>
+          <span class="cart-slot__count">· ${slot.products.length}</span>
           <button type="button" class="cart-slot__toggle" data-toggle-slot="${slotIdx}"
                   aria-label="${collapsed ? "Expandir" : "Contraer"}" aria-expanded="${!collapsed}">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
