@@ -25,6 +25,7 @@ import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/super_barato"
 import topbar from "../vendor/topbar"
 import {initSortable} from "./sortable"
+import {Cart} from "./cart"
 
 // Rails hook — purely frontend collapse/expand for the public home
 // page's left (categories) and right (cart) sidebars. The initial
@@ -175,7 +176,7 @@ const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks, Rails, Picker, InfiniteScroll, SeenCounter},
+  hooks: {...colocatedHooks, Rails, Picker, InfiniteScroll, SeenCounter, Cart},
 })
 
 // Show progress bar on live navigation and form submits

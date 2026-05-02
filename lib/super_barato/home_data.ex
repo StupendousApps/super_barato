@@ -48,11 +48,11 @@ defmodule SuperBarato.HomeData do
 
   @doc """
   Most-popular terms across all products — drives the suggestion
-  chips on the index. Per-category terms are still fetched on
-  demand from `Catalog.popular_terms/3`.
+  chips on the index. Per-category and search-scoped terms are
+  fetched on demand from `Catalog.popular_terms/1`.
   """
   def popular_terms(n \\ 24) do
-    Catalog.popular_terms(nil, nil, n)
+    Catalog.popular_terms(n: n)
   end
 
   @doc """

@@ -1,266 +1,448 @@
-.cart {
-    background: var(--panel);
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
-}
-.cart-hd {
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    box-sizing: border-box;
-}
+/* ── Logo (lives in the topbar) ─────────────────────────────── */
+
 .logo {
-    display: inline-flex;
-    align-items: center;
-    color: var(--ink);
-    text-decoration: none;
-    gap: 0;
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 38px;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    align-self: center;
-    flex-shrink: 0;
-    padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+  gap: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 38px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  align-self: center;
+  flex-shrink: 0;
+  padding: 0 8px;
 }
 .logo .super {
-    color: #ffd43b;
-    font-style: italic;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    transform: skewX(-6deg);
-    display: inline-block;
-    text-shadow: 1.5px 1.5px 0 #e14a2b;
+  color: #ffd43b;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  transform: skewX(-6deg);
+  display: inline-block;
+  text-shadow: 1.5px 1.5px 0 #e14a2b;
 }
 .logo .barato {
-    margin-left: 6px;
-    color: #e14a2b;
-    font-style: italic;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    transform: skewX(-6deg);
-    display: inline-block;
-    text-shadow: 1.5px 1.5px 0 #ffd43b;
+  margin-left: 6px;
+  color: #e14a2b;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  transform: skewX(-6deg);
+  display: inline-block;
+  text-shadow: 1.5px 1.5px 0 #ffd43b;
 }
 .logo .tld {
-    color: var(--ink-1);
-    font-weight: 600;
-    font-size: 14px;
-    margin-left: 1px;
-    letter-spacing: 0;
-    transform: translateY(-1px);
-    align-self: end;
-    position: relative;
-    bottom: 2px;
+  color: var(--ink-1);
+  font-weight: 600;
+  font-size: 14px;
+  margin-left: 1px;
+  letter-spacing: 0;
+  align-self: end;
+  position: relative;
+  bottom: 2px;
 }
-.cart-hd .login {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    font-size: 13px;
-    color: var(--ink-2);
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 0.12s ease;
-    text-decoration: none;
-}
-.cart-hd .login:hover {
-    background: var(--soft);
-}
+
+/* ── Cart pane body ─────────────────────────────────────────── */
 
 .cart-body {
-    flex: 1;
-    overflow: auto;
-    padding: 4px 12px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.cart-body::-webkit-scrollbar {
-    width: 8px;
-}
-.cart-body::-webkit-scrollbar-thumb {
-    background: var(--hair);
-    border-radius: 4px;
-    border: 2px solid transparent;
-    background-clip: content-box;
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 14px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.ci {
-    display: grid;
-    grid-template-columns: 44px 1fr auto;
-    gap: 12px;
-    align-items: center;
-    padding: 10px;
-    background: var(--surface);
-    border-radius: var(--r-sm);
+/* Floating cart footer — pinned to the bottom of the cart pane,
+   blurred so the cart-body content scrolls softened underneath.
+   `.cart-body` reserves 96px of bottom padding so nothing hides
+   behind it. */
+.cart-footer {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  box-shadow: inset 0 1px 0 var(--border);
+  border-radius: 0 0 var(--r-md) var(--r-md);
 }
-.ci .thumb {
-    width: 44px;
-    height: 44px;
-    border-radius: 6px;
-    background: radial-gradient(
-        circle at 50% 45%,
-        oklch(0.96 0.005 85) 0,
-        oklch(0.93 0.006 85) 80%
-    );
+.cart-footer[hidden] { display: none; }
+.cart-footer__totals {
+  display: flex; flex-direction: column; gap: 2px;
+  flex: 1; min-width: 0;
 }
-.ci .meta .n {
-    font-size: 12.5px;
-    line-height: 1.3;
-    color: var(--ink);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.cart-footer__label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
 }
-.ci .meta .u {
-    font-size: 10.5px;
-    color: var(--ink-3);
-    margin-top: 2px;
+.cart-footer__amount {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
-.ci .side {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
+.cart-footer__lo { font-size: 16px; font-weight: 700; color: var(--ink); }
+.cart-footer__dash { color: var(--ink-4); font-size: 14px; }
+.cart-footer__hi { font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
+.cart-footer__savings {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
 }
-.ci .price {
-    font-size: 13px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
+.cart-footer__savings strong {
+  color: #e14a2b;
+  font-weight: 700;
 }
-.ci .price .spr {
-    font-weight: 400;
-    color: var(--ink-3);
-    font-size: 11px;
-    margin-left: 2px;
+/* Splashy CTA — matches the SUPERbarato logotype: red pill with
+   yellow display-font label, red drop-shadow on the text, slight
+   italic skew. Pops next to the muted ink totals. */
+.cart-footer__cta {
+  appearance: none; border: 0; cursor: pointer;
+  background: #e14a2b;
+  color: #ffd43b;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 1.5px 1.5px 0 oklch(0.32 0.13 30);
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  white-space: nowrap;
+  box-shadow:
+    0 0 0 1px oklch(0.40 0.15 30),
+    0 6px 16px rgba(225, 74, 43, 0.32);
+  transition:
+    transform .12s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow .14s ease,
+    background .12s ease;
 }
-.ci .qty {
-    display: inline-flex;
-    align-items: center;
-    background: var(--soft);
-    border-radius: 999px;
-    padding: 2px;
+.cart-footer__cta > span {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  transform: skewX(-6deg);
 }
-.ci .qty button {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--ink-2);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.cart-footer__cta-line { display: block; line-height: 0.95; }
+.cart-footer__cta:hover {
+  background: oklch(0.65 0.18 30);
+  box-shadow:
+    0 0 0 1px oklch(0.40 0.15 30),
+    0 10px 24px rgba(225, 74, 43, 0.40);
+  transform: translateY(-1px);
 }
-.ci .qty button:hover {
-    background: #fff;
-}
-.ci .qty span {
-    padding: 0 6px;
-    min-width: 18px;
-    text-align: center;
-    font-size: 11.5px;
-    font-variant-numeric: tabular-nums;
-}
+.cart-footer__cta:active { transform: translateY(1px); }
 
 .cart-empty {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: var(--ink-3);
-    text-align: center;
-    padding: 40px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--ink-3);
+  text-align: center;
+  padding: 40px 20px;
+  pointer-events: none;
 }
-.cart-empty .box {
-    width: 72px;
-    height: 72px;
-    border-radius: var(--r-md);
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: var(--ink-4);
+.cart-empty .msg { font-size: 13px; color: var(--ink-2); }
+.cart-empty .hint { font-size: 12px; color: var(--ink-3); }
+
+/* ── Slot (single product or group) ─────────────────────────── */
+
+.cart-slot {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: 0 0 0 1px var(--border);
+  transition:
+    transform .18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow .14s ease,
+    background .14s ease;
 }
-.cart-empty .msg {
-    font-size: 13px;
-    color: var(--ink-2);
-}
-.cart-empty .hint {
-    font-size: 11.5px;
-    color: var(--ink-3);
+.cart-slot__items {
+  display: flex;
+  flex-direction: column;
 }
 
-.cart-ft {
-    padding: 14px 18px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* Singles: items go edge-to-edge. Groups: pad the items so they
+   sit visually inset within the comparison frame. */
+.cart-slot--group {
+  background: oklch(0.985 0.04 95);
+  box-shadow: 0 0 0 1px oklch(0.85 0.10 80);
+  padding: 10px;
 }
-.ft-summary {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: baseline;
-    gap: 10px;
-    font-size: 12.5px;
-    color: var(--ink-2);
-    font-variant-numeric: tabular-nums;
+.cart-slot--group .cart-slot__items {
+  gap: 6px;
 }
-.ft-summary .dots {
-    border-bottom: 1px dotted var(--ink-4);
-    transform: translateY(-4px);
+.cart-slot--group .cart-item {
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--border);
 }
-.ft-summary .total {
-    color: var(--ink);
-    font-weight: 600;
-    font-size: 14px;
+.cart-slot__hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
 }
-.ft-summary .total .spr {
-    color: var(--ink-3);
-    font-weight: 400;
-    font-size: 12px;
-    margin-left: 2px;
+.cart-slot__label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: oklch(0.30 0.10 75);
+  background: oklch(0.92 0.10 90);
+  padding: 2px 7px;
+  border-radius: 999px;
 }
-.ft-summary.muted {
-    color: var(--ink-3);
+.cart-slot__toggle {
+  appearance: none; border: 0; background: transparent;
+  width: 24px; height: 24px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  color: oklch(0.30 0.10 75);
+  transition: background .12s ease, color .12s ease;
+}
+.cart-slot__toggle:hover { background: oklch(0.92 0.10 90); }
+.cart-slot__toggle .icon {
+  width: 16px; height: 16px;
+  transition: transform .18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.cart-slot--collapsed .cart-slot__toggle .icon { transform: rotate(-90deg); }
+.cart-slot--collapsed .cart-slot__items { display: none; }
+.cart-slot--collapsed .cart-slot__hd { margin-bottom: 0; }
+
+/* ── Cart item (one product row inside a slot) ──────────────── */
+
+.cart-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px 8px 0;
+  cursor: grab;
+  transition: background .12s ease;
+}
+.cart-item:hover { background: color-mix(in oklch, var(--ink) 4%, transparent); }
+.cart-slot--group .cart-item:hover { background: var(--soft); }
+.cart-item--dragging { opacity: 0.4; }
+.cart-item__img {
+  width: 56px;
+  height: 56px;
+  background: oklch(0.96 0.005 85);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cart-slot:not(.cart-slot--group) .cart-item:first-child .cart-item__img {
+  border-top-left-radius: var(--r-md);
+}
+.cart-slot:not(.cart-slot--group) .cart-item:last-child .cart-item__img {
+  border-bottom-left-radius: var(--r-md);
+}
+.cart-slot--group .cart-item__img { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.cart-item__img img { width: 100%; height: 100%; object-fit: contain; }
+.cart-item__placeholder {
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 50% 45%, oklch(0.96 0.005 85) 0, oklch(0.93 0.006 85) 80%);
 }
 
-.cta {
-    appearance: none;
-    border: 0;
-    background: var(--ink);
-    color: #fff;
-    font: 600 14px/1 var(--font-sans);
-    letter-spacing: 0.005em;
-    padding: 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition:
-        transform 0.12s ease,
-        background 0.12s ease;
+.cart-item__meta {
+  display: flex; flex-direction: column; gap: 4px;
+  min-width: 0;
 }
-.cta:hover {
-    background: oklch(0.32 0.02 80);
+.cart-item__name {
+  font-size: 12.5px;
+  line-height: 1.25;
+  color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.cta:active {
-    transform: translateY(1px);
+.cart-item__row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
 }
-.cta[disabled] {
-    opacity: 0.35;
-    cursor: not-allowed;
+.cart-item__price {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cart-item__price--empty { color: var(--ink-3); font-weight: 400; }
+.cart-item__price-dash { color: var(--ink-4); margin: 0 2px; }
+.cart-item__price-hi { color: var(--ink-2); font-size: 11px; }
+
+.cart-item__qty {
+  display: inline-flex; align-items: center;
+  background: var(--soft);
+  border-radius: 999px;
+  padding: 1px;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.cart-item__qty button {
+  appearance: none; border: 0; background: transparent;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px; line-height: 1;
+  color: var(--ink-2);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .12s ease, color .12s ease;
+}
+.cart-item__qty button:hover { background: var(--surface); color: var(--ink); }
+.cart-item__qty span {
+  min-width: 18px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cart-item__remove {
+  appearance: none; border: 0;
+  position: absolute;
+  top: -8px; right: -8px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border), 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+  line-height: 1;
+  color: var(--ink-2);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+  transition:
+    opacity .12s ease,
+    transform .12s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color .12s ease;
+  z-index: 2;
+}
+.cart-item:hover .cart-item__remove {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.cart-item__remove:hover { color: var(--ink); }
+
+/* ── Drop targets (visual feedback during drag) ─────────────── */
+
+.cart-pane.drop-target--pane { background: color-mix(in oklch, var(--accent) 4%, var(--surface)); }
+.cart-pane.drop-target--pane .cart-empty {
+  color: var(--ink-2);
+}
+
+.cart-slot.drop-target--slot {
+  transform: scale(1.04);
+  background: color-mix(in oklch, oklch(0.85 0.12 80) 18%, var(--surface));
+  box-shadow:
+    0 0 0 2px oklch(0.78 0.18 80),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.cart-slot.drop-target--slot .cart-slot__items {
+  /* tiny bounce so user feels the merge readiness */
+  transform: scale(0.98);
+  transition: transform .14s ease;
+}
+
+/* The empty-cart message becomes a drop hint when hovered */
+.cart-pane.drop-target--pane .cart-empty .msg::before {
+  content: "Suelta para agregar — ";
+}
+
+/* ── Source card while dragging ─────────────────────────────── */
+
+.card--dragging {
+  opacity: 0.45;
+  transform: scale(0.98);
+  pointer-events: none;
+}
+
+/* While anything is being dragged, force the grab cursor everywhere
+   and disable text selection so the ghost feels like a real object. */
+body.is-dragging,
+body.is-dragging * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+/* All cards advertise grab as the default cursor when there's
+   something draggable. */
+.card[data-product] { cursor: grab; }
+
+/* ── Floating drag ghost ────────────────────────────────────── */
+
+.drag-ghost {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 1000;
+  width: 220px;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 18px 48px rgba(0, 0, 0, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+  will-change: transform;
+}
+.drag-ghost__img {
+  width: 56px; height: 56px;
+  background: oklch(0.96 0.005 85);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drag-ghost__img img { width: 100%; height: 100%; object-fit: contain; }
+.drag-ghost__name {
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--ink);
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.drag-ghost__brand {
+  font-size: 10.5px;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
 }

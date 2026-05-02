@@ -721,31 +721,53 @@ defmodule SuperBarato.Catalog do
 
   @doc """
   Most-frequent meaningful words across the canonical_name + brand
-  fields of products in the given category/subcategory. Used to
-  power the suggestion chips below the search bar.
+  fields of products matching the given filters. Used to power the
+  suggestion chips below the search bar.
+
+  Opts:
+    * `:q` — full-text search filter (same FTS5 path as `list_products_page/1`)
+    * `:cat` / `:sub` — app taxonomy filters
+    * `:n` — how many `{term, count}` tuples to return (default 8)
+    * `:scan_limit` — cap on rows scanned, ordered by `chain_count`
+      desc so popular products dominate the sample (default 1_000)
 
   Tokenization is intentionally simple: lowercase, strip non-letters,
   drop stop-words, unit-words, anything ≤ 2 chars, and pure numbers.
-  Returns a list of `{term, count}` tuples, longest run first.
+  Tokens already present in `:q` are excluded so the user's query
+  isn't echoed back as a chip.
   """
-  def popular_terms(cat_slug, sub_slug, n \\ 8) do
+  def popular_terms(opts \\ []) do
+    q = opts[:q]
+    cat = opts[:cat]
+    sub = opts[:sub]
+    n = opts[:n] || 8
+    scan_limit = opts[:scan_limit] || 1_000
+    fts_q = fts_query(q)
+
     rows =
       Product
-      |> apply_product_app_category_filter(cat_slug)
-      |> apply_product_app_subcategory_filter(sub_slug)
+      |> apply_product_q_filter(q, fts_q)
+      |> apply_product_app_category_filter(cat)
+      |> apply_product_app_subcategory_filter(sub)
+      |> order_by([p], desc: p.chain_count)
+      |> limit(^scan_limit)
       |> select([p], {p.canonical_name, p.brand})
       |> Repo.all()
+
+    exclude = MapSet.new(tokenize(q))
 
     rows
     |> Enum.flat_map(fn {name, brand} ->
       tokenize(name) ++ tokenize(brand)
     end)
+    |> Enum.reject(&MapSet.member?(exclude, &1))
     |> Enum.frequencies()
     |> Enum.sort_by(fn {_t, c} -> -c end)
     |> Enum.take(n)
   end
 
   defp tokenize(nil), do: []
+  defp tokenize(""), do: []
 
   defp tokenize(text) when is_binary(text) do
     text

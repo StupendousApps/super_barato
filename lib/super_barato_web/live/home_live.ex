@@ -1,20 +1,23 @@
 defmodule SuperBaratoWeb.HomeLive do
   use SuperBaratoWeb, :live_view
 
-  import Ecto.Query
-
   alias SuperBarato.{Catalog, HomeCache, HomeData, Linker, Thumbnails}
-  alias SuperBarato.Catalog.Product
-  alias SuperBarato.Repo
 
   @results_per_page 50
+
+  # Suggestion chip counts. Fewer chips as the scope narrows — each
+  # additional chip is more redundant once the user has already typed
+  # a query and/or picked a category.
+  @suggestions_home 24
+  @suggestions_category 16
+  @suggestions_search 12
+  @suggestions_search_category 8
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
      socket
      |> assign(:query, "")
-     |> assign(:cart, %{})
      # Selected category/subcategory filters (nil = no filter).
      |> assign(:selected_category, nil)
      |> assign(:selected_subcategory, nil)
@@ -53,30 +56,6 @@ defmodule SuperBaratoWeb.HomeLive do
     {:noreply, push_patch(socket, to: ~p"/?#{qs}")}
   end
 
-  def handle_event("add", %{"id" => id}, socket) do
-    id = String.to_integer(id)
-    cart = Map.update(socket.assigns.cart, id, 1, &(&1 + 1))
-    {:noreply, assign(socket, :cart, cart)}
-  end
-
-  def handle_event("inc", %{"id" => id}, socket) do
-    id = String.to_integer(id)
-    cart = Map.update(socket.assigns.cart, id, 1, &(&1 + 1))
-    {:noreply, assign(socket, :cart, cart)}
-  end
-
-  def handle_event("dec", %{"id" => id}, socket) do
-    id = String.to_integer(id)
-
-    cart =
-      case Map.get(socket.assigns.cart, id, 0) do
-        qty when qty <= 1 -> Map.delete(socket.assigns.cart, id)
-        qty -> Map.put(socket.assigns.cart, id, qty - 1)
-      end
-
-    {:noreply, assign(socket, :cart, cart)}
-  end
-
   def handle_event("load_more", _, socket) do
     %{products: existing, total_count: total, page: page} = socket.assigns
 
@@ -94,15 +73,29 @@ defmodule SuperBaratoWeb.HomeLive do
   # query) so first paint isn't gated on a catalog read.
   # Index view (no q, no filter) reads category previews and the
   # popular-term chips from the cache that `SuperBarato.HomeCache`
-  # warms in ETS every 2 minutes. Filtered / search views compute
-  # per-category popular terms on demand and skip preview bands.
-  defp suggestions_for(%{"cat" => cat}) when cat not in [nil, ""],
-    do: Catalog.popular_terms(cat, nil, 24)
+  # warms in ETS every 2 minutes. Search/filter views compute scoped
+  # popular terms on demand (and skip preview bands).
+  defp suggestions_for(params) do
+    q = (params["q"] || "") |> String.trim()
+    cat = params["cat"]
+    sub = params["sub"]
+    has_cat = cat not in [nil, ""] or sub not in [nil, ""]
 
-  defp suggestions_for(%{"sub" => sub}) when sub not in [nil, ""],
-    do: Catalog.popular_terms(nil, sub, 24)
+    cond do
+      q == "" and not has_cat ->
+        # Cached, global popular terms — bounded by HomeCache (48).
+        HomeCache.popular_terms() |> Enum.take(@suggestions_home)
 
-  defp suggestions_for(_params), do: HomeCache.popular_terms()
+      q == "" and has_cat ->
+        Catalog.popular_terms(cat: cat, sub: sub, n: @suggestions_category)
+
+      q != "" and not has_cat ->
+        Catalog.popular_terms(q: q, n: @suggestions_search)
+
+      true ->
+        Catalog.popular_terms(q: q, cat: cat, sub: sub, n: @suggestions_search_category)
+    end
+  end
 
   defp category_previews_for(%{"cat" => cat}) when cat not in [nil, ""], do: []
   defp category_previews_for(%{"sub" => sub}) when sub not in [nil, ""], do: []
@@ -175,10 +168,7 @@ defmodule SuperBaratoWeb.HomeLive do
 
   @impl true
   def render(assigns) do
-    assigns =
-      assigns
-      |> assign(:cart_items, cart_items(assigns.cart))
-      |> assign(:results_per_page, @results_per_page)
+    assigns = assign(assigns, :results_per_page, @results_per_page)
 
     ~H"""
     <div class="scroll" id="layout" phx-hook="Rails">
@@ -262,7 +252,7 @@ defmodule SuperBaratoWeb.HomeLive do
           >
             <span class="cart-toggle__cart"><.icon_cart /></span>
             <span class="cart-toggle__close"><.icon_close /></span>
-            <span :if={@cart_items != []} class="rail-toggle__badge">{length(@cart_items)}</span>
+            <span class="rail-toggle__badge" data-cart-badge hidden></span>
           </button>
           </div>
         </div>
@@ -318,8 +308,14 @@ defmodule SuperBaratoWeb.HomeLive do
           </footer>
         </main>
 
-        <aside class="cart-pane">
-          <.rail_right cart_items={@cart_items} />
+        <aside class="cart-pane" id="cart" phx-hook="Cart" phx-update="ignore">
+          <div class="cart-body" data-cart-body>
+            <div class="cart-empty">
+              <div class="msg">Aún no hay productos</div>
+              <div class="hint">Arrastra productos aquí</div>
+            </div>
+          </div>
+          <div class="cart-footer" data-cart-footer hidden></div>
         </aside>
       </div>
 
@@ -352,11 +348,7 @@ defmodule SuperBaratoWeb.HomeLive do
       class="card"
       data-product-id={@p.id}
       data-product-index={@index}
-      phx-click="add"
-      phx-value-id={@p.id}
-      role="button"
-      tabindex="0"
-      aria-label={"Agregar #{@p.name}"}
+      data-product={Jason.encode!(%{id: @p.id, name: @p.name, brand: @p.brand, image_url: @p.image_url, prices: Enum.map(@p.prices, &Map.take(&1, [:chain, :price, :promo?]))})}
     >
       <div class="img">
         <img :if={@p.image_url} src={@p.image_url} alt="" loading="lazy" />
@@ -395,63 +387,6 @@ defmodule SuperBaratoWeb.HomeLive do
         <% end %>
       </div>
     </div>
-    """
-  end
-
-  ## ── Rail components ──────────────────────────────────────────
-
-  attr :cart_items, :list, required: true
-
-  defp rail_right(assigns) do
-    ~H"""
-      <%= if @cart_items == [] do %>
-        <div class="cart-empty">
-          <div class="box">+</div>
-          <div class="msg">Aún no hay productos</div>
-          <div class="hint">Busca y agrega lo que necesites</div>
-        </div>
-      <% else %>
-        <div class="cart-body">
-          <div :for={it <- @cart_items} class="ci">
-            <div class="thumb"></div>
-            <div class="meta">
-              <div class="n">{it.product.name}</div>
-              <div class="u">{it.product.unit}</div>
-            </div>
-            <div class="side">
-              <div class="price">
-                {format_clp(it.mid)}<span class="spr">± {format_clp(it.spread)}</span>
-              </div>
-              <div class="qty">
-                <button type="button" phx-click="dec" phx-value-id={it.product.id} aria-label="Menos">−</button>
-                <span>{it.qty}</span>
-                <button type="button" phx-click="inc" phx-value-id={it.product.id} aria-label="Más">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-
-      <div class="cart-ft">
-        <%= if @cart_items == [] do %>
-          <div class="ft-summary muted">
-            <span>0 Productos</span>
-            <span class="dots"></span>
-            <span>—</span>
-          </div>
-          <button class="cta" disabled>Ver Compra Óptima</button>
-        <% else %>
-          <% {mid, spread, count} = cart_totals(@cart_items) %>
-          <div class="ft-summary">
-            <span>{count} Productos</span>
-            <span class="dots"></span>
-            <span class="total">
-              {format_clp(mid)}<span class="spr">± {format_clp(spread)}</span>
-            </span>
-          </div>
-          <button class="cta">Ver Compra Óptima</button>
-        <% end %>
-      </div>
     """
   end
 
@@ -525,42 +460,6 @@ defmodule SuperBaratoWeb.HomeLive do
   defp chain_icon_url("acuenta"), do: "/images/chains/acuenta.ico"
   defp chain_icon_url(_), do: nil
 
-
-  # `cart` is a `%{product_id => qty}` map. We resolve product
-  # metadata + current price range on every render so prices stay
-  # fresh without us having to rebroadcast updates. Single round-trip
-  # via two batched lookups.
-  defp cart_items(cart) when map_size(cart) == 0, do: []
-
-  defp cart_items(cart) do
-    pids = Map.keys(cart)
-    products = Repo.all(from p in Product, where: p.id in ^pids) |> Map.new(&{&1.id, &1})
-    ranges = Linker.price_range_by_product_ids(pids)
-
-    for {pid, qty} <- cart, product = Map.get(products, pid) do
-      {lo, hi} = Map.get(ranges, pid, {0, 0})
-      mid = round((lo + hi) / 2 * qty)
-      spread = round((hi - lo) / 2 * qty)
-
-      %{
-        product: %{id: product.id, name: product.canonical_name, image_url: product.image_url},
-        qty: qty,
-        lo: lo,
-        hi: hi,
-        mid: mid,
-        spread: spread
-      }
-    end
-  end
-
-  defp cart_totals(items) do
-    total_lo = Enum.reduce(items, 0, &(&1.lo * &1.qty + &2))
-    total_hi = Enum.reduce(items, 0, &(&1.hi * &1.qty + &2))
-    count = Enum.reduce(items, 0, &(&1.qty + &2))
-    mid = round((total_lo + total_hi) / 2)
-    spread = round((total_hi - total_lo) / 2)
-    {mid, spread, count}
-  end
 
   defp format_clp(nil), do: "—"
 
