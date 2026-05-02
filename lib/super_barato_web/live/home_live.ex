@@ -3,20 +3,11 @@ defmodule SuperBaratoWeb.HomeLive do
 
   import Ecto.Query
 
-  alias SuperBarato.{Catalog, Linker}
+  alias SuperBarato.{Catalog, HomeCache, HomeData, Linker, Thumbnails}
   alias SuperBarato.Catalog.Product
   alias SuperBarato.Repo
 
   @results_per_page 50
-
-  @chain_names %{
-    "jumbo" => "Jumbo",
-    "santa_isabel" => "Santa Isabel",
-    "unimarc" => "Unimarc",
-    "lider" => "Líder",
-    "tottus" => "Tottus",
-    "acuenta" => "Acuenta"
-  }
 
   @impl true
   def mount(_params, _session, socket) do
@@ -31,6 +22,8 @@ defmodule SuperBaratoWeb.HomeLive do
      |> assign(:products, [])
      |> assign(:total_count, 0)
      |> assign(:page, 1)
+     |> assign(:suggestions, [])
+     |> assign(:category_previews, [])
      |> assign(:page_title, "SuperBarato.cl"), layout: false}
   end
 
@@ -41,6 +34,8 @@ defmodule SuperBaratoWeb.HomeLive do
      |> assign(:query, params["q"] || "")
      |> assign(:selected_category, params["cat"])
      |> assign(:selected_subcategory, params["sub"])
+     |> assign(:suggestions, suggestions_for(params))
+     |> assign(:category_previews, category_previews_for(params))
      |> run_search()
      |> push_event("seen_counter:reset", %{})}
   end
@@ -97,6 +92,23 @@ defmodule SuperBaratoWeb.HomeLive do
   # Hits the catalog only when there's something to search for OR a
   # category filter is active. The empty home view stays cheap (no
   # query) so first paint isn't gated on a catalog read.
+  # Index view (no q, no filter) reads category previews and the
+  # popular-term chips from the cache that `SuperBarato.HomeCache`
+  # warms in ETS every 2 minutes. Filtered / search views compute
+  # per-category popular terms on demand and skip preview bands.
+  defp suggestions_for(%{"cat" => cat}) when cat not in [nil, ""],
+    do: Catalog.popular_terms(cat, nil, 24)
+
+  defp suggestions_for(%{"sub" => sub}) when sub not in [nil, ""],
+    do: Catalog.popular_terms(nil, sub, 24)
+
+  defp suggestions_for(_params), do: HomeCache.popular_terms()
+
+  defp category_previews_for(%{"cat" => cat}) when cat not in [nil, ""], do: []
+  defp category_previews_for(%{"sub" => sub}) when sub not in [nil, ""], do: []
+  defp category_previews_for(%{"q" => q}) when q not in [nil, ""], do: []
+  defp category_previews_for(_params), do: HomeCache.category_previews()
+
   defp run_search(socket) do
     q = String.trim(socket.assigns.query)
     cat = socket.assigns.selected_category
@@ -133,13 +145,13 @@ defmodule SuperBaratoWeb.HomeLive do
 
     new_products =
       Enum.map(result.items, fn p ->
-        prices = product_prices(Map.get(listings, p.id, []))
+        prices = HomeData.product_prices(Map.get(listings, p.id, []))
 
         %{
           id: p.id,
           name: p.canonical_name,
           brand: p.brand,
-          image_url: p.image_url,
+          image_url: Thumbnails.thumbnail_url(p),
           prices: prices
         }
       end)
@@ -169,81 +181,110 @@ defmodule SuperBaratoWeb.HomeLive do
       |> assign(:results_per_page, @results_per_page)
 
     ~H"""
-    <div class="layout" id="layout" phx-hook="Rails">
-      <%!-- Cart rail collapse state is a pure frontend concern —
-           the `Rails` JS hook flips a `data-rail-right` attribute
-           on <html> and persists to localStorage. --%>
-      <div class="center">
-        <div class="search-block">
-          <div class="container">
-            <div class="search-row">
-              <div class="picker cat-picker" id="cat-picker" phx-hook="Picker">
-                <div class={["search-cat-button", category_active?(@selected_category, @selected_subcategory) && "search-cat-button--filtered"]}>
+    <div class="scroll" id="layout" phx-hook="Rails">
+      <header class="topbar">
+        <div class="container topbar__inner">
+          <div class="picker cat-picker" id="cat-picker" phx-hook="Picker">
+            <div class={["search-cat-button", category_active?(@selected_category, @selected_subcategory) && "search-cat-button--filtered"]}>
+              <.link
+                :if={category_active?(@selected_category, @selected_subcategory)}
+                patch={~p"/?#{cat_params(@query, nil, nil)}"}
+                class="search-cat-button__x"
+                aria-label="Quitar categoría"
+              >×</.link>
+              <button
+                type="button"
+                class="search-cat-button__toggle"
+                data-picker-toggle
+                aria-haspopup="true"
+              >
+                <span class="search-cat-button__label">{cat_picker_label(@categories, @selected_category, @selected_subcategory)}</span>
+                <span class="search-cat-button__chev" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="picker__panel cat-panel" role="menu">
+              <.link
+                patch={~p"/?#{cat_params(@query, nil, nil)}"}
+                class={["cat-panel__all", is_nil(@selected_category) and is_nil(@selected_subcategory) && "is-active"]}
+              >Todas las categorías</.link>
+              <div class="cat-panel__grid">
+                <div :for={c <- @categories} class="cat-tile">
                   <.link
-                    :if={category_active?(@selected_category, @selected_subcategory)}
-                    patch={~p"/?#{cat_params(@query, nil, nil)}"}
-                    class="search-cat-button__x"
-                    aria-label="Quitar categoría"
-                  >×</.link>
-                  <button
-                    type="button"
-                    class="search-cat-button__toggle"
-                    data-picker-toggle
-                    aria-haspopup="true"
-                  >
-                    <span class="search-cat-button__label">{cat_picker_label(@categories, @selected_category, @selected_subcategory)}</span>
-                    <span class="search-cat-button__chev" aria-hidden="true"></span>
-                  </button>
-                </div>
-                <div class="picker__panel cat-panel" role="menu">
-                  <.link
-                    patch={~p"/?#{cat_params(@query, nil, nil)}"}
-                    class={["cat-panel__all", is_nil(@selected_category) and is_nil(@selected_subcategory) && "is-active"]}
-                  >Todas las categorías</.link>
-                  <div class="cat-panel__grid">
-                    <div :for={c <- @categories} class="cat-tile">
+                    patch={~p"/?#{cat_params(@query, c.slug, nil)}"}
+                    class={["cat-tile__head", @selected_category == c.slug and is_nil(@selected_subcategory) && "is-active"]}
+                  >{c.name}</.link>
+                  <ul :if={c.subcategories != []} class="cat-tile__subs">
+                    <li :for={s <- c.subcategories}>
                       <.link
-                        patch={~p"/?#{cat_params(@query, c.slug, nil)}"}
-                        class={["cat-tile__head", @selected_category == c.slug and is_nil(@selected_subcategory) && "is-active"]}
-                      >{c.name}</.link>
-                      <ul :if={c.subcategories != []} class="cat-tile__subs">
-                        <li :for={s <- c.subcategories}>
-                          <.link
-                            patch={~p"/?#{cat_params(@query, nil, s.slug)}"}
-                            class={["cat-tile__sub", @selected_subcategory == s.slug && "is-active"]}
-                          >{s.name}</.link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                        patch={~p"/?#{cat_params(@query, nil, s.slug)}"}
+                        class={["cat-tile__sub", @selected_subcategory == s.slug && "is-active"]}
+                      >{s.name}</.link>
+                    </li>
+                  </ul>
                 </div>
               </div>
-
-              <form class="search" phx-change="search" phx-submit="search">
-                <span class="mag" aria-hidden="true"></span>
-                <input
-                  name="q"
-                  value={@query}
-                  placeholder="Buscar cualquier producto del super…"
-                  autocomplete="off"
-                  phx-debounce="150"
-                  autofocus
-                />
-                <span class="kbd">⌘K</span>
-              </form>
             </div>
           </div>
-        </div>
 
+          <form class="search" phx-change="search" phx-submit="search">
+            <%= if @query != "" do %>
+              <.link
+                patch={~p"/?#{cat_params("", @selected_category, @selected_subcategory)}"}
+                class="mag mag--clearable"
+                aria-label="Limpiar búsqueda"
+              ></.link>
+            <% else %>
+              <span class="mag" aria-hidden="true"></span>
+            <% end %>
+            <input
+              name="q"
+              value={@query}
+              placeholder="Buscar cualquier producto del super…"
+              autocomplete="off"
+              phx-debounce="150"
+              autofocus
+            />
+            <span class="kbd">⌘K</span>
+          </form>
+
+          <button
+            type="button"
+            class="cart-toggle rail-toggle"
+            data-rail-toggle="right"
+            aria-label="Mostrar/ocultar carrito"
+          >
+            <span class="cart-toggle__cart"><.icon_cart /></span>
+            <span class="cart-toggle__close"><.icon_close /></span>
+            <span :if={@cart_items != []} class="rail-toggle__badge">{length(@cart_items)}</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="container layout-body">
         <main class="main">
-         <div class="container">
+          <div :if={@suggestions != []} class="suggestions">
+            <.link
+              :for={{term, _count} <- @suggestions}
+              patch={~p"/?#{cat_params(term, @selected_category, @selected_subcategory)}"}
+              class="suggestion-chip"
+            >{term}</.link>
+          </div>
+
           <%= cond do %>
             <% @products == [] and @query == "" and is_nil(@selected_category) and is_nil(@selected_subcategory) -> %>
-              <div class="results-empty">
-                <div class="arrow">↑</div>
-                <div class="msg">Busca un producto o elige una categoría</div>
-                <div class="stats">Jumbo · Líder · Santa Isabel · Unimarc · Tottus · Acuenta</div>
-              </div>
+              <section :for={band <- @category_previews} class="cat-band">
+                <div class="cat-band__hd">
+                  <h2>
+                    <.link patch={~p"/?#{cat_params("", band.slug, nil)}"}>{band.name}</.link>
+                  </h2>
+                  <.link patch={~p"/?#{cat_params("", band.slug, nil)}"} class="cat-band__more">
+                    Ver todo en {band.name}
+                  </.link>
+                </div>
+                <div class="grid">
+                  <.product_card :for={p <- band.products} p={p} />
+                </div>
+              </section>
             <% @products == [] -> %>
               <div class="results-empty">
                 <div class="msg">Sin resultados</div>
@@ -251,36 +292,11 @@ defmodule SuperBaratoWeb.HomeLive do
               </div>
             <% true -> %>
               <div class="grid">
-                <button
+                <.product_card
                   :for={{p, i} <- Enum.with_index(@products)}
-                  type="button"
-                  class="card"
-                  data-product-id={p.id}
-                  data-product-index={i + 1}
-                  phx-click="add"
-                  phx-value-id={p.id}
-                  aria-label={"Agregar #{p.name}"}
-                >
-                  <div class="img">
-                    <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" />
-                  </div>
-                  <div class="body">
-                    <div class="head">
-                      <div class="name">{p.name}</div>
-                      <div :if={p.brand} class="brand">{p.brand}</div>
-                    </div>
-                    <%= if p.prices == [] do %>
-                      <div class="prices prices--empty">Sin precio</div>
-                    <% else %>
-                      <ul class="prices">
-                        <li :for={row <- p.prices} class={["price-row", row.promo? && "price-row--promo", row.lowest? && "price-row--lowest"]}>
-                          <img class="ch-icon" src={chain_icon_url(row.chain)} alt={row.name} title={row.name} />
-                          <span class="amt">{format_clp(row.price)}</span>
-                        </li>
-                      </ul>
-                    <% end %>
-                  </div>
-                </button>
+                  p={p}
+                  index={i + 1}
+                />
               </div>
               <div
                 :if={length(@products) < @total_count}
@@ -288,13 +304,16 @@ defmodule SuperBaratoWeb.HomeLive do
                 phx-hook="InfiniteScroll"
               ></div>
           <% end %>
-         </div>
-        </main>
-      </div>
 
-      <aside class="rail rail--right">
-        <.rail_right cart_items={@cart_items} />
-      </aside>
+          <footer class="site-footer">
+            SuperBarato.cl — Super. Barato. ¿Se entiende?
+          </footer>
+        </main>
+
+        <aside class="cart-pane">
+          <.rail_right cart_items={@cart_items} />
+        </aside>
+      </div>
 
       <%!-- Bottom-left "X / Y Productos" counter. The total comes
            from the server; the visible count is owned by the
@@ -314,6 +333,63 @@ defmodule SuperBaratoWeb.HomeLive do
     """
   end
 
+  ## ── Card component ──────────────────────────────────────────
+
+  attr :p, :map, required: true
+  attr :index, :integer, default: nil
+
+  defp product_card(assigns) do
+    ~H"""
+    <div
+      class="card"
+      data-product-id={@p.id}
+      data-product-index={@index}
+      phx-click="add"
+      phx-value-id={@p.id}
+      role="button"
+      tabindex="0"
+      aria-label={"Agregar #{@p.name}"}
+    >
+      <div class="img">
+        <img :if={@p.image_url} src={@p.image_url} alt="" loading="lazy" />
+      </div>
+      <div class="body">
+        <div class="head">
+          <div class="name">{@p.name}</div>
+          <div :if={@p.brand} class="brand">{@p.brand}</div>
+        </div>
+        <%= if @p.prices == [] do %>
+          <div class="prices prices--empty">Sin precio</div>
+        <% else %>
+          <ul class="prices">
+            <li
+              :for={row <- @p.prices}
+              class={["price-row", row.promo? && "price-row--promo", row.lowest? && "price-row--lowest"]}
+            >
+              <a
+                :if={row.url}
+                href={row.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="price-link"
+                onclick="event.stopPropagation()"
+                title={"Ver en " <> row.name}
+              >
+                <img class="ch-icon" src={chain_icon_url(row.chain)} alt={row.name} />
+                <span class="amt">{format_clp(row.price)}</span>
+              </a>
+              <span :if={!row.url} class="price-link price-link--nolink">
+                <img class="ch-icon" src={chain_icon_url(row.chain)} alt={row.name} title={row.name} />
+                <span class="amt">{format_clp(row.price)}</span>
+              </span>
+            </li>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+    """
+  end
+
   ## ── Rail components ──────────────────────────────────────────
 
   attr :cart_items, :list, required: true
@@ -324,15 +400,6 @@ defmodule SuperBaratoWeb.HomeLive do
       <a class="logo" href="/" aria-label="SuperBarato.cl">
         <span class="super">SUPER</span><span class="barato">barato</span><span class="tld">.cl</span>
       </a>
-      <button
-        type="button"
-        class="rail-toggle"
-        data-rail-toggle="right"
-        aria-label="Mostrar/ocultar carrito"
-      >
-        <.icon_sidebar_right />
-        <span :if={@cart_items != []} class="rail-toggle__badge">{length(@cart_items)}</span>
-      </button>
     </div>
 
       <%= if @cart_items == [] do %>
@@ -388,10 +455,22 @@ defmodule SuperBaratoWeb.HomeLive do
 
   ## ── Inline icons (24×24, currentColor) ───────────────────────
 
-  defp icon_sidebar_right(assigns) do
+  defp icon_close(assigns) do
     ~H"""
-    <svg viewBox="0 0 24 24" fill="currentColor" class="icon" aria-hidden="true">
-      <path d="M5.579 19.807h13.054c2.137 0 3.367-1.289 3.367-3.579V7.78c0-2.29-1.23-3.587-3.367-3.587H5.579C3.298 4.193 2 5.49 2 7.78v8.448c0 2.29 1.298 3.579 3.579 3.579Zm.009-1.365c-1.408 0-2.222-.806-2.222-2.214V7.78c0-1.408.814-2.222 2.222-2.222h8.643v12.884H5.588Zm12.824-12.884c1.408 0 2.222.814 2.222 2.222v8.448c0 1.408-.814 2.214-2.222 2.214h-2.85V5.558h2.85Zm-1.221 3.155h1.815a.483.483 0 0 0 .483-.475.475.475 0 0 0-.483-.475H17.19a.475.475 0 0 0-.484.475c0 .254.22.475.484.475Zm0 2.197h1.815a.483.483 0 0 0 .483-.483.475.475 0 0 0-.483-.467H17.19a.475.475 0 0 0-.484.467c0 .254.22.483.484.483Zm0 2.188h1.815a.475.475 0 0 0 .483-.466.475.475 0 0 0-.483-.475H17.19a.475.475 0 0 0-.484.475c0 .254.22.466.484.466Z"/>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+         stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+    """
+  end
+
+  defp icon_cart(assigns) do
+    ~H"""
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+         stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true">
+      <path d="M3 4h2.2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.5L21 8H6.5"/>
+      <circle cx="9.5" cy="20" r="1.4" />
+      <circle cx="17.5" cy="20" r="1.4" />
     </svg>
     """
   end
@@ -426,41 +505,6 @@ defmodule SuperBaratoWeb.HomeLive do
     |> Enum.reject(fn {_, v} -> v in [nil, ""] end)
   end
 
-
-  # Per-chain effective price for a product, ordered by @chain_order.
-  # Each entry: %{chain, name, price, promo?}. Listings without a
-  # current_regular_price are dropped. If a chain has multiple
-  # listings linked, we pick the cheapest effective price.
-  defp product_prices(listings) do
-    rows =
-      listings
-      |> Enum.reject(&is_nil(&1.current_regular_price))
-      |> Enum.map(fn l ->
-        reg = l.current_regular_price
-        promo = l.current_promo_price
-        promo? = is_integer(promo) and is_integer(reg) and promo < reg
-        eff = if promo?, do: promo, else: reg
-        %{chain: l.chain, price: eff, promo?: promo?}
-      end)
-      |> Enum.group_by(& &1.chain)
-      |> Enum.map(fn {_chain, rows} -> Enum.min_by(rows, & &1.price) end)
-      |> Enum.sort_by(& &1.price)
-      |> Enum.map(fn row ->
-        Map.put(row, :name, Map.get(@chain_names, row.chain, row.chain))
-      end)
-
-    case rows do
-      [_only] ->
-        Enum.map(rows, &Map.put(&1, :lowest?, false))
-
-      [] ->
-        []
-
-      _ ->
-        min_price = rows |> Enum.map(& &1.price) |> Enum.min()
-        Enum.map(rows, &Map.put(&1, :lowest?, &1.price == min_price))
-    end
-  end
 
   # Static favicon path for each chain. Files live in
   # priv/static/images/chains/ — pre-baked, not crawled.

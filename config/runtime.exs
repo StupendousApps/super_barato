@@ -101,6 +101,21 @@ if config_env() == :prod do
     config :super_barato, :chain_proxies, chain_proxies
   end
 
+  # Cloudflare R2 — used by SuperBarato.Thumbnails to host
+  # ~400px WebP thumbnails of product images. The endpoint is the
+  # account-scoped S3 endpoint; the public base is the URL the home
+  # cards point at (custom domain or pub-XXX.r2.dev). All five must
+  # be set for thumbnail generation to run; missing config makes the
+  # module a no-op and the cards fall back to raw `image_url`.
+  if System.get_env("R2_ACCOUNT_ID") not in [nil, ""] do
+    config :super_barato, :r2,
+      account_id: System.get_env("R2_ACCOUNT_ID"),
+      bucket: System.get_env("R2_BUCKET"),
+      access_key_id: System.get_env("R2_ACCESS_KEY_ID"),
+      secret_access_key: System.get_env("R2_SECRET_ACCESS_KEY"),
+      public_base: System.get_env("R2_PUBLIC_BASE")
+  end
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

@@ -715,6 +715,51 @@ defmodule SuperBarato.Catalog do
       distinct: true
   end
 
+  @stop_words ~w(de la el en y con sin los las del al por para su sus a un una uno mas
+                 que se lo le mi tu nos vos como una es son sea ser sin de)
+  @unit_words ~w(g kg mg ml cl cc lt l un mt cm km oz lb lbs pack pcs unid uns un)
+
+  @doc """
+  Most-frequent meaningful words across the canonical_name + brand
+  fields of products in the given category/subcategory. Used to
+  power the suggestion chips below the search bar.
+
+  Tokenization is intentionally simple: lowercase, strip non-letters,
+  drop stop-words, unit-words, anything ≤ 2 chars, and pure numbers.
+  Returns a list of `{term, count}` tuples, longest run first.
+  """
+  def popular_terms(cat_slug, sub_slug, n \\ 8) do
+    rows =
+      Product
+      |> apply_product_app_category_filter(cat_slug)
+      |> apply_product_app_subcategory_filter(sub_slug)
+      |> select([p], {p.canonical_name, p.brand})
+      |> Repo.all()
+
+    rows
+    |> Enum.flat_map(fn {name, brand} ->
+      tokenize(name) ++ tokenize(brand)
+    end)
+    |> Enum.frequencies()
+    |> Enum.sort_by(fn {_t, c} -> -c end)
+    |> Enum.take(n)
+  end
+
+  defp tokenize(nil), do: []
+
+  defp tokenize(text) when is_binary(text) do
+    text
+    |> String.downcase()
+    |> String.replace(~r/[^\p{L}\p{N}\s]/u, " ")
+    |> String.split(~r/\s+/u, trim: true)
+    |> Enum.reject(fn t ->
+      String.length(t) < 3 or
+        t in @stop_words or
+        t in @unit_words or
+        Regex.match?(~r/^\d+$/, t)
+    end)
+  end
+
   @doc """
   Look up the Product anchored on `(kind, value)` in `product_identifiers`.
   Used by the linker to find-or-create.
@@ -850,6 +895,26 @@ defmodule SuperBarato.Catalog do
       end)
 
     Map.merge(derived, overrides)
+  end
+
+  @doc """
+  Per-category previews for the index empty state: each category
+  with its top `per_cat` cross-chain products (ordered by
+  chain_count desc). Categories with zero matching products are
+  dropped so the index doesn't render empty sections.
+  """
+  def category_previews(per_cat \\ 6) do
+    for c <- Repo.all(from a in AppCategory, order_by: [asc: a.position, asc: a.name]) do
+      products =
+        Product
+        |> apply_product_app_category_filter(c.slug)
+        |> order_by([p], desc: p.chain_count, desc: p.id)
+        |> limit(^per_cat)
+        |> Repo.all()
+
+      %{slug: c.slug, name: c.name, products: products}
+    end
+    |> Enum.reject(&(&1.products == []))
   end
 
   @doc """

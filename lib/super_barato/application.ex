@@ -20,7 +20,10 @@ defmodule SuperBarato.Application do
         # per-chain `Crawler.Chain.FetcherServer` funnels its results
         # through this one process so SQLite never sees write-write
         # contention from the crawler. Sits idle until the first cast.
-        SuperBarato.Crawler.PersistenceServer
+        SuperBarato.Crawler.PersistenceServer,
+        # Warms the public home-page data into ETS every 2 minutes
+        # so HomeLive mounts don't hit the DB for the index view.
+        SuperBarato.HomeCache
       ] ++
         chain_pipeline_specs() ++
         [SuperBaratoWeb.Endpoint]

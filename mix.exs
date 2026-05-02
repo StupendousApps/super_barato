@@ -21,7 +21,7 @@ defmodule SuperBarato.MixProject do
   def application do
     [
       mod: {SuperBarato.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :aws_signature]
     ]
   end
 
@@ -58,6 +58,8 @@ defmodule SuperBarato.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
+      {:vix, "~> 0.34"},
+      {:aws_signature, "~> 0.4"},
       {:stupendous_admin, path: "../stupendous_admin"}
     ]
   end

@@ -4,32 +4,113 @@
    hook (IntersectionObserver on each .card); the total comes from
    the server. */
 .seen-counter {
-  position: fixed;
-  left: 16px; bottom: 16px;
-  z-index: 8;
-  background: color-mix(in oklch, var(--surface) 70%, transparent);
-  backdrop-filter: saturate(140%) blur(18px);
-  -webkit-backdrop-filter: saturate(140%) blur(18px);
-  box-shadow: 0 0 0 1px var(--border), 0 6px 16px rgba(0, 0, 0, .04);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 12px;
-  color: var(--ink-2);
-  font-variant-numeric: tabular-nums;
-  pointer-events: none;
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 8;
+    background: color-mix(in oklch, var(--surface) 70%, transparent);
+    backdrop-filter: saturate(140%) blur(18px);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
+    box-shadow:
+        0 0 0 1px var(--border),
+        0 6px 16px rgba(0, 0, 0, 0.04);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
 }
-.seen-counter [data-seen] { color: var(--ink); font-weight: 600; }
+.seen-counter [data-seen] {
+    color: var(--ink);
+    font-weight: 600;
+}
 
 .results-empty {
-  padding: 90px 20px; text-align: center; color: var(--ink-3);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 90px 20px;
+    text-align: center;
+    color: var(--ink-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
-.results-empty .arrow { font-size: 28px; line-height: 1; color: var(--ink-4); }
-.results-empty .msg { font-size: 14px; color: var(--ink-2); }
-.results-empty .stats { font-size: 12px; color: var(--ink-3); }
+.results-empty .arrow {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--ink-4);
+}
+.results-empty .msg {
+    font-size: 14px;
+    color: var(--ink-2);
+}
+.results-empty .stats {
+    font-size: 12px;
+    color: var(--ink-3);
+}
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    align-items: start;
+    gap: 12px;
+}
+
+/* Per-category preview band on the index empty state. Title row
+   with a "Ver todo en X →" patch link on the right, then a row of
+   sample cards. */
+.cat-band {
+    margin-bottom: 56px;
+}
+.cat-band:last-child {
+    margin-bottom: 0;
+}
+.cat-band__hd {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 4px 14px;
+}
+.cat-band__hd h2 {
+    font:
+        700 24px/1.15 "Instrument Sans",
+        sans-serif;
+    margin: 0;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+}
+.cat-band__hd h2 a {
+    color: inherit;
+    text-decoration: none;
+}
+.cat-band__hd h2 a:hover {
+    text-decoration: underline;
+}
+.cat-band__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+}
+.cat-band__more::after {
+    content: "→";
+    transition: transform 0.14s ease;
+}
+.cat-band__more:hover {
+    text-decoration: underline;
+}
+.cat-band__more:hover::after {
+    transform: translateX(2px);
+}
+
+.site-footer {
+    margin-top: 48px;
+    padding: 24px 4px 8px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-3);
 }

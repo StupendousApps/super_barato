@@ -1,17 +1,67 @@
-.search-block {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-  padding: 16px 94px 14px 80px;
-  pointer-events: none;
+/* The category picker, search input, and cart toggle live inline
+   in `.topbar__inner` — see layout.css for the row's layout. The
+   toggle stays in the same spot whether the cart is open or
+   closed; when the cart is open, hovering the button morphs the
+   cart glyph into an × (mirrors the magnifier → × treatment on a
+   non-empty search input). */
+/* Glass-pill cart toggle — same surface treatment as the
+   `.search-cat-button` and `.search` input bar so the topbar reads
+   as a row of three matching pills. */
+.cart-toggle {
+  flex-shrink: 0;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px;
+  padding: 0;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  color: var(--ink);
+  transition: background .12s ease;
 }
-.search-block > * { pointer-events: auto; }
+.cart-toggle:hover { background: var(--surface); }
+.cart-toggle__cart,
+.cart-toggle__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-toggle__close { display: none; }
+html[data-rail-right="expanded"] .cart-toggle:hover .cart-toggle__cart {
+  display: none;
+}
+html[data-rail-right="expanded"] .cart-toggle:hover .cart-toggle__close {
+  display: inline-flex;
+}
 
-/* Search row: a single horizontal row containing the leading
-   category dropdown button and the search input bar. Both share
-   the same height and the picker's panel drops below the button. */
-.search-row {
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
+/* Inline suggestion chips below the search row — most-frequent
+   words across the active category's products. Clicking a chip
+   patches q= so it folds into the existing search flow. */
+.suggestions {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin: 0 0 40px;
+}
+.suggestion-chip {
+  display: inline-flex; align-items: center;
+  background: color-mix(in oklch, var(--surface) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
+  box-shadow: 0 0 0 1px var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: background .12s ease, color .12s ease;
+  text-transform: capitalize;
+}
+.suggestion-chip:hover {
+  background: var(--surface);
+  color: var(--ink);
 }
 
 /* The category dropdown sits to the left of the search input. The
@@ -230,6 +280,31 @@
   position: absolute;
   top: 23px; left: 23px;
   width: 1.8px; height: 7px;
+  background: var(--ink-2);
+  transform: rotate(-45deg);
+  border-radius: 2px;
+}
+
+/* Clearable variant — when there's a query, the magnifier becomes
+   a clickable link that morphs into an × on hover and clears `q`
+   on click. The magnifier glyph is rebuilt from the same two
+   pseudo-elements: on hover both turn into a 16px line crossed at
+   ±45° to read as an ×. */
+.search .mag--clearable {
+  pointer-events: auto;
+  cursor: pointer;
+  display: block;
+}
+.search .mag--clearable:hover::before {
+  top: 17px; left: 10px;
+  width: 16px; height: 1.8px;
+  border: 0; border-radius: 2px;
+  background: var(--ink-2);
+  transform: rotate(45deg);
+}
+.search .mag--clearable:hover::after {
+  top: 17px; left: 10px;
+  width: 16px; height: 1.8px;
   background: var(--ink-2);
   transform: rotate(-45deg);
   border-radius: 2px;
