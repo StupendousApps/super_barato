@@ -21,6 +21,11 @@ defmodule SuperBarato.Application do
         # through this one process so SQLite never sees write-write
         # contention from the crawler. Sits idle until the first cast.
         SuperBarato.Crawler.PersistenceServer,
+        # Singleton thumbnail downloader. PersistenceServer enqueues
+        # product_ids whose Product row was just created (or has no
+        # thumbnail_key yet); this server fetches + resizes + uploads
+        # to R2. One process so we don't hammer CDNs.
+        SuperBarato.Crawler.ThumbnailServer,
         # Warms the public home-page data into ETS every 2 minutes
         # so HomeLive mounts don't hit the DB for the index view.
         SuperBarato.HomeCache

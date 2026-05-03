@@ -48,3 +48,15 @@ config :phoenix_live_view,
 # Sort query params output of verified routes for robust url comparisons
 config :phoenix,
   sort_verified_routes_query_params: true
+
+# Thumbnail pipeline: route HTTP through the library's in-memory
+# mock so the fetch → resize → upload → delete flow is exercised
+# without the network. Fake R2 creds make `Config.r2/0` return
+# non-nil so the upload/delete code paths fire.
+config :stupendous_thumbnails,
+  transport: StupendousThumbnails.Transport.Mock,
+  account_id: "test-account",
+  bucket: "test-bucket",
+  access_key_id: "AKIA-test",
+  secret_access_key: "secret-test",
+  public_base: "https://thumbs.test"

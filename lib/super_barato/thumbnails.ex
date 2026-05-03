@@ -1,265 +1,148 @@
 defmodule SuperBarato.Thumbnails do
   @moduledoc """
-  Generate ~400px WebP thumbnails of product images and store them
-  on Cloudflare R2.
-
-  ## Flow
-
-      Catalog upsert / backfill task
-        │
-        ▼
-      Thumbnails.ensure(product)
-        │  fetch image_url with Req
-        │  resize to 400px max edge with libvips (vix)
-        │  encode as WebP, q=80
-        │  PUT to R2 via SigV4-signed Req call
-        ▼
-      product.thumbnail_key = "thumbnails/<sha>.webp"
-
-  The R2 object key is content-addressed: SHA-256 of the source
-  `image_url` is the basis, so the same URL is uploaded once and
-  re-using the same thumbnail across products is free. Object keys
-  are stored on the product so the home cards can render the public
-  R2 URL without re-querying the bucket.
-
-  Configuration lives under `config :super_barato, :r2` (see
-  runtime.exs). When the config is missing every entry point becomes
-  a no-op and `thumbnail_url/1` falls back to the raw chain CDN
-  `image_url`. Useful for local dev where R2 credentials aren't set.
+  Super Barato glue around `StupendousThumbnails`. The library
+  handles the R2 + libvips heavy lifting; this module owns the
+  app-specific bits: which sizes to generate, how to derive the
+  R2 key prefix from a product's image URL, and the fall-back
+  rules for `thumbnail_url/1`.
   """
 
   require Logger
 
   alias SuperBarato.Catalog.Product
   alias SuperBarato.Repo
+  alias StupendousThumbnails.Image
 
-  alias Vix.Vips.Image, as: VImage
-
-  @max_edge 400
-  @webp_quality 80
+  @target_size 400
+  @sizes [@target_size]
+  @format :webp
 
   @doc """
-  Returns the URL the home cards should render for `product`.
-  Prefers the R2-hosted thumbnail when the product carries a
-  `thumbnail_key`; otherwise falls back to the raw `image_url`.
+  Public URL for the home cards. Prefers the largest available
+  thumbnail variant; falls back to the raw chain CDN `image_url`
+  when no thumbnail has been generated yet.
   """
-  def thumbnail_url(%Product{thumbnail_key: key}) when is_binary(key) and key != "" do
-    case public_base() do
-      nil -> nil
-      base -> base <> "/" <> key
-    end
+  @spec thumbnail_url(Product.t()) :: String.t() | nil
+  def thumbnail_url(%Product{thumbnail: %Image{} = image, image_url: fallback}) do
+    Image.best_url(image, @target_size) || fallback
   end
 
   def thumbnail_url(%Product{image_url: url}), do: url
 
   @doc """
-  Generate-and-upload a thumbnail for `product` if it doesn't have
-  one yet and R2 is configured. Returns the updated product on
-  success, the original product on no-op or error (errors logged).
+  Generate-and-upload a thumbnail for `product` if it doesn't
+  have one yet and an `image_url` is available. Returns the
+  updated product on success, the original on no-op or error.
   """
-  def ensure(%Product{thumbnail_key: key} = product) when is_binary(key) and key != "",
-    do: {:ok, product}
-
+  @spec ensure(Product.t()) :: {:ok, Product.t()}
+  def ensure(%Product{thumbnail: %Image{variants: [_ | _]}} = product), do: {:ok, product}
   def ensure(%Product{image_url: nil} = product), do: {:ok, product}
   def ensure(%Product{image_url: ""} = product), do: {:ok, product}
 
   def ensure(%Product{image_url: url} = product) do
-    case config() do
-      nil ->
-        {:ok, product}
+    case StupendousThumbnails.fetch_and_generate(url, generate_opts(url)) do
+      {:ok, image} ->
+        update_product(product, url, image)
 
-      r2 ->
-        with {:ok, source} <- fetch(url),
-             {:ok, webp} <- resize_webp(source),
-             key = key_for(url),
-             :ok <- upload(r2, key, webp) do
-          product
-          |> Product.changeset(%{thumbnail_key: key})
-          |> Repo.update()
-        else
-          {:error, reason} ->
-            Logger.warning("thumbnails: skipping product #{product.id} — #{inspect(reason)}")
-            {:ok, product}
-        end
+      {:error, reason} ->
+        Logger.warning("thumbnails: skipping product #{product.id} — #{inspect(reason)}")
+        {:ok, product}
     end
   end
 
   @doc """
   Override `product`'s thumbnail with one generated from
-  `image_url`. Fetches the source, resizes, uploads to R2, updates
-  `product.image_url` + `product.thumbnail_key`, and (best-effort)
-  deletes the previous R2 object when no other product still
-  references that key.
+  `image_url`. Updates `product.image_url`, regenerates the
+  variants, and (best-effort) deletes the previous R2 objects
+  whose keys are no longer referenced by any other product.
   """
+  @spec use_image(Product.t(), String.t()) ::
+          {:ok, Product.t()} | {:error, term()}
   def use_image(%Product{} = product, image_url)
       when is_binary(image_url) and image_url != "" do
-    case config() do
-      nil ->
-        # Dev / no R2: just point the product at the new image_url.
-        product
-        |> Product.changeset(%{image_url: image_url, thumbnail_key: nil})
-        |> Repo.update()
+    old_image = product.thumbnail
 
-      r2 ->
-        old_key = product.thumbnail_key
+    case StupendousThumbnails.fetch_and_generate(image_url, generate_opts(image_url)) do
+      {:ok, new_image} ->
+        case update_product(product, image_url, new_image) do
+          {:ok, updated} ->
+            if old_image, do: cleanup_old(old_image, updated.id)
+            {:ok, updated}
 
-        with {:ok, source} <- fetch(image_url),
-             {:ok, webp} <- resize_webp(source),
-             new_key = key_for(image_url),
-             :ok <- upload(r2, new_key, webp),
-             {:ok, updated} <-
-               product
-               |> Product.changeset(%{image_url: image_url, thumbnail_key: new_key})
-               |> Repo.update() do
-          if is_binary(old_key) and old_key != "" and old_key != new_key and
-               not key_used_by_other_product?(updated.id, old_key) do
-            delete_object(old_key)
-          end
-
-          {:ok, updated}
+          err ->
+            err
         end
+
+      {:error, _} = err ->
+        err
     end
-  end
-
-  defp key_used_by_other_product?(product_id, key) do
-    import Ecto.Query
-
-    Repo.exists?(
-      from p in Product,
-        where: p.thumbnail_key == ^key and p.id != ^product_id
-    )
   end
 
   @doc """
-  Delete the R2 object at `key`. No-op when R2 isn't configured or
-  when the key is blank. Logs and swallows transport errors — this
-  is best-effort cleanup; a stranded object is much cheaper than
-  failing the surrounding admin action.
+  Walk the embed and delete every R2 object the product points
+  at, but only those keys no surviving product still references.
+  Used by `Catalog.delete_chain_category_listings/1` after
+  hard-deleting orphan products.
   """
-  def delete_object(nil), do: :ok
-  def delete_object(""), do: :ok
-
-  def delete_object(key) when is_binary(key) do
-    case config() do
-      nil ->
-        :ok
-
-      r2 ->
-        url = "https://#{r2[:account_id]}.r2.cloudflarestorage.com/#{r2[:bucket]}/#{key}"
-        headers = sign_delete(url, r2)
-
-        case Req.delete(url, headers: headers, receive_timeout: 15_000) do
-          {:ok, %Req.Response{status: status}} when status in 200..299 ->
-            :ok
-
-          {:ok, %Req.Response{status: 404}} ->
-            :ok
-
-          {:ok, %Req.Response{status: status, body: body}} ->
-            Logger.warning("thumbnails: delete #{key} → #{status} #{inspect(body)}")
-            :ok
-
-          {:error, e} ->
-            Logger.warning("thumbnails: delete #{key} failed: #{inspect(e)}")
-            :ok
-        end
-    end
+  @spec delete_unreferenced(Image.t(), pos_integer() | nil) :: :ok
+  def delete_unreferenced(%Image{} = image, exclude_product_id \\ nil) do
+    StupendousThumbnails.delete_unreferenced(image, fn key ->
+      key_in_use_by_other?(key, exclude_product_id)
+    end)
   end
 
   ## ── Internals ───────────────────────────────────────────────
 
-  defp fetch(url) do
-    case Req.get(url, decode_body: false, receive_timeout: 15_000) do
-      {:ok, %Req.Response{status: 200, body: body}} -> {:ok, body}
-      {:ok, %Req.Response{status: status}} -> {:error, {:http, status}}
-      {:error, e} -> {:error, e}
-    end
+  defp update_product(product, new_image_url, new_image) do
+    attrs = %{image_url: new_image_url, thumbnail: Image.to_attrs(new_image)}
+
+    product
+    |> Product.changeset(attrs)
+    |> Repo.update()
   end
 
-  # Decode + resize in one pass. Vips' `thumbnail_buffer/2` reads,
-  # downscales (keeping aspect ratio so the largest edge ≤ @max_edge),
-  # and yields a Vix image; we then encode it to WebP.
-  defp resize_webp(source_bin) do
-    with {:ok, scaled} <- Vix.Vips.Operation.thumbnail_buffer(source_bin, @max_edge),
-         {:ok, webp} <- VImage.write_to_buffer(scaled, ".webp[Q=#{@webp_quality}]") do
-      {:ok, webp}
-    end
+  defp cleanup_old(%Image{} = image, surviving_product_id) do
+    StupendousThumbnails.delete_unreferenced(image, fn key ->
+      key_in_use_by_other?(key, surviving_product_id)
+    end)
   end
 
-  defp key_for(url) do
+  # SQLite + JSON1 lookup: any product (other than the surviving
+  # one) whose `thumbnail` JSON has a variant with this key.
+  defp key_in_use_by_other?(key, exclude_id) do
+    import Ecto.Query
+
+    base =
+      from p in Product,
+        where:
+          fragment(
+            "EXISTS (SELECT 1 FROM json_each(json_extract(?, '$.variants')) WHERE json_extract(value, '$.key') = ?)",
+            p.thumbnail,
+            ^key
+          )
+
+    query =
+      case exclude_id do
+        nil -> base
+        id -> from p in base, where: p.id != ^id
+      end
+
+    Repo.exists?(query)
+  end
+
+  defp generate_opts(image_url) do
+    [
+      sizes: @sizes,
+      format: @format,
+      key_prefix: key_prefix(image_url)
+    ]
+  end
+
+  # Content-addressed prefix: same `image_url` → same R2 key
+  # (the library appends `-<size>.<ext>`), so two products that
+  # share an image dedup at the bucket level.
+  defp key_prefix(url) do
     sha = :crypto.hash(:sha256, url) |> Base.encode16(case: :lower)
-    "thumbnails/#{binary_part(sha, 0, 2)}/#{binary_part(sha, 2, 30)}.webp"
-  end
-
-  # PUT the object to R2. R2 speaks the S3 API on
-  # https://<account>.r2.cloudflarestorage.com/<bucket>/<key> using
-  # SigV4 signed against region "auto".
-  defp upload(r2, key, body) do
-    url = "https://#{r2[:account_id]}.r2.cloudflarestorage.com/#{r2[:bucket]}/#{key}"
-
-    headers = sign_put(url, body, "image/webp", r2)
-
-    case Req.put(url, body: body, headers: headers, receive_timeout: 15_000) do
-      {:ok, %Req.Response{status: status}} when status in 200..299 -> :ok
-      {:ok, %Req.Response{status: status, body: body}} -> {:error, {:r2_put, status, body}}
-      {:error, e} -> {:error, e}
-    end
-  end
-
-  defp sign_delete(url, r2) do
-    now = DateTime.utc_now()
-    empty_sha = :crypto.hash(:sha256, "") |> Base.encode16(case: :lower)
-
-    :aws_signature.sign_v4(
-      r2[:access_key_id],
-      r2[:secret_access_key],
-      "auto",
-      "s3",
-      now |> DateTime.to_naive() |> NaiveDateTime.to_erl(),
-      "DELETE",
-      url,
-      [{"x-amz-content-sha256", empty_sha}],
-      "",
-      []
-    )
-  end
-
-  defp sign_put(url, body, content_type, r2) do
-    now = DateTime.utc_now()
-
-    :aws_signature.sign_v4(
-      r2[:access_key_id],
-      r2[:secret_access_key],
-      "auto",
-      "s3",
-      now |> DateTime.to_naive() |> NaiveDateTime.to_erl(),
-      "PUT",
-      url,
-      [
-        {"content-type", content_type},
-        {"x-amz-content-sha256", :crypto.hash(:sha256, body) |> Base.encode16(case: :lower)}
-      ],
-      body,
-      []
-    )
-  end
-
-  defp config do
-    case Application.get_env(:super_barato, :r2) do
-      nil ->
-        nil
-
-      r2 ->
-        if Enum.all?([:account_id, :bucket, :access_key_id, :secret_access_key], &r2[&1]),
-          do: r2,
-          else: nil
-    end
-  end
-
-  defp public_base do
-    case config() do
-      nil -> nil
-      r2 -> r2[:public_base] && String.trim_trailing(r2[:public_base], "/")
-    end
+    "thumbnails/#{binary_part(sha, 0, 2)}/#{binary_part(sha, 2, 28)}"
   end
 end

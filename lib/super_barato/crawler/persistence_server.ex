@@ -23,6 +23,8 @@ defmodule SuperBarato.Crawler.PersistenceServer do
   require Logger
 
   alias SuperBarato.{Catalog, Linker, PriceLog}
+  alias SuperBarato.Catalog.Product
+  alias SuperBarato.Crawler.ThumbnailServer
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
@@ -197,7 +199,14 @@ defmodule SuperBarato.Crawler.PersistenceServer do
   end
 
   defp link_listing(chain_listing_id) do
-    Linker.link_listing(chain_listing_id)
+    case Linker.link_listing(chain_listing_id) do
+      {:ok, %Product{id: pid, thumbnail: nil, image_url: url}}
+      when is_binary(url) and url != "" ->
+        ThumbnailServer.enqueue(pid)
+
+      _ ->
+        :ok
+    end
   rescue
     err ->
       Logger.warning(

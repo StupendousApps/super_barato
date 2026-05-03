@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Thumbnails.Backfill do
   @moduledoc """
-  Walk every Product that has an `image_url` but no `thumbnail_key`,
+  Walk every Product that has an `image_url` but no `thumbnail` embed,
   download the source image, resize/encode to ~400px WebP, and upload
   to R2 via `SuperBarato.Thumbnails`.
 
@@ -30,7 +30,7 @@ defmodule Mix.Tasks.Thumbnails.Backfill do
 
     query =
       from p in Product,
-        where: not is_nil(p.image_url) and p.image_url != "" and is_nil(p.thumbnail_key),
+        where: not is_nil(p.image_url) and p.image_url != "" and is_nil(p.thumbnail),
         order_by: [desc: p.chain_count, asc: p.id]
 
     query = if limit, do: limit(query, ^limit), else: query
@@ -44,8 +44,8 @@ defmodule Mix.Tasks.Thumbnails.Backfill do
       |> Enum.with_index(1)
       |> Enum.reduce({0, 0}, fn {p, i}, {ok, fail} ->
         case Thumbnails.ensure(p) do
-          {:ok, %Product{thumbnail_key: key}} when is_binary(key) ->
-            IO.puts("  [#{i}/#{total}] ✓ #{p.id} → #{key}")
+          {:ok, %Product{thumbnail: %StupendousThumbnails.Image{variants: [v | _]}}} ->
+            IO.puts("  [#{i}/#{total}] ✓ #{p.id} → #{v.key}")
             {ok + 1, fail}
 
           {:ok, _} ->

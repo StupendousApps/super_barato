@@ -60,7 +60,8 @@ defmodule SuperBarato.MixProject do
       {:bandit, "~> 1.5"},
       {:vix, "~> 0.34"},
       {:aws_signature, "~> 0.4"},
-      {:stupendous_admin, path: "../stupendous_admin"}
+      {:stupendous_admin, path: "../stupendous_admin"},
+      {:stupendous_thumbnails, path: "../stupendous_thumbnails"}
     ]
   end
 

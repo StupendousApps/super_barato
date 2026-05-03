@@ -115,10 +115,10 @@ defmodule SuperBarato.Catalog do
                     → product_listings          (FK delete_all)
     products (orphaned) → product_identifiers   (FK delete_all)
 
-  Thumbnail R2 cleanup runs after the transaction commits. We only
-  delete an R2 object once no surviving Product references the same
-  `thumbnail_key` (keys are content-addressed by image_url, so two
-  products that share an image share a key).
+  Thumbnail R2 cleanup runs after the transaction commits. Each
+  orphaned product's thumbnail embed is walked through
+  `Thumbnails.delete_unreferenced/2` so we only delete R2 objects
+  whose keys aren't still referenced by some other Product.
   """
   def delete_chain_category_listings(category_id) do
     Repo.transaction(fn ->
@@ -130,7 +130,7 @@ defmodule SuperBarato.Catalog do
         )
 
       if listing_ids == [] do
-        %{listings: 0, products: 0, thumbnail_keys: []}
+        %{listings: 0, products: 0, deleted_thumbnails: []}
       else
         candidate_product_ids =
           Repo.all(
@@ -144,14 +144,14 @@ defmodule SuperBarato.Catalog do
           Repo.delete_all(from l in ChainListing, where: l.id in ^listing_ids)
 
         # After cascade: products with zero remaining product_listings
-        # are now orphans. Capture their thumbnail keys before delete.
+        # are now orphans. Capture their thumbnail embeds before delete.
         orphan_rows =
           Repo.all(
             from p in Product,
               left_join: pl in ProductListing,
               on: pl.product_id == p.id,
               where: p.id in ^candidate_product_ids and is_nil(pl.id),
-              select: {p.id, p.thumbnail_key}
+              select: {p.id, p.thumbnail}
           )
 
         orphan_ids = Enum.map(orphan_rows, &elem(&1, 0))
@@ -159,32 +159,25 @@ defmodule SuperBarato.Catalog do
         {n_products, _} =
           Repo.delete_all(from p in Product, where: p.id in ^orphan_ids)
 
-        thumbnail_keys =
+        thumbnails =
           orphan_rows
           |> Enum.map(&elem(&1, 1))
-          |> Enum.reject(&(&1 in [nil, ""]))
-          |> Enum.uniq()
+          |> Enum.reject(&is_nil/1)
 
-        %{listings: n_listings, products: n_products, thumbnail_keys: thumbnail_keys}
+        %{listings: n_listings, products: n_products, deleted_thumbnails: thumbnails}
       end
     end)
     |> case do
       {:ok, result} ->
-        # Only delete R2 objects whose keys aren't held by any
-        # surviving Product (image_url-derived keys can be shared).
-        result.thumbnail_keys
-        |> Enum.reject(&thumbnail_key_in_use?/1)
-        |> Enum.each(&Thumbnails.delete_object/1)
+        Enum.each(result.deleted_thumbnails, fn image ->
+          Thumbnails.delete_unreferenced(image)
+        end)
 
-        {:ok, Map.delete(result, :thumbnail_keys)}
+        {:ok, Map.delete(result, :deleted_thumbnails)}
 
       other ->
         other
     end
-  end
-
-  defp thumbnail_key_in_use?(key) do
-    Repo.exists?(from p in Product, where: p.thumbnail_key == ^key)
   end
 
   # Chains whose category slugs are slash-separated breadcrumbs

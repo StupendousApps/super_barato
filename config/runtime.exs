@@ -101,14 +101,12 @@ if config_env() == :prod do
     config :super_barato, :chain_proxies, chain_proxies
   end
 
-  # Cloudflare R2 — used by SuperBarato.Thumbnails to host
-  # ~400px WebP thumbnails of product images. The endpoint is the
-  # account-scoped S3 endpoint; the public base is the URL the home
-  # cards point at (custom domain or pub-XXX.r2.dev). All five must
-  # be set for thumbnail generation to run; missing config makes the
-  # module a no-op and the cards fall back to raw `image_url`.
+  # Cloudflare R2 — wired through `:stupendous_thumbnails` so the
+  # library generates + uploads variants. All four ID/key vars are
+  # required for thumbnailing to run; missing config makes the
+  # library a no-op and the cards fall back to raw `image_url`.
   if System.get_env("R2_ACCOUNT_ID") not in [nil, ""] do
-    config :super_barato, :r2,
+    config :stupendous_thumbnails,
       account_id: System.get_env("R2_ACCOUNT_ID"),
       bucket: System.get_env("R2_BUCKET"),
       access_key_id: System.get_env("R2_ACCESS_KEY_ID"),

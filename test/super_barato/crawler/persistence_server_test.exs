@@ -234,4 +234,79 @@ defmodule SuperBarato.Crawler.PersistenceServerTest do
     end
   end
 
+  describe "thumbnail hand-off" do
+    alias SuperBarato.Catalog.Product
+    alias SuperBarato.Crawler.ThumbnailServer
+    alias StupendousThumbnails.Image
+    alias StupendousThumbnails.Transport.Mock, as: MockTransport
+
+    setup do
+      MockTransport.reset()
+      Ecto.Adapters.SQL.Sandbox.allow(Repo, self(), Process.whereis(ThumbnailServer))
+      :ok
+    end
+
+    test "fresh listing → product is enqueued and thumbnailed end-to-end", %{chain: chain} do
+      listings = [
+        %Listing{
+          chain: chain,
+          chain_sku: "sku-thumb",
+          ean: "7801111111111",
+          identifiers_key: "ean=7801111111111,sku=sku-thumb",
+          name: "Thumb test",
+          image_url: "https://cdn.test/thumb.png",
+          category_path: "test",
+          regular_price: 1000
+        }
+      ]
+
+      before = ThumbnailServer.metrics().total_handled
+
+      :ok =
+        PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "test"}},
+          listings
+        )
+
+      # Sync barrier — drains all preceding casts on the singleton.
+      _ = :sys.get_state(ThumbnailServer)
+
+      assert ThumbnailServer.metrics().total_handled == before + 1
+
+      product =
+        Repo.get_by!(
+          Product,
+          image_url: "https://cdn.test/thumb.png"
+        )
+
+      assert %Image{variants: [_ | _]} = product.thumbnail
+      assert "https://cdn.test/thumb.png" in MockTransport.gets()
+    end
+
+    test "listing whose product already has a thumbnail does NOT enqueue", %{chain: chain} do
+      # First pass: creates the product and thumbnails it.
+      l = %Listing{
+        chain: chain,
+        chain_sku: "sku-twice",
+        ean: "7802222222222",
+        identifiers_key: "ean=7802222222222,sku=sku-twice",
+        name: "Already thumbed",
+        image_url: "https://cdn.test/twice.png",
+        category_path: "test",
+        regular_price: 1000
+      }
+
+      :ok = PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "test"}}, [l])
+      _ = :sys.get_state(ThumbnailServer)
+
+      MockTransport.reset()
+      before = ThumbnailServer.metrics().total_handled
+
+      # Second pass: re-discover the same listing.
+      :ok = PersistenceServer.persist_sync(chain, StubAdapter, {:discover_products, %{chain: chain, slug: "test"}}, [l])
+      _ = :sys.get_state(ThumbnailServer)
+
+      assert ThumbnailServer.metrics().total_handled == before
+      assert MockTransport.gets() == []
+    end
+  end
 end

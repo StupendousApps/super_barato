@@ -56,7 +56,8 @@ defmodule SuperBarato.Linker do
   function just runs the linking logic.
 
   Skips listings with no price or no usable identifier. Returns
-  `:ok | :skip`.
+  `{:ok, %Product{}}` for the linked product (so callers can chain
+  follow-up work like thumbnail generation), or `:skip`.
   """
   def link_listing(chain_listing_id) when is_integer(chain_listing_id) do
     case Repo.get(ChainListing, chain_listing_id) do
@@ -82,7 +83,7 @@ defmodule SuperBarato.Linker do
               linked_at: DateTime.utc_now() |> DateTime.truncate(:second)
             )
 
-            :ok
+            {:ok, product}
         end
     end
   end
