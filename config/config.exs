@@ -7,22 +7,18 @@
 # General application configuration
 import Config
 
-config :super_barato, :scopes,
-  user: [
-    default: true,
-    module: SuperBarato.Accounts.Scope,
-    assign_key: :current_scope,
-    access_path: [:user, :id],
-    schema_key: :user_id,
-    schema_type: :id,
-    schema_table: :users,
-    test_data_fixture: SuperBarato.AccountsFixtures,
-    test_setup_helper: :register_and_log_in_user
-  ]
-
 config :super_barato,
   ecto_repos: [SuperBarato.Repo],
   generators: [timestamp_type: :utc_datetime]
+
+# Admin auth + notifications via the stupendous_admin library.
+# Repo is shared with the app; admin tables (admin_users,
+# admin_session_tokens, admin_notifications) live in the same DB.
+# Routes mount under the `admin.` subdomain so the scope prefix is "/".
+config :stupendous_admin,
+  repo: SuperBarato.Repo,
+  signed_in_path: "/",
+  log_in_path: "/log-in"
 
 # Configure the endpoint
 config :super_barato, SuperBaratoWeb.Endpoint,

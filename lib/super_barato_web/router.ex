@@ -1,7 +1,6 @@
 defmodule SuperBaratoWeb.Router do
   use SuperBaratoWeb, :router
-
-  import SuperBaratoWeb.UserAuth
+  use StupendousAdmin.Web.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -10,28 +9,25 @@ defmodule SuperBaratoWeb.Router do
     plug :put_root_layout, html: {SuperBaratoWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :fetch_current_scope_for_user
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  ## Admin — served from the `admin.` subdomain. Declared FIRST so the
-  ## host-constrained routes get a chance to match before the catch-all
-  ## public scope below. Phoenix's `host:` with a trailing dot matches
-  ## any subdomain starting with that prefix (admin.superbarato.cl,
-  ## admin.localhost, etc.).
+  ## Admin — served from the `admin.` subdomain. Library auth lives
+  ## directly at the host root (no `/admin` prefix) since the
+  ## subdomain already namespaces the surface.
+
+  # Library-mounted: /log-in, /log-out, /profile, /users (CRUD).
+  stupendous_admin_routes(
+    pipeline: :browser,
+    scope: "/",
+    scope_opts: [host: "admin."]
+  )
 
   scope "/", SuperBaratoWeb.Admin, host: "admin.", as: :admin do
-    pipe_through [:browser, :redirect_if_admin]
-
-    get "/login", SessionController, :new
-    post "/login", SessionController, :create
-  end
-
-  scope "/", SuperBaratoWeb.Admin, host: "admin.", as: :admin do
-    pipe_through [:browser, :require_admin]
+    pipe_through [:browser, :stupendous_admin_fetch, :stupendous_admin_require]
 
     get "/", DashboardController, :index
     get "/products", ProductController, :index
@@ -64,20 +60,13 @@ defmodule SuperBaratoWeb.Router do
     resources "/crawlers/schedules", ScheduleController, except: [:show]
 
     live_session :crawlers_live,
-      on_mount: [{SuperBaratoWeb.UserAuth, :require_admin}],
+      on_mount: [{StupendousAdmin.Auth.Plug, :ensure_authenticated}],
       root_layout: {SuperBaratoWeb.AdminLayouts, :root},
       layout: {SuperBaratoWeb.AdminLayouts, :admin} do
       live "/crawlers/live", CrawlerLive, :index
     end
 
     get "/crawlers/manual", ManualController, :index
-
-    resources "/users", UserController, only: [:index, :edit, :update, :delete]
-
-    # The library's <.top_navigation> logout slot submits POST, so we
-    # accept both POST and DELETE here.
-    post "/logout", SessionController, :delete
-    delete "/logout", SessionController, :delete
   end
 
   ## Public — catches everything else (the apex + www hosts).

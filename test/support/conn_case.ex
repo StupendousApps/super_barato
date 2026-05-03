@@ -37,43 +37,27 @@ defmodule SuperBaratoWeb.ConnCase do
   end
 
   @doc """
-  Setup helper that registers and logs in users.
+  Register an admin and stamp the conn with a session for them.
+  Drop into a test:
 
-      setup :register_and_log_in_user
-
-  It stores an updated connection and a registered user in the
-  test context.
+      setup :register_and_log_in_admin
   """
-  def register_and_log_in_user(%{conn: conn} = context) do
-    user = SuperBarato.AccountsFixtures.user_fixture()
-    scope = SuperBarato.Accounts.Scope.for_user(user)
+  def register_and_log_in_admin(%{conn: conn}, attrs \\ %{}) do
+    base = %{
+      email: "admin#{System.unique_integer([:positive])}@example.com",
+      password: "correct-horse-battery"
+    }
 
-    opts =
-      context
-      |> Map.take([:token_authenticated_at])
-      |> Enum.into([])
-
-    %{conn: log_in_user(conn, user, opts), user: user, scope: scope}
+    {:ok, admin} = StupendousAdmin.Accounts.register_admin_user(Map.merge(base, attrs))
+    %{conn: log_in_admin(conn, admin), admin: admin}
   end
 
-  @doc """
-  Logs the given `user` into the `conn`.
-
-  It returns an updated `conn`.
-  """
-  def log_in_user(conn, user, opts \\ []) do
-    token = SuperBarato.Accounts.generate_user_session_token(user)
-
-    maybe_set_token_authenticated_at(token, opts[:token_authenticated_at])
+  @doc "Stamp `conn` with an admin session (no Repo writes needed beyond the token)."
+  def log_in_admin(conn, admin) do
+    token = StupendousAdmin.Accounts.generate_admin_user_session_token(admin)
 
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
-    |> Plug.Conn.put_session(:user_token, token)
-  end
-
-  defp maybe_set_token_authenticated_at(_token, nil), do: nil
-
-  defp maybe_set_token_authenticated_at(token, authenticated_at) do
-    SuperBarato.AccountsFixtures.override_token_authenticated_at(token, authenticated_at)
+    |> Plug.Conn.put_session(:admin_token, token)
   end
 end

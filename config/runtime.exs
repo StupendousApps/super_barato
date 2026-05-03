@@ -126,6 +126,13 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
+  # Admin session cookie. Salt may be the same as the
+  # `secret_key_base` since it's used as input to derived keys, but
+  # we accept dedicated env vars for explicitness.
+  config :stupendous_admin,
+    signing_salt: System.get_env("ADMIN_SIGNING_SALT") || secret_key_base,
+    encryption_salt: System.get_env("ADMIN_ENCRYPTION_SALT") || secret_key_base
+
   host = System.get_env("PHX_HOST") || "example.com"
 
   config :super_barato, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")

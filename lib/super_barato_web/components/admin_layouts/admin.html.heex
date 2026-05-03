@@ -9,8 +9,9 @@
     <:item key={:app_categories} href={~p"/app-categories"}>App Categories</:item>
     <:item key={:crawlers} href={~p"/crawlers/live"}>Crawlers</:item>
     <:item key={:users} href={~p"/users"}>Users</:item>
-    <:trailing>{@current_scope.user.email}</:trailing>
-    <:logout href={~p"/logout"}>
+    <:item key={:profile} href={~p"/profile"}>Profile</:item>
+    <:trailing>{@current_admin && @current_admin.email}</:trailing>
+    <:logout href={~p"/log-out"}>
       <.sfsymbol name="signout" />
     </:logout>
   </.top_navigation>

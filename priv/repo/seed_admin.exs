@@ -3,39 +3,33 @@
 #
 #   mix run priv/repo/seed_admin.exs
 #
-# Idempotent — re-running upserts the user (refreshes role/password)
-# and seeds any schedule rows missing from the table.
+# Idempotent — re-running refreshes the password (no role concept on
+# AdminUser today) and seeds any schedule rows missing from the table.
 
-alias SuperBarato.Accounts.User
+alias StupendousAdmin.Accounts
+alias StupendousAdmin.Accounts.AdminUser
 alias SuperBarato.Repo
 
-email = "francisco.ceruti@gmail.com"
-password = "1234"
+email = System.get_env("ADMIN_EMAIL") || "francisco.ceruti@gmail.com"
+password = System.get_env("ADMIN_PASSWORD") || "correct-horse-battery"
 
-# Bypass User.password_changeset (which enforces min 12 chars) —
-# seed-only shortcut for dev. Never use a 4-char password in prod.
-user =
-  case Repo.get_by(User, email: email) do
+admin =
+  case Accounts.get_admin_user_by_email(email) do
     nil ->
-      %User{
-        email: email,
-        hashed_password: Bcrypt.hash_pwd_salt(password),
-        role: :superadmin,
-        confirmed_at: DateTime.utc_now(:second)
-      }
-      |> Repo.insert!()
+      {:ok, admin} = Accounts.register_admin_user(%{email: email, password: password})
+      admin
 
-    existing ->
-      existing
-      |> Ecto.Changeset.change(%{
-        hashed_password: Bcrypt.hash_pwd_salt(password),
-        role: :superadmin,
-        confirmed_at: existing.confirmed_at || DateTime.utc_now(:second)
-      })
-      |> Repo.update!()
+    %AdminUser{} = existing ->
+      {:ok, refreshed} =
+        Accounts.reset_admin_user_password(existing, %{
+          password: password,
+          password_confirmation: password
+        })
+
+      refreshed
   end
 
-IO.puts("Seeded superadmin: #{user.email} (role=#{user.role})")
+IO.puts("Seeded admin: #{admin.email}")
 
 # Crawler schedules — one row per (chain, kind) described in
 # config/config.exs. Only inserts missing rows, so edits from the

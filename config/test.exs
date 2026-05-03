@@ -60,3 +60,7 @@ config :stupendous_thumbnails,
   access_key_id: "AKIA-test",
   secret_access_key: "secret-test",
   public_base: "https://thumbs.test"
+
+config :stupendous_admin,
+  signing_salt: "test-signing-salt-1234567890",
+  encryption_salt: "test-encryption-salt-1234567"
