@@ -42,8 +42,8 @@
     <:title>Currently linked</:title>
 
     <.columns>
-      <:column :if={@current_product.image_url} width="200px">
-        <img src={@current_product.image_url} alt="" loading="lazy" />
+      <:column :if={thumbnail_url(@current_product)} width="200px">
+        <img src={thumbnail_url(@current_product)} alt="" loading="lazy" />
       </:column>
       <:column>
         <.key_value>
@@ -125,7 +125,7 @@
 
   <.table rows={@result.items} empty="No matching products.">
     <:col :let={p} label="Image" nowrap>
-      <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" class="data-table__thumb" />
+      <img :if={thumbnail_url(p)} src={thumbnail_url(p)} alt="" loading="lazy" class="data-table__thumb" />
     </:col>
 
     <:col :let={p} label="Product">

@@ -35,7 +35,7 @@
 
   <.table rows={@result.items} empty="No canonical products yet — Linker hasn't run.">
     <:col :let={p} label="Image" nowrap>
-      <img :if={p.image_url} src={p.image_url} alt="" loading="lazy" class="data-table__thumb" />
+      <img :if={thumbnail_url(p)} src={thumbnail_url(p)} alt="" loading="lazy" class="data-table__thumb" />
     </:col>
 
     <%!-- Canonical name + brand stack, same shape as listings table.

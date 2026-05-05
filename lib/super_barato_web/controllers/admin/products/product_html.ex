@@ -11,6 +11,7 @@ defmodule SuperBaratoWeb.Admin.ProductHTML do
   defdelegate sort_dir(field, current), to: ListingHTML
   defdelegate sort_href(path, params, field, current), to: ListingHTML
   defdelegate pdp_host(url), to: ListingHTML
+  defdelegate thumbnail_url(product), to: SuperBarato.Thumbnails
 
   @doc """
   Picks the linked listing for `chain` from `listings` (a list of

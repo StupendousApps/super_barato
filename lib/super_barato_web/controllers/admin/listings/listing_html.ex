@@ -7,6 +7,8 @@ defmodule SuperBaratoWeb.Admin.ListingHTML do
 
   embed_templates "listing_html/*"
 
+  defdelegate thumbnail_url(product), to: SuperBarato.Thumbnails
+
   def chain_tab_href(nil), do: ~p"/listings"
   def chain_tab_href(chain), do: ~p"/listings?#{[chain: chain]}"
 
