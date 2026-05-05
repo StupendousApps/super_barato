@@ -582,6 +582,7 @@ html[data-rail-right="collapsed"] .cart-clear {
     line-height: 1.25;
     color: var(--ink);
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -778,6 +779,7 @@ body.is-dragging * {
     color: var(--ink);
     font-weight: 500;
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -1155,6 +1157,7 @@ body.smart-cart-open {
     line-height: 1.3;
     color: var(--ink);
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
