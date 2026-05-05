@@ -8,9 +8,12 @@
     <:item key={:chain_categories} href={~p"/chain-categories"}>Chain Categories</:item>
     <:item key={:app_categories} href={~p"/app-categories"}>App Categories</:item>
     <:item key={:crawlers} href={~p"/crawlers/live"}>Crawlers</:item>
-    <:item key={:users} href={~p"/users"}>Users</:item>
-    <:item key={:profile} href={~p"/profile"}>Profile</:item>
-    <:trailing>{@current_admin && @current_admin.email}</:trailing>
+    <:item key={:admins} href={~p"/admins"}>Admins</:item>
+    <:trailing :if={assigns[:current_admin]}>
+      <a href={~p"/profile"} class={@top_nav == :profile && "is-active"}>
+        {@current_admin.email}
+      </a>
+    </:trailing>
     <:logout href={~p"/log-out"}>
       <.sfsymbol name="signout" />
     </:logout>

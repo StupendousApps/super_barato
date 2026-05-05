@@ -17,6 +17,10 @@ config :super_barato,
 # Routes mount under the `admin.` subdomain so the scope prefix is "/".
 config :stupendous_admin,
   repo: SuperBarato.Repo,
+  # The library is mounted at the root of the admin subdomain
+  # (no `/admin` path prefix), so every URL it builds skips the
+  # default `/admin/...` namespace.
+  scope_prefix: "",
   signed_in_path: "/",
   log_in_path: "/log-in",
   # Library pages render inside super_barato's admin chrome (CSS +

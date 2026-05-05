@@ -3,36 +3,21 @@
 #
 #   mix run priv/repo/seed_admin.exs
 #
-# Idempotent — re-running refreshes the password (no role concept on
-# AdminUser today) and seeds any schedule rows missing from the table.
+# Idempotent — re-running refreshes the password / superadmin flag
+# and seeds any schedule rows missing from the table.
 
-alias StupendousAdmin.Accounts
-alias StupendousAdmin.Accounts.AdminUser
-alias SuperBarato.Repo
+# ── Superadmin ──────────────────────────────────────────────────────
+# Delegate to stupendous_admin's library-owned seed. Provides
+# ADMIN_EMAIL / ADMIN_PASSWORD defaults for local dev/test; prod
+# must set them explicitly via env (see config/deploy.yml secrets).
+System.put_env("ADMIN_EMAIL", System.get_env("ADMIN_EMAIL") || "francisco.ceruti@gmail.com")
+System.put_env("ADMIN_PASSWORD", System.get_env("ADMIN_PASSWORD") || "correct-horse-battery")
 
-email = System.get_env("ADMIN_EMAIL") || "francisco.ceruti@gmail.com"
-password = System.get_env("ADMIN_PASSWORD") || "correct-horse-battery"
+Code.eval_file(Application.app_dir(:stupendous_admin, "priv/repo/seeds.exs"))
 
-admin =
-  case Accounts.get_admin_user_by_email(email) do
-    nil ->
-      {:ok, admin} = Accounts.register_admin_user(%{email: email, password: password})
-      admin
-
-    %AdminUser{} = existing ->
-      {:ok, refreshed} =
-        Accounts.reset_admin_user_password(existing, %{
-          password: password,
-          password_confirmation: password
-        })
-
-      refreshed
-  end
-
-IO.puts("Seeded admin: #{admin.email}")
-
-# Crawler schedules — one row per (chain, kind) described in
-# config/config.exs. Only inserts missing rows, so edits from the
-# admin UI aren't clobbered on re-seed.
+# ── Crawler schedules ───────────────────────────────────────────────
+# One row per (chain, kind) described in config/config.exs. Only
+# inserts missing rows, so edits from the admin UI aren't clobbered
+# on re-seed.
 n = SuperBarato.Crawler.Schedules.seed_from_config()
 IO.puts("Seeded crawler schedules (#{n} config entries processed)")
