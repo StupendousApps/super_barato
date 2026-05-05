@@ -711,7 +711,10 @@ html[data-rail-right="collapsed"] .cart-clear {
 
 /* The empty-cart message becomes a drop hint when hovered */
 .cart-pane.drop-target--pane .cart-empty .msg::before {
-    content: "Suelta para agregar — ";
+    /* \2014 = em dash. Use the CSS unicode escape so the rule
+       survives a charset-less <link> serve (browsers default to
+       latin-1 for CSS string content). */
+    content: "Suelta para agregar \2014 ";
 }
 
 /* ── Source card while dragging ─────────────────────────────── */

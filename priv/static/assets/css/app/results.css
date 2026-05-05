@@ -95,7 +95,11 @@
     white-space: nowrap;
 }
 .cat-band__more::after {
-    content: "→";
+    /* Unicode escape (\2192 = →). Avoids the latin-1 mojibake the
+       browser falls into when a CSS file is served without an
+       explicit charset and the file contains raw UTF-8 multi-byte
+       characters. */
+    content: "\2192";
     transition: transform 0.14s ease;
 }
 .cat-band__more:hover {
