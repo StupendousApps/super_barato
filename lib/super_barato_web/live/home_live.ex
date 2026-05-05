@@ -180,7 +180,12 @@ defmodule SuperBaratoWeb.HomeLive do
           id: p.id,
           name: p.canonical_name,
           brand: p.brand,
+          # Cards / drag-ghost / cart all consume `image_url` —
+          # ship the R2 thumbnail there. `original_image_url` is
+          # the raw chain-CDN URL, only used by the product detail
+          # popover for a higher-res hero image.
           image_url: Thumbnails.thumbnail_url(p),
+          original_image_url: p.image_url,
           prices: prices
         }
       end)
@@ -386,7 +391,7 @@ defmodule SuperBaratoWeb.HomeLive do
       class="card"
       data-product-id={@p.id}
       data-product-index={@index}
-      data-product={Jason.encode!(%{id: @p.id, name: @p.name, brand: @p.brand, image_url: @p.image_url, prices: Enum.map(@p.prices, &Map.take(&1, [:chain, :price, :promo?]))})}
+      data-product={Jason.encode!(%{id: @p.id, name: @p.name, brand: @p.brand, image_url: @p.image_url, original_image_url: @p.original_image_url, prices: Enum.map(@p.prices, &Map.take(&1, [:chain, :price, :promo?]))})}
     >
       <div class="img">
         <img :if={@p.image_url} src={@p.image_url} alt="" loading="lazy" />

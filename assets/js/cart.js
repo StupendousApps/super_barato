@@ -1114,7 +1114,9 @@ const ProductDetail = {
 
       // Build the list of available images. Prefer listing-level
       // images (each chain's own product photo) over the static
-      // product image_url.
+      // product image. The popover renders a hero, so the fallback
+      // uses `original_image_url` — the raw chain-CDN URL — instead
+      // of `image_url` (which is the R2 thumbnail used elsewhere).
       let images = []
       if (listings) {
         const seen = new Set()
@@ -1125,8 +1127,9 @@ const ProductDetail = {
           }
         }
       }
-      if (images.length === 0 && product.image_url) {
-        images = [{chain: null, url: product.image_url}]
+      const heroFallback = product.original_image_url || product.image_url
+      if (images.length === 0 && heroFallback) {
+        images = [{chain: null, url: heroFallback}]
       }
       if (images.length === 0) {
         frame.innerHTML = `<div class="product-detail__img-empty">Sin imagen</div>`

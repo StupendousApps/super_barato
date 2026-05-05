@@ -37,7 +37,12 @@ defmodule SuperBarato.HomeData do
             id: p.id,
             name: p.canonical_name,
             brand: p.brand,
+            # Cards / drag-ghost / cart all consume `image_url` —
+            # ship the R2 thumbnail there. `original_image_url` is
+            # the raw chain-CDN URL, only used by the product
+            # detail popover for a higher-res hero image.
             image_url: Thumbnails.thumbnail_url(p),
+            original_image_url: p.image_url,
             prices: product_prices(Map.get(listings, p.id, []))
           }
         end)
