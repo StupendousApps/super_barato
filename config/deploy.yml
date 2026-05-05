@@ -51,6 +51,18 @@ env:
   secret:
     - SECRET_KEY_BASE
     - SENDGRID_API_KEY
+    # Cloudflare R2 credentials. R2_BUCKET + R2_PUBLIC_BASE are
+    # plain config — see `env.clear:` below. Missing any of these
+    # three secrets makes the thumbnail library a no-op (cards
+    # fall back to chain CDN image_urls).
+    - R2_ACCOUNT_ID
+    - R2_ACCESS_KEY_ID
+    - R2_SECRET_ACCESS_KEY
+    # Admin session cookie (stupendous_admin). Salts must differ
+    # from SECRET_KEY_BASE so the admin and app-user cookies key
+    # off independent secrets.
+    - ADMIN_SIGNING_SALT
+    - ADMIN_ENCRYPTION_SALT
     # Per-chain HTTP egress proxy. Tottus's prod IP is banned at
     # Cloudflare's edge, so we route those requests through a
     # Chilean residential connection (Tailscale → home iMac running
@@ -61,6 +73,11 @@ env:
     PHX_HOST: superbarato.cl
     MAIL_FROM_NAME: "Super Barato (cl)"
     MAIL_FROM_ADDRESS: hola@superbarato.cl
+    # R2 bucket name + the public URL prefix the home cards render
+    # against. Both are visible to anyone clicking an `<img>`, no
+    # reason to put them in the keychain.
+    R2_BUCKET: superbarato
+    R2_PUBLIC_BASE: https://media.superbarato.cl
     # SQLite file lives on its own host volume (see `volumes:` below)
     # so it can be snapshotted/backed up independently of logs/prices.
     DATABASE_PATH: /data/db/super_barato.db

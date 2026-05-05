@@ -18,7 +18,9 @@ config :super_barato,
 config :stupendous_admin,
   repo: SuperBarato.Repo,
   signed_in_path: "/",
-  log_in_path: "/log-in"
+  log_in_path: "/log-in",
+  notification_mailer: {SuperBarato.AdminMailer, :send_notification, []},
+  notification_recipients: ["francisco.ceruti@gmail.com"]
 
 # Configure the endpoint
 config :super_barato, SuperBaratoWeb.Endpoint,
