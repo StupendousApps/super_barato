@@ -19,6 +19,12 @@ config :stupendous_admin,
   repo: SuperBarato.Repo,
   signed_in_path: "/",
   log_in_path: "/log-in",
+  # Library pages render inside super_barato's admin chrome (CSS +
+  # JS are wired into AdminLayouts.root). The login page swaps the
+  # inner layout to a centered card; profile + users use the same
+  # topnav as the rest of the admin.
+  root_layout: {SuperBaratoWeb.AdminLayouts, :root},
+  admin_layout: {SuperBaratoWeb.AdminLayouts, :admin},
   notification_mailer: {SuperBarato.AdminMailer, :send_notification, []},
   notification_recipients: ["francisco.ceruti@gmail.com"]
 

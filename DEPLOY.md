@@ -229,6 +229,10 @@ needed in the runner.
 
 **Path-deps (e.g. shared internal libraries):** if `mix.exs` has
 `{:foo, path: "../foo"}`, the build context must include `../`.
+Stupendous-org apps typically pull in `stupendous_admin` (admin
+auth + UI) and `stupendous_thumbnails` (R2 thumbnail generation)
+this way; the layout is always `path: "../<lib>"` next to the
+consumer repo.
 Two changes:
 
 1. Restructure the Dockerfile so all `COPY` lines are prefixed with
@@ -442,6 +446,17 @@ env:
     - DATABASE_URL
     # SQLite:
     # (no secret needed, path is in env.clear)
+    # SendGrid for transactional + admin notification emails.
+    - SENDGRID_API_KEY
+    # Cloudflare R2 — only the credentials are secret. Bucket name
+    # and public URL prefix go in env.clear (visible in every <img>).
+    - R2_ACCOUNT_ID
+    - R2_ACCESS_KEY_ID
+    - R2_SECRET_ACCESS_KEY
+    # stupendous_admin session cookie. Independent from SECRET_KEY_BASE
+    # so the admin and app-user cookie threat surfaces stay decoupled.
+    - ADMIN_SIGNING_SALT
+    - ADMIN_ENCRYPTION_SALT
   clear:
     PHX_HOST: my-app.tld
     # No PORT — Phoenix defaults to 4000 in prod, matches proxy.app_port.
@@ -449,6 +464,9 @@ env:
     # collisions when running multiple apps.
     # SQLite:
     DATABASE_PATH: /data/db/my_app.db
+    # R2 bucket name + public URL prefix the home cards render against.
+    R2_BUCKET: my-app-thumbnails
+    R2_PUBLIC_BASE: https://media.my-app.tld
     # File-logging retention (defaults shown; override to tune):
     LOG_DIR: /data/log
     # LOG_MAX_FILES: "5"
@@ -480,13 +498,31 @@ builder:
 
 ## 8. .kamal/secrets
 
-Pulls from the macOS keychain, never disk. Setup once per workstation:
+Pulls from the macOS keychain, never disk.
+
+**Important — Kamal 2.x parser quirk**: `.kamal/secrets` is sourced
+by Kamal as bash, but the parser only recognizes single-line
+`export NAME=...` statements. Function definitions, multi-line
+heredocs, or anything fancier will silently break parsing and
+produce confusing "Secret 'X' not found" errors. Keep every line
+shaped exactly like the GHCR PAT line below.
+
+Setup once per workstation:
 
 ```bash
-security add-generic-password -a "$USER" -s my-app-ghcr-pat        -w
-security add-generic-password -a "$USER" -s my-app-secret-key-base -w
+security add-generic-password -a "$USER" -s my-app-ghcr-pat                  -w
+security add-generic-password -a "$USER" -s my-app-secret-key-base           -w
+security add-generic-password -a "$USER" -s my-app-sendgrid-api-key          -w
 # Postgres:
-security add-generic-password -a "$USER" -s my-app-database-url    -w
+security add-generic-password -a "$USER" -s my-app-database-url              -w
+# Cloudflare R2 (only the three credentials are secret):
+security add-generic-password -a "$USER" -s my-app-r2-account-id             -w
+security add-generic-password -a "$USER" -s my-app-r2-access-key-id          -w
+security add-generic-password -a "$USER" -s my-app-r2-secret-access-key      -w
+# stupendous_admin session salts — generate random hex first, paste:
+#   openssl rand -hex 32  | pbcopy   # then paste at the prompt below
+security add-generic-password -a "$USER" -s my-app-admin-signing-salt        -w
+security add-generic-password -a "$USER" -s my-app-admin-encryption-salt     -w
 ```
 
 Each `-w` prompts for the value; paste and hit return.
@@ -495,17 +531,42 @@ Each `-w` prompts for the value; paste and hit return.
 # .kamal/secrets
 export KAMAL_REGISTRY_PASSWORD=$(security find-generic-password -a "$USER" -s my-app-ghcr-pat -w)
 export SECRET_KEY_BASE=$(security find-generic-password -a "$USER" -s my-app-secret-key-base -w)
+export SENDGRID_API_KEY=$(security find-generic-password -a "$USER" -s my-app-sendgrid-api-key -w)
+
+# Postgres:
 export DATABASE_URL=$(security find-generic-password -a "$USER" -s my-app-database-url -w)
+
+# Cloudflare R2:
+export R2_ACCOUNT_ID=$(security find-generic-password -a "$USER" -s my-app-r2-account-id -w)
+export R2_ACCESS_KEY_ID=$(security find-generic-password -a "$USER" -s my-app-r2-access-key-id -w)
+export R2_SECRET_ACCESS_KEY=$(security find-generic-password -a "$USER" -s my-app-r2-secret-access-key -w)
+
+# stupendous_admin session salts:
+export ADMIN_SIGNING_SALT=$(security find-generic-password -a "$USER" -s my-app-admin-signing-salt -w)
+export ADMIN_ENCRYPTION_SALT=$(security find-generic-password -a "$USER" -s my-app-admin-encryption-salt -w)
+```
+
+Verify before deploy:
+
+```bash
+bin/kamal secrets print
+# Every var should resolve to a non-empty value.
 ```
 
 The first kamal run will prompt the keychain for each entry — tick "Always
 Allow".
 
-Generate a fresh `SECRET_KEY_BASE` and stash it:
+Generate fresh `SECRET_KEY_BASE` + admin salts and stash them:
 
 ```bash
 security add-generic-password -U -a "$USER" -s my-app-secret-key-base \
   -w "$(mix phx.gen.secret)"
+
+security add-generic-password -U -a "$USER" -s my-app-admin-signing-salt \
+  -w "$(openssl rand -hex 32)"
+
+security add-generic-password -U -a "$USER" -s my-app-admin-encryption-salt \
+  -w "$(openssl rand -hex 32)"
 ```
 
 Copy the GHCR PAT from another Stupendous app:
@@ -584,7 +645,17 @@ bundle install                                          # kamal gem
 security add-generic-password -a "$USER" -s my-app-ghcr-pat -w
 security add-generic-password -U -a "$USER" -s my-app-secret-key-base \
   -w "$(mix phx.gen.secret)"
-# + DATABASE_URL etc. as needed
+security add-generic-password -a "$USER" -s my-app-sendgrid-api-key -w
+# Cloudflare R2 (paste from Cloudflare dashboard):
+security add-generic-password -a "$USER" -s my-app-r2-account-id           -w
+security add-generic-password -a "$USER" -s my-app-r2-access-key-id        -w
+security add-generic-password -a "$USER" -s my-app-r2-secret-access-key    -w
+# stupendous_admin session salts (auto-random, never typed):
+security add-generic-password -U -a "$USER" -s my-app-admin-signing-salt \
+  -w "$(openssl rand -hex 32)"
+security add-generic-password -U -a "$USER" -s my-app-admin-encryption-salt \
+  -w "$(openssl rand -hex 32)"
+# + DATABASE_URL if you're on Postgres
 
 # 3. DNS — add A records for every host in proxy.hosts → server IP
 
@@ -668,3 +739,25 @@ Migrations run automatically on container start (the modified `bin/server`).
   4000` in deploy.yml and the proxy → container handoff just works.
   Use non-default ports only in `config/dev.exs` to avoid local
   collisions when multiple apps run side-by-side.
+- **Admin auth lives in `stupendous_admin`, not the consumer.**
+  Don't roll your own login / user CRUD — the library ships
+  `AdminUser`, session tokens, login + logout, profile, password
+  change, and the admins-list page. Mount via:
+  ```elixir
+  use StupendousAdmin.Web.Router
+  stupendous_admin_routes(
+    pipeline: :browser,
+    scope: "/",
+    scope_opts: [host: "admin."]
+  )
+  ```
+  The cookie is fully isolated from any portal-user session via
+  separate signing/encryption salts — that's the only reason
+  `ADMIN_SIGNING_SALT` + `ADMIN_ENCRYPTION_SALT` exist as
+  separate secrets. Don't reuse `SECRET_KEY_BASE`.
+- **R2 thumbnails via `stupendous_thumbnails`.** Five env vars
+  total: three secret (`R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+  `R2_SECRET_ACCESS_KEY`), two clear (`R2_BUCKET`,
+  `R2_PUBLIC_BASE`). Missing any one of the secrets makes the
+  library a no-op and cards fall back to chain-CDN URLs. Useful
+  during the first deploy when the bucket might not exist yet.

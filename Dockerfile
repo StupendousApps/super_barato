@@ -9,9 +9,10 @@
 #     fingerprinting. The builder downloads the Linux-amd64 tarball and
 #     unpacks it into the release; the runner copies them in.
 #   * Build context is the *parent* of super_barato (the repo root that
-#     also holds stupendous_admin) so the `path: "../stupendous_admin"`
-#     dep resolves inside the build. Both `bin/kamal` (via deploy.yml's
-#     builder.context) and the local smoke build use that wider context.
+#     also holds stupendous_admin and stupendous_thumbnails) so the
+#     `path: "../<lib>"` deps resolve inside the build. Both `bin/kamal`
+#     (via deploy.yml's builder.context) and the local smoke build use
+#     that wider context.
 #
 # Local smoke (run from inside super_barato/):
 #
@@ -29,10 +30,12 @@ FROM ${BUILDER_IMAGE} AS builder
 RUN apt-get update -y && apt-get install -y build-essential git curl ca-certificates \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-# Vendor the path-dep first so subsequent COPY /super_barato can resolve
-# `../stupendous_admin` relative to mix.exs.
+# Vendor the path-deps first so subsequent COPY /super_barato can
+# resolve `../stupendous_admin` and `../stupendous_thumbnails`
+# relative to mix.exs.
 WORKDIR /build
 COPY stupendous_admin /build/stupendous_admin/
+COPY stupendous_thumbnails /build/stupendous_thumbnails/
 
 WORKDIR /build/super_barato
 
