@@ -729,6 +729,15 @@ Migrations run automatically on container start (the modified `bin/server`).
   Docker stdout stream. Once a container recycles, those lines are gone.
   The file handler at `LOG_DIR` is the durable copy — read from
   `/data/my_app/log/` on the host directly.
+- **Resetting a SQLite prod DB requires stopping the app first.**
+  The web container holds an open file handle on the SQLite file;
+  `kamal app exec "bin/reset"` against a running app unlinks the
+  file but the running BEAM keeps its handle on the orphan inode
+  and writes there until shutdown. Reset's writes land on a fresh
+  inode the running app can't see — net effect is a no-op. Wrap
+  the sequence in a `bin/kamal-reset` script that does
+  `app stop` → `app exec "bin/reset"` → `app start`. Don't add a
+  `reset:` alias to deploy.yml; it'll do the wrong thing.
 - **TLS lives on the proxy, not the app.** Drop the default `force_ssl:`
   block out of `config/prod.exs`. The Kamal proxy terminates TLS and
   redirects HTTP→HTTPS at the edge; running the same logic inside the

@@ -1,0 +1,41 @@
+#!/bin/bash
+# Safely reset the prod database.
+#
+# `bin/reset` (which kamal's `reset` alias invokes via `app exec`)
+# rm's the SQLite file and re-seeds it, but it runs in a one-off
+# container while the web container keeps its open file handle on
+# the old inode. Linux's unlink-while-open semantics mean the rm
+# succeeds, the new container writes to a fresh inode at the same
+# path, and the running app keeps reading + writing to the orphan
+# inode until it shuts down. Net effect: the next `kamal deploy`
+# is what actually flips the running app onto the seeded DB.
+#
+# This wrapper does the right sequence: stop the app, reset (so
+# nothing holds an open handle), bring the app back up. The next
+# boot opens the freshly-seeded DB cleanly.
+#
+# Usage:
+#
+#     bin/kamal-reset
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+echo ">> stopping app (releases the SQLite file handle)"
+bin/kamal app stop
+
+echo ">> resetting DB (drop file + migrate + seed in a fresh container)"
+bin/kamal app exec "bin/reset"
+
+# `kamal app start` is fragile here — Kamal names the container off
+# the source-tree hash, and any uncommitted change between
+# `app stop` and `app start` produces a different name (e.g.
+# `..._uncommitted_<sha>`) that doesn't match the stopped container,
+# making `docker start` exit 1 with "Failed to get endpoint for web".
+# `kamal deploy` always boots a fresh container against the current
+# tree, no name-matching games.
+echo ">> deploying (boots a fresh container against the seeded DB)"
+bin/kamal deploy
+
+echo ">> done"
