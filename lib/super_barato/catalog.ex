@@ -735,6 +735,21 @@ defmodule SuperBarato.Catalog do
   }
 
   @doc """
+  Every `chain_categories` row this listing was discovered through.
+  Returns a list of `%ChainCategory{}` ordered by depth (level)
+  then slug — closest to the umbrella first.
+  """
+  def categories_for_listing(chain_listing_id) when is_integer(chain_listing_id) do
+    Repo.all(
+      from cc in ChainCategory,
+        join: clc in ChainListingCategory,
+        on: clc.chain_category_id == cc.id,
+        where: clc.chain_listing_id == ^chain_listing_id,
+        order_by: [asc: cc.level, asc: cc.slug]
+    )
+  end
+
+  @doc """
   Flat list of every category for a chain, returned as
   `[{slug, "Parent / Child / Grandchild"}, ...]` and sorted by the
   full ancestry-chain label. Ready for a `<select>` dropdown.

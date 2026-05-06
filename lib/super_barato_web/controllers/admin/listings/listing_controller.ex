@@ -102,9 +102,12 @@ defmodule SuperBaratoWeb.Admin.ListingController do
     chains_by_product_id = Linker.chains_by_product_ids(result_product_ids)
     price_range_by_product_id = Linker.price_range_by_product_ids(result_product_ids)
 
+    listing_categories = Catalog.categories_for_listing(listing.id)
+
     conn
     |> assign(:top_nav, :listings)
     |> assign(:listing, listing)
+    |> assign(:listing_categories, listing_categories)
     |> assign(:current_product, current_product)
     |> assign(:current_product_eans, current_product_eans)
     |> assign(:current_product_listings, current_product_listings)

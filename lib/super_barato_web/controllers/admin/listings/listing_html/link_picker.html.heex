@@ -35,6 +35,41 @@
     </:column>
   </.columns>
 
+  <.section_header title={"Discovered through (#{length(@listing_categories)})"} />
+
+  <.table rows={@listing_categories} empty="No category breadcrumbs recorded for this listing.">
+    <:col :let={c} label="Chain" nowrap>
+      <.chain_badge chain={c.chain} />
+    </:col>
+    <:col :let={c} label="Slug">
+      <div>
+        <.link href={~p"/listings?#{[chain: c.chain, category: c.slug]}"}>{c.name}</.link>
+      </div>
+      <div class="cell-secondary">{c.slug}</div>
+    </:col>
+    <:col :let={c} label="Level" align={:right} nowrap>{c.level}</:col>
+    <:col :let={c} label="Leaf" align={:center}>
+      <span style={"color: " <> if(c.is_leaf, do: "oklch(0.55 0.18 145)", else: "oklch(0.55 0.16 25)")}>
+        {if c.is_leaf, do: "✓", else: "✕"}
+      </span>
+    </:col>
+    <:col :let={c} label="Crawl" align={:center}>
+      <span style={"color: " <> if(c.crawl_enabled, do: "oklch(0.55 0.18 145)", else: "oklch(0.55 0.16 25)")}>
+        {if c.crawl_enabled, do: "✓", else: "✕"}
+      </span>
+    </:col>
+    <:col :let={c} label="" align={:right} nowrap>
+      <.button
+        variant={:subtle}
+        size={:sm}
+        href={~p"/chain-categories/#{c.id}/edit"}
+        aria-label="Edit"
+      >
+        <.sfsymbol name="pencil" />
+      </.button>
+    </:col>
+  </.table>
+
   <%!-- Currently linked product (if any) — same image + key_value
        shape as the product show page, plus the table of every linked
        listing with the Unlink action on this listing's row. --%>
